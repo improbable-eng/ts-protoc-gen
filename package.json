@@ -1,0 +1,28 @@
+{
+  "name": "protoc-gen-ts",
+  "version": "0.1.0",
+  "description": "Protocol Buffers Generator Plugin for TypeScript",
+  "main": "index.js",
+  "bin": {
+    "protoc-gen-ts": "bin/protoc-gen-ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/mwitkow/protoc-gen-ts"
+  },
+  "keywords": [
+    "protobuf",
+    "protoc",
+    "typescript",
+    "ts",
+    "grpc",
+    "proto3"
+  ],
+  "author": "Michal Witkowski",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "^6.5.2",
+    "get-stdin": "^5.0.1",
+    "google-protobuf": "^3.2.0"
+  }
+}

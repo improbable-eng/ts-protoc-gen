@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package examplecom.common;
+
+message CommonName {
+    string name = 1;
+}
+
+message CommonId {
+    int32 id = 1;
+}

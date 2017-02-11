@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package examplecom.services.complextypes;
+
+
+enum SomeEnum {
+  DEFAULT = 0;
+  VALUE1 = 1;
+  VALUE2 = 2;
+}
+
+message OuterMessage {
+  string some_string = 1;
+
+  message InnerMessage { 
+    int32 some_int = 1;
+  }
+  InnerMessage some_message = 2;
+
+  enum InnerEnum {
+    ANOTHER_DEFAULT = 0;
+    NON_DEFAULT = 1;
+  }
+  InnerEnum some_enum = 3;
+}
+
+message SomeRequest {
+  SomeEnum some_enum = 1;
+  string some_string = 2;
+  map<string, OuterMessage> map_message = 3;
+
+  
+}
+
+message SomeResponse {
+  OuterMessage some_message = 1;
+}
