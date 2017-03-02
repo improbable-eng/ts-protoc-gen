@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package examplecom;
+
+message PrimitiveMessageV3 {
+    double my_double = 1;
+    float my_float = 2;
+    int32 my_int32 = 3;
+    int64 my_int64 = 4;
+    uint32 my_uint32 = 5;
+    uint64 my_uint64 = 6;
+    sint32 my_sint32 = 7;
+    sint64 my_sint64 = 8;
+    fixed32 my_fixed32 = 9;
+    fixed64 my_fixed64 = 10;
+    sfixed32 my_sfixed32 = 11;
+    sfixed64 my_sfixed64 = 12;
+    bool my_bool = 13;
+    string my_string = 14;
+    bytes my_bytes = 15;
+}

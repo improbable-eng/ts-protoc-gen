@@ -1,14 +1,30 @@
 {
-  "name": "protoc-gen-ts",
+  "name": "ts-protoc-gen",
   "version": "0.1.0",
-  "description": "Protocol Buffers Generator Plugin for TypeScript",
-  "main": "index.js",
+  "description": "Protoc Plugin for TypeScript Declarations",
+  "scripts": {
+    "lint": "tslint src/**/*.ts test/src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "lib:clean": "rm -rf build",
+    "lib:build": "npm run lib:clean && tsc",
+    "lib:build:watch": "watch-run -p './src/**/*.ts' \"npm run lib:build\"",
+    "lib:dev": "npm run lib:build:watch",
+    "build": "npm run lib:build",
+    "test:generate": "cd test && rm -rf generated && ./generate.sh",
+    "test:generate:watch": "cd test && watch-run -p 'proto/**/*.proto' \"npm run test:generate\"",
+    "test:mocha": "mocha --require source-map-support/register ./test/build/**.js",
+    "test:build": "cd test && rm -rf ./build && tsc",
+    "test:build:watch": "watch-run -p './test/src/**/*.ts,./test/generated/**/*.d.ts,./bin/*' \"npm run test:build && npm run test:mocha\"",
+    "test:dev": "concurrently \"npm run test:generate:watch\" \"npm run test:build:watch\"",
+    "test": "npm run lint && npm run build && npm run test:generate && npm run test:build && npm run test:mocha",
+    "dev": "npm run test; concurrently \"npm run lib:dev\" \"npm run test:dev\""
+  },
   "bin": {
-    "protoc-gen-ts": "bin/protoc-gen-ts"
+    "protoc-gen-ts": "protoc-gen-ts"
   },
   "repository": {
     "type": "git",
-    "url": "github.com/mwitkow/protoc-gen-ts"
+    "url": "github.com/improbable-eng/ts-protoc-gen"
   },
   "keywords": [
     "protobuf",
@@ -18,11 +34,23 @@
     "grpc",
     "proto3"
   ],
-  "author": "Michal Witkowski",
-  "license": "MIT",
+  "author": "Improbable",
+  "license": "Apache-2.0",
   "dependencies": {
-    "babel": "^6.5.2",
-    "get-stdin": "^5.0.1",
     "google-protobuf": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.2.2",
+    "@types/chai": "^3.4.35",
+    "@types/mocha": "^2.2.40",
+    "@types/node": "^7.0.5",
+    "babel": "^6.5.2",
+    "chai": "^3.5.0",
+    "concurrently": "^3.4.0",
+    "mocha": "^3.2.0",
+    "source-map-support": "^0.4.14",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1",
+    "watch-run": "^1.2.5"
   }
 }

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package examplecom;
+
+import "othercom/external_child_message.proto";
+
+message ParentMessageV3 {
+    message InternalChildMessage {
+        string my_string = 1;
+    }
+
+    InternalChildMessage internal_child_message = 1;
+    repeated InternalChildMessage internal_children = 2;
+
+    othercom.ExternalChildMessage external_child_message = 3;
+    repeated othercom.ExternalChildMessage external_children = 4;
+}

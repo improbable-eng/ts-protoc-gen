@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+package examplecom;
+
+import "othercom/external_child_message.proto";
+
+message ParentMessageV2 {
+    message InternalChildMessage {
+        required string my_string = 1;
+    }
+
+    required InternalChildMessage internal_child_message = 1;
+    repeated InternalChildMessage internal_children = 2;
+
+    required othercom.ExternalChildMessage external_child_message = 3;
+    repeated othercom.ExternalChildMessage external_children = 4;
+}

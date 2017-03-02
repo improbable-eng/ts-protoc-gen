@@ -1,4 +1,8 @@
 .vscode
 node_modules
 node-debug.log
-
+.idea/
+npm-debug*
+lib/
+test/generated
+test/build
