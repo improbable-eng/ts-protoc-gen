@@ -1,6 +1,6 @@
 {
   "name": "ts-protoc-gen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Protoc Plugin for TypeScript Declarations",
   "scripts": {
     "lint": "tslint src/**/*.ts test/src/**/*.ts",
@@ -20,7 +20,7 @@
     "dev": "npm run test; concurrently \"npm run lib:dev\" \"npm run test:dev\""
   },
   "bin": {
-    "protoc-gen-ts": "protoc-gen-ts"
+    "protoc-gen-ts": "bin/protoc-gen-ts"
   },
   "repository": {
     "type": "git",
