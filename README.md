@@ -1,6 +1,12 @@
 # ts-protoc-gen
 > Protoc Plugin for TypeScript Declarations
 
+
+[![Master Build](https://travis-ci.org/improbable-eng/ts-protoc-gen.svg?branch=master)](https://travis-ci.org/improbable-eng/ts-protoc-gen)
+[![NPM](https://img.shields.io/npm/v/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
+[![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+![quality: alpha](https://img.shields.io/badge/quality-beta-orange.svg)
+
 This repository contains a [protoc](https://github.com/google/protobuf) plugin that generates TypeScript declarations 
 (`.d.ts` files) that match the JavaScript output of `protoc --js_out`.
 
