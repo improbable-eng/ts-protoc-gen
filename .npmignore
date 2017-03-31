@@ -2,3 +2,4 @@ test/
 src/
 .*
 release.sh
+install-protobuf.sh
