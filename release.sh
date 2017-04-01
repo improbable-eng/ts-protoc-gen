@@ -16,11 +16,11 @@ read -p "Release v${VERSION}? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
+    echo "Building standalone artifact"
+    npm run build
+
     echo "Staring npm publish"
     npm publish
-
-    echo "Building standalone artifact"
-    npm run lib:build
 
     echo "Creating Github release branch release/v${VERSION}"
     git checkout -b release/v${VERSION}
