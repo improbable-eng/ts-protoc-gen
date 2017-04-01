@@ -1,26 +1,17 @@
 {
   "name": "ts-protoc-gen",
-  "version": "0.1.1",
-  "description": "Protoc Plugin for TypeScript Declarations",
+  "version": "0.2.0",
+  "description": "Protoc Plugin for TypeScript Declarations and Service Definitions",
   "scripts": {
-    "lint": "tslint src/**/*.ts test/src/**/*.ts",
-    "lint:fix": "npm run lint -- --fix",
-    "lib:clean": "rm -rf build",
-    "lib:build": "npm run lib:clean && tsc",
-    "lib:build:watch": "watch-run -p './src/**/*.ts' \"npm run lib:build\"",
-    "lib:dev": "npm run lib:build:watch",
-    "build": "npm run lib:build",
-    "test:generate": "cd test && rm -rf generated && ./generate.sh",
-    "test:generate:watch": "cd test && watch-run -p 'proto/**/*.proto' \"npm run test:generate\"",
-    "test:mocha": "mocha --require source-map-support/register ./test/build/**.js",
-    "test:build": "cd test && rm -rf ./build && tsc",
-    "test:build:watch": "watch-run -p './test/src/**/*.ts,./test/generated/**/*.d.ts,./bin/*' \"npm run test:build && npm run test:mocha\"",
-    "test:dev": "concurrently \"npm run test:generate:watch\" \"npm run test:build:watch\"",
-    "test": "npm run lint && npm run build && npm run test:generate && npm run test:build && npm run test:mocha",
-    "dev": "npm run test; concurrently \"npm run lib:dev\" \"npm run test:dev\""
+    "lint": "tslint src/**/*.ts && (cd test && npm run lint)",
+    "lint:fix": "npm run lint -- --fix && (cd test && npm run lint:fix)",
+    "clean": "rm -rf lib",
+    "build": "npm run clean && tsc",
+    "test": "npm run lint && npm run build && (cd test && npm run test)"
   },
   "bin": {
-    "protoc-gen-ts": "bin/protoc-gen-ts"
+    "protoc-gen-ts": "bin/protoc-gen-ts",
+    "protoc-gen-js_service": "bin/protoc-gen-js_service"
   },
   "repository": {
     "type": "git",
@@ -32,6 +23,7 @@
     "typescript",
     "ts",
     "grpc",
+    "service",
     "proto3"
   ],
   "author": "Improbable",
@@ -40,17 +32,15 @@
     "google-protobuf": "^3.2.0"
   },
   "devDependencies": {
-    "@types/google-protobuf": "^3.2.2",
     "@types/chai": "^3.4.35",
+    "@types/google-protobuf": "^3.2.4",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.5",
     "babel": "^6.5.2",
     "chai": "^3.5.0",
-    "concurrently": "^3.4.0",
     "mocha": "^3.2.0",
     "source-map-support": "^0.4.14",
     "tslint": "^4.5.1",
-    "typescript": "^2.2.1",
-    "watch-run": "^1.2.5"
+    "typescript": "^2.2.1"
   }
 }

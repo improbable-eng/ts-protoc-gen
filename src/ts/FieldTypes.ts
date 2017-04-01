@@ -1,5 +1,5 @@
-import {filePathToPseudoNamespace} from "./util";
-import {ExportMap} from "./ExportMap";
+import {filePathToPseudoNamespace} from "../util";
+import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 
 export const MESSAGE_TYPE = 11;

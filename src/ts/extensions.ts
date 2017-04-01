@@ -1,7 +1,7 @@
-import {Printer} from "./Printer";
-import {ExportMap} from "./ExportMap";
+import {Printer} from "../Printer";
+import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
-import {snakeToCamel} from "./util";
+import {snakeToCamel} from "../util";
 import {getFieldType} from "./FieldTypes";
 
 export function printExtension(fileName: string, exportMap: ExportMap, extension: FieldDescriptorProto, indentLevel: number): string {

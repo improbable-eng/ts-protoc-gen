@@ -1,13 +1,13 @@
-import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension} from "./util";
-import {ExportMap} from "./ExportMap";
-import {Printer} from "./Printer";
+import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension} from "../util";
+import {ExportMap} from "../ExportMap";
+import {Printer} from "../Printer";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
-import {WellKnownTypesMap} from "./WellKnown";
+import {WellKnownTypesMap} from "../WellKnown";
 import {printMessage} from "./message";
 import {printEnum} from "./enum";
 import {printExtension} from "./extensions";
 
-export function processFileDescriptor(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
+export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
   const fileName = fileDescriptor.getName();
   const packageName = fileDescriptor.getPackage();
 
@@ -28,7 +28,7 @@ export function processFileDescriptor(fileDescriptor: FileDescriptorProto, expor
       printer.printLn(`import * as ${pseudoNamespace} from "${WellKnownTypesMap[dependency]}";`);
     } else {
       const filePath = filePathFromProtoWithoutExtension(dependency);
-      printer.printLn(`import * as ${pseudoNamespace} from "${upToRoot + filePath}";`);
+      printer.printLn(`import * as ${pseudoNamespace} from "${upToRoot}${filePath}";`);
     }
   });
 

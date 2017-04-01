@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "6"
+env:
+  - PROTOBUF_VER="3.2.0"
+cache:
+  directories:
+    - node_modules
+install:
+  - sudo apt-get install unzip
+  - bash install-protobuf.sh
+  - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
+  - npm install
+script:
+  - npm test

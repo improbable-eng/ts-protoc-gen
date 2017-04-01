@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "generate": "rm -rf generated && ./generate.sh",
+    "build": "npm run generate && rm -rf ./build && tsc",
+    "test": "mocha --require source-map-support/register ./build/src"
+  }
+}

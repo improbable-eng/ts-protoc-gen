@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "lint": "tslint ts_test/src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "build": "(cd ts_test && npm run build) && (cd js_test && npm run build)",
+    "test": "npm run lint && npm run build && (cd ts_test && npm run test) && (cd js_test && npm run test)"
+  }
+}
