@@ -1,5 +1,5 @@
 import {EnumDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
-import {Printer} from "./Printer";
+import {Printer} from "../Printer";
 
 export function printEnum(enumDescriptor: EnumDescriptorProto, indentLevel: number) {
   const printer = new Printer(indentLevel);

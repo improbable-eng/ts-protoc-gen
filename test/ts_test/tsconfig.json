@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "build",
+    "allowJs": true,
     "sourceMap": true,
     "module": "commonjs",
     "target": "es5",
@@ -13,7 +14,8 @@
     "mocha"
   ],
   "include": [
-    "src/**/*.ts"
+    "generated/",
+    "src/"
   ],
   "exclude": [
     "node_modules"

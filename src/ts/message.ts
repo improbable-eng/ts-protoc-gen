@@ -1,8 +1,8 @@
-import {filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2} from "./util";
-import {ExportMap} from "./ExportMap";
+import {filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2} from "../util";
+import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto, FileDescriptorProto, DescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {MESSAGE_TYPE, BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName} from "./FieldTypes";
-import {Printer} from "./Printer";
+import {Printer} from "../Printer";
 import {printEnum} from "./enum";
 import {printOneOfDecl} from "./oneof";
 import {printExtension} from "./extensions";

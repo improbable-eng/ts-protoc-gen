@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package examplecom;
+
+import "othercom/external_child_message.proto";
+
+message UnaryRequest {
+  int64 some_int64 = 1;
+}
+
+message StreamRequest {
+  string some_string = 1;
+}
+
+service SimpleService {
+  rpc DoUnary(UnaryRequest) returns (othercom.ExternalChildMessage) {}
+  rpc DoStream(StreamRequest) returns (stream othercom.ExternalChildMessage) {}
+}

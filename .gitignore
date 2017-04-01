@@ -4,5 +4,7 @@ node-debug.log
 .idea/
 npm-debug*
 lib/
-test/generated
-test/build
+test/ts_test/generated
+test/ts_test/build
+test/js_test/generated
+test/js_test/build
