@@ -1,4 +1,7 @@
-import {filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2} from "../util";
+import {
+  filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2,
+  withinNamespaceFromExportEntry
+} from "../util";
 import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto, FileDescriptorProto, DescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {MESSAGE_TYPE, BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName} from "./FieldTypes";
@@ -83,7 +86,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         toObjectType.printIndentedLn(`${camelCaseName}Map: Array<[${keyTypeName}${keyType === MESSAGE_TYPE ? ".AsObject" : ""}, ${valueTypeName}${valueType === MESSAGE_TYPE ? ".AsObject" : ""}]>,`);
         return;
       }
-      const withinNamespace = fullTypeName.substring(fieldMessageType.pkg.length + 1);
+      const withinNamespace = withinNamespaceFromExportEntry(fullTypeName, fieldMessageType);
       if (fieldMessageType.fileName === fileName) {
         exportType = withinNamespace;
       } else {
@@ -94,7 +97,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       if (fieldEnumType === undefined) {
         throw new Error("No enum export for: " + fullTypeName);
       }
-      const withinNamespace = fullTypeName.substring(fieldEnumType.pkg.length + 1);
+      const withinNamespace = withinNamespaceFromExportEntry(fullTypeName, fieldEnumType);
       if (fieldEnumType.fileName === fileName) {
         exportType = withinNamespace;
       } else {

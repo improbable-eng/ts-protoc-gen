@@ -9,4 +9,5 @@ protoc \
   --ts_out=service=true:generated \
   -I ../proto \
   ../proto/othercom/*.proto \
-  ../proto/examplecom/*.proto
+  ../proto/examplecom/*.proto \
+  ../proto/*.proto

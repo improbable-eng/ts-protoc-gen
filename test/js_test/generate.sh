@@ -9,4 +9,5 @@ protoc \
   --js_service_out=generated \
   -I ../proto \
   ../proto/othercom/*.proto \
-  ../proto/examplecom/*.proto
+  ../proto/examplecom/*.proto \
+  ../proto/*.proto

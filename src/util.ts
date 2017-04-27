@@ -1,4 +1,5 @@
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
+import {ExportEnumEntry, ExportMessageEntry} from "./ExportMap";
 export function filePathToPseudoNamespace(filePath: string): string {
   return filePath.replace(".proto", "").replace(/\//g, "_").replace(/\./g, "_").replace(/\-/g, "_") + "_pb";
 }
@@ -29,6 +30,15 @@ export function generateIndent(indentLevel: number): string {
     indent += "  "
   }
   return indent;
+}
+
+export function getPathToRoot(fileName: string) {
+  const depth = fileName.split("/").length;
+  return depth === 1 ? "./" : new Array(depth).join("../");
+}
+
+export function withinNamespaceFromExportEntry(name: string, exportEntry: ExportMessageEntry | ExportEnumEntry) {
+  return exportEntry.pkg ? name.substring(exportEntry.pkg.length + 1) : name;
 }
 
 export function filePathFromProtoWithoutExtension(protoFilePath: string): string {

@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension} from "../util";
+import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension, getPathToRoot} from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
@@ -12,8 +12,7 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
 
   const fileName = fileDescriptor.getName();
   const packageName = fileDescriptor.getPackage();
-  const depth = fileName.split("/").length;
-  const upToRoot = new Array(depth).join("../");
+  const upToRoot = getPathToRoot(fileName);
 
   const printer = new Printer(0);
   printer.printLn(`// package: ${packageName}`);
@@ -36,7 +35,7 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
 
   fileDescriptor.getServiceList().forEach(service => {
     printer.printLn(`export class ${service.getName()} {`);
-    printer.printIndentedLn(`static serviceName = "${packageName}.${service.getName()}";`);
+    printer.printIndentedLn(`static serviceName = "${packageName ? packageName + "." : ""}${service.getName()}";`);
     printer.printLn(`}`);
 
     printer.printLn(`export namespace ${service.getName()} {`);

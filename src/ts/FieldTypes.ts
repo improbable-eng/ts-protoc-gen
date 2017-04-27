@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace} from "../util";
+import {filePathToPseudoNamespace, withinNamespaceFromExportEntry} from "../util";
 import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 
@@ -34,9 +34,9 @@ export function getFieldType(type: FieldDescriptorProto.Type, typeName: string, 
   if (type === MESSAGE_TYPE) {
     const fromExport = exportMap.getMessage(typeName);
     if (!fromExport) {
-      throw new Error("Could not getType for message: " + typeName);
+      throw new Error("Could not getFieldType for message: " + typeName);
     }
-    const withinNamespace = typeName.substring(fromExport.pkg.length + 1);
+    const withinNamespace = withinNamespaceFromExportEntry(typeName, fromExport);
     if (fromExport.fileName === currentFileName) {
       return withinNamespace;
     } else {
@@ -45,9 +45,9 @@ export function getFieldType(type: FieldDescriptorProto.Type, typeName: string, 
   } else if (type === ENUM_TYPE) {
     const fromExport = exportMap.getEnum(typeName);
     if (!fromExport) {
-      throw new Error("Could not getType for enum: " + typeName);
+      throw new Error("Could not getFieldType for enum: " + typeName);
     }
-    const withinNamespace = typeName.substring(fromExport.pkg.length + 1);
+    const withinNamespace = withinNamespaceFromExportEntry(typeName, fromExport);
     if (fromExport.fileName === currentFileName) {
       return withinNamespace;
     } else {

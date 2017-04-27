@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension} from "../util";
+import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension, getPathToRoot} from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
@@ -16,8 +16,7 @@ export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, expo
   printer.printLn(`// package: ${packageName}`);
   printer.printLn(`// file: ${fileDescriptor.getName()}`);
 
-  const depth = fileName.split("/").length;
-  const upToRoot = new Array(depth).join("../");
+  const upToRoot = getPathToRoot(fileName);
 
   printer.printEmptyLn();
   printer.printLn(`import * as jspb from "google-protobuf";`);
