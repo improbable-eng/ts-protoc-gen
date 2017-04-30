@@ -18,4 +18,6 @@ message PrimitiveMessageV3 {
     bool my_bool = 13;
     string my_string = 14;
     bytes my_bytes = 15;
+
+    int32 my_NUMBER = 16;
 }
