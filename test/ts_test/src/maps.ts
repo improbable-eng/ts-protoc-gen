@@ -183,8 +183,10 @@ describe("maps", () => {
         externalEnumsMap: Array<[number, ExternalEnum]>
         primitiveIntsMap: Array<[string, number]>
       }, {
-        externalEnumsMap: [],
-        externalChildrenMap: [],
+        externalEnumsMap: [] as Array<[number, ExternalEnum]>,
+        externalChildrenMap: [] as Array<[string, {
+          myString: string,
+        }]>,
         internalEnumsMap: [
           [123, InternalEnum.FIRST],
           [456, InternalEnum.SECOND],
