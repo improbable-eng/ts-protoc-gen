@@ -44,12 +44,12 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
       const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
       methodPrinter.printLn(`export class ${method.getName()} {`);
-      methodPrinter.printIndentedLn(`static methodName = "${method.getName()}";`);
-      methodPrinter.printIndentedLn(`static service = ${service.getName()};`);
-      methodPrinter.printIndentedLn(`static requestStream = ${method.getClientStreaming()};`);
-      methodPrinter.printIndentedLn(`static responseStream = ${method.getServerStreaming()};`);
-      methodPrinter.printIndentedLn(`static requestType = ${requestMessageTypeName};`);
-      methodPrinter.printIndentedLn(`static responseType = ${responseMessageTypeName};`);
+      methodPrinter.printIndentedLn(`static readonly methodName = "${method.getName()}";`);
+      methodPrinter.printIndentedLn(`static readonly service = ${service.getName()};`);
+      methodPrinter.printIndentedLn(`static readonly requestStream = ${method.getClientStreaming()};`);
+      methodPrinter.printIndentedLn(`static readonly responseStream = ${method.getServerStreaming()};`);
+      methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
+      methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
       methodPrinter.printLn(`}`);
     });
     printer.print(methodPrinter.output);
