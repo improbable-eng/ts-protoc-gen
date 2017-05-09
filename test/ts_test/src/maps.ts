@@ -182,11 +182,14 @@ describe("maps", () => {
         internalEnumsMap: Array<[number, InternalEnum]>
         externalEnumsMap: Array<[number, ExternalEnum]>
         primitiveIntsMap: Array<[string, number]>
+
       };
       const actual = parentMsg.toObject() as mapType;
       const expected: mapType = {
-        externalEnumsMap: [],
-        externalChildrenMap: [],
+        externalEnumsMap: [] as Array<[number, ExternalEnum]>,
+        externalChildrenMap: [] as Array<[string, {
+          myString: string,
+        }]>,
         internalEnumsMap: [
           [123, InternalEnum.FIRST],
           [456, InternalEnum.SECOND],
