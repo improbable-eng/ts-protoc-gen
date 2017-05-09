@@ -40,6 +40,22 @@ describe("proto3 - internal nested messages", () => {
 
     assert.deepEqual(parentMsg.getInternalChildrenList() as Array<InternalChildMessage>, [childMsgOne, childMsgTwo]);
   });
+
+  it("should allow adding and getting repeated internal message fields", () => {
+    const parentMsg = new ParentMessageV3();
+    const childMsgOne = new InternalChildMessage();
+    childMsgOne.setMyString("one");
+
+    const childMsgTwo = new InternalChildMessage();
+    childMsgTwo.setMyString("two");
+
+    const addedOne = parentMsg.addInternalChildren(childMsgOne);
+    assert.strictEqual(childMsgOne, addedOne);
+    const addedTwo = parentMsg.addInternalChildren(childMsgTwo);
+    assert.strictEqual(childMsgTwo, addedTwo);
+
+    assert.deepEqual(parentMsg.getInternalChildrenList() as Array<InternalChildMessage>, [childMsgOne, childMsgTwo]);
+  });
 });
 
 describe("proto3 - external nested messages", () => {
@@ -68,6 +84,22 @@ describe("proto3 - external nested messages", () => {
     childMsgTwo.setMyString("two");
 
     parentMsg.setExternalChildrenList([childMsgOne, childMsgTwo]);
+
+    assert.deepEqual(parentMsg.getExternalChildrenList() as Array<ExternalChildMessage>, [childMsgOne, childMsgTwo]);
+  });
+
+  it("should allow adding and getting repeated external message fields", () => {
+    const parentMsg = new ParentMessageV3();
+    const childMsgOne = new ExternalChildMessage();
+    childMsgOne.setMyString("one");
+
+    const childMsgTwo = new ExternalChildMessage();
+    childMsgTwo.setMyString("two");
+
+    const addedOne = parentMsg.addExternalChildren(childMsgOne);
+    assert.strictEqual(childMsgOne, addedOne);
+    const addedTwo = parentMsg.addExternalChildren(childMsgTwo);
+    assert.strictEqual(childMsgTwo, addedTwo);
 
     assert.deepEqual(parentMsg.getExternalChildrenList() as Array<ExternalChildMessage>, [childMsgOne, childMsgTwo]);
   });

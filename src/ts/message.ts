@@ -122,7 +122,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
     function printRepeatedAddMethod(valueType: string) {
       const optionalValue = field.getType() === MESSAGE_TYPE;
-      printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): void;`);
+      printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${valueType};`);
     }
 
     if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {// is repeated
@@ -152,7 +152,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         let canBeUndefined = false;
         if (type === MESSAGE_TYPE) {
           fieldObjectType += ".AsObject";
-          if (!isProto2(fileDescriptor)) {
+          if (!isProto2(fileDescriptor) || (field.getLabel() === FieldDescriptorProto.Label.LABEL_OPTIONAL)) {
             canBeUndefined = true;
           }
         } else {
@@ -161,7 +161,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
           }
         }
         toObjectType.printIndentedLn(`${camelCaseName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
-        printer.printIndentedLn(`get${withUppercase}(): ${exportType}${!isProto2(fileDescriptor) && type === MESSAGE_TYPE ? " | undefined" : ""};`);
+        printer.printIndentedLn(`get${withUppercase}(): ${exportType}${canBeUndefined ? " | undefined" : ""};`);
         printer.printIndentedLn(`set${withUppercase}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): void;`);
       }
     }
