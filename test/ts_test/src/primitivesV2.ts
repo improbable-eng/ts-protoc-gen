@@ -178,5 +178,10 @@ describe("proto2 - primitive", () => {
       assert.strictEqual(asObject.optString as undefined, undefined);
       assert.strictEqual(asObject.optBytes as string, "");
     });
+    it("should camelcase fully-capitalized field names", () => {
+      const msg = new PrimitiveMessageV2();
+      const asObject = msg.toObject();
+      assert.strictEqual("optNumber" in asObject, true);
+    });
   });
 });

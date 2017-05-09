@@ -58,7 +58,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       }
       existing.push(field);
     }
-    const snakeCaseName = field.getName();
+    const snakeCaseName = field.getName().toLowerCase();
     const camelCaseName = snakeToCamel(snakeCaseName);
     const withUppercase = uppercaseFirst(camelCaseName);
     const type = field.getType();

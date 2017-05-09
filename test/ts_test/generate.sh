@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/bin/bash -x
 
-rm -rf generated/
-mkdir -p generated/
+if [ -d generated ]
+then
+    rm -rf generated/
+fi
+mkdir generated
 
 protoc \
   --plugin=protoc-gen-ts=../../bin/protoc-gen-ts \

@@ -172,7 +172,7 @@ describe("maps", () => {
       const internalEnumsMap = parentMsg.getInternalEnumsMap();
       internalEnumsMap.set(123, InternalEnum.FIRST).set(456, InternalEnum.SECOND);
 
-      assert.deepEqual(parentMsg.toObject() as {
+      type mapType = {
         internalChildrenMap: Array<[string, {
           myString: string,
         }]>,
@@ -182,7 +182,10 @@ describe("maps", () => {
         internalEnumsMap: Array<[number, InternalEnum]>
         externalEnumsMap: Array<[number, ExternalEnum]>
         primitiveIntsMap: Array<[string, number]>
-      }, {
+
+      };
+      const actual = parentMsg.toObject() as mapType;
+      const expected: mapType = {
         externalEnumsMap: [] as Array<[number, ExternalEnum]>,
         externalChildrenMap: [] as Array<[string, {
           myString: string,
@@ -203,7 +206,8 @@ describe("maps", () => {
           ["first", 123],
           ["second", 456],
         ],
-      });
+      };
+      assert.deepEqual(actual, expected);
     });
   });
 });

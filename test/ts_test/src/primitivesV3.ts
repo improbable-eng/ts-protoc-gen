@@ -92,5 +92,10 @@ describe("proto3 - primitive", () => {
       assert.strictEqual(asObject.myString as string, "");
       assert.strictEqual(asObject.myBytes as (Uint8Array|string), "");
     });
+    it("should camelcase fully-capitalized field names", () => {
+      const msg = new PrimitiveMessageV3();
+      const asObject = msg.toObject();
+      assert.strictEqual("myNumber" in asObject, true);
+    });
   });
 });

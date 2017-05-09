@@ -34,4 +34,6 @@ message PrimitiveMessageV2 {
     optional bool opt_bool = 28;
     optional string opt_string = 29;
     optional bytes opt_bytes = 30;
+
+    optional int32 opt_NUMBER = 31;
 }
