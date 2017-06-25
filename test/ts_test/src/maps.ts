@@ -4,6 +4,7 @@ import {ExternalEnum} from "../generated/othercom/external_enum_pb";
 import {ExternalChildMessage} from "../generated/othercom/external_child_message_pb";
 import InternalEnum = MapMessage.InternalEnum;
 import InternalChildMessage = MapMessage.InternalChildMessage;
+import {OrphanMapMessage} from "../generated/orphan_pb";
 
 describe("maps", () => {
   describe("message maps", () => {
@@ -134,6 +135,30 @@ describe("maps", () => {
   describe("primitive maps", () => {
     it("should allow setting and getting primitive map fields", () => {
       const parentMsg = new MapMessage();
+      const myMap = parentMsg.getPrimitiveIntsMap();
+      myMap.set("first", 123).set("second", 456);
+
+      assert.strictEqual(parentMsg.getPrimitiveIntsMap().getLength() as number, 2);
+      const firstKey = parentMsg.getPrimitiveIntsMap().keys().next().value;
+      assert.strictEqual(firstKey as string, "first");
+
+      const firstEntry = parentMsg.getPrimitiveIntsMap().entries().next().value;
+      assert.strictEqual(firstEntry[0] as string, "first");
+      assert.strictEqual(firstEntry[1] as number, 123);
+
+      assert.deepEqual(parentMsg.getPrimitiveIntsMap().toObject() as Array<[string, number]>, [
+        ["first", 123],
+        ["second", 456],
+      ]);
+
+      assert.strictEqual(myMap.del("first") as boolean, true);
+      assert.strictEqual(myMap.getLength() as number, 1);
+    });
+  });
+
+  describe("orphan message maps", () => {
+    it("should allow setting and getting map fields of messages without a package", () => {
+      const parentMsg = new OrphanMapMessage();
       const myMap = parentMsg.getPrimitiveIntsMap();
       myMap.set("first", 123).set("second", 456);
 
