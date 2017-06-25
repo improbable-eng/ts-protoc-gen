@@ -1,5 +1,9 @@
 syntax = "proto3";
 
+message OrphanMapMessage {
+  map<string, int64> primitive_ints = 1;
+}
+
 message OrphanMessage {
     string my_string = 1;
     bool my_bool = 2;
