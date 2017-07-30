@@ -1,6 +1,6 @@
 {
   "name": "ts-protoc-gen",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Protoc Plugin for TypeScript Declarations and Service Definitions",
   "scripts": {
     "lint": "tslint src/**/*.ts && (cd test && npm run lint)",
