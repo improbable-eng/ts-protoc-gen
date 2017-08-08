@@ -48,7 +48,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   const oneOfGroups: Array<Array<FieldDescriptorProto>> = [];
 
-  messageDescriptor.getFieldList().forEach(field => {
+  messageDescriptor.getFieldList().forEach((field: FieldDescriptorProto) => {
     if (field.hasOneofIndex()) {
       const oneOfIndex = field.getOneofIndex();
       let existing = oneOfGroups[oneOfIndex];
@@ -125,45 +125,38 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${valueType};`);
     }
 
+    let canBeUndefined = (!isProto2(fileDescriptor) || (field.getLabel() === FieldDescriptorProto.Label.LABEL_OPTIONAL))
     if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {// is repeated
       printClearIfNotPresent();
       if (type === BYTES_TYPE) {
-        toObjectType.printIndentedLn(`${camelCaseName}List: Array<Uint8Array | string>,`);
-        printer.printIndentedLn(`get${withUppercase}List(): Array<Uint8Array | string>;`);
-        printer.printIndentedLn(`get${withUppercase}List_asU8(): Array<Uint8Array>;`);
-        printer.printIndentedLn(`get${withUppercase}List_asB64(): Array<string>;`);
-        printer.printIndentedLn(`set${withUppercase}List(value: Array<Uint8Array | string>): void;`);
+        toObjectType.printIndentedLn(`${camelCaseName}List${canBeUndefined ? "?" : ""}: Array<Uint8Array | string>,`);
+        printer.printIndentedLn(`get${withUppercase}List(): Array<Uint8Array | string>${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`get${withUppercase}List_asU8(): Array<Uint8Array>${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`get${withUppercase}List_asB64(): Array<string>${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`set${withUppercase}List(value${canBeUndefined ? "?" : ""}: Array<Uint8Array | string>): void;`);
         printRepeatedAddMethod("Uint8Array | string");
       } else {
-        toObjectType.printIndentedLn(`${camelCaseName}List: Array<${exportType}${type === MESSAGE_TYPE ? ".AsObject" : ""}>,`);
-        printer.printIndentedLn(`get${withUppercase}List(): Array<${exportType}>;`);
-        printer.printIndentedLn(`set${withUppercase}List(value: Array<${exportType}>): void;`);
+        toObjectType.printIndentedLn(`${camelCaseName}List${canBeUndefined ? "?" : ""}: Array<${exportType}${type === MESSAGE_TYPE ? ".AsObject" : ""}>,`);
+        printer.printIndentedLn(`get${withUppercase}List(): Array<${exportType}>${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`set${withUppercase}List(value${canBeUndefined ? "?" : ""}: Array<${exportType}>): void;`);
         printRepeatedAddMethod(exportType);
       }
     } else {
       if (type === BYTES_TYPE) {
-        toObjectType.printIndentedLn(`${camelCaseName}: Uint8Array | string,`);
-        printer.printIndentedLn(`get${withUppercase}(): Uint8Array | string;`);
-        printer.printIndentedLn(`get${withUppercase}_asU8(): Uint8Array;`);
-        printer.printIndentedLn(`get${withUppercase}_asB64(): string;`);
-        printer.printIndentedLn(`set${withUppercase}(value: Uint8Array | string): void;`);
+        toObjectType.printIndentedLn(`${camelCaseName}${canBeUndefined ? "?" : ""}: Uint8Array | string,`);
+        printer.printIndentedLn(`get${withUppercase}(): Uint8Array | string${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`get${withUppercase}_asU8(): Uint8Array${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`get${withUppercase}_asB64(): string${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`set${withUppercase}(value${canBeUndefined ? "?" : ""}: Uint8Array | string): void;`);
       } else {
         let fieldObjectType = exportType;
-        let canBeUndefined = false;
         if (type === MESSAGE_TYPE) {
           fieldObjectType += ".AsObject";
-          if (!isProto2(fileDescriptor) || (field.getLabel() === FieldDescriptorProto.Label.LABEL_OPTIONAL)) {
-            canBeUndefined = true;
-          }
-        } else {
-          if (isProto2(fileDescriptor)) {
-            canBeUndefined = true;
-          }
         }
         const fieldObjectName = normaliseFieldObjectName(camelCaseName);
         toObjectType.printIndentedLn(`${fieldObjectName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
         printer.printIndentedLn(`get${withUppercase}(): ${exportType}${canBeUndefined ? " | undefined" : ""};`);
-        printer.printIndentedLn(`set${withUppercase}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): void;`);
+        printer.printIndentedLn(`set${withUppercase}(value${type === MESSAGE_TYPE || canBeUndefined ? "?" : ""}: ${exportType}): void;`);
       }
     }
     printer.printEmptyLn();
