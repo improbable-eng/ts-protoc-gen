@@ -1,6 +1,6 @@
 import {
   filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2,
-  withinNamespaceFromExportEntry
+  withinNamespaceFromExportEntry, normaliseFieldObjectName
 } from "../util";
 import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto, FileDescriptorProto, DescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
@@ -160,7 +160,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
             canBeUndefined = true;
           }
         }
-        toObjectType.printIndentedLn(`${camelCaseName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
+        const fieldObjectName = normaliseFieldObjectName(camelCaseName);
+        toObjectType.printIndentedLn(`${fieldObjectName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
         printer.printIndentedLn(`get${withUppercase}(): ${exportType}${canBeUndefined ? " | undefined" : ""};`);
         printer.printIndentedLn(`set${withUppercase}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): void;`);
       }
