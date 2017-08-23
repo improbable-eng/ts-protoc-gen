@@ -9,6 +9,7 @@ message EnumMessage {
         DEFAULT = 0;
         FIRST = 1;
         SECOND = 2;
+        Third = 3;  // protoc will convert to ALL_CAPS.
     }
 
     InternalEnum internal_enum = 1;
