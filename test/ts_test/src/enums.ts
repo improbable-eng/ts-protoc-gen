@@ -42,3 +42,11 @@ describe("external enums", () => {
     assert.deepEqual(parentMsg.getExternalEnumsList(), [ExternalEnum.FIRST, ExternalEnum.SECOND]);
   });
 });
+
+describe("enum casing", () => {
+  it("should export enums as ALL_CAPS in proto definitions (#21)", () => {
+    const parentMsg = new EnumMessage();
+    parentMsg.setInternalEnum(InternalEnum.THIRD); // should compile.
+    assert.ok(true, ".d.ts file should export the enum definition in ALL_CAPS");
+  });
+});

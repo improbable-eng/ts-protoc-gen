@@ -6,7 +6,7 @@ export function printEnum(enumDescriptor: EnumDescriptorProto, indentLevel: numb
   printer.printEmptyLn();
   printer.printLn(`export enum ${enumDescriptor.getName()} {`);
   enumDescriptor.getValueList().forEach(value => {
-    printer.printIndentedLn(`${value.getName()} = ${value.getNumber()},`);
+    printer.printIndentedLn(`${value.getName().toUpperCase()} = ${value.getNumber()},`);
   });
   printer.printLn(`}`);
   return printer.getOutput();
