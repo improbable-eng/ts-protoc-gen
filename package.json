@@ -36,6 +36,7 @@
     "@types/google-protobuf": "^3.2.4",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.5",
+    "@bazel/typescript": "^0.0.10",
     "babel": "^6.5.2",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
