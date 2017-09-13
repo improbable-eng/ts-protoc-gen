@@ -13,10 +13,7 @@
     "protoc-gen-ts": "bin/protoc-gen-ts",
     "protoc-gen-js_service": "bin/protoc-gen-js_service"
   },
-  "repository": {
-    "type": "git",
-    "url": "github.com/improbable-eng/ts-protoc-gen"
-  },
+  "repository": "https://github.com/improbable-eng/ts-protoc-gen",
   "keywords": [
     "protobuf",
     "protoc",
