@@ -19,6 +19,8 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
   printer.printLn(`// file: ${fileDescriptor.getName()}`);
   printer.printEmptyLn();
 
+  printer.printLn(`import {grpc, Code, Metadata} from "grpc-web-client";`)
+
   // Need to import the non-service file that was generated for this .proto file
   const asPseudoNamespace = filePathToPseudoNamespace(fileName);
   printer.printLn(`import * as ${asPseudoNamespace} from "${upToRoot}${filePathFromProtoWithoutExtension(fileName)}";`);
@@ -36,6 +38,7 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
   fileDescriptor.getServiceList().forEach(service => {
     printer.printLn(`export class ${service.getName()} {`);
     printer.printIndentedLn(`static serviceName = "${packageName ? packageName + "." : ""}${service.getName()}";`);
+    printer.printIndentedLn(`static serviceURL = "unset";`);
     printer.printLn(`}`);
 
     printer.printLn(`export namespace ${service.getName()} {`);
@@ -51,6 +54,44 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
       methodPrinter.printLn(`}`);
+
+      // add a stub method that resolves with a promise having the response of the correct type.
+      // handling only for unary calls right now
+      if (method.getClientStreaming() || method.getServerStreaming()) {
+        return;
+      }
+
+      methodPrinter.printEmptyLn();
+
+      // helper for easy indentation
+      const oneindent = methodPrinter.indentStr;
+      const stubPrinter = {
+        indents: [oneindent],
+        indent: () => { stubPrinter.indents.push(oneindent); return stubPrinter; },
+        dedent: () => { stubPrinter.indents.pop(); return stubPrinter; },
+        print:  (str: string) => { methodPrinter.indentStr = stubPrinter.indents.join(""); methodPrinter.printLn(str); return stubPrinter; },
+      };
+
+      const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
+      stubPrinter.print(`export function ${camelCaseMethodName}(req: ${requestMessageTypeName}): Promise<${responseMessageTypeName}> {`)
+          .indent().print(`return new Promise((resolve: any, reject: any) => {`)
+            .indent().print(`grpc.unary(${method.getName()}, {`)
+              .indent().print(`request: req,`)
+                       .print(`host: ${service.getName()}.serviceURL,`)  // TODO: need to add serviceURL attribute to the namespace
+                       .print(`onEnd: res => {`)
+                .indent().print(`const { status, statusMessage, headers, message, trailers  } = res;`)
+                         .print(`const resp = message as ${responseMessageTypeName};`)
+                         .print(`if (status != Code.OK) {`)
+                  .indent().print(`return reject({ statusCode: status, statusMessage: statusMessage });`)
+                .dedent().print(`}`)
+                         .print(`if (resp.getStatusCode() !== ${responseMessageTypeName}.StatusCode.OK) {`)
+                  .indent().print(`return reject({ statusCode: resp.getStatusCode(), statusMessage: resp.getStatusMessage() });`)
+                .dedent().print(`}`)
+                         .print(`resolve(resp);`)
+              .dedent().print(`}`)
+            .dedent().print(`});`)
+          .dedent().print(`});`)
+        .dedent().print(`}`);
     });
     printer.print(methodPrinter.output);
     printer.printLn(`}`);
