@@ -180,6 +180,47 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
         printer.printIndentedLn(`readonly requestType: typeof ${method.requestType};`);
         printer.printIndentedLn(`readonly responseType: typeof ${method.responseType};`);
         printer.printLn(`};`);
+
+        // add a stub method that resolves with a promise having the response of the correct type.
+        // handling only for unary calls right now
+        if (method.getClientStreaming() || method.getServerStreaming()) {
+          return;
+        }
+
+        printer.printEmptyLn();
+
+        // helper for easy indentation
+        const oneindent = methodPrinter.indentStr;
+        const stubPrinter = {
+          indents: [oneindent],
+          indent: () => { stubPrinter.indents.push(oneindent); return stubPrinter; },
+          dedent: () => { stubPrinter.indents.pop(); return stubPrinter; },
+          print:  (str: string) => { methodPrinter.indentStr = stubPrinter.indents.join(""); methodPrinter.printLn(str); return stubPrinter; },
+        };
+
+        const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
+        stubPrinter.print(`export function ${camelCaseMethodName}(req: ${requestMessageTypeName}): Promise<${responseMessageTypeName}> {`)
+            .indent().print(`return new Promise((resolve: any, reject: any) => {`)
+              .indent().print(`grpc.unary(${method.getName()}, {`)
+                .indent().print(`request: req,`)
+                         .print(`host: ${service.getName()}.serviceURL,`)  // TODO: need to add serviceURL attribute to the namespace
+                         .print(`onEnd: res => {`)
+                  .indent().print(`const { status, statusMessage, headers, message, trailers  } = res;`)
+                           .print(`const resp = message as ${responseMessageTypeName};`)
+                           .print(`if (status != Code.OK) {`)
+                    .indent().print(`return reject({ statusCode: status, statusMessage: statusMessage });`)
+                  .dedent().print(`}`)
+                           .print(`if (resp.getStatusCode() !== ${responseMessageTypeName}.StatusCode.OK) {`)
+                    .indent().print(`return reject({ statusCode: resp.getStatusCode(), statusMessage: resp.getStatusMessage() });`)
+                  .dedent().print(`}`)
+                           .print(`resolve(resp);`)
+                .dedent().print(`}`)
+              .dedent().print(`});`)
+            .dedent().print(`});`)
+          .dedent().print(`}`);
+
+        printer.print(methodPrinter.output);
+
         printer.printEmptyLn();
       });
 
