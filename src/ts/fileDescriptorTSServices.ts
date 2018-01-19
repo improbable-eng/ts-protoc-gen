@@ -46,8 +46,8 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       methodPrinter.printLn(`export class ${method.getName()} {`);
       methodPrinter.printIndentedLn(`static readonly methodName = "${method.getName()}";`);
       methodPrinter.printIndentedLn(`static readonly service = ${service.getName()};`);
-      methodPrinter.printIndentedLn(`static readonly requestStream = ${method.getClientStreaming()};`);
-      methodPrinter.printIndentedLn(`static readonly responseStream = ${method.getServerStreaming()};`);
+      methodPrinter.printIndentedLn(`static readonly requestStream: ${method.getClientStreaming()} = ${method.getClientStreaming()};`);
+      methodPrinter.printIndentedLn(`static readonly responseStream: ${method.getServerStreaming()} = ${method.getServerStreaming()};`);
       methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
       methodPrinter.printLn(`}`);
