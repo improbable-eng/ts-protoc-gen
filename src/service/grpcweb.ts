@@ -159,6 +159,8 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
+  printer.printLn(`import {grpc, Code, Metadata} from "grpc-web-client";`)
+
   // Import statements.
   serviceDescriptor.imports
     .forEach(importDescriptor => {
@@ -183,12 +185,12 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
         // add a stub method that resolves with a promise having the response of the correct type.
         // handling only for unary calls right now
-        if (method.getClientStreaming()) {
+        if (method.requestStream) {
           return;
-        } else if (method.getServerStreaming()) {
-          printUnaryStreamStub(methodPrinter, service, method, requestMessageTypeName, responseMessageTypeName);
+        } else if (method.responseStream) {
+          printUnaryStreamStub(printer, service, method, method.requestType, method.responseType);
         } else {
-          printUnaryUnaryStub(methodPrinter, service, method, requestMessageTypeName, responseMessageTypeName);
+          printUnaryUnaryStub(printer, service, method, method.requestType, method.responseType);
         }
 
         printer.printEmptyLn();
@@ -339,6 +341,14 @@ function printUnaryStreamStub(methodPrinter: Printer,
                      .print(`if (requestQueue.length) {`)
               .indent().print(`const req = requestQueue.shift() as requestQueueEntry;`)
                        .print(`req.reject(error);`)
+            .dedent().print(`}`)
+          .dedent().print(`} else {`)
+            .indent().print(`const resp = {value: new ${responseMessageTypeName}, done: true};`)
+                     .print(`if (requestQueue.length) {`)
+              .indent().print(`const req = requestQueue.shift() as requestQueueEntry;`)
+                       .print(`req.resolve(resp);`)
+            .dedent().print(`} else {`)
+              .indent().print(`responseQueue.push(resp);`)
             .dedent().print(`}`)
           .dedent().print(`}`)
         .dedent().print(`}`)
