@@ -1,4 +1,4 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility=["@//bin:__pkg__"])
 load("@build_bazel_rules_typescript//:defs.bzl", "ts_library")
 
 ts_library(

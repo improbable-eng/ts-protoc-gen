@@ -6,10 +6,14 @@ env:
 cache:
   directories:
     - node_modules
+before_install:
+  - wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel_0.11.0-linux-x86_64.deb
+  - sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
 install:
   - sudo apt-get install unzip
   - bash install-protobuf.sh
   - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
   - npm install
 script:
-  - npm test
+  - bazel build //bin/... # build with Bazel
+  - npm test # build and test with NPM
