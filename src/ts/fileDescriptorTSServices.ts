@@ -5,13 +5,16 @@ import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb
 import {WellKnownTypesMap} from "../WellKnown";
 import {getFieldType, MESSAGE_TYPE} from "./FieldTypes";
 
+const makeSerializer = (messageType: string) => `(obj: ${messageType}) => new Buffer(obj.serializeBinary())`;
+const makeDeserializer = (messageType: string) => `(input: Buffer) => ${messageType}.deserializeBinary(new Uint8Array(input))`;
+
 export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
   if (fileDescriptor.getServiceList().length === 0) {
     return "";
   }
 
   const fileName = fileDescriptor.getName();
-  const packageName = fileDescriptor.getPackage();
+  const packageName = fileDescriptor.hasPackage() ? fileDescriptor.getPackage() : undefined;
   const upToRoot = getPathToRoot(fileName);
 
   const printer = new Printer(0);
@@ -34,8 +37,9 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
   });
 
   fileDescriptor.getServiceList().forEach(service => {
+    const serviceName = `${packageName ? packageName + "." : ""}${service.getName()}`;
     printer.printLn(`export class ${service.getName()} {`);
-    printer.printIndentedLn(`static serviceName = "${packageName ? packageName + "." : ""}${service.getName()}";`);
+    printer.printIndentedLn(`static serviceName = "${serviceName}";`);
     printer.printLn(`}`);
 
     printer.printLn(`export namespace ${service.getName()} {`);
@@ -50,6 +54,11 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       methodPrinter.printIndentedLn(`static readonly responseStream = ${method.getServerStreaming()};`);
       methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
+      methodPrinter.printIndentedLn(`static path = "/${serviceName}/${method.getName()}";`);
+      methodPrinter.printIndentedLn(`static requestSerialize = ${makeSerializer(requestMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static requestDeserialize = ${makeDeserializer(requestMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static responseSerialize = ${makeSerializer(responseMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static responseDeserialize = ${makeDeserializer(responseMessageTypeName)};`);
       methodPrinter.printLn(`}`);
     });
     printer.print(methodPrinter.output);
