@@ -5,9 +5,6 @@ import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb
 import {WellKnownTypesMap} from "../WellKnown";
 import {getFieldType, MESSAGE_TYPE} from "./FieldTypes";
 
-const makeSerializer = (messageType: string) => `(obj: ${messageType}) => new Buffer(obj.serializeBinary())`;
-const makeDeserializer = (messageType: string) => `(input: Buffer) => ${messageType}.deserializeBinary(new Uint8Array(input))`;
-
 export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
   if (fileDescriptor.getServiceList().length === 0) {
     return "";
@@ -55,10 +52,6 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly path = "/${serviceName}/${method.getName()}";`);
-      methodPrinter.printIndentedLn(`static readonly requestSerialize = ${makeSerializer(requestMessageTypeName)};`);
-      methodPrinter.printIndentedLn(`static readonly requestDeserialize = ${makeDeserializer(requestMessageTypeName)};`);
-      methodPrinter.printIndentedLn(`static readonly responseSerialize = ${makeSerializer(responseMessageTypeName)};`);
-      methodPrinter.printIndentedLn(`static readonly responseDeserialize = ${makeDeserializer(responseMessageTypeName)};`);
       methodPrinter.printLn(`}`);
     });
     printer.print(methodPrinter.output);
