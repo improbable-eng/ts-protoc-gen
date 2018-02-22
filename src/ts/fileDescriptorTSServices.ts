@@ -54,11 +54,11 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       methodPrinter.printIndentedLn(`static readonly responseStream = ${method.getServerStreaming()};`);
       methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
-      methodPrinter.printIndentedLn(`static path = "/${serviceName}/${method.getName()}";`);
-      methodPrinter.printIndentedLn(`static requestSerialize = ${makeSerializer(requestMessageTypeName)};`);
-      methodPrinter.printIndentedLn(`static requestDeserialize = ${makeDeserializer(requestMessageTypeName)};`);
-      methodPrinter.printIndentedLn(`static responseSerialize = ${makeSerializer(responseMessageTypeName)};`);
-      methodPrinter.printIndentedLn(`static responseDeserialize = ${makeDeserializer(responseMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static readonly path = "/${serviceName}/${method.getName()}";`);
+      methodPrinter.printIndentedLn(`static readonly requestSerialize = ${makeSerializer(requestMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static readonly requestDeserialize = ${makeDeserializer(requestMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static readonly responseSerialize = ${makeSerializer(responseMessageTypeName)};`);
+      methodPrinter.printIndentedLn(`static readonly responseDeserialize = ${makeDeserializer(responseMessageTypeName)};`);
       methodPrinter.printLn(`}`);
     });
     printer.print(methodPrinter.output);
