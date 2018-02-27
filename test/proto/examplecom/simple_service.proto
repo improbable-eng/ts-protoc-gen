@@ -4,8 +4,12 @@ package examplecom;
 
 import "othercom/external_child_message.proto";
 
+// this import should not be output in the generated typescript service
+import "google/protobuf/timestamp.proto";
+
 message UnaryRequest {
   int64 some_int64 = 1;
+  google.protobuf.Timestamp some_timestamp = 2;
 }
 
 message StreamRequest {
