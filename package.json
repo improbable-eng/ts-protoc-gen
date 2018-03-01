@@ -26,18 +26,18 @@
   "author": "Improbable",
   "license": "Apache-2.0",
   "dependencies": {
-    "google-protobuf": "^3.2.0"
+    "google-protobuf": "^3.5.0"
   },
   "devDependencies": {
-    "@types/chai": "^3.4.35",
-    "@types/google-protobuf": "^3.2.4",
-    "@types/mocha": "^2.2.40",
-    "@types/node": "^7.0.5",
+    "@types/chai": "^3.5.2",
+    "@types/google-protobuf": "^3.2.7",
+    "@types/mocha": "^2.2.46",
+    "@types/node": "^7.0.52",
     "babel": "^6.5.2",
     "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "source-map-support": "^0.4.14",
+    "mocha": "^3.5.3",
+    "source-map-support": "^0.4.18",
     "tslint": "^4.5.1",
-    "typescript": "^2.2.1"
+    "typescript": "^2.6.2"
   }
 }
