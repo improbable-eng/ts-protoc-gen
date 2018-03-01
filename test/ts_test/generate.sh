@@ -6,7 +6,7 @@ then
 fi
 mkdir generated
 
-protoc \
+grpc_tools_node_protoc \
   --plugin=protoc-gen-ts=../../bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:generated \
   --ts_out=service=true:generated \
