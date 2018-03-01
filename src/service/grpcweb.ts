@@ -196,7 +196,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
       printer.printEmptyLn();
 
       // Add a client stub that talks with the grpc-web-client library
-      printServiceStub(printer, service, exportMap);
+      printTsServiceStub(printer, service, exportMap);
     });
 
   return printer.getOutput();
@@ -239,16 +239,19 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
         printer.printIndentedLn(`responseType: ${method.responseType}`);
         printer.printLn(`};`);
         printer.printEmptyLn();
-    });
+      });
 
-    printer.printLn(`exports.${service.name} = ${service.name};`);
-    printer.printEmptyLn();
-  });
+      printer.printLn(`exports.${service.name} = ${service.name};`);
+      printer.printEmptyLn();
+
+      // Add a client stub that talks with the grpc-web-client library
+      printJsServiceStub(printer, service, exportMap);
+    });
 
   return printer.getOutput();
 }
 
-function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProto, exportMap: ExportMap) {
+function printTsServiceStub(methodPrinter: Printer, service: ServiceDescriptorProto, exportMap: ExportMap) {
 
   const printer = new CodePrinter(0, methodPrinter);
 
@@ -264,17 +267,17 @@ function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProt
     const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
 
     if (method.getClientStreaming() && method.getServerStreaming()) {
-      printBidirectionalStubMethod(
+      printTsBidirectionalStubMethod(
         printer,
         camelCaseMethodName
       );
     } else if (method.getClientStreaming()) {
-      printClientStreamStubMethod(
+      printTsClientStreamStubMethod(
         printer,
         camelCaseMethodName
       );
     } else if (method.getServerStreaming()) {
-      printServerStreamStubMethod(
+      printTsServerStreamStubMethod(
         printer,
         service,
         method,
@@ -283,7 +286,7 @@ function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProt
         responseMessageTypeName
       );
     } else {
-      printUnaryStubMethod(
+      printTsUnaryStubMethod(
         printer,
         service,
         method,
@@ -296,7 +299,7 @@ function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProt
   printer.dedent().printLn("}");
 }
 
-function printUnaryStubMethod(
+function printTsUnaryStubMethod(
   printer: CodePrinter,
   service: ServiceDescriptorProto,
   method: MethodDescriptorProto,
@@ -328,7 +331,7 @@ function printUnaryStubMethod(
     .dedent().printLn(`}`);
 }
 
-function printServerStreamStubMethod(
+function printTsServerStreamStubMethod(
   printer: CodePrinter,
   service: ServiceDescriptorProto,
   method: MethodDescriptorProto,
@@ -372,7 +375,7 @@ function printServerStreamStubMethod(
   .dedent().printLn(`}`);
 }
 
-function printBidirectionalStubMethod(
+function printTsBidirectionalStubMethod(
   printer: CodePrinter,
   camelCaseMethodName: string
 ) {
@@ -381,7 +384,7 @@ function printBidirectionalStubMethod(
     .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
-function printClientStreamStubMethod(
+function printTsClientStreamStubMethod(
   printer: CodePrinter,
   camelCaseMethodName: string
 ) {
@@ -390,3 +393,147 @@ function printClientStreamStubMethod(
     .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function printJsServiceStub(methodPrinter: Printer, service: ServiceDescriptorProto) {
+
+  const printer = new CodePrinter(0, methodPrinter);
+
+  printer
+           .printLn(`function ${service.getName()}Client(serviceHost) {`)
+    .indent().printLn(`this.serviceHost = serviceHost;`)
+  .dedent().printLn(`}`);
+
+  service.getMethodList().forEach((method: MethodDescriptorProto) => {
+    const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
+
+    if (method.getClientStreaming() && method.getServerStreaming()) {
+      printJsBidirectionalStubMethod(
+        printer,
+        service,
+        camelCaseMethodName
+      );
+    } else if (method.getClientStreaming()) {
+      printJsClientStreamStubMethod(
+        printer,
+        service,
+        camelCaseMethodName
+      );
+    } else if (method.getServerStreaming()) {
+      printJsServerStreamStubMethod(
+        printer,
+        service,
+        method,
+        camelCaseMethodName
+      );
+    } else {
+      printJsUnaryStubMethod(
+        printer,
+        service,
+        method,
+        camelCaseMethodName
+      );
+    }
+  });
+}
+
+function printJsUnaryStubMethod(
+  printer: CodePrinter,
+  service: ServiceDescriptorProto,
+  method: MethodDescriptorProto,
+  camelCaseMethodName: string
+) {
+  printer
+             .printLn(`${service.getName()}Client.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}(`)
+      .indent().printLn(`requestMessage,`)
+               .printLn(`metadata,`)
+               .printLn(`callback`)
+    .dedent().printLn(`) {`)
+      .indent().printLn(`grpc.unary(${service.getName()}.${method.getName()}, {`)
+        .indent().printLn(`request: requestMessage,`)
+                 .printLn(`host: this.serviceHost,`)
+                 .printLn(`metadata: metadata,`)
+                 .printLn(`onEnd: function (response) {`)
+          .indent().printLn(`if (callback) {`)
+            .indent().printLn(`var responseMessage = response.message;`)
+                     .printLn(`if (response.status !== grpc.Code.OK) {`)
+              .indent().printLn(`return callback(response, null);`)
+            .dedent().printLn(`} else {`)
+              .indent().printLn(`callback(null, responseMessage);`)
+            .dedent().printLn(`}`)
+          .dedent().printLn(`}`)
+        .dedent().printLn(`}`)
+      .dedent().printLn(`});`)
+    .dedent().printLn(`}`);
+}
+
+function printJsServerStreamStubMethod(
+  printer: CodePrinter,
+  service: ServiceDescriptorProto,
+  method: MethodDescriptorProto,
+  camelCaseMethodName: string
+) {
+  printer
+           .printLn(`${service.getName()}Client.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}(requestMessage, metadata) {`)
+    .indent().printLn(`var listeners = {`)
+      .indent().printLn(`data: [],`)
+               .printLn(`end: []`)
+    .dedent().printLn(`};`)
+             .printLn(`grpc.invoke(${service.getName()}.${method.getName()}, {`)
+      .indent().printLn(`request: requestMessage,`)
+               .printLn(`host: this.serviceHost,`)
+               .printLn(`metadata: metadata,`)
+               .printLn(`onMessage: function (responseMessage) {`)
+        .indent().printLn(`listeners.data.forEach(function (callback) {`)
+          .indent().printLn(`callback(responseMessage);`)
+        .dedent().printLn(`});`)
+               .printLn(`},`)
+               .printLn(`onEnd: function () {`)
+        .indent().printLn(`listeners.end.forEach(function (callback) {`)
+          .indent().printLn(`callback();`)
+        .dedent().printLn(`});`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`});`)
+             .printLn(`return {`)
+      .indent().printLn(`on: function (eventType, callback) {`)
+        .indent().printLn(`listeners[eventType] = callback;`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`}`);
+}
+
+function printJsBidirectionalStubMethod(
+  printer: CodePrinter,
+  service: ServiceDescriptorProto,
+  camelCaseMethodName: string
+) {
+  printer
+           .printLn(`${service.getName()}.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}() {`)
+    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
+  .dedent().printLn(`}`);
+}
+function printJsClientStreamStubMethod(
+  printer: CodePrinter,
+  service: ServiceDescriptorProto,
+  camelCaseMethodName: string
+) {
+  printer
+           .printLn(`${service.getName()}.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}() {`)
+    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
+  .dedent().printLn(`}`);
+}
+
