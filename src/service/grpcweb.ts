@@ -1,6 +1,7 @@
 import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension, getPathToRoot} from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
+import {CodePrinter} from "../CodePrinter";
 import {
   FileDescriptorProto, MethodDescriptorProto,
   ServiceDescriptorProto
@@ -159,7 +160,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
-  printer.printLn(`import {grpc, Code, Metadata} from "grpc-web-client";`)
+  printer.printLn(`import {grpc} from "grpc-web-client";`)
 
   // Import statements.
   serviceDescriptor.imports
@@ -183,16 +184,6 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
         printer.printIndentedLn(`readonly responseType: typeof ${method.responseType};`);
         printer.printLn(`};`);
 
-        // add a stub method that resolves with a promise having the response of the correct type.
-        // handling only for unary calls right now
-        if (method.requestStream) {
-          return;
-        } else if (method.responseStream) {
-          printUnaryStreamStub(printer, service, method, method.requestType, method.responseType);
-        } else {
-          printUnaryUnaryStub(printer, service, method, method.requestType, method.responseType);
-        }
-
         printer.printEmptyLn();
       });
 
@@ -203,6 +194,9 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
       });
       printer.printLn(`}`);
       printer.printEmptyLn();
+
+      // Add a client stub that talks with the grpc-web-client library
+      printServiceStub(printer, service, exportMap);
     });
 
   return printer.getOutput();
@@ -254,122 +248,145 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   return printer.getOutput();
 }
 
-function printUnaryUnaryStub(methodPrinter: Printer,
-  service: ServiceDescriptorProto,
-  method: MethodDescriptorProto,
-  requestMessageTypeName: string,
-  responseMessageTypeName: string
-) {
-  // helper for easy indentation
-  const oneindent = methodPrinter.indentStr;
-  const stubPrinter = {
-    indents: [oneindent],
-    indent: () => { stubPrinter.indents.push(oneindent); return stubPrinter; },
-    dedent: () => { stubPrinter.indents.pop(); return stubPrinter; },
-    print:  (str: string) => { methodPrinter.indentStr = stubPrinter.indents.join(""); methodPrinter.printLn(str); return stubPrinter; },
-  };
+function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProto, exportMap: ExportMap) {
 
-  const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
-  stubPrinter.print(`export function ${camelCaseMethodName}(req: ${requestMessageTypeName}, metadata?: Metadata): Promise<${responseMessageTypeName}> {`)
-      .indent().print(`return new Promise((resolve: any, reject: any) => {`)
-        .indent().print(`grpc.unary(${method.getName()}, {`)
-          .indent().print(`request: req,`)
-                   .print(`host: ${service.getName()}.serviceURL,`)
-                   .print(`metadata: metadata,`)
-                   .print(`onEnd: res => {`)
-            .indent().print(`const { status, statusMessage, headers, message, trailers  } = res;`)
-                     .print(`const resp = message as ${responseMessageTypeName};`)
-                     .print(`if (status != Code.OK) {`)
-              .indent().print(`return reject({ isGrpcError: true, statusCode: status, statusMessage: statusMessage });`)
-            .dedent().print(`}`)
-                     .print(`if (resp.getStatusCode() !== ${responseMessageTypeName}.StatusCode.OK) {`)
-              .indent().print(`return reject({ isGrpcError: false, statusCode: resp.getStatusCode(), statusMessage: resp.getStatusMessage() });`)
-            .dedent().print(`}`)
-                     .print(`resolve(resp);`)
-          .dedent().print(`}`)
-        .dedent().print(`});`)
-      .dedent().print(`});`)
-    .dedent().print(`}`);
+  const printer = new CodePrinter(0, methodPrinter);
+
+  printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
+
+  printer.printLn(`export class ${service.getName()}Client {`)
+    .indent().printLn(`constructor(public serviceHost: string) {`)
+             .printLn(`}`);
+
+  service.getMethodList().forEach(method => {
+    const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
+    const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
+    const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
+
+    if (method.getClientStreaming() && method.getServerStreaming()) {
+      printBidirectionalStubMethod(
+        printer,
+        camelCaseMethodName
+      );
+    } else if (method.getClientStreaming()) {
+      printClientStreamStubMethod(
+        printer,
+        camelCaseMethodName
+      );
+    } else if (method.getServerStreaming()) {
+      printServerStreamStubMethod(
+        printer,
+        service,
+        method,
+        camelCaseMethodName,
+        requestMessageTypeName,
+        responseMessageTypeName
+      );
+    } else {
+      printUnaryStubMethod(
+        printer,
+        service,
+        method,
+        camelCaseMethodName,
+        requestMessageTypeName,
+        responseMessageTypeName
+      );
+    }
+  });
+  printer.dedent().printLn("}");
 }
 
-function printUnaryStreamStub(methodPrinter: Printer,
+function printUnaryStubMethod(
+  printer: CodePrinter,
   service: ServiceDescriptorProto,
-  method: MethodDescriptorProto,
+  method: any,
+  camelCaseMethodName: string,
   requestMessageTypeName: string,
   responseMessageTypeName: string
 ) {
-  // helper for easy indentation
-  const oneindent = methodPrinter.indentStr;
-  const stubPrinter = {
-    indents: [oneindent],
-    indent: () => { stubPrinter.indents.push(oneindent); return stubPrinter; },
-    dedent: () => { stubPrinter.indents.pop(); return stubPrinter; },
-    print:  (str: string) => { methodPrinter.indentStr = stubPrinter.indents.join(""); methodPrinter.printLn(str); return stubPrinter; },
-  };
+  printer
+             .printLn(`${camelCaseMethodName}(`)
+      .indent().printLn(`requestMessage: ${requestMessageTypeName},`)
+               .printLn(`metadata?: grpc.Metadata,`)
+               .printLn(`callback?: (error: any, responseMessage: ${responseMessageTypeName}|null) => void`)
+    .dedent().printLn(`): void {`)
+      .indent().printLn(`grpc.unary(${service.getName()}.${method.getName()}, {`)
+        .indent().printLn(`request: requestMessage,`)
+                 .printLn(`host: this.serviceHost,`)
+                 .printLn(`metadata,`)
+                 .printLn(`onEnd: (response: grpc.UnaryOutput<${responseMessageTypeName}>): void => {`)
+          .indent().printLn(`if (callback) {`)
+            .indent().printLn(`const responseMessage = response.message;`)
+                     .printLn(`if (response.status !== grpc.Code.OK) {`)
+              .indent().printLn(`return callback(response, null);`)
+            .dedent().printLn(`} else {`)
+              .indent().printLn(`callback(null, responseMessage);`)
+            .dedent().printLn(`}`)
+          .dedent().printLn(`}`)
+        .dedent().printLn(`}`)
+      .dedent().printLn(`});`)
+    .dedent().printLn(`}`);
+}
 
-  const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
-  const pureResponseTypeName = responseMessageTypeName.split(".")[1];
-  stubPrinter.print(`export function ${camelCaseMethodName}(req: ${requestMessageTypeName}, metadata?: Metadata): AsyncIterable<${responseMessageTypeName}> {`)
-      .indent().print(`type ${pureResponseTypeName}IterationResult = {`)
-        .indent().print(`value: ${responseMessageTypeName}, done: boolean,`)
-      .dedent().print(`};`)
-               .print(`type requestQueueEntry = {`)
-        .indent().print(`resolve: (res: ${pureResponseTypeName}IterationResult) => void,`)
-                 .print(`reject: (err: Error) => void,`)
-      .dedent().print(`};`)
-               .print(`var error: Error | null = null;`)
-               .print(`const requestQueue: requestQueueEntry[] = []`)
-               .print(`const responseQueue: ${pureResponseTypeName}IterationResult[] = [];`)
-               .print(`grpc.invoke(${method.getName()}, {`)
-        .indent().print(`request: req,`)
-                 .print(`host: ${service.getName()}.serviceURL,`)
-                 .print(`metadata: metadata,`)
-                 .print(`onMessage: res => {`)
-          .indent().print(`const myres = res as ${responseMessageTypeName};`)
-                   .print(`// check if there are pending next() calls to be fulfilled`)
-                   .print(`if (requestQueue.length) {`)
-            .indent().print(`const req = requestQueue.shift() as requestQueueEntry;`)
-                     .print(`req.resolve({value: myres, done: false});`)
-          .dedent().print(`} else {`)
-            .indent().print(`// no? okay. queue up the response`)
-                     .print(`responseQueue.push({value: myres, done: false});`)
-          .dedent().print(`}`)
-        .dedent().print(`},`)
-                 .print(`onEnd: (statusCode: Code, statusMessage: string) => {`)
-          .indent().print(`if (statusCode != Code.OK) {`)
-            .indent().print(`error = new Error("Got Non-OK code " + statusCode.toString() + " from ${method.getName()}. Message: " + statusMessage)`)
-                     .print(`if (requestQueue.length) {`)
-              .indent().print(`const req = requestQueue.shift() as requestQueueEntry;`)
-                       .print(`req.reject(error);`)
-            .dedent().print(`}`)
-          .dedent().print(`} else {`)
-            .indent().print(`const resp = {value: new ${responseMessageTypeName}, done: true};`)
-                     .print(`if (requestQueue.length) {`)
-              .indent().print(`const req = requestQueue.shift() as requestQueueEntry;`)
-                       .print(`req.resolve(resp);`)
-            .dedent().print(`} else {`)
-              .indent().print(`responseQueue.push(resp);`)
-            .dedent().print(`}`)
-          .dedent().print(`}`)
-        .dedent().print(`}`)
-      .dedent().print(`});`)
-               .print(`const iterator = {`)
-        .indent().print(`next: function(): Promise<${pureResponseTypeName}IterationResult> {`)
-          .indent().print(`return new Promise((resolve, reject) => {`)
-            .indent().print(`if (error !== null)`)
-              .indent().print(`return reject(error);`)
-            .dedent().print(`if (responseQueue.length) {`)
-              .indent().print(`const resp = responseQueue.shift() as ${pureResponseTypeName}IterationResult;`)
-                       .print(`resolve(resp);`)
-            .dedent().print(`}`)
-                     .print(`requestQueue.push({resolve, reject});`)
-          .dedent().print(`})`)
-        .dedent().print(`}`)
-      .dedent().print(`};`)
-               .print(`return {`)
-        .indent().print(`[Symbol.asyncIterator]() {`)
-          .indent().print(`return iterator;`)
-        .dedent().print(`}`)
-    .dedent().print(`}`)
-  .dedent().print(`}`);
+function printServerStreamStubMethod(
+  printer: CodePrinter,
+  service: ServiceDescriptorProto,
+  method: any,
+  camelCaseMethodName: string,
+  requestMessageTypeName: string,
+  responseMessageTypeName: string
+) {
+  printer
+           .printLn(`${camelCaseMethodName}(requestMessage: ${requestMessageTypeName}, metadata?: grpc.Metadata): any {`)
+    .indent().printLn(`const listeners: {`)
+      .indent().printLn(`data: Array<(response: ${responseMessageTypeName}) => void>,`)
+               .printLn(`end: Array<() => void>`)
+    .dedent().printLn(`} = {`)
+      .indent().printLn(`data: [],`)
+               .printLn(`end: []`)
+    .dedent().printLn(`};`)
+             .printLn(`grpc.invoke(${service.getName()}.${method.getName()}, {`)
+      .indent().printLn(`request: requestMessage,`)
+               .printLn(`host: this.serviceHost,`)
+               .printLn(`metadata: metadata,`)
+               .printLn(`onMessage: (responseMessage: ${responseMessageTypeName}) => {`)
+        .indent().printLn(`listeners.data.forEach(callback => {`)
+          .indent().printLn(`callback(responseMessage);`)
+        .dedent().printLn(`});`)
+               .printLn(`},`)
+               .printLn(`onEnd: () => {`)
+          .indent().printLn(`listeners.end.forEach(callback => {`)
+                   .printLn(`callback();`)
+        .dedent().printLn(`});`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`});`)
+             .printLn(`return {`)
+      .indent().printLn(`on: (eventType: ServerStreamEventType, callback: (response: ${responseMessageTypeName}|undefined) => void): void => {`)
+        .indent().printLn(`if (eventType === 'data') {`)
+          .indent().printLn(`listeners.data.push(callback as (response: ${responseMessageTypeName}) => void);`)
+        .dedent().printLn(`} else if (eventType === 'end') {`)
+          .indent().printLn(`listeners.end.push(callback as () => void);`)
+        .dedent().printLn(`}`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`}`);
+}
+
+function printBidirectionalStubMethod(
+  printer: CodePrinter,
+  camelCaseMethodName: string
+) {
+  printer
+           .printLn(`${camelCaseMethodName}() {`)
+    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
+  .dedent().printLn(`}`);
+}
+function printClientStreamStubMethod(
+  printer: CodePrinter,
+  camelCaseMethodName: string
+) {
+  printer
+           .printLn(`${camelCaseMethodName}() {`)
+    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
+  .dedent().printLn(`}`);
 }
