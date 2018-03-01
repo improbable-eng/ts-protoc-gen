@@ -258,7 +258,7 @@ function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProt
     .indent().printLn(`constructor(public serviceHost: string) {`)
              .printLn(`}`);
 
-  service.getMethodList().forEach(method => {
+  service.getMethodList().forEach((method: MethodDescriptorProto) => {
     const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
     const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
     const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
@@ -299,7 +299,7 @@ function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProt
 function printUnaryStubMethod(
   printer: CodePrinter,
   service: ServiceDescriptorProto,
-  method: any,
+  method: MethodDescriptorProto,
   camelCaseMethodName: string,
   requestMessageTypeName: string,
   responseMessageTypeName: string
@@ -331,7 +331,7 @@ function printUnaryStubMethod(
 function printServerStreamStubMethod(
   printer: CodePrinter,
   service: ServiceDescriptorProto,
-  method: any,
+  method: MethodDescriptorProto,
   camelCaseMethodName: string,
   requestMessageTypeName: string,
   responseMessageTypeName: string
@@ -348,7 +348,7 @@ function printServerStreamStubMethod(
              .printLn(`grpc.invoke(${service.getName()}.${method.getName()}, {`)
       .indent().printLn(`request: requestMessage,`)
                .printLn(`host: this.serviceHost,`)
-               .printLn(`metadata: metadata,`)
+               .printLn(`metadata,`)
                .printLn(`onMessage: (responseMessage: ${responseMessageTypeName}) => {`)
         .indent().printLn(`listeners.data.forEach(callback => {`)
           .indent().printLn(`callback(responseMessage);`)
