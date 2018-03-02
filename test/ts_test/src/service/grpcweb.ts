@@ -77,4 +77,48 @@ describe("ts service", () => {
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.requestType, simple_service_pb.UnaryRequest);
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.responseType, external_child_message_pb.ExternalChildMessage);
   });
+
+  it("Should generate a service stub", () => {
+    assert.typeOf(simple_service_pb_service.SimpleServiceClient, "function", "SimpleServiceClient class shoudl exist");
+
+    const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
+
+    assert.equal(client.serviceHost, "http://localhost:1", "Service host should be stored from constructor")
+
+    assert.typeOf(client.doUnary, "function", "Service should have doUnary method");
+    assert.typeOf(client.doStream, "function", "Service should have doStream method");
+  });
+
+  it("Should generate a working doUnary method", (done) => {
+    const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
+    const request = new simple_service_pb.UnaryRequest();
+    client.doUnary(
+      request,
+      undefined,
+      (error: any, response: any) => {
+        expect(JSON.stringify(error)).to.deep.equal(
+          JSON.stringify({
+            status: 13,
+            statusMessage: "Response closed without headers",
+            headers: {headersMap: {}},
+            message: null,
+            trailers: {headersMap: {}}
+          }),
+          "Should return an error with no server running on port 1"
+        );
+        done();
+      }
+    );
+  });
+
+  it("Should generate a working doStream method", (done) => {
+    const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
+    const request = new simple_service_pb.StreamRequest();
+    client
+      .doStream(request)
+      .on("end", () => {
+        // Test passes when callback is called
+        done();
+      });
+  });
 });
