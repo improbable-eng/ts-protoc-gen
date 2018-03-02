@@ -378,7 +378,7 @@ function printBidirectionalStubMethod(
 ) {
   printer
            .printLn(`${camelCaseMethodName}() {`)
-    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
+    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
 function printClientStreamStubMethod(
@@ -387,6 +387,6 @@ function printClientStreamStubMethod(
 ) {
   printer
            .printLn(`${camelCaseMethodName}() {`)
-    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
+    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
