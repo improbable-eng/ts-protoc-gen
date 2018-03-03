@@ -1,6 +1,4 @@
 language: node_js
-node_js:
-  - "6"
 env:
   - PROTOBUF_VER="3.2.0"
 cache:
