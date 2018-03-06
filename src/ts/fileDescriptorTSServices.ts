@@ -189,7 +189,7 @@ export function printFileDescriptorTSGRPC(fileDescriptor: FileDescriptorProto, e
 
     printer.printLn("");
     printer.printIndentedLn(`const ${service.getName()}Service: ${serviceInterfaceName};`);
-    printer.printIndentedLn(`const ${service.getName()}Client: ${clientClassName};`);
+    printer.printIndentedLn(`const ${service.getName()}Client: typeof ${clientClassName};`);
     printer.printLn(`}`);
   });
 
