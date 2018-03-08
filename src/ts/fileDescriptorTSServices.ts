@@ -145,6 +145,12 @@ export function printFileDescriptorTSGRPC(fileDescriptor: FileDescriptorProto, e
         clientClassPrinter.printIndentedLn(
             `${grpcMethodName}(` +
                 `request: ${requestMessageTypeName}, ` +
+                `options: Partial<GRPC.CallOptions>, ` +
+                `callback: GRPC.requestCallback<${responseMessageTypeName}>` +
+              `): GRPC.ClientUnaryCall;`);
+        clientClassPrinter.printIndentedLn(
+            `${grpcMethodName}(` +
+                `request: ${requestMessageTypeName}, ` +
                 `callback: GRPC.requestCallback<${responseMessageTypeName}>` +
               `): GRPC.ClientUnaryCall;`);
       } else if (!isClientStreaming && isServerStreaming) {
@@ -155,6 +161,11 @@ export function printFileDescriptorTSGRPC(fileDescriptor: FileDescriptorProto, e
             `${grpcMethodName}(` +
               `request: ${requestMessageTypeName}` +
             `): GRPC.ClientReadableStream<${responseMessageTypeName}>;`);
+        clientClassPrinter.printIndentedLn(
+            `${grpcMethodName}(` +
+              `request: ${requestMessageTypeName}, ` +
+              `options: Partial<GRPC.CallOptions>` +
+            `): GRPC.ClientReadableStream<${responseMessageTypeName}>;`);
       } else if (isClientStreaming && !isServerStreaming) {
         // Client streaming
         methodImplTypesPrinter.printIndentedLn(`type ${grpcMethodName} = GRPC.handleClientStreamingCall<${requestMessageTypeName}, ${responseMessageTypeName}>;`);
@@ -163,10 +174,19 @@ export function printFileDescriptorTSGRPC(fileDescriptor: FileDescriptorProto, e
             `${grpcMethodName}(` +
               `callback: GRPC.requestCallback<${responseMessageTypeName}>` +
             `): GRPC.ClientWritableStream<${requestMessageTypeName}>;`);
+        clientClassPrinter.printIndentedLn(
+            `${grpcMethodName}(` +
+              `options: Partial<GRPC.CallOptions>, ` +
+              `callback: GRPC.requestCallback<${responseMessageTypeName}>` +
+            `): GRPC.ClientWritableStream<${requestMessageTypeName}>;`);
       } else {
         // Duplex
         methodImplTypesPrinter.printIndentedLn(`type ${grpcMethodName} = GRPC.handleBidiStreamingCall<${requestMessageTypeName}, ${responseMessageTypeName}>;`);
         methodImplsPrinter.printIndentedLn(`${grpcMethodName}: MethodImplTypes.${grpcMethodName};`);
+        clientClassPrinter.printIndentedLn(
+            `${grpcMethodName}(` +
+              `options: Partial<GRPC.CallOptions>` +
+            `): GRPC.ClientDuplexStream<${requestMessageTypeName}, ${responseMessageTypeName}>;`);
         clientClassPrinter.printIndentedLn(
             `${grpcMethodName}(): GRPC.ClientDuplexStream<${requestMessageTypeName}, ${responseMessageTypeName}>;`);
       }
