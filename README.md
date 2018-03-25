@@ -27,21 +27,5 @@ also output service definitions as both `.js` and `.d.ts` files in the structure
     proto/*.proto
     ```
 
-## JavaScript Service Usage
-* Install this repository using `npm install ts-protoc-gen` or clone this repository and run `npm install && npm run build`
-* Invoke `protoc` with:
-  * `--plugin` - define where the plugin needed for `js_service_out` can be found
-  * `--js_out` - the standard argument to `protoc` that generates `.js` files in the specified directory
-  * `--js_service_out` - define the directory to output the service definitions to. 
-    * **This directory must match `js_out`**
-    ```
-    protoc \
-    --plugin=protoc-gen-js_service=./node_modules/.bin/protoc-gen-js_service \
-    --js_out=import_style=commonjs,binary:generated \
-    --js_service_out=generated \
-    -I ./proto \
-    proto/*.proto
-
-
 ## TODO
 * Add tests for extensions
