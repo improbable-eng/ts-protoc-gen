@@ -71,25 +71,28 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
   printer.printEmptyLn();
 
   fileDescriptor.getServiceList().forEach(service => {
-    printer.printLn(`export class ${service.getName()} {`);
-    printer.printIndentedLn(`static serviceName: string;`);
-    printer.printLn(`}`);
 
-    printer.printLn(`export namespace ${service.getName()} {`);
-    const methodPrinter = new Printer(1);
     service.getMethodList().forEach(method => {
       const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
       const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
-      methodPrinter.printLn(`export class ${method.getName()} {`);
-      methodPrinter.printIndentedLn(`static readonly methodName: string;`);
-      methodPrinter.printIndentedLn(`static readonly service: typeof ${service.getName()};`);
-      methodPrinter.printIndentedLn(`static readonly requestStream: ${method.getClientStreaming()};`);
-      methodPrinter.printIndentedLn(`static readonly responseStream: ${method.getServerStreaming()};`);
-      methodPrinter.printIndentedLn(`static readonly requestType: typeof ${requestMessageTypeName};`);
-      methodPrinter.printIndentedLn(`static readonly responseType: typeof ${responseMessageTypeName};`);
-      methodPrinter.printLn(`}`);
+
+      printer.printLn(`type ${service.getName()}${method.getName()} = {`);
+      printer.printIndentedLn(`readonly methodName: string;`);
+      printer.printIndentedLn(`readonly service: typeof ${service.getName()};`);
+      printer.printIndentedLn(`readonly requestStream: ${method.getClientStreaming()};`);
+      printer.printIndentedLn(`readonly responseStream: ${method.getServerStreaming()};`);
+      printer.printIndentedLn(`readonly requestType: typeof ${requestMessageTypeName};`);
+      printer.printIndentedLn(`readonly responseType: typeof ${responseMessageTypeName};`);
+      printer.printLn(`};`);
+      printer.printEmptyLn();
     });
-    printer.print(methodPrinter.output);
+
+    printer.printLn(`export class ${service.getName()} {`);
+    printer.printIndentedLn(`static readonly serviceName: string;`);
+    service.getMethodList().forEach(method => {
+      printer.printIndentedLn(`static readonly ${method.getName()}: ${service.getName()}${method.getName()};`);
+    });
+
     printer.printLn(`}`);
   });
 
@@ -146,14 +149,14 @@ export function printFileDescriptorJSServices(fileDescriptor: FileDescriptorProt
 
       printer.print(`${service.getName()}.${method.getName()} = `);
       printJavaScriptClass(printer, {
-        className: method.getName(),
+        className: `${service.getName()}${method.getName()}`,
         statics: {
           methodName: `"${method.getName()}"`,
           service: service.getName(),
           requestStream: method.getClientStreaming(),
           responseStream: method.getServerStreaming(),
           requestType: requestMessageTypeName,
-          responseType: responseMessageTypeName,
+          responseType: responseMessageTypeName
         }
       });
       printer.printEmptyLn();
