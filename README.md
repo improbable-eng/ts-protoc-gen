@@ -9,17 +9,14 @@
 
 This repository contains a [protoc](https://github.com/google/protobuf) plugin that generates TypeScript declarations 
 (`.d.ts` files) that match the JavaScript output of `protoc --js_out=import_style=commonjs,binary`. This plugin can
-also output service definitions as `.ts` files in the structure required by [grpc-web](https://github.com/improbable-eng/grpc-web).
-
-This repository also contains a plugin for generating service definitions as `.js` files in the structure required by
-[grpc-web](https://github.com/improbable-eng/grpc-web).
+also output service definitions as both `.js` and `.d.ts` files in the structure required by [grpc-web](https://github.com/improbable-eng/grpc-web).
 
 ## TypeScript Usage (with services)
 * Install this repository using `npm install ts-protoc-gen` or clone this repository and run `npm install && npm run build`
 * Invoke `protoc` with:
   * `--plugin` - define where the plugin needed for `ts_out` can be found
   * `--js_out` - the standard argument to `protoc` that generates `.js` files in the specified directory
-  * `--ts_out` - the params and directory to output to (`service=true` enables outputting `.ts` files for services).
+  * `--ts_out` - the params and directory to output to (`service=true` enables outputting `.js` and `.d.ts` files for use with [grpc-web](https://github.com/improbable-eng/grpc-web)).
     * **This directory must match `js_out`**
     ```
     protoc \
