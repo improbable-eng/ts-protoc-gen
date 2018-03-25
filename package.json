@@ -10,7 +10,7 @@
     "test": "npm run lint && npm run build && (cd test && npm run test)"
   },
   "bin": {
-    "protoc-gen-ts": "bin/protoc-gen-ts",
+    "protoc-gen-ts": "bin/protoc-gen-ts"
   },
   "repository": "https://github.com/improbable-eng/ts-protoc-gen",
   "keywords": [
