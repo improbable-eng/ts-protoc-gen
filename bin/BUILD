@@ -10,13 +10,3 @@ nodejs_binary(
     entry_point = "ts_protoc_gen/src/ts_index",
     args = ["--node_options=--expose-gc"],
 )
-
-nodejs_binary(
-    name = "protoc-gen-js_service",
-    data = [
-        "@//:node_modules",
-        "@//src",
-    ],
-    entry_point = "ts_protoc_gen/src/js_service_index",
-    args = ["--node_options=--expose-gc"],
-)
