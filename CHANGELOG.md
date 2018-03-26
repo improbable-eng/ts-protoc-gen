@@ -4,7 +4,7 @@
 The `protoc-gen-js_service` command has been removed as the `protoc-gen-ts` command now generates both JavaScript and TypeScript. Consumers of `protoc-gen-js_service` should instead use `protoc-gen-ts` and substitute the `--js_service_out=generated` protoc flag with `--ts_out=service=true:generated`.
 
 ### Changes
-* Export Enum Definitions as ALL_CAPS [@jonnyreeves](https://github.com/jonnyreeves) in [#22](https://github.com/improbable-eng/ts-protoc-gen/issues/22))
+* Export Enum Definitions as ALL_CAPS [@jonnyreeves](https://github.com/jonnyreeves) in [#22](https://github.com/improbable-eng/ts-protoc-gen/issues/22)
 * Don't output variables that are not used in typescript service definition [@jonbretman](https://github.com/jonbretman) in [#38](https://github.com/improbable-eng/ts-protoc-gen/pull/38)
 * Support Bazel build [@adamyi](https://github.com/adamyi) in [#34](https://github.com/improbable-eng/ts-protoc-gen/pull/34)
 * Create JavaScript sources and TypeScript definitions for grpc-web services [@jonny-improbable](https://github.com/jonny-improbable) in [#44](https://github.com/improbable-eng/ts-protoc-gen/pull/44)
