@@ -25,7 +25,7 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
   }
 
   const fileName = fileDescriptor.getName();
-  const packageName = fileDescriptor.getPackage();
+  const packageName = fileDescriptor.hasPackage() ? fileDescriptor.getPackage() : undefined;
   const upToRoot = getPathToRoot(fileName);
 
   const printer = new Printer(0);
@@ -52,8 +52,9 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
     });
 
   fileDescriptor.getServiceList().forEach(service => {
+    const serviceName = `${packageName ? packageName + "." : ""}${service.getName()}`;
     printer.printLn(`export class ${service.getName()} {`);
-    printer.printIndentedLn(`static serviceName = "${packageName ? packageName + "." : ""}${service.getName()}";`);
+    printer.printIndentedLn(`static serviceName = "${serviceName}";`);
     printer.printLn(`}`);
 
     printer.printLn(`export namespace ${service.getName()} {`);
@@ -68,6 +69,7 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
       methodPrinter.printIndentedLn(`static readonly responseStream = ${method.getServerStreaming()};`);
       methodPrinter.printIndentedLn(`static readonly requestType = ${requestMessageTypeName};`);
       methodPrinter.printIndentedLn(`static readonly responseType = ${responseMessageTypeName};`);
+      methodPrinter.printIndentedLn(`static readonly path = "/${serviceName}/${method.getName()}";`);
       methodPrinter.printLn(`}`);
     });
     printer.print(methodPrinter.output);

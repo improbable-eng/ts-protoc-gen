@@ -12,6 +12,7 @@ describe("ts orphan service", () => {
     assert.strictEqual(orphan_pb_service.OrphanService.DoUnary.responseStream, false);
     assert.strictEqual(orphan_pb_service.OrphanService.DoUnary.requestType, orphan_pb.OrphanUnaryRequest);
     assert.strictEqual(orphan_pb_service.OrphanService.DoUnary.responseType, orphan_pb.OrphanMessage);
+    assert.strictEqual(orphan_pb_service.OrphanService.DoUnary.path, "/OrphanService/DoUnary");
 
     assert.strictEqual(orphan_pb_service.OrphanService.DoStream.methodName, "DoStream");
     assert.strictEqual(orphan_pb_service.OrphanService.DoStream.service, orphan_pb_service.OrphanService);
@@ -19,5 +20,6 @@ describe("ts orphan service", () => {
     assert.strictEqual(orphan_pb_service.OrphanService.DoStream.responseStream, true);
     assert.strictEqual(orphan_pb_service.OrphanService.DoStream.requestType, orphan_pb.OrphanStreamRequest);
     assert.strictEqual(orphan_pb_service.OrphanService.DoStream.responseType, orphan_pb.OrphanMessage);
+    assert.strictEqual(orphan_pb_service.OrphanService.DoStream.path, "/OrphanService/DoStream");
   });
 });
