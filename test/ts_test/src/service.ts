@@ -61,7 +61,7 @@ describe("ts service", () => {
     assert.strictEqual(typeof sandbox.exports.SimpleService, "function");
     assert.strictEqual(sandbox.exports.SimpleService.serviceName, "examplecom.SimpleService");
 
-    assert.strictEqual(typeof sandbox.exports.SimpleService.DoStream, "function");
+    assert.strictEqual(typeof sandbox.exports.SimpleService.DoStream, "object");
     assert.strictEqual(sandbox.exports.SimpleService.DoStream.methodName, "DoStream");
     assert.strictEqual(sandbox.exports.SimpleService.DoStream.service, sandbox.exports.SimpleService);
     assert.strictEqual(sandbox.exports.SimpleService.DoStream.requestStream, false);
@@ -69,7 +69,7 @@ describe("ts service", () => {
     assert.strictEqual(sandbox.exports.SimpleService.DoStream.requestType, simple_service_pb.StreamRequest);
     assert.strictEqual(sandbox.exports.SimpleService.DoStream.responseType, external_child_message_pb.ExternalChildMessage);
 
-    assert.strictEqual(typeof sandbox.exports.SimpleService.DoUnary, "function");
+    assert.strictEqual(typeof sandbox.exports.SimpleService.DoUnary, "object");
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.methodName, "DoUnary");
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.service, sandbox.exports.SimpleService);
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.requestStream, false);

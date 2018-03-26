@@ -146,18 +146,14 @@ export function printFileDescriptorJSServices(fileDescriptor: FileDescriptorProt
       const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
       const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
 
-      printer.print(`${service.getName()}.${method.getName()} = `);
-      printJavaScriptClass(printer, {
-        className: `${service.getName()}${method.getName()}`,
-        statics: {
-          methodName: `"${method.getName()}"`,
-          service: service.getName(),
-          requestStream: method.getClientStreaming(),
-          responseStream: method.getServerStreaming(),
-          requestType: requestMessageTypeName,
-          responseType: responseMessageTypeName,
-        }
-      });
+      printer.printLn(`${service.getName()}.${method.getName()} = {`);
+      printer.printIndentedLn(`methodName: "${method.getName()}",`);
+      printer.printIndentedLn(`service: ${service.getName()},`);
+      printer.printIndentedLn(`requestStream: ${method.getClientStreaming()},`);
+      printer.printIndentedLn(`responseStream: ${method.getServerStreaming()},`);
+      printer.printIndentedLn(`requestType: ${requestMessageTypeName},`);
+      printer.printIndentedLn(`responseType: ${responseMessageTypeName}`);
+      printer.printLn(`};`);
       printer.printEmptyLn();
     });
 
