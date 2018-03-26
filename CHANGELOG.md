@@ -8,6 +8,7 @@ The `protoc-gen-js_service` command has been removed as the `protoc-gen-ts` comm
 * Don't output variables that are not used in typescript service definition [@jonbretman](https://github.com/jonbretman) in [#38](https://github.com/improbable-eng/ts-protoc-gen/pull/38)
 * Support Bazel build [@adamyi](https://github.com/adamyi) in [#34](https://github.com/improbable-eng/ts-protoc-gen/pull/34)
 * Create JavaScript sources and TypeScript definitions for grpc-web services [@jonny-improbable](https://github.com/jonny-improbable) in [#44](https://github.com/improbable-eng/ts-protoc-gen/pull/44)
+* Stop using TypeScript Modules in generated grpc-web Service Definitions [@jonny-improbable](https://github.com/jonny-improbable) in [#45](https://github.com/improbable-eng/ts-protoc-gen/pull/45)
 
 ## 0.4.0
 
