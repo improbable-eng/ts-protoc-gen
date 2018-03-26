@@ -1,4 +1,4 @@
-## 0.5.0 (Unreleased)
+## 0.5.0
 
 ### Migration Guide
 The `protoc-gen-js_service` command has been removed as the `protoc-gen-ts` command now generates both JavaScript and TypeScript. Consumers of `protoc-gen-js_service` should instead use `protoc-gen-ts` and substitute the `--js_service_out=generated` protoc flag with `--ts_out=service=true:generated`.
