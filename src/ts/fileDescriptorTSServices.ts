@@ -71,7 +71,6 @@ export function printFileDescriptorTSServices(fileDescriptor: FileDescriptorProt
   printer.printEmptyLn();
 
   fileDescriptor.getServiceList().forEach(service => {
-
     service.getMethodList().forEach(method => {
       const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
       const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
@@ -156,7 +155,7 @@ export function printFileDescriptorJSServices(fileDescriptor: FileDescriptorProt
           requestStream: method.getClientStreaming(),
           responseStream: method.getServerStreaming(),
           requestType: requestMessageTypeName,
-          responseType: responseMessageTypeName
+          responseType: responseMessageTypeName,
         }
       });
       printer.printEmptyLn();

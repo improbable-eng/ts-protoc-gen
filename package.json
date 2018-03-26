@@ -10,8 +10,7 @@
     "test": "npm run lint && npm run build && (cd test && npm run test)"
   },
   "bin": {
-    "protoc-gen-ts": "bin/protoc-gen-ts",
-    "protoc-gen-js_service": "bin/protoc-gen-js_service"
+    "protoc-gen-ts": "bin/protoc-gen-ts"
   },
   "repository": "https://github.com/improbable-eng/ts-protoc-gen",
   "keywords": [
@@ -33,11 +32,11 @@
     "@types/google-protobuf": "^3.2.4",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.5",
-    "babel": "^6.5.2",
+    "babel-cli": "^6.26.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "source-map-support": "^0.4.14",
-    "tslint": "^4.5.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.2.1"
   }
 }
