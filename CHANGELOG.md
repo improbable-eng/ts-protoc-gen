@@ -1,7 +1,7 @@
 ## 0.5.0 (Unreleased)
 
-### Breaking Changes
-* Removed `protoc-gen-js_service` command; `protoc-gen-ts` now generates both JavaScript and TypeScript. Consumers of `protoc-gen-js_service` should use `protoc-gen-ts` and substitute the `--js_service_out` protoc flag with `-ts_out=service=true`.
+### Migration Guide
+The `protoc-gen-js_service` command has been removed as the `protoc-gen-ts` command now generates both JavaScript and TypeScript. Consumers of `protoc-gen-js_service` should instead use `protoc-gen-ts` and substitute the `--js_service_out` protoc flag with `-ts_out=service=true`.
 
 ### Changes
 * Export Enum Definitions as ALL_CAPS [@jonnyreeves](https://github.com/jonnyreeves) in [#22]((https://github.com/improbable-eng/ts-protoc-gen/issues/22))
