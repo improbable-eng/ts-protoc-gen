@@ -1,3 +1,8 @@
+## 0.5.1
+
+### Changes
+* Fixes invalid 0.5.0 publish (added prepublishOnly script)
+
 ## 0.5.0
 
 ### Migration Guide

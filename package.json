@@ -1,13 +1,14 @@
 {
   "name": "ts-protoc-gen",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Protoc Plugin for TypeScript Declarations and Service Definitions",
   "scripts": {
     "lint": "tslint src/**/*.ts && (cd test && npm run lint)",
     "lint:fix": "npm run lint -- --fix && (cd test && npm run lint:fix)",
     "clean": "rm -rf lib",
     "build": "npm run clean && tsc",
-    "test": "npm run lint && npm run build && (cd test && npm run test)"
+    "test": "npm run lint && npm run build && (cd test && npm run test)",
+    "prepublishOnly": "npm build"
   },
   "bin": {
     "protoc-gen-ts": "bin/protoc-gen-ts"
