@@ -1,11 +1,11 @@
 ## 0.5.2
 
-### Changes
+### Changes
 * Fixes invalid 0.5.1 publish (fixed prepublishOnly script)
 
 ## 0.5.1
 
-### Changes
+### Changes
 * Fixes invalid 0.5.0 publish (added prepublishOnly script)
 
 ## 0.5.0
