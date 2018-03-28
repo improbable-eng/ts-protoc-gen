@@ -5,6 +5,7 @@ ts_library(
     name = "src",
     srcs = glob([
         "*.ts",
+        "service/*.ts",
         "ts/*.ts",
     ]),
     deps = [],
