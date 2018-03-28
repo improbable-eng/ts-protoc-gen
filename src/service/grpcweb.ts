@@ -48,24 +48,6 @@ function isUsed(fileDescriptor: FileDescriptorProto, pseudoNamespace: string, ex
   });
 }
 
-type ClassOpts = {
-  className: string
-  statics: {[k: string]: any}
-}
-
-function printJavaScriptClass(printer: Printer, opts: ClassOpts): void {
-  printer.printLn(`(function () {`);
-  printer.printIndentedLn(`function ${opts.className}() {}`);
-
-  Object.keys(opts.statics).forEach((key: string) => {
-    const value = opts.statics[key];
-    printer.printIndentedLn(`${opts.className}.${key} = ${value};`);
-  });
-
-  printer.printIndentedLn(`return ${opts.className};`);
-  printer.printLn(`}());`);
-}
-
 type ImportDescriptor = {
   readonly namespace: string
   readonly path: string
@@ -238,14 +220,12 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   // Services.
   serviceDescriptor.services
     .forEach(service => {
-      printer.print(`var ${service.name} = `);
-      printJavaScriptClass(printer, {
-        className: service.name,
-        statics: {
-          serviceName: `"${service.qualifiedName}"`,
-        }
-      });
-    printer.printEmptyLn();
+      printer.printLn(`var ${service.name} = (function () {`);
+      printer.printIndentedLn(`function ${service.name}() {}`);
+      printer.printIndentedLn(`${service.name}.serviceName = "${service.qualifiedName}";`);
+      printer.printIndentedLn(`return ${service.name};`);
+      printer.printLn(`}());`);
+      printer.printEmptyLn();
 
     service.methods
       .forEach(method => {
@@ -256,7 +236,7 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
         printer.printIndentedLn(`responseStream: ${method.responseStream},`);
         printer.printIndentedLn(`requestType: ${method.requestType},`);
         printer.printIndentedLn(`responseType: ${method.responseType}`);
-        printer.printLn(`}`);
+        printer.printLn(`};`);
         printer.printEmptyLn();
     });
 
