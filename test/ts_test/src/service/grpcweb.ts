@@ -2,9 +2,9 @@ import {resolve} from "path";
 import {readFileSync} from "fs";
 import {assert} from "chai";
 import { createContext, runInContext } from "vm";
-import * as simple_service_pb_service from "../generated/examplecom/simple_service_pb_service";
-import * as simple_service_pb from "../generated/examplecom/simple_service_pb";
-import * as external_child_message_pb from "../generated/othercom/external_child_message_pb";
+import * as simple_service_pb_service from "../../generated/examplecom/simple_service_pb_service";
+import * as simple_service_pb from "../../generated/examplecom/simple_service_pb";
+import * as external_child_message_pb from "../../generated/othercom/external_child_message_pb";
 
 describe("ts service", () => {
   it("should generate a service definition", () => {

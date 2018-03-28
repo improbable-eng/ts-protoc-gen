@@ -9,7 +9,7 @@ import {ExportMap} from "./ExportMap";
 import {filePathFromProtoWithoutExtension, withAllStdIn} from "./util";
 import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
-import {printFileDescriptorJSServices, printFileDescriptorTSServices} from "./ts/fileDescriptorTSServices";
+import {generateGrpcWebService} from "./service/grpcweb";
 
 withAllStdIn((inputBuff: Buffer) => {
   try {
@@ -37,20 +37,8 @@ withAllStdIn((inputBuff: Buffer) => {
       codeGenResponse.addFile(thisFile);
 
       if (generateServices) {
-        const fileDescriptorTsOutput = printFileDescriptorTSServices(fileNameToDescriptor[fileName], exportMap);
-        if (fileDescriptorTsOutput !== "") {
-          const thisServiceFile = new CodeGeneratorResponse.File();
-          thisServiceFile.setName(outputFileName + "_service.d.ts");
-          thisServiceFile.setContent(fileDescriptorTsOutput);
-          codeGenResponse.addFile(thisServiceFile);
-        }
-        const fileDescriptorJsOutput = printFileDescriptorJSServices(fileNameToDescriptor[fileName], exportMap);
-        if (fileDescriptorJsOutput !== "") {
-          const thisServiceFile = new CodeGeneratorResponse.File();
-          thisServiceFile.setName(outputFileName + "_service.js");
-          thisServiceFile.setContent(fileDescriptorJsOutput);
-          codeGenResponse.addFile(thisServiceFile);
-        }
+        generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
+          .forEach(file => codeGenResponse.addFile(file));
       }
     });
 
