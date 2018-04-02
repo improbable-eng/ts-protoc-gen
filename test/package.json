@@ -1,6 +1,6 @@
 {
   "scripts": {
     "build": "cd ts_test && npm run build",
-    "test": "npm run lint && npm run build && (cd ts_test && npm run test)"
+    "test": "npm run build && (cd ts_test && npm run test)"
   }
 }
