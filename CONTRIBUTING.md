@@ -11,5 +11,8 @@ The following is a set of guidelines for contributing to `ts-protoc-gen`.
 2. Maintainers will look to review the PR as soon as possible. If there is no traction for some time, you're welcome to bump the thread.
 3. All PRs require at least one reviewer.
 
+## Code of Conduct
+Please review and follow our [Code of Conduct](https://github.com/improbable-eng/ts-protoc-gen/blob/master/README.md).
+
 ## Releasing
 Your changes will be released with the next version release.
