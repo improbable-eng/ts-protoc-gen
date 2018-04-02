@@ -169,6 +169,8 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     });
   printer.printEmptyLn();
 
+  printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
+
   // Services.
   serviceDescriptor.services
     .forEach(service => {
@@ -251,8 +253,6 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
 function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProto, exportMap: ExportMap) {
 
   const printer = new CodePrinter(0, methodPrinter);
-
-  printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
 
   printer.printLn(`export class ${service.getName()}Client {`)
     .indent().printLn(`constructor(public serviceHost: string) {`)
