@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {OneOfMessage} from "../generated/examplecom/oneof_message_pb";
-import {ExternalChildMessage} from "../generated/othercom/external_child_message_pb";
+import {OneOfMessage} from "../examples/generated/examplecom/oneof_message_pb";
+import {ExternalChildMessage} from "../examples/generated/othercom/external_child_message_pb";
 import InternalChildMessage = OneOfMessage.InternalChildMessage;
 
 describe("oneofs", () => {

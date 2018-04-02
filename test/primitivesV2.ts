@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {PrimitiveMessageV2} from "../generated/examplecom/primitive_message_v2_pb";
+import {PrimitiveMessageV2} from "../examples/generated/examplecom/primitive_message_v2_pb";
 
 describe("proto2 - primitive", () => {
   it("should allow getting required primitive fields", () => {

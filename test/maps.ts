@@ -1,10 +1,10 @@
 import {assert} from "chai";
-import {MapMessage} from "../generated/examplecom/map_message_pb";
-import {ExternalEnum} from "../generated/othercom/external_enum_pb";
-import {ExternalChildMessage} from "../generated/othercom/external_child_message_pb";
+import {MapMessage} from "../examples/generated/examplecom/map_message_pb";
+import {ExternalEnum} from "../examples/generated/othercom/external_enum_pb";
+import {ExternalChildMessage} from "../examples/generated/othercom/external_child_message_pb";
 import InternalEnum = MapMessage.InternalEnum;
 import InternalChildMessage = MapMessage.InternalChildMessage;
-import {OrphanMapMessage} from "../generated/orphan_pb";
+import {OrphanMapMessage} from "../examples/generated/orphan_pb";
 
 describe("maps", () => {
   describe("message maps", () => {

@@ -3,10 +3,12 @@ import {readFileSync} from "fs";
 import {assert} from "chai";
 import { grpc } from "grpc-web-client";
 import { createContext, runInContext } from "vm";
+
 import {StubTransportBuilder} from "../__helpers__/fakeGrpcTransport";
 import {ExternalChildMessage} from "../../generated/othercom/external_child_message_pb";
 import {SimpleService, SimpleServiceClient} from "../../generated/examplecom/simple_service_pb_service";
 import {StreamRequest, UnaryRequest} from "../../generated/examplecom/simple_service_pb";
+
 
 describe("service/grpc-web", () => {
   it("should generate a service definition", () => {

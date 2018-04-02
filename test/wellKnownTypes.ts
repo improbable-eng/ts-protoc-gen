@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {WellKnownMessage} from "../generated/examplecom/well_known_message_pb";
+import {WellKnownMessage} from "../examples/generated/examplecom/well_known_message_pb";
 import {Any} from "google-protobuf/google/protobuf/any_pb";
 import {CodeGeneratorRequest} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {Method} from "google-protobuf/google/protobuf/api_pb";
@@ -14,7 +14,8 @@ import {Type} from "google-protobuf/google/protobuf/type_pb";
 import {DoubleValue} from "google-protobuf/google/protobuf/wrappers_pb";
 import Annotation = GeneratedCodeInfo.Annotation;
 
-describe("well known types", () => {
+describe("well known types",
+    () => {
   it("should allow setting and getting an Any field", () => {
     const msg = new WellKnownMessage();
     const myAny = new Any();

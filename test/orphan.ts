@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import * as orphan_pb_service from "../generated/orphan_pb_service";
-import * as orphan_pb from "../generated/orphan_pb";
+import * as orphan_pb_service from "../examples/generated/orphan_pb_service";
+import * as orphan_pb from "../examples/generated/orphan_pb";
 
 describe("ts orphan service", () => {
   it("should generate a service definition that does not have a package", () => {

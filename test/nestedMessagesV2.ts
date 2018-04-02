@@ -1,7 +1,7 @@
 import {assert} from "chai";
-import {ParentMessageV2} from "../generated/examplecom/parent_message_v2_pb";
+import {ParentMessageV2} from "../examples/generated/examplecom/parent_message_v2_pb";
 import InternalChildMessage = ParentMessageV2.InternalChildMessage;
-import {ExternalChildMessage} from "../generated/othercom/external_child_message_pb";
+import {ExternalChildMessage} from "../examples/generated/othercom/external_child_message_pb";
 
 describe("proto2 - internal nested messages", () => {
   it("should allow getting internal message fields on an empty message", () => {
