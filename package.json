@@ -9,7 +9,6 @@
     "build": "npm run clean && tsc",
     "generate": "./generate.sh",
     "test": "mocha --recursive -r ts-node/register -r source-map-support/register test/**.ts",
-    "test2": "npm run lint && npm run build && mocha --require source-map-support/register ./build/src",
     "prepublishOnly": "npm run build"
   },
   "bin": {

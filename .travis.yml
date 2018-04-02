@@ -13,5 +13,6 @@ install:
   - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
   - npm install
 script:
+  - npm run lint
   - bazel build //bin/... # build with Bazel
   - npm test # build and test with NPM
