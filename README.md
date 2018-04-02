@@ -11,6 +11,7 @@ This repository contains a [protoc](https://github.com/google/protobuf) plugin t
 (`.d.ts` files) that match the JavaScript output of `protoc --js_out=import_style=commonjs,binary`. This plugin can
 also output service definitions as both `.js` and `.d.ts` files in the structure required by [grpc-web](https://github.com/improbable-eng/grpc-web).
 
+<<<<<<< HEAD
 This plugin is tested and written using TypeScript 2.7.
 
 ## Installation
@@ -81,6 +82,10 @@ const req = new GetUserRequest();
 req.setUsername("johndoe");
 client.getUser(req, (err, user) => { /* ... */ });
 ```
+
+## Examples
+For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples)
+
 
 ## Contributing
 Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
