@@ -29,3 +29,6 @@ also output service definitions as both `.js` and `.d.ts` files in the structure
 
 ## TODO
 * Add tests for extensions
+
+## Contributing
+Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
