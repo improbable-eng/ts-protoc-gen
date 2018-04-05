@@ -298,7 +298,6 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
       );
     }
   });
-  printer.dedent().printLn("}");
   printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
 }
 
