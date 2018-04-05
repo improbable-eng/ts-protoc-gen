@@ -2,8 +2,8 @@ import {Printer} from './Printer';
 import {generateIndent} from "./util";
 
 export class CodePrinter {
-  public indentation: string;
-  constructor(public depth: number, public printer: Printer) {
+  private indentation: string;
+  constructor(private depth: number, private printer: Printer) {
     this.indentation = generateIndent(1);
   }
   indent() {

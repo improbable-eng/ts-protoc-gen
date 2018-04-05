@@ -330,7 +330,7 @@ function printUnaryStubMethod(
           .dedent().printLn(`}`)
         .dedent().printLn(`}`)
       .dedent().printLn(`});`)
-    .dedent().printLn(`}`);
+    .dedent().printLn(`};`);
 }
 
 function printServerStreamStubMethod(
@@ -364,7 +364,8 @@ function printServerStreamStubMethod(
       .indent().printLn(`on: function (eventType, callback) {`)
         .indent().printLn(`listeners[eventType] = callback;`)
       .dedent().printLn(`}`)
-    .dedent().printLn(`};`);
+    .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
 }
 
 function printBidirectionalStubMethod(
