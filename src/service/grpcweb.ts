@@ -197,6 +197,9 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     });
 
   printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
+  printer.printLn(`export interface Readable<T> {`);
+  printer.printIndentedLn(`on(event: 'data'|'end', callback: (data_or_error?: T|any) => any): void;`);
+  printer.printLn(`}`);
 
   // Add a client stub that talks with the grpc-web-client library
   serviceDescriptor.services
@@ -358,6 +361,8 @@ function printServerStreamStubMethod(
         .indent().printLn(`listeners.end.forEach(function (callback) {`)
           .indent().printLn(`callback();`)
         .dedent().printLn(`});`)
+                 .printLn(`listeners.data = [];`)
+                 .printLn(`listeners.end = [];`)
       .dedent().printLn(`}`)
     .dedent().printLn(`});`)
              .printLn(`return {`)
@@ -433,7 +438,9 @@ function printServerStreamStubMethodTypes(
   method: RPCMethodDescriptor,
   camelCaseMethodName: string
 ) {
-  printer.printLn(`${camelCaseMethodName}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): any;`);
+  printer.printLn(`${camelCaseMethodName}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata):`)
+  .indent().printLn(`Readable<${method.responseType}>;`)
+  .dedent();
 }
 
 function printBidirectionalStubMethodTypes(
