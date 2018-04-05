@@ -264,7 +264,6 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
 }
 
 function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
-
   const printer = new CodePrinter(0, methodPrinter);
 
   printer
@@ -395,7 +394,6 @@ function printClientStreamStubMethod(
 }
 
 function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
-
   const printer = new CodePrinter(0, methodPrinter);
 
   printer
