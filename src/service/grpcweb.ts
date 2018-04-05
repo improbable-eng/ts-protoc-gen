@@ -217,6 +217,8 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
+  printer.printLn(`var grpc = require("grpc-web-client").grpc;`)
+
   // Import Statements
   serviceDescriptor.imports
     .forEach(importDescriptor => {
