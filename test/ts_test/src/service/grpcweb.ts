@@ -96,7 +96,8 @@ describe("ts service", () => {
       request,
       undefined,
       (error: any, response: any) => {
-        expect(JSON.stringify(error)).to.deep.equal(
+        assert.equal(
+          JSON.stringify(error),
           JSON.stringify({
             status: 13,
             statusMessage: "Response closed without headers",

@@ -169,8 +169,6 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     });
   printer.printEmptyLn();
 
-  printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
-
   // Services.
   serviceDescriptor.services
     .forEach(service => {
@@ -196,9 +194,15 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
       });
       printer.printLn(`}`);
       printer.printEmptyLn();
+    });
 
-      // Add a client stub that talks with the grpc-web-client library
-      printServiceStub(printer, service, exportMap);
+  printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
+
+  // Add a client stub that talks with the grpc-web-client library
+  serviceDescriptor.services
+    .forEach(service => {
+
+      printServiceStubTypes(printer, service);
     });
 
   return printer.getOutput();
@@ -230,93 +234,93 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
       printer.printLn(`}());`);
       printer.printEmptyLn();
 
-    service.methods
-      .forEach(method => {
-        printer.print(`${method.serviceName}.${method.name} = {`);
-        printer.printIndentedLn(`methodName: "${method.name}",`);
-        printer.printIndentedLn(`service: ${method.serviceName},`);
-        printer.printIndentedLn(`requestStream: ${method.requestStream},`);
-        printer.printIndentedLn(`responseStream: ${method.responseStream},`);
-        printer.printIndentedLn(`requestType: ${method.requestType},`);
-        printer.printIndentedLn(`responseType: ${method.responseType}`);
-        printer.printLn(`};`);
-        printer.printEmptyLn();
-    });
+      service.methods
+        .forEach(method => {
+          printer.print(`${method.serviceName}.${method.name} = {`);
+          printer.printIndentedLn(`methodName: "${method.name}",`);
+          printer.printIndentedLn(`service: ${method.serviceName},`);
+          printer.printIndentedLn(`requestStream: ${method.requestStream},`);
+          printer.printIndentedLn(`responseStream: ${method.responseStream},`);
+          printer.printIndentedLn(`requestType: ${method.requestType},`);
+          printer.printIndentedLn(`responseType: ${method.responseType}`);
+          printer.printLn(`};`);
+          printer.printEmptyLn();
+        });
+      printer.printLn(`exports.${service.name} = ${service.name};`);
+      printer.printEmptyLn();
 
-    printer.printLn(`exports.${service.name} = ${service.name};`);
-    printer.printEmptyLn();
-  });
+      // Add a client stub that talks with the grpc-web-client library
+      printServiceStub(printer, service);
+
+      printer.printEmptyLn();
+    });
 
   return printer.getOutput();
 }
 
-function printServiceStub(methodPrinter: Printer, service: ServiceDescriptorProto, exportMap: ExportMap) {
+function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
 
   const printer = new CodePrinter(0, methodPrinter);
 
-  printer.printLn(`export class ${service.getName()}Client {`)
-    .indent().printLn(`constructor(public serviceHost: string) {`)
-             .printLn(`}`);
+  printer
+           .printLn(`function ${service.name}Client(serviceHost) {`)
+    .indent().printLn(`this.serviceHost = serviceHost;`)
+  .dedent().printLn(`}`);
 
-  service.getMethodList().forEach((method: MethodDescriptorProto) => {
-    const requestMessageTypeName = getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap);
-    const responseMessageTypeName = getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap);
-    const camelCaseMethodName = method.getName()[0].toLowerCase() + method.getName().substr(1);
+  service.methods.forEach((method: RPCMethodDescriptor) => {
+    const camelCaseMethodName = method.name[0].toLowerCase() + method.name.substr(1);
 
-    if (method.getClientStreaming() && method.getServerStreaming()) {
+    if (method.requestStream && method.responseStream) {
       printBidirectionalStubMethod(
         printer,
+        service,
         camelCaseMethodName
       );
-    } else if (method.getClientStreaming()) {
+    } else if (method.requestStream) {
       printClientStreamStubMethod(
         printer,
+        service,
         camelCaseMethodName
       );
-    } else if (method.getServerStreaming()) {
+    } else if (method.responseStream) {
       printServerStreamStubMethod(
         printer,
         service,
         method,
-        camelCaseMethodName,
-        requestMessageTypeName,
-        responseMessageTypeName
+        camelCaseMethodName
       );
     } else {
       printUnaryStubMethod(
         printer,
         service,
         method,
-        camelCaseMethodName,
-        requestMessageTypeName,
-        responseMessageTypeName
+        camelCaseMethodName
       );
     }
   });
   printer.dedent().printLn("}");
+  printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
 }
 
 function printUnaryStubMethod(
   printer: CodePrinter,
-  service: ServiceDescriptorProto,
-  method: MethodDescriptorProto,
-  camelCaseMethodName: string,
-  requestMessageTypeName: string,
-  responseMessageTypeName: string
+  service: RPCDescriptor,
+  method: RPCMethodDescriptor,
+  camelCaseMethodName: string
 ) {
   printer
-             .printLn(`${camelCaseMethodName}(`)
-      .indent().printLn(`requestMessage: ${requestMessageTypeName},`)
-               .printLn(`metadata?: grpc.Metadata,`)
-               .printLn(`callback?: (error: any, responseMessage: ${responseMessageTypeName}|null) => void`)
-    .dedent().printLn(`): void {`)
-      .indent().printLn(`grpc.unary(${service.getName()}.${method.getName()}, {`)
+             .printLn(`${service.name}Client.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}(`)
+      .indent().printLn(`requestMessage,`)
+               .printLn(`metadata,`)
+               .printLn(`callback`)
+    .dedent().printLn(`) {`)
+      .indent().printLn(`grpc.unary(${service.name}.${method.name}, {`)
         .indent().printLn(`request: requestMessage,`)
                  .printLn(`host: this.serviceHost,`)
-                 .printLn(`metadata,`)
-                 .printLn(`onEnd: (response: grpc.UnaryOutput<${responseMessageTypeName}>): void => {`)
+                 .printLn(`metadata: metadata,`)
+                 .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
-            .indent().printLn(`const responseMessage = response.message;`)
+            .indent().printLn(`var responseMessage = response.message;`)
                      .printLn(`if (response.status !== grpc.Code.OK) {`)
               .indent().printLn(`return callback(response, null);`)
             .dedent().printLn(`} else {`)
@@ -330,63 +334,115 @@ function printUnaryStubMethod(
 
 function printServerStreamStubMethod(
   printer: CodePrinter,
-  service: ServiceDescriptorProto,
-  method: MethodDescriptorProto,
-  camelCaseMethodName: string,
-  requestMessageTypeName: string,
-  responseMessageTypeName: string
+  service: RPCDescriptor,
+  method: RPCMethodDescriptor,
+  camelCaseMethodName: string
 ) {
   printer
-           .printLn(`${camelCaseMethodName}(requestMessage: ${requestMessageTypeName}, metadata?: grpc.Metadata): any {`)
-    .indent().printLn(`const listeners: {`)
-      .indent().printLn(`data: Array<(response: ${responseMessageTypeName}) => void>,`)
-               .printLn(`end: Array<() => void>`)
-    .dedent().printLn(`} = {`)
+           .printLn(`${service.name}Client.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}(requestMessage, metadata) {`)
+    .indent().printLn(`var listeners = {`)
       .indent().printLn(`data: [],`)
                .printLn(`end: []`)
     .dedent().printLn(`};`)
-             .printLn(`grpc.invoke(${service.getName()}.${method.getName()}, {`)
+             .printLn(`grpc.invoke(${service.name}.${method.name}, {`)
       .indent().printLn(`request: requestMessage,`)
                .printLn(`host: this.serviceHost,`)
-               .printLn(`metadata,`)
-               .printLn(`onMessage: (responseMessage: ${responseMessageTypeName}) => {`)
-        .indent().printLn(`listeners.data.forEach(callback => {`)
+               .printLn(`metadata: metadata,`)
+               .printLn(`onMessage: function (responseMessage) {`)
+        .indent().printLn(`listeners.data.forEach(function (callback) {`)
           .indent().printLn(`callback(responseMessage);`)
         .dedent().printLn(`});`)
-               .printLn(`},`)
-               .printLn(`onEnd: () => {`)
-          .indent().printLn(`listeners.end.forEach(callback => {`)
-                   .printLn(`callback();`)
+      .dedent().printLn(`},`)
+               .printLn(`onEnd: function () {`)
+        .indent().printLn(`listeners.end.forEach(function (callback) {`)
+          .indent().printLn(`callback();`)
         .dedent().printLn(`});`)
       .dedent().printLn(`}`)
     .dedent().printLn(`});`)
              .printLn(`return {`)
-      .indent().printLn(`on: (eventType: ServerStreamEventType, callback: (response: ${responseMessageTypeName}|undefined) => void): void => {`)
-        .indent().printLn(`if (eventType === 'data') {`)
-          .indent().printLn(`listeners.data.push(callback as (response: ${responseMessageTypeName}) => void);`)
-        .dedent().printLn(`} else if (eventType === 'end') {`)
-          .indent().printLn(`listeners.end.push(callback as () => void);`)
-        .dedent().printLn(`}`)
+      .indent().printLn(`on: function (eventType, callback) {`)
+        .indent().printLn(`listeners[eventType] = callback;`)
       .dedent().printLn(`}`)
-    .dedent().printLn(`};`)
-  .dedent().printLn(`}`);
+    .dedent().printLn(`};`);
 }
 
 function printBidirectionalStubMethod(
   printer: CodePrinter,
+  service: RPCDescriptor,
   camelCaseMethodName: string
 ) {
   printer
-           .printLn(`${camelCaseMethodName}() {`)
-    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
+           .printLn(`${service.name}.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}() {`)
+    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
 function printClientStreamStubMethod(
   printer: CodePrinter,
+  service: RPCDescriptor,
   camelCaseMethodName: string
 ) {
   printer
-           .printLn(`${camelCaseMethodName}() {`)
-    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
+           .printLn(`${service.name}.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}() {`)
+    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
   .dedent().printLn(`}`);
+}
+
+function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
+
+  const printer = new CodePrinter(0, methodPrinter);
+
+  printer
+           .printLn(`export class ${service.name}Client {`)
+    .indent().printLn(`serviceHost: string;`)
+             .printLn(`constructor(serviceHost: string);`)
+
+  service.methods.forEach((method: RPCMethodDescriptor) => {
+
+    const camelCaseMethodName = method.name[0].toLowerCase() + method.name.substr(1);
+
+    if (method.requestStream && method.responseStream) {
+      printBidirectionalStubMethodTypes(printer, camelCaseMethodName);
+    } else if (method.requestStream) {
+      printClientStreamStubMethodTypes(printer, camelCaseMethodName);
+    } else if (method.responseStream) {
+      printServerStreamStubMethodTypes(printer, method, camelCaseMethodName);
+    } else {
+      printUnaryStubMethodTypes(printer, method, camelCaseMethodName);
+    }
+  });
+  printer.dedent().printLn("}");
+}
+
+function printUnaryStubMethodTypes(
+  printer: CodePrinter,
+  method: RPCMethodDescriptor,
+  camelCaseMethodName: string
+) {
+  printer
+             .printLn(`${camelCaseMethodName}(`)
+      .indent().printLn(`requestMessage: ${method.requestType},`)
+               .printLn(`metadata?: grpc.Metadata,`)
+               .printLn(`callback?: (error: any, responseMessage: ${method.responseType}|null) => void`)
+    .dedent().printLn(`): void;`);
+}
+
+function printServerStreamStubMethodTypes(
+  printer: CodePrinter,
+  method: RPCMethodDescriptor,
+  camelCaseMethodName: string
+) {
+  printer.printLn(`${camelCaseMethodName}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): any;`);
+}
+
+function printBidirectionalStubMethodTypes(
+  printer: CodePrinter,
+  camelCaseMethodName: string
+) {
+  printer.printLn(`${camelCaseMethodName}(): void;`);
+}
+function printClientStreamStubMethodTypes(
+  printer: CodePrinter,
+  camelCaseMethodName: string
+) {
+  printer.printLn(`${camelCaseMethodName}(): void;`);
 }
