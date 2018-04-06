@@ -184,7 +184,6 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
         printer.printIndentedLn(`readonly requestType: typeof ${method.requestType};`);
         printer.printIndentedLn(`readonly responseType: typeof ${method.responseType};`);
         printer.printLn(`};`);
-
         printer.printEmptyLn();
       });
 
