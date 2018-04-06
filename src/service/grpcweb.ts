@@ -58,7 +58,8 @@ type ImportDescriptor = {
 };
 
 type RPCMethodDescriptor = {
-  readonly name: string,
+  readonly nameAsPascalCase: string,
+  readonly nameAsCamelCase: string,
   readonly serviceName: string,
   readonly requestStream: boolean
   readonly responseStream: boolean
@@ -89,7 +90,8 @@ class RPCDescriptor {
       .map(method => {
         const callingTypes = getCallingTypes(method, this.exportMap);
         return {
-          name: method.getName(),
+          nameAsPascalCase: method.getName(),
+          nameAsCamelCase: method.getName()[0].toLowerCase() + method.getName().substr(1),
           serviceName: this.name,
           requestStream: method.getClientStreaming(),
           responseStream: method.getServerStreaming(),
@@ -160,13 +162,12 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
-  printer.printLn(`import {grpc} from "grpc-web-client";`)
-
   // Import statements.
   serviceDescriptor.imports
     .forEach(importDescriptor => {
       printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
     });
+  printer.printLn(`import {grpc} from "grpc-web-client";`)
   printer.printEmptyLn();
 
   // Services.
@@ -175,7 +176,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
       // Method Type Definitions
       service.methods.forEach(method => {
-        printer.printLn(`type ${method.serviceName}${method.name} = {`);
+        printer.printLn(`type ${method.serviceName}${method.nameAsPascalCase} = {`);
         printer.printIndentedLn(`readonly methodName: string;`);
         printer.printIndentedLn(`readonly service: typeof ${method.serviceName};`);
         printer.printIndentedLn(`readonly requestStream: ${method.requestStream};`);
@@ -190,7 +191,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
       printer.printLn(`export class ${service.name} {`);
       printer.printIndentedLn(`static readonly serviceName: string;`);
       service.methods.forEach(method => {
-        printer.printIndentedLn(`static readonly ${method.name}: ${method.serviceName}${method.name};`);
+        printer.printIndentedLn(`static readonly ${method.nameAsPascalCase}: ${method.serviceName}${method.nameAsPascalCase};`);
       });
       printer.printLn(`}`);
       printer.printEmptyLn();
@@ -198,13 +199,12 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
   printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
   printer.printLn(`export interface Readable<T> {`);
-  printer.printIndentedLn(`on(event: 'data'|'end', callback: (data_or_error?: T|any) => any): void;`);
+  printer.printIndentedLn(`on(event: ServerStreamEventType, callback: (dataOrError?: T|any) => void): void;`);
   printer.printLn(`}`);
 
   // Add a client stub that talks with the grpc-web-client library
   serviceDescriptor.services
     .forEach(service => {
-
       printServiceStubTypes(printer, service);
     });
 
@@ -220,13 +220,12 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
-  printer.printLn(`var grpc = require("grpc-web-client").grpc;`)
-
   // Import Statements
   serviceDescriptor.imports
     .forEach(importDescriptor => {
       printer.printLn(`var ${importDescriptor.namespace} = require("${importDescriptor.path}");`);
     });
+  printer.printLn(`var grpc = require("grpc-web-client").grpc;`)
   printer.printEmptyLn();
 
   // Services.
@@ -241,8 +240,8 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
 
       service.methods
         .forEach(method => {
-          printer.print(`${method.serviceName}.${method.name} = {`);
-          printer.printIndentedLn(`methodName: "${method.name}",`);
+          printer.print(`${method.serviceName}.${method.nameAsPascalCase} = {`);
+          printer.printIndentedLn(`methodName: "${method.nameAsPascalCase}",`);
           printer.printIndentedLn(`service: ${method.serviceName},`);
           printer.printIndentedLn(`requestStream: ${method.requestStream},`);
           printer.printIndentedLn(`responseStream: ${method.responseStream},`);
@@ -272,34 +271,14 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
   .dedent().printLn(`}`);
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
-    const camelCaseMethodName = method.name[0].toLowerCase() + method.name.substr(1);
-
     if (method.requestStream && method.responseStream) {
-      printBidirectionalStubMethod(
-        printer,
-        service,
-        camelCaseMethodName
-      );
+      printBidirectionalStubMethod(printer, method);
     } else if (method.requestStream) {
-      printClientStreamStubMethod(
-        printer,
-        service,
-        camelCaseMethodName
-      );
+      printClientStreamStubMethod(printer, method);
     } else if (method.responseStream) {
-      printServerStreamStubMethod(
-        printer,
-        service,
-        method,
-        camelCaseMethodName
-      );
+      printServerStreamStubMethod(printer, method);
     } else {
-      printUnaryStubMethod(
-        printer,
-        service,
-        method,
-        camelCaseMethodName
-      );
+      printUnaryStubMethod(printer, method);
     }
   });
   printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
@@ -307,27 +286,24 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
 
 function printUnaryStubMethod(
   printer: CodePrinter,
-  service: RPCDescriptor,
-  method: RPCMethodDescriptor,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
   printer
-             .printLn(`${service.name}Client.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}(`)
+             .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage,`)
                .printLn(`metadata,`)
                .printLn(`callback`)
     .dedent().printLn(`) {`)
-      .indent().printLn(`grpc.unary(${service.name}.${method.name}, {`)
+      .indent().printLn(`grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
         .indent().printLn(`request: requestMessage,`)
                  .printLn(`host: this.serviceHost,`)
                  .printLn(`metadata: metadata,`)
                  .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
-            .indent().printLn(`var responseMessage = response.message;`)
-                     .printLn(`if (response.status !== grpc.Code.OK) {`)
+            .indent().printLn(`if (response.status !== grpc.Code.OK) {`)
               .indent().printLn(`return callback(response, null);`)
             .dedent().printLn(`} else {`)
-              .indent().printLn(`callback(null, responseMessage);`)
+              .indent().printLn(`callback(null, response.message);`)
             .dedent().printLn(`}`)
           .dedent().printLn(`}`)
         .dedent().printLn(`}`)
@@ -337,17 +313,15 @@ function printUnaryStubMethod(
 
 function printServerStreamStubMethod(
   printer: CodePrinter,
-  service: RPCDescriptor,
-  method: RPCMethodDescriptor,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
   printer
-           .printLn(`${service.name}Client.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}(requestMessage, metadata) {`)
+           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata) {`)
     .indent().printLn(`var listeners = {`)
       .indent().printLn(`data: [],`)
                .printLn(`end: []`)
     .dedent().printLn(`};`)
-             .printLn(`grpc.invoke(${service.name}.${method.name}, {`)
+             .printLn(`grpc.invoke(${method.serviceName}.${method.nameAsPascalCase}, {`)
       .indent().printLn(`request: requestMessage,`)
                .printLn(`host: this.serviceHost,`)
                .printLn(`metadata: metadata,`)
@@ -366,7 +340,7 @@ function printServerStreamStubMethod(
     .dedent().printLn(`});`)
              .printLn(`return {`)
       .indent().printLn(`on: function (eventType, callback) {`)
-        .indent().printLn(`listeners[eventType] = callback;`)
+        .indent().printLn(`listeners[eventType].push(callback);`)
       .dedent().printLn(`}`)
     .dedent().printLn(`};`)
   .dedent().printLn(`};`);
@@ -374,21 +348,19 @@ function printServerStreamStubMethod(
 
 function printBidirectionalStubMethod(
   printer: CodePrinter,
-  service: RPCDescriptor,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
   printer
-           .printLn(`${service.name}.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}() {`)
+           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}() {`)
     .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
 function printClientStreamStubMethod(
   printer: CodePrinter,
-  service: RPCDescriptor,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
   printer
-           .printLn(`${service.name}.prototype.${camelCaseMethodName} = function ${camelCaseMethodName}() {`)
+           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}() {`)
     .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
@@ -398,21 +370,18 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
 
   printer
            .printLn(`export class ${service.name}Client {`)
-    .indent().printLn(`serviceHost: string;`)
+    .indent().printLn(`readonly serviceHost: string;`)
              .printLn(`constructor(serviceHost: string);`)
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
-
-    const camelCaseMethodName = method.name[0].toLowerCase() + method.name.substr(1);
-
     if (method.requestStream && method.responseStream) {
-      printBidirectionalStubMethodTypes(printer, camelCaseMethodName);
+      printBidirectionalStubMethodTypes(printer, method);
     } else if (method.requestStream) {
-      printClientStreamStubMethodTypes(printer, camelCaseMethodName);
+      printClientStreamStubMethodTypes(printer, method);
     } else if (method.responseStream) {
-      printServerStreamStubMethodTypes(printer, method, camelCaseMethodName);
+      printServerStreamStubMethodTypes(printer, method);
     } else {
-      printUnaryStubMethodTypes(printer, method, camelCaseMethodName);
+      printUnaryStubMethodTypes(printer, method);
     }
   });
   printer.dedent().printLn("}");
@@ -420,11 +389,10 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
 
 function printUnaryStubMethodTypes(
   printer: CodePrinter,
-  method: RPCMethodDescriptor,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
   printer
-             .printLn(`${camelCaseMethodName}(`)
+             .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
                .printLn(`metadata?: grpc.Metadata,`)
                .printLn(`callback?: (error: any, responseMessage: ${method.responseType}|null) => void`)
@@ -433,23 +401,22 @@ function printUnaryStubMethodTypes(
 
 function printServerStreamStubMethodTypes(
   printer: CodePrinter,
-  method: RPCMethodDescriptor,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
-  printer.printLn(`${camelCaseMethodName}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata):`)
+  printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata):`)
   .indent().printLn(`Readable<${method.responseType}>;`)
   .dedent();
 }
 
 function printBidirectionalStubMethodTypes(
   printer: CodePrinter,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
-  printer.printLn(`${camelCaseMethodName}(): void;`);
+  printer.printLn(`${method.nameAsCamelCase}(): void;`);
 }
 function printClientStreamStubMethodTypes(
   printer: CodePrinter,
-  camelCaseMethodName: string
+  method: RPCMethodDescriptor
 ) {
-  printer.printLn(`${camelCaseMethodName}(): void;`);
+  printer.printLn(`${method.nameAsCamelCase}(): void;`);
 }

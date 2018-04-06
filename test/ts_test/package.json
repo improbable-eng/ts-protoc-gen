@@ -2,6 +2,6 @@
   "scripts": {
     "generate": "./generate.sh",
     "build": "npm run generate && rm -rf ./build && tsc",
-    "test": "mocha --require source-map-support/register ./build/src"
+    "test": "mocha --require source-map-support/register ./build/src/*.js ./build/src/**/*.js"
   }
 }
