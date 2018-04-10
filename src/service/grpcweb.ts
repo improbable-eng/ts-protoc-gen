@@ -293,7 +293,10 @@ function printUnaryStubMethod(
                .printLn(`metadata,`)
                .printLn(`callback`)
     .dedent().printLn(`) {`)
-      .indent().printLn(`grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
+      .indent().printLn(`if (arguments.length === 2) {`)
+        .indent().printLn(`callback = arguments[1];`)
+      .dedent().printLn("}")
+               .printLn(`grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
         .indent().printLn(`request: requestMessage,`)
                  .printLn(`host: this.serviceHost,`)
                  .printLn(`metadata: metadata,`)
@@ -393,8 +396,12 @@ function printUnaryStubMethodTypes(
   printer
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
-               .printLn(`metadata?: grpc.Metadata,`)
-               .printLn(`callback?: (error: any, responseMessage: ${method.responseType}|null) => void`)
+               .printLn(`metadata: grpc.Metadata,`)
+               .printLn(`callback: (error: any, responseMessage: ${method.responseType}|null) => void`)
+    .dedent().printLn(`): void;`)
+             .printLn(`${method.nameAsCamelCase}(`)
+      .indent().printLn(`requestMessage: ${method.requestType},`)
+               .printLn(`callback: (error: any, responseMessage: ${method.responseType}|null) => void`)
     .dedent().printLn(`): void;`);
 }
 

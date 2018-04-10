@@ -92,9 +92,9 @@ describe("ts service", () => {
   it("Should generate a working doUnary method", (done) => {
     const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
     const request = new simple_service_pb.UnaryRequest();
+
     client.doUnary(
       request,
-      undefined,
       (error: any, response: any) => {
         assert.equal(
           JSON.stringify(error),
