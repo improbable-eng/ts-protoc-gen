@@ -167,7 +167,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     .forEach(importDescriptor => {
       printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
     });
-  printer.printLn(`import {grpc} from "grpc-web-client";`)
+  printer.printLn(`import {grpc} from "grpc-web-client";`);
   printer.printEmptyLn();
 
   // Services.
@@ -200,6 +200,8 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`export interface Readable<T> {`);
   printer.printIndentedLn(`on(event: ServerStreamEventType, callback: (dataOrError?: T|any) => void): void;`);
   printer.printLn(`}`);
+  printer.printEmptyLn();
+  printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
 
   // Add a client stub that talks with the grpc-web-client library
   serviceDescriptor.services
@@ -224,7 +226,7 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
     .forEach(importDescriptor => {
       printer.printLn(`var ${importDescriptor.namespace} = require("${importDescriptor.path}");`);
     });
-  printer.printLn(`var grpc = require("grpc-web-client").grpc;`)
+  printer.printLn(`var grpc = require("grpc-web-client").grpc;`);
   printer.printEmptyLn();
 
   // Services.
@@ -303,7 +305,7 @@ function printUnaryStubMethod(
                  .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
             .indent().printLn(`if (response.status !== grpc.Code.OK) {`)
-              .indent().printLn(`return callback(response, null);`)
+              .indent().printLn(`return callback(Object.assign(new Error(response.statusMessage), { code: response.status, metadata: response.trailers }), null);`)
             .dedent().printLn(`} else {`)
               .indent().printLn(`callback(null, response.message);`)
             .dedent().printLn(`}`)
@@ -401,7 +403,7 @@ function printUnaryStubMethodTypes(
     .dedent().printLn(`): void;`)
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
-               .printLn(`callback: (error: any, responseMessage: ${method.responseType}|null) => void`)
+               .printLn(`callback: (error: ServiceError, responseMessage: ${method.responseType}|null) => void`)
     .dedent().printLn(`): void;`);
 }
 

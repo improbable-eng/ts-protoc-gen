@@ -1,6 +1,7 @@
 import {resolve} from "path";
 import {readFileSync} from "fs";
 import {assert} from "chai";
+import { grpc } from "grpc-web-client";
 import { createContext, runInContext } from "vm";
 import * as simple_service_pb_service from "../../generated/examplecom/simple_service_pb_service";
 import * as simple_service_pb from "../../generated/examplecom/simple_service_pb";
@@ -95,18 +96,14 @@ describe("ts service", () => {
 
     client.doUnary(
       request,
-      (error: any, response: any) => {
-        assert.equal(
-          JSON.stringify(error),
-          JSON.stringify({
-            status: 13,
-            statusMessage: "Response closed without headers",
-            headers: {headersMap: {}},
-            message: null,
-            trailers: {headersMap: {}}
-          }),
-          "Should return an error with no server running on port 1"
-        );
+      (error, response: any) => {
+        assert.ok(error !== null && typeof error === "object", "should yield an error");
+        assert.ok(response === null, "should yield null instead of a response");
+
+        assert.equal(error.message, "Response closed without headers", "should expose the grpc error message (.message)");
+        assert.equal(error.code, 13, "should expose the grpc status code (.code)");
+        assert.ok(error.metadata instanceof grpc.Metadata, "should expose the trailing response metadata (.metadata)");
+
         done();
       }
     );
