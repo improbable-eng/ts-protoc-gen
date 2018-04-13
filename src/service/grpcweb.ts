@@ -196,12 +196,16 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
       printer.printEmptyLn();
     });
 
-  printer.printLn(`export type ServerStreamEventType = 'data'|'end';`);
-  printer.printLn(`export interface Readable<T> {`);
-  printer.printIndentedLn(`on(event: ServerStreamEventType, callback: (dataOrError?: T|any) => void): void;`);
-  printer.printLn(`}`);
-  printer.printEmptyLn();
+
+
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
+  printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
+  printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor }`);
+  printer.printLn(`export interface Readable<T> {`);
+  printer.printIndentedLn(`onData(callback: (data: T) => void): Readable<T>;`);
+  printer.printIndentedLn(`onEnd(callback: () => void): Readable<T>;`);
+  printer.printIndentedLn(`onStatus(callback: (status: Status) => void): Readable<T>;`);
+  printer.printLn(`}`);
 
   // Add a client stub that talks with the grpc-web-client library
   serviceDescriptor.services
@@ -267,8 +271,9 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
   const printer = new CodePrinter(0, methodPrinter);
 
   printer
-           .printLn(`function ${service.name}Client(serviceHost) {`)
+           .printLn(`function ${service.name}Client(serviceHost, options) {`)
     .indent().printLn(`this.serviceHost = serviceHost;`)
+             .printLn(`this.options = options || {};`)
   .dedent().printLn(`}`);
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
@@ -302,6 +307,7 @@ function printUnaryStubMethod(
         .indent().printLn(`request: requestMessage,`)
                  .printLn(`host: this.serviceHost,`)
                  .printLn(`metadata: metadata,`)
+                 .printLn(`transport: this.options.transport,`)
                  .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
             .indent().printLn(`if (response.status !== grpc.Code.OK) {`)
@@ -323,28 +329,44 @@ function printServerStreamStubMethod(
            .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata) {`)
     .indent().printLn(`var listeners = {`)
       .indent().printLn(`data: [],`)
-               .printLn(`end: []`)
+               .printLn(`end: [],`)
+               .printLn(`status: []`)
     .dedent().printLn(`};`)
-             .printLn(`grpc.invoke(${method.serviceName}.${method.nameAsPascalCase}, {`)
+             .printLn(`var client = grpc.invoke(${method.serviceName}.${method.nameAsPascalCase}, {`)
       .indent().printLn(`request: requestMessage,`)
                .printLn(`host: this.serviceHost,`)
                .printLn(`metadata: metadata,`)
+               .printLn(`transport: this.options.transport,`)
                .printLn(`onMessage: function (responseMessage) {`)
         .indent().printLn(`listeners.data.forEach(function (callback) {`)
           .indent().printLn(`callback(responseMessage);`)
         .dedent().printLn(`});`)
       .dedent().printLn(`},`)
-               .printLn(`onEnd: function () {`)
+               .printLn(`onEnd: function (status, statusMessage, trailers) {`)
         .indent().printLn(`listeners.end.forEach(function (callback) {`)
           .indent().printLn(`callback();`)
         .dedent().printLn(`});`)
-                 .printLn(`listeners.data = [];`)
-                 .printLn(`listeners.end = [];`)
+                 .printLn(`listeners.status.forEach(function (callback) {`)
+          .indent().printLn(`callback({ code: status, details: statusMessage, metadata: trailers });`)
+        .dedent().printLn(`});`)
+                 .printLn(`listeners = null;`)
       .dedent().printLn(`}`)
     .dedent().printLn(`});`)
              .printLn(`return {`)
-      .indent().printLn(`on: function (eventType, callback) {`)
-        .indent().printLn(`listeners[eventType].push(callback);`)
+      .indent().printLn(`onData: function (callback) {`)
+        .indent().printLn(`listeners.data.push(callback);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`onEnd: function (callback) {`)
+        .indent().printLn(`listeners.end.push(callback);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`onStatus: function (callback) {`)
+        .indent().printLn(`listeners.status.push(callback);`)
+                 .printLn(`return this;`)
+       .dedent().printLn(`},`)
+               .printLn(`cancel: function () {`)
+        .indent().printLn(`client.abort();`)
       .dedent().printLn(`}`)
     .dedent().printLn(`};`)
   .dedent().printLn(`};`);
@@ -375,7 +397,7 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
   printer
            .printLn(`export class ${service.name}Client {`)
     .indent().printLn(`readonly serviceHost: string;`)
-             .printLn(`constructor(serviceHost: string);`)
+             .printLn(`constructor(serviceHost: string, options?: ServiceClientOptions);`);
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
     if (method.requestStream && method.responseStream) {
@@ -399,7 +421,7 @@ function printUnaryStubMethodTypes(
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
                .printLn(`metadata: grpc.Metadata,`)
-               .printLn(`callback: (error: any, responseMessage: ${method.responseType}|null) => void`)
+               .printLn(`callback: (error: ServiceError, responseMessage: ${method.responseType}|null) => void`)
     .dedent().printLn(`): void;`)
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)

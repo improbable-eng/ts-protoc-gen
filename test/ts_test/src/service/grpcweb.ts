@@ -6,8 +6,10 @@ import { createContext, runInContext } from "vm";
 import * as simple_service_pb_service from "../../generated/examplecom/simple_service_pb_service";
 import * as simple_service_pb from "../../generated/examplecom/simple_service_pb";
 import * as external_child_message_pb from "../../generated/othercom/external_child_message_pb";
+import {StubTransportBuilder} from "../__helpers__/fakeGrpcTransport";
+import {ExternalChildMessage} from "../../generated/othercom/external_child_message_pb";
 
-describe("ts service", () => {
+describe("service/grpc-web", () => {
   it("should generate a service definition", () => {
     assert.strictEqual(simple_service_pb_service.SimpleService.serviceName, "examplecom.SimpleService");
 
@@ -79,44 +81,172 @@ describe("ts service", () => {
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.responseType, external_child_message_pb.ExternalChildMessage);
   });
 
-  it("Should generate a service stub", () => {
-    assert.typeOf(simple_service_pb_service.SimpleServiceClient, "function", "SimpleServiceClient class shoudl exist");
-
-    const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
-
-    assert.equal(client.serviceHost, "http://localhost:1", "Service host should be stored from constructor")
-
-    assert.typeOf(client.doUnary, "function", "Service should have doUnary method");
-    assert.typeOf(client.doStream, "function", "Service should have doStream method");
-  });
-
-  it("Should generate a working doUnary method", (done) => {
-    const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
-    const request = new simple_service_pb.UnaryRequest();
-
-    client.doUnary(
-      request,
-      (error, response: any) => {
-        assert.ok(error !== null && typeof error === "object", "should yield an error");
-        assert.ok(response === null, "should yield null instead of a response");
-
-        assert.equal(error.message, "Response closed without headers", "should expose the grpc error message (.message)");
-        assert.equal(error.code, 13, "should expose the grpc status code (.code)");
-        assert.ok(error.metadata instanceof grpc.Metadata, "should expose the trailing response metadata (.metadata)");
-
-        done();
-      }
-    );
-  });
-
-  it("Should generate a working doStream method", (done) => {
-    const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1");
-    const request = new simple_service_pb.StreamRequest();
-    client
-      .doStream(request)
-      .on("end", () => {
-        // Test passes when callback is called
-        done();
+  describe("grpc-web service stubs", () => {
+    function makeClient(transportBuilder: StubTransportBuilder): simple_service_pb_service.SimpleServiceClient {
+      return new simple_service_pb_service.SimpleServiceClient("http://localhost:1", {
+        transport: transportBuilder.build(),
       });
+    }
+
+    function makePayloads(...values: string[]): ExternalChildMessage[] {
+      return values.map(value => {
+        const payload = new ExternalChildMessage();
+        payload.setMyString(value);
+        return payload;
+      })
+    }
+
+    it("should generate a service stub", () => {
+      assert.typeOf(simple_service_pb_service.SimpleServiceClient, "function", "SimpleServiceClient class shoudl exist");
+
+      const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1")
+
+      assert.equal(client.serviceHost, "http://localhost:1", "Service host should be stored from constructor")
+      assert.typeOf(client.doUnary, "function", "Service should have doUnary method");
+      assert.typeOf(client.doStream, "function", "Service should have doStream method");
+    });
+
+    describe("unary", () => {
+      it("should route the request to the expected endpoint", (done) => {
+        let targetUrl = "";
+
+        makeClient(
+          new StubTransportBuilder().withRequestListener(options => targetUrl = options.url)
+        )
+          .doUnary(
+            new simple_service_pb.UnaryRequest(),
+            (error, response) => {
+              assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoUnary");
+              done();
+            });
+      });
+
+      it("should handle errors returned by the unary endpoint", (done) => {
+        makeClient(
+          new StubTransportBuilder().withPreTrailersError(grpc.Code.Internal, "some internal error")
+        )
+          .doUnary(
+            new simple_service_pb.UnaryRequest(),
+            (error, response) => {
+              assert.ok(error !== null && typeof error === "object", "should yield an error");
+              assert.ok(response === null, "should yield null instead of a response");
+
+              assert.equal(error.message, "some internal error", "should expose the grpc error message (.message)");
+              assert.equal(error.code, 13, "should expose the grpc status code (.code)");
+              assert.ok(error.metadata instanceof grpc.Metadata, "should expose the trailing response metadata (.metadata)");
+              done();
+            });
+      });
+
+      it("should expose data returned by the unary endpoint", (done) => {
+        const [ payload ] = makePayloads("some value");
+
+        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+          .doUnary(
+            new simple_service_pb.UnaryRequest(),
+            (error, response) => {
+              assert.ok(error === null, "should not yield an error");
+              assert.ok(response !== null, "should yield a response");
+              assert.equal(response!.getMyString(), "some value", "should return the expected payload");
+              done();
+            });
+      });
+
+      it("should allow the caller to supply Metadata", (done) => {
+        let sentHeaders: grpc.Metadata;
+
+        makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
+          .doUnary(
+            new simple_service_pb.UnaryRequest(),
+            new grpc.Metadata({ "foo": "bar" }),
+            (error, response) => {
+              assert.ok(sentHeaders !== null, "must have intercepted request headers");
+              assert.deepEqual(sentHeaders.get("foo"), [ "bar" ], "expected headers to have been sent");
+              done();
+            });
+      });
+    });
+
+    describe("doStream", () => {
+      it("should route the request to the expected endpoint", (done) => {
+        let targetUrl = "";
+
+        makeClient(new StubTransportBuilder().withRequestListener(options => targetUrl = options.url))
+          .doStream(new simple_service_pb.StreamRequest())
+            .onEnd(() => {
+              assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoStream");
+              done();
+            });
+      });
+
+      it("should invoke onEnd before onStatus", (done) => {
+        const [ payload ] = makePayloads("some value");
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+          .doStream(new simple_service_pb.StreamRequest())
+            .onEnd(() => { onEndInvoked = true; })
+            .onStatus(status => {
+              assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+              done();
+            });
+      });
+
+      it("should handle an error returned ahead of any data by the unary endpoint", (done) => {
+        makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
+          .doStream(new simple_service_pb.StreamRequest())
+            .onStatus((status) => {
+              assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+              assert.equal(status.details, "some error", "expected grpc error details returned");
+              done();
+            });
+      });
+
+      it("should handle an error returned mid-stream by the unary endpoint", (done) => {
+        const [ payload ] = makePayloads("some value");
+        let actualData: ExternalChildMessage[] = [];
+
+        makeClient(new StubTransportBuilder()
+          .withMessages([ payload ])
+          .withPreTrailersError(grpc.Code.Internal, "some error")
+        )
+          .doStream(new simple_service_pb.StreamRequest())
+            .onData(payload => actualData.push(payload))
+            .onStatus(status => {
+              assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+              assert.equal(status.details, "some error", "expected grpc error details returned");
+              assert.equal(actualData.length, 1, "data sent before error is returned");
+              assert.equal(actualData[0].getMyString(), "some value", "payload is well formed");
+              done();
+            });
+      });
+    });
+
+    it("should expose the data return by the streaming endpoint", (done) => {
+      const [ payload1, payload2 ] = makePayloads("some value", "another value");
+      let actualData: ExternalChildMessage[] = [];
+
+      makeClient(new StubTransportBuilder().withMessages([ payload1, payload2 ]))
+        .doStream(new simple_service_pb.StreamRequest())
+          .onData(payload => actualData.push(payload))
+          .onStatus(status => {
+            assert.equal(status.code, grpc.Code.OK, "status code is ok");
+            assert.equal(actualData.length, 2, "expected data is received");
+            assert.equal(actualData[0].getMyString(), "some value", "data is received in order (#1)");
+            assert.equal(actualData[1].getMyString(), "another value", "data is received in order (#2)");
+            done();
+          });
+    });
+
+    it("should allow the caller to supply Metadata", (done) => {
+      let sentHeaders: grpc.Metadata;
+
+      makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
+        .doStream(new simple_service_pb.StreamRequest(), new grpc.Metadata({ "foo": "bar" }))
+          .onEnd(() => {
+            assert.deepEqual(sentHeaders.get("foo"), [ "bar" ]);
+            done();
+          })
+    });
   });
 });
