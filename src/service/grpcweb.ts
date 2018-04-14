@@ -201,18 +201,20 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor }`);
-
+  printer.printEmptyLn();
   printer.printLn(`interface ResponseStream<T> {`);
   printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
   printer.printLn(`}`);
+  printer.printEmptyLn();
 
   // Add a client stub that talks with the grpc-web-client library
   serviceDescriptor.services
     .forEach(service => {
       printServiceStubTypes(printer, service);
+      printer.printEmptyLn();
     });
 
   return printer.getOutput();
@@ -390,6 +392,7 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
   printer
            .printLn(`export class ${service.name}Client {`)
     .indent().printLn(`readonly serviceHost: string;`)
+        .printEmptyLn()
              .printLn(`constructor(serviceHost: string, options?: ServiceClientOptions);`);
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
