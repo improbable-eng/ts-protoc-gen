@@ -167,13 +167,13 @@ describe("service/grpc-web", () => {
       });
     });
 
-    describe("doStream", () => {
+    describe("streaming", () => {
       it("should route the request to the expected endpoint", (done) => {
         let targetUrl = "";
 
         makeClient(new StubTransportBuilder().withRequestListener(options => targetUrl = options.url))
           .doStream(new simple_service_pb.StreamRequest())
-            .onEnd(() => {
+            .on("end", () => {
               assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoStream");
               done();
             });
@@ -185,8 +185,8 @@ describe("service/grpc-web", () => {
 
         makeClient(new StubTransportBuilder().withMessages([ payload ]))
           .doStream(new simple_service_pb.StreamRequest())
-            .onEnd(() => { onEndInvoked = true; })
-            .onStatus(status => {
+            .on("end", () => { onEndInvoked = true; })
+            .on("status", () => {
               assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
               done();
             });
@@ -195,7 +195,7 @@ describe("service/grpc-web", () => {
       it("should handle an error returned ahead of any data by the unary endpoint", (done) => {
         makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
           .doStream(new simple_service_pb.StreamRequest())
-            .onStatus((status) => {
+            .on("status", (status) => {
               assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
               assert.equal(status.details, "some error", "expected grpc error details returned");
               done();
@@ -211,8 +211,8 @@ describe("service/grpc-web", () => {
           .withPreTrailersError(grpc.Code.Internal, "some error")
         )
           .doStream(new simple_service_pb.StreamRequest())
-            .onData(payload => actualData.push(payload))
-            .onStatus(status => {
+            .on("data", payload => actualData.push(payload))
+            .on("status", status => {
               assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
               assert.equal(status.details, "some error", "expected grpc error details returned");
               assert.equal(actualData.length, 1, "data sent before error is returned");
@@ -220,62 +220,62 @@ describe("service/grpc-web", () => {
               done();
             });
       });
-    });
 
-    it("should expose the data return by the streaming endpoint", (done) => {
-      const [ payload1, payload2 ] = makePayloads("some value", "another value");
-      let actualData: ExternalChildMessage[] = [];
+      it("should expose the data return by the streaming endpoint", (done) => {
+        const [ payload1, payload2 ] = makePayloads("some value", "another value");
+        let actualData: ExternalChildMessage[] = [];
 
-      makeClient(new StubTransportBuilder().withMessages([ payload1, payload2 ]))
-        .doStream(new simple_service_pb.StreamRequest())
-          .onData(payload => actualData.push(payload))
-          .onStatus(status => {
+        makeClient(new StubTransportBuilder().withMessages([ payload1, payload2 ]))
+          .doStream(new simple_service_pb.StreamRequest())
+          .on("data", payload => actualData.push(payload))
+          .on("status", status => {
             assert.equal(status.code, grpc.Code.OK, "status code is ok");
             assert.equal(actualData.length, 2, "expected data is received");
             assert.equal(actualData[0].getMyString(), "some value", "data is received in order (#1)");
             assert.equal(actualData[1].getMyString(), "another value", "data is received in order (#2)");
             done();
           });
-    });
+      });
 
-    it("should allow the caller to supply Metadata", (done) => {
-      let sentHeaders: grpc.Metadata;
+      it("should allow the caller to supply Metadata", (done) => {
+        let sentHeaders: grpc.Metadata;
 
-      makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
-        .doStream(new simple_service_pb.StreamRequest(), new grpc.Metadata({ "foo": "bar" }))
-          .onEnd(() => {
+        makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
+          .doStream(new simple_service_pb.StreamRequest(), new grpc.Metadata({ "foo": "bar" }))
+          .on("end", () => {
             assert.deepEqual(sentHeaders.get("foo"), [ "bar" ]);
             done();
           })
+      });
+
+      it("should allow the caller to cancel the request", (done) => {
+        const transport = new StubTransportBuilder()
+          .withMessages(makePayloads("foo", "bar"))
+          .withManualTrigger()
+          .build();
+
+        const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1", { transport });
+        let messageCount = 0;
+        let onEndFired = false;
+        let onStatusFired = false;
+
+        const handle = client.doStream(new simple_service_pb.StreamRequest())
+          .on("data", message => messageCount++)
+          .on("end", () => onEndFired = true)
+          .on("status", status => onStatusFired = true);
+
+        transport.sendHeaders();
+        handle.cancel();
+        transport.sendMessages();
+        transport.sendTrailers();
+
+        setTimeout(() => {
+          assert.equal(messageCount, 0, "invocation cancelled before any messages were sent");
+          assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled")
+          assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled")
+          done();
+        }, 20)
+      })
     });
-
-    it("should allow the caller to cancel the request", (done) => {
-      const transport = new StubTransportBuilder()
-        .withMessages(makePayloads("foo", "bar"))
-        .withManualTrigger()
-        .build();
-
-      const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1", { transport });
-      let messageCount = 0;
-      let onEndFired = false;
-      let onStatusFired = false;
-
-      const handle = client.doStream(new simple_service_pb.StreamRequest())
-        .onData(message => messageCount++)
-        .onEnd(() => onEndFired = true)
-        .onStatus(status => onStatusFired = true);
-
-      transport.sendHeaders();
-      handle.cancel();
-      transport.sendMessages();
-      transport.sendTrailers();
-
-      setTimeout(() => {
-        assert.equal(messageCount, 0, "invocation cancelled before any messages were sent");
-        assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled")
-        assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled")
-        done();
-      }, 20)
-    })
   });
 });

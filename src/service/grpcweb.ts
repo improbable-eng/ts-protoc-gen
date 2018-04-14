@@ -201,11 +201,12 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor }`);
-  printer.printLn(`export interface Readable<T> {`);
+
+  printer.printLn(`interface ResponseStream<T> {`);
   printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`onData(callback: (data: T) => void): Readable<T>;`);
-  printer.printIndentedLn(`onEnd(callback: () => void): Readable<T>;`);
-  printer.printIndentedLn(`onStatus(callback: (status: Status) => void): Readable<T>;`);
+  printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
   printer.printLn(`}`);
 
   // Add a client stub that talks with the grpc-web-client library
@@ -354,18 +355,10 @@ function printServerStreamStubMethod(
       .dedent().printLn(`}`)
     .dedent().printLn(`});`)
              .printLn(`return {`)
-      .indent().printLn(`onData: function (callback) {`)
-        .indent().printLn(`listeners.data.push(callback);`)
+      .indent().printLn(`on: function (type, handler) {`)
+        .indent().printLn(`listeners[type].push(handler);`)
                  .printLn(`return this;`)
       .dedent().printLn(`},`)
-               .printLn(`onEnd: function (callback) {`)
-        .indent().printLn(`listeners.end.push(callback);`)
-                 .printLn(`return this;`)
-      .dedent().printLn(`},`)
-               .printLn(`onStatus: function (callback) {`)
-        .indent().printLn(`listeners.status.push(callback);`)
-                 .printLn(`return this;`)
-       .dedent().printLn(`},`)
                .printLn(`cancel: function () {`)
         .indent().printLn(`listeners = null;`)
                  .printLn(`client.close();`)
@@ -436,7 +429,7 @@ function printServerStreamStubMethodTypes(
   method: RPCMethodDescriptor
 ) {
   printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata):`)
-  .indent().printLn(`Readable<${method.responseType}>;`)
+  .indent().printLn(`ResponseStream<${method.responseType}>;`)
   .dedent();
 }
 
