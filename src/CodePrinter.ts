@@ -18,4 +18,9 @@ export class CodePrinter {
     this.printer.printLn(new Array(this.depth + 1).join(this.indentation) + line);
     return this;
   }
+
+  printEmptyLn() {
+    this.printer.printEmptyLn();
+    return this;
+  }
 }

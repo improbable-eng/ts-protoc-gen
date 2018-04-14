@@ -247,7 +247,7 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
 
       service.methods
         .forEach(method => {
-          printer.print(`${method.serviceName}.${method.nameAsPascalCase} = {`);
+          printer.printLn(`${method.serviceName}.${method.nameAsPascalCase} = {`);
           printer.printIndentedLn(`methodName: "${method.nameAsPascalCase}",`);
           printer.printIndentedLn(`service: ${method.serviceName},`);
           printer.printIndentedLn(`requestStream: ${method.requestStream},`);
@@ -276,7 +276,8 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
            .printLn(`function ${service.name}Client(serviceHost, options) {`)
     .indent().printLn(`this.serviceHost = serviceHost;`)
              .printLn(`this.options = options || {};`)
-  .dedent().printLn(`}`);
+  .dedent().printLn(`}`)
+    .printEmptyLn();
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
     if (method.requestStream && method.responseStream) {
@@ -288,6 +289,7 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
     } else {
       printUnaryStubMethod(printer, method);
     }
+    printer.printEmptyLn();
   });
   printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
 }
@@ -297,11 +299,7 @@ function printUnaryStubMethod(
   method: RPCMethodDescriptor
 ) {
   printer
-             .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(`)
-      .indent().printLn(`requestMessage,`)
-               .printLn(`metadata,`)
-               .printLn(`callback`)
-    .dedent().printLn(`) {`)
+             .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata, callback) {`)
       .indent().printLn(`if (arguments.length === 2) {`)
         .indent().printLn(`callback = arguments[1];`)
       .dedent().printLn("}")
@@ -313,7 +311,7 @@ function printUnaryStubMethod(
                  .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
             .indent().printLn(`if (response.status !== grpc.Code.OK) {`)
-              .indent().printLn(`return callback(Object.assign(new Error(response.statusMessage), { code: response.status, metadata: response.trailers }), null);`)
+              .indent().printLn(`callback(Object.assign(new Error(response.statusMessage), { code: response.status, metadata: response.trailers }), null);`)
             .dedent().printLn(`} else {`)
               .indent().printLn(`callback(null, response.message);`)
             .dedent().printLn(`}`)
@@ -340,16 +338,16 @@ function printServerStreamStubMethod(
                .printLn(`metadata: metadata,`)
                .printLn(`transport: this.options.transport,`)
                .printLn(`onMessage: function (responseMessage) {`)
-        .indent().printLn(`listeners.data.forEach(function (callback) {`)
-          .indent().printLn(`callback(responseMessage);`)
+        .indent().printLn(`listeners.data.forEach(function (handler) {`)
+          .indent().printLn(`handler(responseMessage);`)
         .dedent().printLn(`});`)
       .dedent().printLn(`},`)
                .printLn(`onEnd: function (status, statusMessage, trailers) {`)
-        .indent().printLn(`listeners.end.forEach(function (callback) {`)
-          .indent().printLn(`callback();`)
+        .indent().printLn(`listeners.end.forEach(function (handler) {`)
+          .indent().printLn(`handler();`)
         .dedent().printLn(`});`)
-                 .printLn(`listeners.status.forEach(function (callback) {`)
-          .indent().printLn(`callback({ code: status, details: statusMessage, metadata: trailers });`)
+                 .printLn(`listeners.status.forEach(function (handler) {`)
+          .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
         .dedent().printLn(`});`)
                  .printLn(`listeners = null;`)
       .dedent().printLn(`}`)
