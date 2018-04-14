@@ -248,5 +248,34 @@ describe("service/grpc-web", () => {
             done();
           })
     });
+
+    it("should allow the caller to cancel the request", (done) => {
+      const transport = new StubTransportBuilder()
+        .withMessages(makePayloads("foo", "bar"))
+        .withManualTrigger()
+        .build();
+
+      const client = new simple_service_pb_service.SimpleServiceClient("http://localhost:1", { transport });
+      let messageCount = 0;
+      let onEndFired = false;
+      let onStatusFired = false;
+
+      const handle = client.doStream(new simple_service_pb.StreamRequest())
+        .onData(message => messageCount++)
+        .onEnd(() => onEndFired = true)
+        .onStatus(status => onStatusFired = true);
+
+      transport.sendHeaders();
+      handle.cancel();
+      transport.sendMessages();
+      transport.sendTrailers();
+
+      setTimeout(() => {
+        assert.equal(messageCount, 0, "invocation cancelled before any messages were sent");
+        assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled")
+        assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled")
+        done();
+      }, 20)
+    })
   });
 });

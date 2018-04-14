@@ -202,6 +202,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor }`);
   printer.printLn(`export interface Readable<T> {`);
+  printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`onData(callback: (data: T) => void): Readable<T>;`);
   printer.printIndentedLn(`onEnd(callback: () => void): Readable<T>;`);
   printer.printIndentedLn(`onStatus(callback: (status: Status) => void): Readable<T>;`);
@@ -366,7 +367,8 @@ function printServerStreamStubMethod(
                  .printLn(`return this;`)
        .dedent().printLn(`},`)
                .printLn(`cancel: function () {`)
-        .indent().printLn(`client.abort();`)
+        .indent().printLn(`listeners = null;`)
+                 .printLn(`client.close();`)
       .dedent().printLn(`}`)
     .dedent().printLn(`};`)
   .dedent().printLn(`};`);
