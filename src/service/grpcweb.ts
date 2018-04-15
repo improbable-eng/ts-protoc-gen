@@ -296,10 +296,7 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
   printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
 }
 
-function printUnaryStubMethod(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
              .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata, callback) {`)
       .indent().printLn(`if (arguments.length === 2) {`)
@@ -323,10 +320,7 @@ function printUnaryStubMethod(
     .dedent().printLn(`};`);
 }
 
-function printServerStreamStubMethod(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata) {`)
     .indent().printLn(`var listeners = {`)
@@ -367,19 +361,14 @@ function printServerStreamStubMethod(
   .dedent().printLn(`};`);
 }
 
-function printBidirectionalStubMethod(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}() {`)
     .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
-function printClientStreamStubMethod(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+
+function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}() {`)
     .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
@@ -409,10 +398,7 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
   printer.dedent().printLn("}");
 }
 
-function printUnaryStubMethodTypes(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
@@ -425,24 +411,14 @@ function printUnaryStubMethodTypes(
     .dedent().printLn(`): void;`);
 }
 
-function printServerStreamStubMethodTypes(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
-  printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata):`)
-  .indent().printLn(`ResponseStream<${method.responseType}>;`)
-  .dedent();
+function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): ResponseStream<${method.responseType}>;`)
 }
 
-function printBidirectionalStubMethodTypes(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(): void;`);
 }
-function printClientStreamStubMethodTypes(
-  printer: CodePrinter,
-  method: RPCMethodDescriptor
-) {
+
+function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(): void;`);
 }
