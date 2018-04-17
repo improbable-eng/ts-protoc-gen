@@ -82,3 +82,6 @@ const req = new GetUserRequest();
 req.setUsername("johndoe");
 client.getUser(req, (err, user) => { /* ... */ });
 ```
+
+## Contributing
+Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
