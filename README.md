@@ -38,13 +38,13 @@ protoc \
     --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
     --js_out="import_style=commonjs,binary:${OUT_DIR}" \
     --ts_out="${OUT_DIR}" \
-    messages.proto base.proto
+    users.proto base.proto
 ```
 
 In the above example, the `generated` folder will contain both `.js` and `.d.ts` files which you can reference in your TypeScript project to get full type completion and make use of ES6-style import statements, eg:
 
 ```js
-import { MyMessage } from "../generated/messages_pb";
+import { MyMessage } from "../generated/users_pb";
 
 const msg = new MyMessage();
 msg.setName("John Doe");
@@ -71,13 +71,12 @@ protoc \
     users.proto base.proto
 ```
 
-The generated folder will now contain both `pb_service.js` and `pb_servivce.d.ts` files which you can reference in your TypeScript project to make RPCs.
+The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs.
 
 ```js
 import { UserServiceClient, GetUserRequest } from "../generated/users_pb_service"
 
 const client = new UserServiceClient("https://my.grpc/server");
-
 const req = new GetUserRequest();
 req.setUsername("johndoe");
 client.getUser(req, (err, user) => { /* ... */ });
