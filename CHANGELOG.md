@@ -1,3 +1,9 @@
+## 0.6.0
+
+### Changes
+* Generate gRPC Service Stubs for use with grpc-web [@jonahbron](https://github.com/jonahbron) and [@jonny-improbable]((https://github.com/jonny-improbable)) in [#40](https://github.com/improbable-eng/ts-protoc-gen/pull/40)
+* Fix filename manipulation bug which would cause problems for users who store generated files with `.proto` in the path. [@easyCZ](https://github.com/easyCZ) in [#56](https://github.com/improbable-eng/ts-protoc-gen/pull/56)
+
 ## 0.5.2
 
 ### Changes
