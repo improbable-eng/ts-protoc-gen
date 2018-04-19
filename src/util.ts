@@ -5,7 +5,7 @@ export function filePathToPseudoNamespace(filePath: string): string {
 }
 
 export function snakeToCamel(str: string): string {
-  return str.replace(/(\_\w)/g, function(m){
+  return str.replace(/(\_\w)/g, function(m) {
     return m[1].toUpperCase();
   });
 }
@@ -41,8 +41,12 @@ export function withinNamespaceFromExportEntry(name: string, exportEntry: Export
   return exportEntry.pkg ? name.substring(exportEntry.pkg.length + 1) : name;
 }
 
-export function filePathFromProtoWithoutExtension(protoFilePath: string): string {
-  return protoFilePath.replace(".proto", "_pb");
+export function replaceProtoSuffix(protoFilePath: string): string {
+  const suffix = ".proto";
+  const hasProtoSuffix = protoFilePath.slice(protoFilePath.length - suffix.length) === suffix;
+  return hasProtoSuffix
+    ? protoFilePath.slice(0, -suffix.length) + "_pb"
+    : protoFilePath;
 }
 
 export function withAllStdIn(callback: (buffer: Buffer) => void): void {

@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension, getPathToRoot} from "../util";
+import {filePathToPseudoNamespace, replaceProtoSuffix, getPathToRoot} from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
@@ -26,7 +26,7 @@ export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, expo
     if (dependency in WellKnownTypesMap) {
       printer.printLn(`import * as ${pseudoNamespace} from "${WellKnownTypesMap[dependency]}";`);
     } else {
-      const filePath = filePathFromProtoWithoutExtension(dependency);
+      const filePath = replaceProtoSuffix(dependency);
       printer.printLn(`import * as ${pseudoNamespace} from "${upToRoot}${filePath}";`);
     }
   });

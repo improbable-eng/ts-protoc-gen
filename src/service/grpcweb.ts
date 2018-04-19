@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, filePathFromProtoWithoutExtension, getPathToRoot} from "../util";
+import {filePathToPseudoNamespace, replaceProtoSuffix, getPathToRoot} from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
 import {CodePrinter} from "../CodePrinter";
@@ -134,13 +134,13 @@ class GrpcWebServiceDescriptor {
         } else {
           return {
             namespace,
-            path: `${this.pathToRoot}${filePathFromProtoWithoutExtension(filePathFromProtoWithoutExtension(dependency))}`
+            path: `${this.pathToRoot}${replaceProtoSuffix(replaceProtoSuffix(dependency))}`
           }
         }
       });
     const hostProto = {
       namespace: filePathToPseudoNamespace(this.filename),
-      path: `${this.pathToRoot}${filePathFromProtoWithoutExtension(this.filename)}`,
+      path: `${this.pathToRoot}${replaceProtoSuffix(this.filename)}`,
     };
     return [ hostProto ].concat(dependencies);
   }
