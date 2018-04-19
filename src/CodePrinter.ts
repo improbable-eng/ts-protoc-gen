@@ -1,4 +1,4 @@
-import {Printer} from './Printer';
+import {Printer} from "./Printer";
 import {generateIndent} from "./util";
 
 export class CodePrinter {
