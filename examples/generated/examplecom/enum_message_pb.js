@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -64,14 +62,13 @@ proto.examplecom.EnumMessage.prototype.toObject = function(opt_includeInstance) 
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.EnumMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.EnumMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
     internalEnum: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    internalEnumsList: jspb.Message.getRepeatedField(msg, 2),
+    internalEnumsList: jspb.Message.getField(msg, 2),
     externalEnum: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    externalEnumsList: jspb.Message.getRepeatedField(msg, 4)
+    externalEnumsList: jspb.Message.getField(msg, 4)
   };
 
   if (includeInstance) {
@@ -149,7 +146,6 @@ proto.examplecom.EnumMessage.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.EnumMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.EnumMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -205,16 +201,18 @@ proto.examplecom.EnumMessage.prototype.getInternalEnum = function() {
 
 /** @param {!proto.examplecom.EnumMessage.InternalEnum} value */
 proto.examplecom.EnumMessage.prototype.setInternalEnum = function(value) {
-  jspb.Message.setProto3EnumField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
 /**
  * repeated InternalEnum internal_enums = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<!proto.examplecom.EnumMessage.InternalEnum>}
  */
 proto.examplecom.EnumMessage.prototype.getInternalEnumsList = function() {
-  return /** @type {!Array.<!proto.examplecom.EnumMessage.InternalEnum>} */ (jspb.Message.getRepeatedField(this, 2));
+  return /** @type {!Array.<!proto.examplecom.EnumMessage.InternalEnum>} */ (jspb.Message.getField(this, 2));
 };
 
 
@@ -249,16 +247,18 @@ proto.examplecom.EnumMessage.prototype.getExternalEnum = function() {
 
 /** @param {!proto.othercom.ExternalEnum} value */
 proto.examplecom.EnumMessage.prototype.setExternalEnum = function(value) {
-  jspb.Message.setProto3EnumField(this, 3, value);
+  jspb.Message.setField(this, 3, value);
 };
 
 
 /**
  * repeated othercom.ExternalEnum external_enums = 4;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<!proto.othercom.ExternalEnum>}
  */
 proto.examplecom.EnumMessage.prototype.getExternalEnumsList = function() {
-  return /** @type {!Array.<!proto.othercom.ExternalEnum>} */ (jspb.Message.getRepeatedField(this, 4));
+  return /** @type {!Array.<!proto.othercom.ExternalEnum>} */ (jspb.Message.getField(this, 4));
 };
 
 

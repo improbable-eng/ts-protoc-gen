@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -85,7 +83,6 @@ proto.examplecom.OneOfMessage.prototype.toObject = function(opt_includeInstance)
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.OneOfMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.OneOfMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -172,7 +169,6 @@ proto.examplecom.OneOfMessage.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.OneOfMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.OneOfMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -252,7 +248,6 @@ proto.examplecom.OneOfMessage.InternalChildMessage.prototype.toObject = function
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.OneOfMessage.InternalChildMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.OneOfMessage.InternalChildMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -322,7 +317,6 @@ proto.examplecom.OneOfMessage.InternalChildMessage.prototype.serializeBinary = f
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.OneOfMessage.InternalChildMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.OneOfMessage.InternalChildMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -347,7 +341,7 @@ proto.examplecom.OneOfMessage.InternalChildMessage.prototype.getMyString = funct
 
 /** @param {string} value */
 proto.examplecom.OneOfMessage.InternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 

@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -64,7 +62,6 @@ proto.examplecom.ParentMessageV3.prototype.toObject = function(opt_includeInstan
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.ParentMessageV3} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.ParentMessageV3.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -155,7 +152,6 @@ proto.examplecom.ParentMessageV3.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.ParentMessageV3} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.ParentMessageV3.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -237,7 +233,6 @@ proto.examplecom.ParentMessageV3.InternalChildMessage.prototype.toObject = funct
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.ParentMessageV3.InternalChildMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.ParentMessageV3.InternalChildMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -307,7 +302,6 @@ proto.examplecom.ParentMessageV3.InternalChildMessage.prototype.serializeBinary 
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.ParentMessageV3.InternalChildMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.ParentMessageV3.InternalChildMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -332,7 +326,7 @@ proto.examplecom.ParentMessageV3.InternalChildMessage.prototype.getMyString = fu
 
 /** @param {string} value */
 proto.examplecom.ParentMessageV3.InternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
@@ -368,6 +362,8 @@ proto.examplecom.ParentMessageV3.prototype.hasInternalChildMessage = function() 
 
 /**
  * repeated InternalChildMessage internal_children = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<!proto.examplecom.ParentMessageV3.InternalChildMessage>}
  */
 proto.examplecom.ParentMessageV3.prototype.getInternalChildrenList = function() {
@@ -429,6 +425,8 @@ proto.examplecom.ParentMessageV3.prototype.hasExternalChildMessage = function() 
 
 /**
  * repeated othercom.ExternalChildMessage external_children = 4;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<!proto.othercom.ExternalChildMessage>}
  */
 proto.examplecom.ParentMessageV3.prototype.getExternalChildrenList = function() {

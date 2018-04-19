@@ -1,7 +1,17 @@
 #!/bin/bash -x
 # Generate typescript definitions and service definitions from proto files
 
+set -e
+
 EXAMPLES_GENERATED_DIR=examples/generated
+
+echo "Ensuring we have NPM packages installed..."
+npm install
+
+echo "Compiling ts-protoc-gen..."
+npm run build
+
+echo "Generating proto definitions..."
 
 if [ -d $EXAMPLES_GENERATED_DIR ]
 then

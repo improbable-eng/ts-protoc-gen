@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -55,7 +53,6 @@ proto.othercom.ExternalChildMessage.prototype.toObject = function(opt_includeIns
  *     http://goto/soy-param-migration
  * @param {!proto.othercom.ExternalChildMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.othercom.ExternalChildMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -125,7 +122,6 @@ proto.othercom.ExternalChildMessage.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.othercom.ExternalChildMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.othercom.ExternalChildMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -150,7 +146,7 @@ proto.othercom.ExternalChildMessage.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.othercom.ExternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 

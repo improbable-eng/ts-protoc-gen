@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -62,24 +60,23 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.toObject = function(opt_incl
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.RepeatedPrimitiveMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.RepeatedPrimitiveMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
     myDoubleList: jspb.Message.getRepeatedFloatingPointField(msg, 1),
     myFloatList: jspb.Message.getRepeatedFloatingPointField(msg, 2),
-    myInt32List: jspb.Message.getRepeatedField(msg, 3),
-    myInt64List: jspb.Message.getRepeatedField(msg, 4),
-    myUint32List: jspb.Message.getRepeatedField(msg, 5),
-    myUint64List: jspb.Message.getRepeatedField(msg, 6),
-    mySint32List: jspb.Message.getRepeatedField(msg, 7),
-    mySint64List: jspb.Message.getRepeatedField(msg, 8),
-    myFixed32List: jspb.Message.getRepeatedField(msg, 9),
-    myFixed64List: jspb.Message.getRepeatedField(msg, 10),
-    mySfixed32List: jspb.Message.getRepeatedField(msg, 11),
-    mySfixed64List: jspb.Message.getRepeatedField(msg, 12),
-    myBoolList: jspb.Message.getRepeatedField(msg, 13),
-    myStringList: jspb.Message.getRepeatedField(msg, 14),
+    myInt32List: jspb.Message.getField(msg, 3),
+    myInt64List: jspb.Message.getField(msg, 4),
+    myUint32List: jspb.Message.getField(msg, 5),
+    myUint64List: jspb.Message.getField(msg, 6),
+    mySint32List: jspb.Message.getField(msg, 7),
+    mySint64List: jspb.Message.getField(msg, 8),
+    myFixed32List: jspb.Message.getField(msg, 9),
+    myFixed64List: jspb.Message.getField(msg, 10),
+    mySfixed32List: jspb.Message.getField(msg, 11),
+    mySfixed64List: jspb.Message.getField(msg, 12),
+    myBoolList: jspb.Message.getField(msg, 13),
+    myStringList: jspb.Message.getField(msg, 14),
     myBytesList: msg.getMyBytesList_asB64()
   };
 
@@ -202,7 +199,6 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.serializeBinary = function()
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.RepeatedPrimitiveMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.RepeatedPrimitiveMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -316,6 +312,8 @@ proto.examplecom.RepeatedPrimitiveMessage.serializeBinaryToWriter = function(mes
 
 /**
  * repeated double my_double = 1;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyDoubleList = function() {
@@ -345,6 +343,8 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyDoubleList = function
 
 /**
  * repeated float my_float = 2;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyFloatList = function() {
@@ -374,10 +374,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyFloatList = function(
 
 /**
  * repeated int32 my_int32 = 3;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyInt32List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 3));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 3));
 };
 
 
@@ -403,10 +405,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyInt32List = function(
 
 /**
  * repeated int64 my_int64 = 4;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyInt64List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 4));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 4));
 };
 
 
@@ -432,10 +436,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyInt64List = function(
 
 /**
  * repeated uint32 my_uint32 = 5;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyUint32List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 5));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 5));
 };
 
 
@@ -461,10 +467,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyUint32List = function
 
 /**
  * repeated uint64 my_uint64 = 6;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyUint64List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 6));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 6));
 };
 
 
@@ -490,10 +498,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyUint64List = function
 
 /**
  * repeated sint32 my_sint32 = 7;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySint32List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 7));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 7));
 };
 
 
@@ -519,10 +529,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySint32List = function
 
 /**
  * repeated sint64 my_sint64 = 8;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySint64List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 8));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 8));
 };
 
 
@@ -548,10 +560,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySint64List = function
 
 /**
  * repeated fixed32 my_fixed32 = 9;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyFixed32List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 9));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 9));
 };
 
 
@@ -577,10 +591,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyFixed32List = functio
 
 /**
  * repeated fixed64 my_fixed64 = 10;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyFixed64List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 10));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 10));
 };
 
 
@@ -606,10 +622,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyFixed64List = functio
 
 /**
  * repeated sfixed32 my_sfixed32 = 11;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySfixed32List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 11));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 11));
 };
 
 
@@ -635,10 +653,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySfixed32List = functi
 
 /**
  * repeated sfixed64 my_sfixed64 = 12;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySfixed64List = function() {
-  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 12));
+  return /** @type {!Array.<number>} */ (jspb.Message.getField(this, 12));
 };
 
 
@@ -666,10 +686,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySfixed64List = functi
  * repeated bool my_bool = 13;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<boolean>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBoolList = function() {
-  return /** @type {!Array.<boolean>} */ (jspb.Message.getRepeatedField(this, 13));
+  return /** @type {!Array.<boolean>} */ (jspb.Message.getField(this, 13));
 };
 
 
@@ -695,10 +717,12 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyBoolList = function()
 
 /**
  * repeated string my_string = 14;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<string>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyStringList = function() {
-  return /** @type {!Array.<string>} */ (jspb.Message.getRepeatedField(this, 14));
+  return /** @type {!Array.<string>} */ (jspb.Message.getField(this, 14));
 };
 
 
@@ -724,15 +748,19 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyStringList = function
 
 /**
  * repeated bytes my_bytes = 15;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!(Array<!Uint8Array>|Array<string>)}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBytesList = function() {
-  return /** @type {!(Array<!Uint8Array>|Array<string>)} */ (jspb.Message.getRepeatedField(this, 15));
+  return /** @type {!(Array<!Uint8Array>|Array<string>)} */ (jspb.Message.getField(this, 15));
 };
 
 
 /**
  * repeated bytes my_bytes = 15;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * This is a type-conversion wrapper around `getMyBytesList()`
  * @return {!Array.<string>}
  */
@@ -744,6 +772,8 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBytesList_asB64 = funct
 
 /**
  * repeated bytes my_bytes = 15;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getMyBytesList()`

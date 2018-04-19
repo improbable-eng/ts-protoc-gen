@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -59,7 +57,6 @@ proto.examplecom.MapMessage.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.MapMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.MapMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -159,7 +156,6 @@ proto.examplecom.MapMessage.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.MapMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.MapMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -238,7 +234,6 @@ proto.examplecom.MapMessage.InternalChildMessage.prototype.toObject = function(o
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.MapMessage.InternalChildMessage} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.MapMessage.InternalChildMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -308,7 +303,6 @@ proto.examplecom.MapMessage.InternalChildMessage.prototype.serializeBinary = fun
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.MapMessage.InternalChildMessage} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.MapMessage.InternalChildMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -333,7 +327,7 @@ proto.examplecom.MapMessage.InternalChildMessage.prototype.getMyString = functio
 
 /** @param {string} value */
 proto.examplecom.MapMessage.InternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 

@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -74,13 +72,12 @@ proto.examplecom.MySimple.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.MySimple} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.MySimple.toObject = function(includeInstance, msg) {
   var f, obj = {
     myString: jspb.Message.getFieldWithDefault(msg, 1, ""),
     myBool: jspb.Message.getFieldWithDefault(msg, 2, false),
-    someLabelsList: jspb.Message.getRepeatedField(msg, 3),
+    someLabelsList: jspb.Message.getField(msg, 3),
     someCodeGeneratorRequest: (f = msg.getSomeCodeGeneratorRequest()) && google_protobuf_compiler_plugin_pb.CodeGeneratorRequest.toObject(includeInstance, f),
     someAny: (f = msg.getSomeAny()) && google_protobuf_any_pb.Any.toObject(includeInstance, f),
     someMethod: (f = msg.getSomeMethod()) && google_protobuf_api_pb.Method.toObject(includeInstance, f),
@@ -226,7 +223,6 @@ proto.examplecom.MySimple.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.MySimple} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.MySimple.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -361,7 +357,7 @@ proto.examplecom.MySimple.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.examplecom.MySimple.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
@@ -378,16 +374,18 @@ proto.examplecom.MySimple.prototype.getMyBool = function() {
 
 /** @param {boolean} value */
 proto.examplecom.MySimple.prototype.setMyBool = function(value) {
-  jspb.Message.setProto3BooleanField(this, 2, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 
 /**
  * repeated string some_labels = 3;
+ * If you change this array by adding, removing or replacing elements, or if you
+ * replace the array itself, then you must call the setter to update it.
  * @return {!Array.<string>}
  */
 proto.examplecom.MySimple.prototype.getSomeLabelsList = function() {
-  return /** @type {!Array.<string>} */ (jspb.Message.getRepeatedField(this, 3));
+  return /** @type {!Array.<string>} */ (jspb.Message.getField(this, 3));
 };
 
 

@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -99,7 +97,6 @@ proto.examplecom.SimpleValue.prototype.toObject = function(opt_includeInstance) 
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.SimpleValue} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.SimpleValue.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -204,7 +201,6 @@ proto.examplecom.SimpleValue.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.SimpleValue} message
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.SimpleValue.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -278,7 +274,7 @@ proto.examplecom.SimpleValue.prototype.getFirstField = function() {
 
 /** @param {string} value */
 proto.examplecom.SimpleValue.prototype.setFirstField = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
@@ -293,7 +289,7 @@ proto.examplecom.SimpleValue.prototype.getSecondField = function() {
 
 /** @param {number} value */
 proto.examplecom.SimpleValue.prototype.setSecondField = function(value) {
-  jspb.Message.setProto3IntField(this, 2, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 
