@@ -23,10 +23,20 @@ type SimpleServiceDoStream = {
   readonly responseType: typeof othercom_external_child_message_pb.ExternalChildMessage;
 };
 
+type SimpleServiceDelete = {
+  readonly methodName: string;
+  readonly service: typeof SimpleService;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof examplecom_simple_service_pb.UnaryRequest;
+  readonly responseType: typeof examplecom_simple_service_pb.UnaryResponse;
+};
+
 export class SimpleService {
   static readonly serviceName: string;
   static readonly DoUnary: SimpleServiceDoUnary;
   static readonly DoStream: SimpleServiceDoStream;
+  static readonly Delete: SimpleServiceDelete;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -54,5 +64,14 @@ export class SimpleServiceClient {
     callback: (error: ServiceError, responseMessage: othercom_external_child_message_pb.ExternalChildMessage|null) => void
   ): void;
   doStream(requestMessage: examplecom_simple_service_pb.StreamRequest, metadata?: grpc.Metadata): ResponseStream<othercom_external_child_message_pb.ExternalChildMessage>;
+  delete(
+    requestMessage: examplecom_simple_service_pb.UnaryRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError, responseMessage: examplecom_simple_service_pb.UnaryResponse|null) => void
+  ): void;
+  delete(
+    requestMessage: examplecom_simple_service_pb.UnaryRequest,
+    callback: (error: ServiceError, responseMessage: examplecom_simple_service_pb.UnaryResponse|null) => void
+  ): void;
 }
 

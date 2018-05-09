@@ -31,6 +31,22 @@ export namespace UnaryRequest {
   }
 }
 
+export class UnaryResponse extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): UnaryResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: UnaryResponse): UnaryResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: UnaryResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): UnaryResponse;
+  static deserializeBinaryFromReader(message: UnaryResponse, reader: jspb.BinaryReader): UnaryResponse;
+}
+
+export namespace UnaryResponse {
+  export type AsObject = {
+  }
+}
+
 export class StreamRequest extends jspb.Message {
   getSomeString(): string;
   setSomeString(value: string): void;
