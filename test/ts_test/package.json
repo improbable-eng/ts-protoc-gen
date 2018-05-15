@@ -2,6 +2,8 @@
   "scripts": {
     "generate": "./generate.sh",
     "build": "npm run generate && rm -rf ./build && tsc",
-    "test": "mocha --require source-map-support/register ./build/src/*.js ./build/src/**/*.js"
+    "test": "npm run test:mocha && npm run test:check-report",
+    "test:mocha": "mocha -R mocha-spec-json-output-reporter --reporter-options fileName=./mocha-report.json --require source-map-support/register ./build/src/*.js ./build/src/**/*.js",
+    "test:check-report": "node ./check-mocha-report.js ./mocha-report.json"
   }
 }

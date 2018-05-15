@@ -6,6 +6,5 @@ npm-debug*
 lib/
 test/ts_test/generated
 test/ts_test/build
-test/js_test/generated
-test/js_test/build
+test/ts_test/mocha-report.json
 bazel-*
