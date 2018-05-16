@@ -36,7 +36,7 @@ describe("service/grpc-web", () => {
   });
 
   it("should generate valid javascript sources", () => {
-    const generatedService = readFileSync(resolve(__dirname, "../../../ts_test/generated/examplecom/simple_service_pb_service.js"), "utf8");
+    const generatedService = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb_service.js"), "utf8");
 
     // Create a sandbox into which the javascript module will be exported.
     const sandbox = { exports: { SimpleService: SimpleService } };
