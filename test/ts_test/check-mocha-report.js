@@ -13,10 +13,17 @@ if (!reportFile) {
 }
 
 try {
-  report = fs.readFileSync(reportFile);
+  var reportContents = fs.readFileSync(reportFile).toString('utf8');
 }
 catch (err) {
   die("Failed to open mocha report file " + reportFile + ": " + err.message);
+}
+
+try {
+  report = JSON.parse(reportContents);
+}
+catch (err) {
+  die("Failed to parse mocha report as JSON: " + err.message);
 }
 
 if (!report || !report.stats || report.stats.tests === 0) {
