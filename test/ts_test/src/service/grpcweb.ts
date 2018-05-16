@@ -28,15 +28,15 @@ describe("service/grpc-web", () => {
   });
 
   it("should not output imports for namespaces that are not used in the service definition", () => {
-    const generatedService = readFileSync(resolve(__dirname, "../../../generated/examplecom/simple_service_pb_service.d.ts"), "utf8");
+  const generatedService = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb_service.d.ts"), "utf8");
     assert.notInclude(generatedService, "google-protobuf/google/protobuf/timestamp_pb");
 
-    const generatedProto = readFileSync(resolve(__dirname, "../../../generated/examplecom/simple_service_pb.js"), "utf8");
+    const generatedProto = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb.js"), "utf8");
     assert.include(generatedProto, "google-protobuf/google/protobuf/timestamp_pb");
   });
 
   it("should generate valid javascript sources", () => {
-    const generatedService = readFileSync(resolve(__dirname, "../../../generated/examplecom/simple_service_pb_service.js"), "utf8");
+    const generatedService = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb_service.js"), "utf8");
 
     // Create a sandbox into which the javascript module will be exported.
     const sandbox = { exports: { SimpleService: SimpleService } };
