@@ -1,6 +1,8 @@
 /**
  * @fileoverview
  * @enhanceable
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -56,6 +58,7 @@ proto.examplecom.UnaryRequest.prototype.toObject = function(opt_includeInstance)
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.UnaryRequest} msg The msg instance to transform.
  * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.UnaryRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -131,6 +134,7 @@ proto.examplecom.UnaryRequest.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.UnaryRequest} message
  * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.UnaryRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -163,7 +167,7 @@ proto.examplecom.UnaryRequest.prototype.getSomeInt64 = function() {
 
 /** @param {number} value */
 proto.examplecom.UnaryRequest.prototype.setSomeInt64 = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -240,6 +244,7 @@ proto.examplecom.StreamRequest.prototype.toObject = function(opt_includeInstance
  *     http://goto/soy-param-migration
  * @param {!proto.examplecom.StreamRequest} msg The msg instance to transform.
  * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.StreamRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -309,6 +314,7 @@ proto.examplecom.StreamRequest.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.examplecom.StreamRequest} message
  * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.examplecom.StreamRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -333,7 +339,7 @@ proto.examplecom.StreamRequest.prototype.getSomeString = function() {
 
 /** @param {string} value */
 proto.examplecom.StreamRequest.prototype.setSomeString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

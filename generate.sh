@@ -13,11 +13,11 @@ npm run build
 
 echo "Generating proto definitions..."
 
-if [ -d $EXAMPLES_GENERATED_DIR ]
+if [ -d "$EXAMPLES_GENERATED_DIR" ]
 then
-    rm -rf $EXAMPLES_GENERATED_DIR
+    rm -rf "$EXAMPLES_GENERATED_DIR"
 fi
-mkdir $EXAMPLES_GENERATED_DIR
+mkdir "$EXAMPLES_GENERATED_DIR"
 
 protoc \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \

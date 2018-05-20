@@ -1,6 +1,8 @@
 /**
  * @fileoverview
  * @enhanceable
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -57,6 +59,7 @@ proto.OrphanMapMessage.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.OrphanMapMessage} msg The msg instance to transform.
  * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanMapMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -128,6 +131,7 @@ proto.OrphanMapMessage.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.OrphanMapMessage} message
  * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanMapMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -199,6 +203,7 @@ proto.OrphanMessage.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.OrphanMessage} msg The msg instance to transform.
  * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -278,6 +283,7 @@ proto.OrphanMessage.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.OrphanMessage} message
  * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -316,7 +322,7 @@ proto.OrphanMessage.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.OrphanMessage.prototype.setMyString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -333,7 +339,7 @@ proto.OrphanMessage.prototype.getMyBool = function() {
 
 /** @param {boolean} value */
 proto.OrphanMessage.prototype.setMyBool = function(value) {
-  jspb.Message.setField(this, 2, value);
+  jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 
@@ -348,7 +354,7 @@ proto.OrphanMessage.prototype.getMyEnum = function() {
 
 /** @param {!proto.OrphanEnum} value */
 proto.OrphanMessage.prototype.setMyEnum = function(value) {
-  jspb.Message.setField(this, 3, value);
+  jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 
@@ -395,6 +401,7 @@ proto.OrphanUnaryRequest.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.OrphanUnaryRequest} msg The msg instance to transform.
  * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanUnaryRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -464,6 +471,7 @@ proto.OrphanUnaryRequest.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.OrphanUnaryRequest} message
  * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanUnaryRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -488,7 +496,7 @@ proto.OrphanUnaryRequest.prototype.getSomeInt64 = function() {
 
 /** @param {number} value */
 proto.OrphanUnaryRequest.prototype.setSomeInt64 = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -535,6 +543,7 @@ proto.OrphanStreamRequest.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.OrphanStreamRequest} msg The msg instance to transform.
  * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanStreamRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
@@ -604,6 +613,7 @@ proto.OrphanStreamRequest.prototype.serializeBinary = function() {
  * format), writing to the given BinaryWriter.
  * @param {!proto.OrphanStreamRequest} message
  * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.OrphanStreamRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
@@ -628,7 +638,7 @@ proto.OrphanStreamRequest.prototype.getSomeString = function() {
 
 /** @param {string} value */
 proto.OrphanStreamRequest.prototype.setSomeString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
