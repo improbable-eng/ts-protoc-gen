@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {WellKnownMessage} from "../generated/examplecom/well_known_message_pb";
+import {WellKnownMessage} from "../examples/generated/examplecom/well_known_message_pb";
 import {Any} from "google-protobuf/google/protobuf/any_pb";
 import {CodeGeneratorRequest} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {Method} from "google-protobuf/google/protobuf/api_pb";

@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {RepeatedPrimitiveMessage} from "../generated/examplecom/repeated_primitive_message_pb";
+import {RepeatedPrimitiveMessage} from "../examples/generated/examplecom/repeated_primitive_message_pb";
 
 describe("repeated primitives", () => {
   it("should allow getting repeated primitive fields", () => {

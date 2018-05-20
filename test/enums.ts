@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {EnumMessage} from "../generated/examplecom/enum_message_pb";
-import {ExternalEnum} from "../generated/othercom/external_enum_pb";
+import {EnumMessage} from "../examples/generated/examplecom/enum_message_pb";
+import {ExternalEnum} from "../examples/generated/othercom/external_enum_pb";
 import InternalEnum = EnumMessage.InternalEnum;
 
 describe("internal enums", () => {

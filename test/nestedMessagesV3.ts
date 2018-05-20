@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {ParentMessageV3} from "../generated/examplecom/parent_message_v3_pb";
-import {ExternalChildMessage} from "../generated/othercom/external_child_message_pb";
+import {ParentMessageV3} from "../examples/generated/examplecom/parent_message_v3_pb";
+import {ExternalChildMessage} from "../examples/generated/othercom/external_child_message_pb";
 import InternalChildMessage = ParentMessageV3.InternalChildMessage;
 
 describe("proto3 - internal nested messages", () => {
