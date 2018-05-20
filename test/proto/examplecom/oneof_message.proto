@@ -16,3 +16,10 @@ message OneOfMessage {
         int64 my_int64 = 4;
     }
 }
+
+message CamelCasedOneOfMessage {
+    oneof camelCasedMessage {
+        int32 anInt = 1;
+        string theString = 2;
+    }
+}
