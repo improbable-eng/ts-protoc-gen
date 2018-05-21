@@ -12,6 +12,8 @@ message UnaryRequest {
   google.protobuf.Timestamp some_timestamp = 2;
 }
 
+message UnaryResponse {}
+
 message StreamRequest {
   string some_string = 1;
 }
@@ -19,4 +21,7 @@ message StreamRequest {
 service SimpleService {
   rpc DoUnary(UnaryRequest) returns (othercom.ExternalChildMessage) {}
   rpc DoStream(StreamRequest) returns (stream othercom.ExternalChildMessage) {}
+
+  // checks that rpc methods that use reserved JS words don't generate invalid code
+  rpc Delete(UnaryRequest) returns (UnaryResponse) {}
 }

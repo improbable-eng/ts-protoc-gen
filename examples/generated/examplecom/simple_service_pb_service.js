@@ -29,6 +29,15 @@ SimpleService.DoStream = {
   responseType: othercom_external_child_message_pb.ExternalChildMessage
 };
 
+SimpleService.Delete = {
+  methodName: "Delete",
+  service: SimpleService,
+  requestStream: false,
+  responseStream: false,
+  requestType: examplecom_simple_service_pb.UnaryRequest,
+  responseType: examplecom_simple_service_pb.UnaryResponse
+};
+
 exports.SimpleService = SimpleService;
 
 function SimpleServiceClient(serviceHost, options) {
@@ -93,6 +102,27 @@ SimpleServiceClient.prototype.doStream = function doStream(requestMessage, metad
       client.close();
     }
   };
+};
+
+SimpleServiceClient.prototype.delete = function pb_delete(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  grpc.unary(SimpleService.Delete, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          callback(Object.assign(new Error(response.statusMessage), { code: response.status, metadata: response.trailers }), null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
 };
 
 exports.SimpleServiceClient = SimpleServiceClient;

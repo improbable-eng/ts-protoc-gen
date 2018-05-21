@@ -1,13 +1,13 @@
-import {resolve} from "path";
-import {readFileSync} from "fs";
-import {assert} from "chai";
+import { resolve } from "path";
+import { readFileSync } from "fs";
+import { assert } from "chai";
 import { grpc } from "grpc-web-client";
 import { createContext, runInContext } from "vm";
 
-import {StubTransportBuilder} from "../__helpers__/fakeGrpcTransport";
-import {ExternalChildMessage} from "../../generated/othercom/external_child_message_pb";
-import {SimpleService, SimpleServiceClient} from "../../generated/examplecom/simple_service_pb_service";
-import {StreamRequest, UnaryRequest} from "../../generated/examplecom/simple_service_pb";
+import { StubTransportBuilder } from "../ts_test/src/__helpers__/fakeGrpcTransport";
+import { ExternalChildMessage } from "../../examples/generated/othercom/external_child_message_pb";
+import { SimpleService, SimpleServiceClient } from "../../examples/generated/examplecom/simple_service_pb_service";
+import { StreamRequest, UnaryRequest } from "../../examples/generated/examplecom/simple_service_pb";
 
 
 describe("service/grpc-web", () => {
@@ -30,15 +30,15 @@ describe("service/grpc-web", () => {
   });
 
   it("should not output imports for namespaces that are not used in the service definition", () => {
-  const generatedService = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb_service.d.ts"), "utf8");
+    const generatedService = readFileSync(resolve(__dirname, "../../examples/generated/examplecom/simple_service_pb_service.d.ts"), "utf8");
     assert.notInclude(generatedService, "google-protobuf/google/protobuf/timestamp_pb");
 
-    const generatedProto = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb.js"), "utf8");
+    const generatedProto = readFileSync(resolve(__dirname, "../../examples/generated/examplecom/simple_service_pb.js"), "utf8");
     assert.include(generatedProto, "google-protobuf/google/protobuf/timestamp_pb");
   });
 
   it("should generate valid javascript sources", () => {
-    const generatedService = readFileSync(resolve(__dirname, "../../../../../generated/examplecom/simple_service_pb_service.js"), "utf8");
+    const generatedService = readFileSync(resolve(__dirname, "../../examples/generated/examplecom/simple_service_pb_service.js"), "utf8");
 
     // Create a sandbox into which the javascript module will be exported.
     const sandbox = { exports: { SimpleService: SimpleService } };
@@ -142,9 +142,9 @@ describe("service/grpc-web", () => {
       });
 
       it("should expose data returned by the unary endpoint", (done) => {
-        const [ payload ] = makePayloads("some value");
+        const [payload] = makePayloads("some value");
 
-        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+        makeClient(new StubTransportBuilder().withMessages([payload]))
           .doUnary(
             new UnaryRequest(),
             (error, response) => {
@@ -164,7 +164,7 @@ describe("service/grpc-web", () => {
             new grpc.Metadata({ "foo": "bar" }),
             (error, response) => {
               assert.ok(sentHeaders !== null, "must have intercepted request headers");
-              assert.deepEqual(sentHeaders.get("foo"), [ "bar" ], "expected headers to have been sent");
+              assert.deepEqual(sentHeaders.get("foo"), ["bar"], "expected headers to have been sent");
               done();
             });
       });
@@ -176,59 +176,59 @@ describe("service/grpc-web", () => {
 
         makeClient(new StubTransportBuilder().withRequestListener(options => targetUrl = options.url))
           .doStream(new StreamRequest())
-            .on("end", () => {
-              assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoStream");
-              done();
-            });
+          .on("end", () => {
+            assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoStream");
+            done();
+          });
       });
 
       it("should invoke onEnd before onStatus", (done) => {
-        const [ payload ] = makePayloads("some value");
+        const [payload] = makePayloads("some value");
         let onEndInvoked = false;
 
-        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+        makeClient(new StubTransportBuilder().withMessages([payload]))
           .doStream(new StreamRequest())
-            .on("end", () => { onEndInvoked = true; })
-            .on("status", () => {
-              assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
-              done();
-            });
+          .on("end", () => { onEndInvoked = true; })
+          .on("status", () => {
+            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+            done();
+          });
       });
 
       it("should handle an error returned ahead of any data by the unary endpoint", (done) => {
         makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
           .doStream(new StreamRequest())
-            .on("status", (status) => {
-              assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
-              assert.equal(status.details, "some error", "expected grpc error details returned");
-              done();
-            });
+          .on("status", (status) => {
+            assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+            assert.equal(status.details, "some error", "expected grpc error details returned");
+            done();
+          });
       });
 
       it("should handle an error returned mid-stream by the unary endpoint", (done) => {
-        const [ payload ] = makePayloads("some value");
+        const [payload] = makePayloads("some value");
         let actualData: ExternalChildMessage[] = [];
 
         makeClient(new StubTransportBuilder()
-          .withMessages([ payload ])
+          .withMessages([payload])
           .withPreTrailersError(grpc.Code.Internal, "some error")
         )
           .doStream(new StreamRequest())
-            .on("data", payload => actualData.push(payload))
-            .on("status", status => {
-              assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
-              assert.equal(status.details, "some error", "expected grpc error details returned");
-              assert.equal(actualData.length, 1, "data sent before error is returned");
-              assert.equal(actualData[0].getMyString(), "some value", "payload is well formed");
-              done();
-            });
+          .on("data", payload => actualData.push(payload))
+          .on("status", status => {
+            assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+            assert.equal(status.details, "some error", "expected grpc error details returned");
+            assert.equal(actualData.length, 1, "data sent before error is returned");
+            assert.equal(actualData[0].getMyString(), "some value", "payload is well formed");
+            done();
+          });
       });
 
       it("should expose the data return by the streaming endpoint", (done) => {
-        const [ payload1, payload2 ] = makePayloads("some value", "another value");
+        const [payload1, payload2] = makePayloads("some value", "another value");
         let actualData: ExternalChildMessage[] = [];
 
-        makeClient(new StubTransportBuilder().withMessages([ payload1, payload2 ]))
+        makeClient(new StubTransportBuilder().withMessages([payload1, payload2]))
           .doStream(new StreamRequest())
           .on("data", payload => actualData.push(payload))
           .on("status", status => {
@@ -246,7 +246,7 @@ describe("service/grpc-web", () => {
         makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
           .doStream(new StreamRequest(), new grpc.Metadata({ "foo": "bar" }))
           .on("end", () => {
-            assert.deepEqual(sentHeaders.get("foo"), [ "bar" ]);
+            assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
             done();
           })
       });
@@ -279,6 +279,13 @@ describe("service/grpc-web", () => {
           done();
         }, 20)
       })
+    });
+
+    describe("methods named using reserved words", () => {
+      it("should route the request to the expected endpoint", () => {
+        const client = new SimpleServiceClient("http://localhost:1")
+        assert.equal(client.delete.name, "pb_delete", "an rpc method named using a reserved word should be prefixed with pb_");
+      });
     });
   });
 });

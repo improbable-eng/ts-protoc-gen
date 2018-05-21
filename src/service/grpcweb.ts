@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, replaceProtoSuffix, getPathToRoot} from "../util";
+import {filePathToPseudoNamespace, normaliseFieldObjectName, replaceProtoSuffix, getPathToRoot} from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
 import {CodePrinter} from "../CodePrinter";
@@ -60,6 +60,7 @@ type ImportDescriptor = {
 type RPCMethodDescriptor = {
   readonly nameAsPascalCase: string,
   readonly nameAsCamelCase: string,
+  readonly functionName: string,
   readonly serviceName: string,
   readonly requestStream: boolean
   readonly responseStream: boolean
@@ -89,9 +90,11 @@ class RPCDescriptor {
     return this.protoService.getMethodList()
       .map(method => {
         const callingTypes = getCallingTypes(method, this.exportMap);
+        const nameAsCamelCase = method.getName()[0].toLowerCase() + method.getName().substr(1);
         return {
           nameAsPascalCase: method.getName(),
-          nameAsCamelCase: method.getName()[0].toLowerCase() + method.getName().substr(1),
+          nameAsCamelCase,
+          functionName: normaliseFieldObjectName(nameAsCamelCase),
           serviceName: this.name,
           requestStream: method.getClientStreaming(),
           responseStream: method.getServerStreaming(),
@@ -298,7 +301,7 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
 
 function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-             .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata, callback) {`)
+             .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(requestMessage, metadata, callback) {`)
       .indent().printLn(`if (arguments.length === 2) {`)
         .indent().printLn(`callback = arguments[1];`)
       .dedent().printLn("}")
@@ -322,7 +325,7 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
 
 function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}(requestMessage, metadata) {`)
+           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(requestMessage, metadata) {`)
     .indent().printLn(`var listeners = {`)
       .indent().printLn(`data: [],`)
                .printLn(`end: [],`)
@@ -363,14 +366,14 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
 
 function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}() {`)
+           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}() {`)
     .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
 
 function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.nameAsCamelCase}() {`)
+           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}() {`)
     .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
   .dedent().printLn(`}`);
 }
