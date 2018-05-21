@@ -78,6 +78,6 @@ describe("oneofs", () => {
   });
 
   it("should handle casing inconsistencies present in protoc-gen's javascript implementation (see #63)", () => {
-    assert.strictEqual(typeof CamelCasedOneOfMessage.CamelCasedMessageCase, "object");
+    assert.strictEqual(typeof CamelCasedOneOfMessage.CamelcasedmessageCase, "object");
   });
 });
