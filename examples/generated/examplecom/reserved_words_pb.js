@@ -834,7 +834,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getAbstract = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setAbstract = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
@@ -849,7 +849,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getBoolean = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setBoolean = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 
@@ -864,7 +864,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getBreak = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setBreak = function(value) {
-  jspb.Message.setProto3StringField(this, 3, value);
+  jspb.Message.setField(this, 3, value);
 };
 
 
@@ -879,7 +879,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getByte = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setByte = function(value) {
-  jspb.Message.setProto3StringField(this, 4, value);
+  jspb.Message.setField(this, 4, value);
 };
 
 
@@ -894,7 +894,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getCase = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setCase = function(value) {
-  jspb.Message.setProto3StringField(this, 5, value);
+  jspb.Message.setField(this, 5, value);
 };
 
 
@@ -909,7 +909,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getCatch = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setCatch = function(value) {
-  jspb.Message.setProto3StringField(this, 6, value);
+  jspb.Message.setField(this, 6, value);
 };
 
 
@@ -924,7 +924,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getChar = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setChar = function(value) {
-  jspb.Message.setProto3StringField(this, 7, value);
+  jspb.Message.setField(this, 7, value);
 };
 
 
@@ -939,7 +939,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getClass = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setClass = function(value) {
-  jspb.Message.setProto3StringField(this, 8, value);
+  jspb.Message.setField(this, 8, value);
 };
 
 
@@ -954,7 +954,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getConst = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setConst = function(value) {
-  jspb.Message.setProto3StringField(this, 9, value);
+  jspb.Message.setField(this, 9, value);
 };
 
 
@@ -969,7 +969,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getContinue = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setContinue = function(value) {
-  jspb.Message.setProto3StringField(this, 10, value);
+  jspb.Message.setField(this, 10, value);
 };
 
 
@@ -984,7 +984,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getDebugger = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setDebugger = function(value) {
-  jspb.Message.setProto3StringField(this, 11, value);
+  jspb.Message.setField(this, 11, value);
 };
 
 
@@ -999,7 +999,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getDefault = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setDefault = function(value) {
-  jspb.Message.setProto3StringField(this, 12, value);
+  jspb.Message.setField(this, 12, value);
 };
 
 
@@ -1014,7 +1014,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getDelete = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setDelete = function(value) {
-  jspb.Message.setProto3StringField(this, 13, value);
+  jspb.Message.setField(this, 13, value);
 };
 
 
@@ -1029,7 +1029,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getDo = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setDo = function(value) {
-  jspb.Message.setProto3StringField(this, 14, value);
+  jspb.Message.setField(this, 14, value);
 };
 
 
@@ -1044,7 +1044,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getDouble = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setDouble = function(value) {
-  jspb.Message.setProto3StringField(this, 15, value);
+  jspb.Message.setField(this, 15, value);
 };
 
 
@@ -1059,7 +1059,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getElse = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setElse = function(value) {
-  jspb.Message.setProto3StringField(this, 16, value);
+  jspb.Message.setField(this, 16, value);
 };
 
 
@@ -1074,7 +1074,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getEnum = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setEnum = function(value) {
-  jspb.Message.setProto3StringField(this, 17, value);
+  jspb.Message.setField(this, 17, value);
 };
 
 
@@ -1089,7 +1089,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getExport = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setExport = function(value) {
-  jspb.Message.setProto3StringField(this, 18, value);
+  jspb.Message.setField(this, 18, value);
 };
 
 
@@ -1104,7 +1104,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getExtends = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setExtends = function(value) {
-  jspb.Message.setProto3StringField(this, 19, value);
+  jspb.Message.setField(this, 19, value);
 };
 
 
@@ -1119,7 +1119,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getFalse = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setFalse = function(value) {
-  jspb.Message.setProto3StringField(this, 20, value);
+  jspb.Message.setField(this, 20, value);
 };
 
 
@@ -1134,7 +1134,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getFinal = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setFinal = function(value) {
-  jspb.Message.setProto3StringField(this, 21, value);
+  jspb.Message.setField(this, 21, value);
 };
 
 
@@ -1149,7 +1149,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getFinally = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setFinally = function(value) {
-  jspb.Message.setProto3StringField(this, 22, value);
+  jspb.Message.setField(this, 22, value);
 };
 
 
@@ -1164,7 +1164,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getFloat = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setFloat = function(value) {
-  jspb.Message.setProto3StringField(this, 23, value);
+  jspb.Message.setField(this, 23, value);
 };
 
 
@@ -1179,7 +1179,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getFor = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setFor = function(value) {
-  jspb.Message.setProto3StringField(this, 24, value);
+  jspb.Message.setField(this, 24, value);
 };
 
 
@@ -1194,7 +1194,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getFunction = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setFunction = function(value) {
-  jspb.Message.setProto3StringField(this, 25, value);
+  jspb.Message.setField(this, 25, value);
 };
 
 
@@ -1209,7 +1209,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getGoto = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setGoto = function(value) {
-  jspb.Message.setProto3StringField(this, 26, value);
+  jspb.Message.setField(this, 26, value);
 };
 
 
@@ -1224,7 +1224,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getIf = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setIf = function(value) {
-  jspb.Message.setProto3StringField(this, 27, value);
+  jspb.Message.setField(this, 27, value);
 };
 
 
@@ -1239,7 +1239,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getImplements = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setImplements = function(value) {
-  jspb.Message.setProto3StringField(this, 28, value);
+  jspb.Message.setField(this, 28, value);
 };
 
 
@@ -1254,7 +1254,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getImport = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setImport = function(value) {
-  jspb.Message.setProto3StringField(this, 29, value);
+  jspb.Message.setField(this, 29, value);
 };
 
 
@@ -1269,7 +1269,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getIn = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setIn = function(value) {
-  jspb.Message.setProto3StringField(this, 30, value);
+  jspb.Message.setField(this, 30, value);
 };
 
 
@@ -1284,7 +1284,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getInstanceof = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setInstanceof = function(value) {
-  jspb.Message.setProto3StringField(this, 31, value);
+  jspb.Message.setField(this, 31, value);
 };
 
 
@@ -1299,7 +1299,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getInt = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setInt = function(value) {
-  jspb.Message.setProto3StringField(this, 32, value);
+  jspb.Message.setField(this, 32, value);
 };
 
 
@@ -1314,7 +1314,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getInterface = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setInterface = function(value) {
-  jspb.Message.setProto3StringField(this, 33, value);
+  jspb.Message.setField(this, 33, value);
 };
 
 
@@ -1329,7 +1329,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getLong = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setLong = function(value) {
-  jspb.Message.setProto3StringField(this, 34, value);
+  jspb.Message.setField(this, 34, value);
 };
 
 
@@ -1344,7 +1344,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getNative = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setNative = function(value) {
-  jspb.Message.setProto3StringField(this, 35, value);
+  jspb.Message.setField(this, 35, value);
 };
 
 
@@ -1359,7 +1359,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getNew = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setNew = function(value) {
-  jspb.Message.setProto3StringField(this, 36, value);
+  jspb.Message.setField(this, 36, value);
 };
 
 
@@ -1374,7 +1374,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getNull = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setNull = function(value) {
-  jspb.Message.setProto3StringField(this, 37, value);
+  jspb.Message.setField(this, 37, value);
 };
 
 
@@ -1389,7 +1389,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getPackage = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setPackage = function(value) {
-  jspb.Message.setProto3StringField(this, 38, value);
+  jspb.Message.setField(this, 38, value);
 };
 
 
@@ -1404,7 +1404,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getPrivate = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setPrivate = function(value) {
-  jspb.Message.setProto3StringField(this, 39, value);
+  jspb.Message.setField(this, 39, value);
 };
 
 
@@ -1419,7 +1419,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getProtected = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setProtected = function(value) {
-  jspb.Message.setProto3StringField(this, 40, value);
+  jspb.Message.setField(this, 40, value);
 };
 
 
@@ -1434,7 +1434,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getPublic = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setPublic = function(value) {
-  jspb.Message.setProto3StringField(this, 41, value);
+  jspb.Message.setField(this, 41, value);
 };
 
 
@@ -1449,7 +1449,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getReturn = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setReturn = function(value) {
-  jspb.Message.setProto3StringField(this, 42, value);
+  jspb.Message.setField(this, 42, value);
 };
 
 
@@ -1464,7 +1464,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getShort = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setShort = function(value) {
-  jspb.Message.setProto3StringField(this, 43, value);
+  jspb.Message.setField(this, 43, value);
 };
 
 
@@ -1479,7 +1479,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getStatic = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setStatic = function(value) {
-  jspb.Message.setProto3StringField(this, 44, value);
+  jspb.Message.setField(this, 44, value);
 };
 
 
@@ -1494,7 +1494,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getSuper = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setSuper = function(value) {
-  jspb.Message.setProto3StringField(this, 45, value);
+  jspb.Message.setField(this, 45, value);
 };
 
 
@@ -1509,7 +1509,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getSwitch = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setSwitch = function(value) {
-  jspb.Message.setProto3StringField(this, 46, value);
+  jspb.Message.setField(this, 46, value);
 };
 
 
@@ -1524,7 +1524,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getSynchronized = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setSynchronized = function(value) {
-  jspb.Message.setProto3StringField(this, 47, value);
+  jspb.Message.setField(this, 47, value);
 };
 
 
@@ -1539,7 +1539,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getThis = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setThis = function(value) {
-  jspb.Message.setProto3StringField(this, 48, value);
+  jspb.Message.setField(this, 48, value);
 };
 
 
@@ -1554,7 +1554,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getThrow = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setThrow = function(value) {
-  jspb.Message.setProto3StringField(this, 49, value);
+  jspb.Message.setField(this, 49, value);
 };
 
 
@@ -1569,7 +1569,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getThrows = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setThrows = function(value) {
-  jspb.Message.setProto3StringField(this, 50, value);
+  jspb.Message.setField(this, 50, value);
 };
 
 
@@ -1584,7 +1584,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getTransient = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setTransient = function(value) {
-  jspb.Message.setProto3StringField(this, 51, value);
+  jspb.Message.setField(this, 51, value);
 };
 
 
@@ -1599,7 +1599,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getTry = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setTry = function(value) {
-  jspb.Message.setProto3StringField(this, 52, value);
+  jspb.Message.setField(this, 52, value);
 };
 
 
@@ -1614,7 +1614,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getTypeof = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setTypeof = function(value) {
-  jspb.Message.setProto3StringField(this, 53, value);
+  jspb.Message.setField(this, 53, value);
 };
 
 
@@ -1629,7 +1629,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getVar = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setVar = function(value) {
-  jspb.Message.setProto3StringField(this, 54, value);
+  jspb.Message.setField(this, 54, value);
 };
 
 
@@ -1644,7 +1644,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getVoid = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setVoid = function(value) {
-  jspb.Message.setProto3StringField(this, 55, value);
+  jspb.Message.setField(this, 55, value);
 };
 
 
@@ -1659,7 +1659,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getVolatile = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setVolatile = function(value) {
-  jspb.Message.setProto3StringField(this, 56, value);
+  jspb.Message.setField(this, 56, value);
 };
 
 
@@ -1674,7 +1674,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getWhile = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setWhile = function(value) {
-  jspb.Message.setProto3StringField(this, 57, value);
+  jspb.Message.setField(this, 57, value);
 };
 
 
@@ -1689,7 +1689,7 @@ proto.examplecom.ReservedWordsMessage.prototype.getWith = function() {
 
 /** @param {string} value */
 proto.examplecom.ReservedWordsMessage.prototype.setWith = function(value) {
-  jspb.Message.setProto3StringField(this, 58, value);
+  jspb.Message.setField(this, 58, value);
 };
 
 
