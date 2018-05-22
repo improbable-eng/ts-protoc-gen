@@ -7,6 +7,6 @@ nodejs_binary(
         "@//:node_modules",
         "@//src",
     ],
-    entry_point = "ts_protoc_gen/src/ts_index",
+    entry_point = "ts_protoc_gen/src/index.ts",
     args = ["--node_options=--expose-gc"],
 )
