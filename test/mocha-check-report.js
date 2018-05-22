@@ -1,7 +1,8 @@
-var fs = require("fs");
+const fs = require("fs");
 
-var reportFile = process.argv[2];
-var report = null;
+const reportFile = process.argv[2];
+let reportContents = "";
+let report = null;
 
 function die(msg) {
   console.log(msg);
@@ -13,7 +14,7 @@ if (!reportFile) {
 }
 
 try {
-  var reportContents = fs.readFileSync(reportFile).toString('utf8');
+  reportContents = fs.readFileSync(reportFile).toString('utf8');
 }
 catch (err) {
   die("Failed to open mocha report file " + reportFile + ": " + err.message);

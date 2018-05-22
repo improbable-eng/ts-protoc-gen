@@ -9,8 +9,8 @@
     "build": "npm run clean && tsc",
     "generate": "./generate.sh",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "./mocha-run-suite.sh 'test/unit/**/*.ts'",
-    "test:integration": "./mocha-run-suite.sh 'test/integration/**/*.ts'",
+    "test:unit": "./test/mocha-run-suite.sh 'test/unit/**/*.ts'",
+    "test:integration": "./test/mocha-run-suite.sh 'test/integration/**/*.ts'",
     "prepublishOnly": "npm run build"
   },
   "bin": {
