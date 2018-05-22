@@ -82,5 +82,9 @@ req.setUsername("johndoe");
 client.getUser(req, (err, user) => { /* ... */ });
 ```
 
+## Examples
+For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples)
+
+
 ## Contributing
 Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
