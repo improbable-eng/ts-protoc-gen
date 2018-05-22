@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {replaceProtoSuffix} from "../../../src/util";
+import {replaceProtoSuffix} from "../../src/util";
 
 describe("util", () => {
 
