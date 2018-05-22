@@ -16,13 +16,13 @@ export type ExportMessageEntry = {
     key: [Type, string],
     value: [Type, string],
   }
-}
+};
 
 export type ExportEnumEntry = {
   pkg: string,
   fileName: string,
   enumOptions: EnumOptions,
-}
+};
 
 export class ExportMap {
   messageMap: {[key: string]: ExportMessageEntry} = {};

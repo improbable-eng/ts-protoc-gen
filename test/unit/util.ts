@@ -24,10 +24,10 @@ describe("util", () => {
       out: "",
     }].forEach(scenario => {
       it(`should map '${scenario.in}' to '${scenario.out}'`, () => {
-        const actual = replaceProtoSuffix(scenario.in)
-        assert.equal(actual, scenario.out)
-      })
-    })
+        const actual = replaceProtoSuffix(scenario.in);
+        assert.equal(actual, scenario.out);
+      });
+    });
   });
 
 });

@@ -52,12 +52,12 @@ describe("service/grpc-web", () => {
         return {
           UnaryRequest: UnaryRequest,
           StreamRequest: StreamRequest,
-        }
+        };
       }
       else if (name.indexOf("/external_child_message_pb") !== -1) {
         return {
           ExternalChildMessage: ExternalChildMessage,
-        }
+        };
       }
       return {};
     };
@@ -96,15 +96,15 @@ describe("service/grpc-web", () => {
         const payload = new ExternalChildMessage();
         payload.setMyString(value);
         return payload;
-      })
+      });
     }
 
     it("should generate a service stub", () => {
       assert.typeOf(SimpleServiceClient, "function", "SimpleServiceClient class shoudl exist");
 
-      const client = new SimpleServiceClient("http://localhost:1")
+      const client = new SimpleServiceClient("http://localhost:1");
 
-      assert.equal(client.serviceHost, "http://localhost:1", "Service host should be stored from constructor")
+      assert.equal(client.serviceHost, "http://localhost:1", "Service host should be stored from constructor");
       assert.typeOf(client.doUnary, "function", "Service should have doUnary method");
       assert.typeOf(client.doStream, "function", "Service should have doStream method");
     });
@@ -118,7 +118,7 @@ describe("service/grpc-web", () => {
         )
           .doUnary(
             new UnaryRequest(),
-            (error, response) => {
+            () => {
               assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoUnary");
               done();
             });
@@ -162,7 +162,7 @@ describe("service/grpc-web", () => {
           .doUnary(
             new UnaryRequest(),
             new grpc.Metadata({ "foo": "bar" }),
-            (error, response) => {
+            () => {
               assert.ok(sentHeaders !== null, "must have intercepted request headers");
               assert.deepEqual(sentHeaders.get("foo"), ["bar"], "expected headers to have been sent");
               done();
@@ -248,7 +248,7 @@ describe("service/grpc-web", () => {
           .on("end", () => {
             assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
             done();
-          })
+          });
       });
 
       it("should allow the caller to cancel the request", (done) => {
@@ -263,9 +263,9 @@ describe("service/grpc-web", () => {
         let onStatusFired = false;
 
         const handle = client.doStream(new StreamRequest())
-          .on("data", message => messageCount++)
+          .on("data", () => messageCount++)
           .on("end", () => onEndFired = true)
-          .on("status", status => onStatusFired = true);
+          .on("status", () => onStatusFired = true);
 
         transport.sendHeaders();
         handle.cancel();
@@ -274,17 +274,17 @@ describe("service/grpc-web", () => {
 
         setTimeout(() => {
           assert.equal(messageCount, 0, "invocation cancelled before any messages were sent");
-          assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled")
-          assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled")
+          assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
+          assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
           done();
-        }, 20)
-      })
+        }, 20);
+      });
     });
 
     describe("methods named using reserved words", () => {
       it("should route the request to the expected endpoint", () => {
-        const client = new SimpleServiceClient("http://localhost:1")
-        assert.equal(client.delete.name, "pb_delete", "an rpc method named using a reserved word should be prefixed with pb_");
+        const client = new SimpleServiceClient("http://localhost:1");
+        assert.equal((client.delete as any).name, "pb_delete", "an rpc method named using a reserved word should be prefixed with pb_");
       });
     });
   });

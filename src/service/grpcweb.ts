@@ -30,7 +30,7 @@ function createFile(output: string, filename: string): CodeGeneratorResponse.Fil
 type CallingTypes = {
   requestType: string
   responseType: string
-}
+};
 
 function getCallingTypes(method: MethodDescriptorProto, exportMap: ExportMap): CallingTypes {
   return {
@@ -100,7 +100,7 @@ class RPCDescriptor {
           responseStream: method.getServerStreaming(),
           requestType: callingTypes.requestType,
           responseType: callingTypes.responseType,
-        }
+        };
       });
   }
 }
@@ -113,7 +113,7 @@ class GrpcWebServiceDescriptor {
   constructor(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
     this.fileDescriptor = fileDescriptor;
     this.exportMap = exportMap;
-    this.pathToRoot = getPathToRoot(fileDescriptor.getName())
+    this.pathToRoot = getPathToRoot(fileDescriptor.getName());
   }
 
   get filename(): string {
@@ -133,12 +133,12 @@ class GrpcWebServiceDescriptor {
           return {
             namespace,
             path: WellKnownTypesMap[dependency],
-          }
+          };
         } else {
           return {
             namespace,
             path: `${this.pathToRoot}${replaceProtoSuffix(replaceProtoSuffix(dependency))}`
-          }
+          };
         }
       });
     const hostProto = {
@@ -152,7 +152,7 @@ class GrpcWebServiceDescriptor {
     return this.fileDescriptor.getServiceList()
       .map(service => {
         return new RPCDescriptor(this, service, this.exportMap);
-      })
+      });
   }
 }
 
@@ -415,7 +415,7 @@ function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescri
 }
 
 function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): ResponseStream<${method.responseType}>;`)
+  printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): ResponseStream<${method.responseType}>;`);
 }
 
 function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
