@@ -27,7 +27,7 @@ export function oneOfName(name: string) {
 export function generateIndent(indentLevel: number): string {
   let indent = "";
   for (let i = 0; i < indentLevel; i++) {
-    indent += "  "
+    indent += "  ";
   }
   return indent;
 }
