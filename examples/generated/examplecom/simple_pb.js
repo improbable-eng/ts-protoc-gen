@@ -384,14 +384,14 @@ proto.examplecom.MySimple.prototype.setMyBool = function(value) {
 
 /**
  * repeated string some_labels = 3;
- * @return {!Array.<string>}
+ * @return {!Array<string>}
  */
 proto.examplecom.MySimple.prototype.getSomeLabelsList = function() {
-  return /** @type {!Array.<string>} */ (jspb.Message.getRepeatedField(this, 3));
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
 };
 
 
-/** @param {!Array.<string>} value */
+/** @param {!Array<string>} value */
 proto.examplecom.MySimple.prototype.setSomeLabelsList = function(value) {
   jspb.Message.setField(this, 3, value || []);
 };

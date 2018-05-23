@@ -113,7 +113,7 @@ proto.examplecom.EnumMessage.deserializeBinaryFromReader = function(msg, reader)
       msg.setInternalEnum(value);
       break;
     case 2:
-      var value = /** @type {!Array.<!proto.examplecom.EnumMessage.InternalEnum>} */ (reader.readPackedEnum());
+      var value = /** @type {!Array<!proto.examplecom.EnumMessage.InternalEnum>} */ (reader.readPackedEnum());
       msg.setInternalEnumsList(value);
       break;
     case 3:
@@ -121,7 +121,7 @@ proto.examplecom.EnumMessage.deserializeBinaryFromReader = function(msg, reader)
       msg.setExternalEnum(value);
       break;
     case 4:
-      var value = /** @type {!Array.<!proto.othercom.ExternalEnum>} */ (reader.readPackedEnum());
+      var value = /** @type {!Array<!proto.othercom.ExternalEnum>} */ (reader.readPackedEnum());
       msg.setExternalEnumsList(value);
       break;
     default:
@@ -211,14 +211,14 @@ proto.examplecom.EnumMessage.prototype.setInternalEnum = function(value) {
 
 /**
  * repeated InternalEnum internal_enums = 2;
- * @return {!Array.<!proto.examplecom.EnumMessage.InternalEnum>}
+ * @return {!Array<!proto.examplecom.EnumMessage.InternalEnum>}
  */
 proto.examplecom.EnumMessage.prototype.getInternalEnumsList = function() {
-  return /** @type {!Array.<!proto.examplecom.EnumMessage.InternalEnum>} */ (jspb.Message.getRepeatedField(this, 2));
+  return /** @type {!Array<!proto.examplecom.EnumMessage.InternalEnum>} */ (jspb.Message.getRepeatedField(this, 2));
 };
 
 
-/** @param {!Array.<!proto.examplecom.EnumMessage.InternalEnum>} value */
+/** @param {!Array<!proto.examplecom.EnumMessage.InternalEnum>} value */
 proto.examplecom.EnumMessage.prototype.setInternalEnumsList = function(value) {
   jspb.Message.setField(this, 2, value || []);
 };
@@ -255,14 +255,14 @@ proto.examplecom.EnumMessage.prototype.setExternalEnum = function(value) {
 
 /**
  * repeated othercom.ExternalEnum external_enums = 4;
- * @return {!Array.<!proto.othercom.ExternalEnum>}
+ * @return {!Array<!proto.othercom.ExternalEnum>}
  */
 proto.examplecom.EnumMessage.prototype.getExternalEnumsList = function() {
-  return /** @type {!Array.<!proto.othercom.ExternalEnum>} */ (jspb.Message.getRepeatedField(this, 4));
+  return /** @type {!Array<!proto.othercom.ExternalEnum>} */ (jspb.Message.getRepeatedField(this, 4));
 };
 
 
-/** @param {!Array.<!proto.othercom.ExternalEnum>} value */
+/** @param {!Array<!proto.othercom.ExternalEnum>} value */
 proto.examplecom.EnumMessage.prototype.setExternalEnumsList = function(value) {
   jspb.Message.setField(this, 4, value || []);
 };
