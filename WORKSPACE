@@ -25,14 +25,14 @@ git_repository(
   remote = "https://github.com/bazelbuild/rules_nodejs.git",
   tag = "0.9.1",
 )
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
 node_repositories(package_json = ["//:package.json"])
 
 # installs our node_modules
-yarn_install(
+npm_install(
   name = "deps",
   package_json = "//:package.json",
-  yarn_lock = "//:yarn.lock",
+  package_lock_json = "//:package-lock.json",
 )
 
 git_repository(

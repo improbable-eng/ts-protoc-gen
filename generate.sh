@@ -6,12 +6,10 @@ set -e
 EXAMPLES_GENERATED_DIR=examples/generated
 
 echo "Ensuring we have NPM packages installed..."
-# npm install
-yarn
+npm install
 
 echo "Compiling ts-protoc-gen..."
-# npm run build
-yarn build
+npm run build
 
 echo "Generating proto definitions..."
 
