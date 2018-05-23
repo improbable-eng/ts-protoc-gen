@@ -4,14 +4,6 @@ import { Transport, TransportConstructor, TransportOptions } from "grpc-web-clie
 import * as _ from "lodash";
 import { TextEncoder } from "text-encoding";
 
-function frameRequest(request: Message): ArrayBufferView {
-  const bytes = request.serializeBinary();
-  const frame = new ArrayBuffer(bytes.byteLength + 5);
-  new DataView(frame, 1, 4).setUint32(0, bytes.length, false /* big endian */);
-  new Uint8Array(frame, 5).set(bytes);
-  return new Uint8Array(frame);
-}
-
 function frameResponse(request: Message): Uint8Array {
   const bytes = request.serializeBinary();
   const frame = new ArrayBuffer(bytes.byteLength + 5);
@@ -209,7 +201,7 @@ export class StubTransportBuilder {
   }
 }
 
-interface TriggerableTransport {
+export interface TriggerableTransport {
   (options: TransportOptions): Transport;
   sendHeaders(): boolean;
   sendMessages(): boolean;
