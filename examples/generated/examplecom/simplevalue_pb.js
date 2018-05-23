@@ -278,7 +278,7 @@ proto.examplecom.SimpleValue.prototype.getFirstField = function() {
 
 /** @param {string} value */
 proto.examplecom.SimpleValue.prototype.setFirstField = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
@@ -293,7 +293,7 @@ proto.examplecom.SimpleValue.prototype.getSecondField = function() {
 
 /** @param {number} value */
 proto.examplecom.SimpleValue.prototype.setSecondField = function(value) {
-  jspb.Message.setProto3IntField(this, 2, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 

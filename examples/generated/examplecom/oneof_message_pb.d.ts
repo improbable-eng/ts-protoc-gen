@@ -73,3 +73,38 @@ export namespace OneOfMessage {
   }
 }
 
+export class CamelCasedOneOfMessage extends jspb.Message {
+  hasAnint(): boolean;
+  clearAnint(): void;
+  getAnint(): number;
+  setAnint(value: number): void;
+
+  hasThestring(): boolean;
+  clearThestring(): void;
+  getThestring(): string;
+  setThestring(value: string): void;
+
+  getCamelcasedmessageCase(): CamelCasedOneOfMessage.CamelcasedmessageCase;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CamelCasedOneOfMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: CamelCasedOneOfMessage): CamelCasedOneOfMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CamelCasedOneOfMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CamelCasedOneOfMessage;
+  static deserializeBinaryFromReader(message: CamelCasedOneOfMessage, reader: jspb.BinaryReader): CamelCasedOneOfMessage;
+}
+
+export namespace CamelCasedOneOfMessage {
+  export type AsObject = {
+    anint: number,
+    thestring: string,
+  }
+
+  export enum CamelcasedmessageCase {
+    CAMELCASEDMESSAGE_NOT_SET = 0,
+    ANINT = 1,
+    THESTRING = 2,
+  }
+}
+

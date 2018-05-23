@@ -333,7 +333,7 @@ proto.examplecom.MapMessage.InternalChildMessage.prototype.getMyString = functio
 
 /** @param {string} value */
 proto.examplecom.MapMessage.InternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 

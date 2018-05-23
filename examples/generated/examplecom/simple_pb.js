@@ -361,7 +361,7 @@ proto.examplecom.MySimple.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.examplecom.MySimple.prototype.setMyString = function(value) {
-  jspb.Message.setProto3StringField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
@@ -378,7 +378,7 @@ proto.examplecom.MySimple.prototype.getMyBool = function() {
 
 /** @param {boolean} value */
 proto.examplecom.MySimple.prototype.setMyBool = function(value) {
-  jspb.Message.setProto3BooleanField(this, 2, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 
