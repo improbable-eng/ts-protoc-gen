@@ -3,10 +3,10 @@ load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
 
 nodejs_binary(
     name = "protoc-gen-ts",
+    node_modules = "@deps//:node_modules",
     data = [
-        "@//:node_modules",
-        "@//src",
+      "//src:src",
     ],
-    entry_point = "ts_protoc_gen/src/ts_index",
+    entry_point = "ts_protoc_gen/src/index",
     args = ["--node_options=--expose-gc"],
 )

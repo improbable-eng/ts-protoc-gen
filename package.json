@@ -8,7 +8,9 @@
     "clean": "rm -rf lib",
     "build": "npm run clean && tsc",
     "generate": "./generate.sh",
-    "test": "mocha --recursive -r ts-node/register -r source-map-support/register 'test/**/*.ts'",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "./test/mocha-run-suite.sh 'test/unit/**/*.ts'",
+    "test:integration": "./test/mocha-run-suite.sh 'test/integration/**/*.ts'",
     "prepublishOnly": "npm run build"
   },
   "bin": {
@@ -35,7 +37,6 @@
     "@types/lodash": "^4.14.106",
     "@types/mocha": "^2.2.46",
     "@types/node": "^7.0.52",
-    "@types/text-encoding": "0.0.32",
     "babel": "^6.5.2",
     "chai": "^3.5.0",
     "grpc-tools": "^1.6.6",

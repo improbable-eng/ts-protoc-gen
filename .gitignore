@@ -4,7 +4,5 @@ node-debug.log
 .idea/
 npm-debug*
 lib/
-test/ts_test/generated
-test/ts_test/build
-test/ts_test/mocha-report.json
+**/mocha-report.json
 bazel-*
