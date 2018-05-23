@@ -368,15 +368,15 @@ proto.examplecom.ParentMessageV3.prototype.hasInternalChildMessage = function() 
 
 /**
  * repeated InternalChildMessage internal_children = 2;
- * @return {!Array<!proto.examplecom.ParentMessageV3.InternalChildMessage>}
+ * @return {!Array.<!proto.examplecom.ParentMessageV3.InternalChildMessage>}
  */
 proto.examplecom.ParentMessageV3.prototype.getInternalChildrenList = function() {
-  return /** @type{!Array<!proto.examplecom.ParentMessageV3.InternalChildMessage>} */ (
+  return /** @type{!Array.<!proto.examplecom.ParentMessageV3.InternalChildMessage>} */ (
     jspb.Message.getRepeatedWrapperField(this, proto.examplecom.ParentMessageV3.InternalChildMessage, 2));
 };
 
 
-/** @param {!Array<!proto.examplecom.ParentMessageV3.InternalChildMessage>} value */
+/** @param {!Array.<!proto.examplecom.ParentMessageV3.InternalChildMessage>} value */
 proto.examplecom.ParentMessageV3.prototype.setInternalChildrenList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 2, value);
 };
@@ -429,15 +429,15 @@ proto.examplecom.ParentMessageV3.prototype.hasExternalChildMessage = function() 
 
 /**
  * repeated othercom.ExternalChildMessage external_children = 4;
- * @return {!Array<!proto.othercom.ExternalChildMessage>}
+ * @return {!Array.<!proto.othercom.ExternalChildMessage>}
  */
 proto.examplecom.ParentMessageV3.prototype.getExternalChildrenList = function() {
-  return /** @type{!Array<!proto.othercom.ExternalChildMessage>} */ (
+  return /** @type{!Array.<!proto.othercom.ExternalChildMessage>} */ (
     jspb.Message.getRepeatedWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 4));
 };
 
 
-/** @param {!Array<!proto.othercom.ExternalChildMessage>} value */
+/** @param {!Array.<!proto.othercom.ExternalChildMessage>} value */
 proto.examplecom.ParentMessageV3.prototype.setExternalChildrenList = function(value) {
   jspb.Message.setRepeatedWrapperField(this, 4, value);
 };

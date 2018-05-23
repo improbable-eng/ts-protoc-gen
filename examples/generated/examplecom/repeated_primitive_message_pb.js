@@ -118,55 +118,55 @@ proto.examplecom.RepeatedPrimitiveMessage.deserializeBinaryFromReader = function
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!Array<number>} */ (reader.readPackedDouble());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedDouble());
       msg.setMyDoubleList(value);
       break;
     case 2:
-      var value = /** @type {!Array<number>} */ (reader.readPackedFloat());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedFloat());
       msg.setMyFloatList(value);
       break;
     case 3:
-      var value = /** @type {!Array<number>} */ (reader.readPackedInt32());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedInt32());
       msg.setMyInt32List(value);
       break;
     case 4:
-      var value = /** @type {!Array<number>} */ (reader.readPackedInt64());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedInt64());
       msg.setMyInt64List(value);
       break;
     case 5:
-      var value = /** @type {!Array<number>} */ (reader.readPackedUint32());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedUint32());
       msg.setMyUint32List(value);
       break;
     case 6:
-      var value = /** @type {!Array<number>} */ (reader.readPackedUint64());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedUint64());
       msg.setMyUint64List(value);
       break;
     case 7:
-      var value = /** @type {!Array<number>} */ (reader.readPackedSint32());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedSint32());
       msg.setMySint32List(value);
       break;
     case 8:
-      var value = /** @type {!Array<number>} */ (reader.readPackedSint64());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedSint64());
       msg.setMySint64List(value);
       break;
     case 9:
-      var value = /** @type {!Array<number>} */ (reader.readPackedFixed32());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedFixed32());
       msg.setMyFixed32List(value);
       break;
     case 10:
-      var value = /** @type {!Array<number>} */ (reader.readPackedFixed64());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedFixed64());
       msg.setMyFixed64List(value);
       break;
     case 11:
-      var value = /** @type {!Array<number>} */ (reader.readPackedSfixed32());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedSfixed32());
       msg.setMySfixed32List(value);
       break;
     case 12:
-      var value = /** @type {!Array<number>} */ (reader.readPackedSfixed64());
+      var value = /** @type {!Array.<number>} */ (reader.readPackedSfixed64());
       msg.setMySfixed64List(value);
       break;
     case 13:
-      var value = /** @type {!Array<boolean>} */ (reader.readPackedBool());
+      var value = /** @type {!Array.<boolean>} */ (reader.readPackedBool());
       msg.setMyBoolList(value);
       break;
     case 14:
@@ -316,14 +316,14 @@ proto.examplecom.RepeatedPrimitiveMessage.serializeBinaryToWriter = function(mes
 
 /**
  * repeated double my_double = 1;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyDoubleList = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedFloatingPointField(this, 1));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedFloatingPointField(this, 1));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyDoubleList = function(value) {
   jspb.Message.setField(this, 1, value || []);
 };
@@ -345,14 +345,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyDoubleList = function
 
 /**
  * repeated float my_float = 2;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyFloatList = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedFloatingPointField(this, 2));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedFloatingPointField(this, 2));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyFloatList = function(value) {
   jspb.Message.setField(this, 2, value || []);
 };
@@ -374,14 +374,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyFloatList = function(
 
 /**
  * repeated int32 my_int32 = 3;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyInt32List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 3));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 3));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyInt32List = function(value) {
   jspb.Message.setField(this, 3, value || []);
 };
@@ -403,14 +403,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyInt32List = function(
 
 /**
  * repeated int64 my_int64 = 4;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyInt64List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 4));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 4));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyInt64List = function(value) {
   jspb.Message.setField(this, 4, value || []);
 };
@@ -432,14 +432,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyInt64List = function(
 
 /**
  * repeated uint32 my_uint32 = 5;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyUint32List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 5));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 5));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyUint32List = function(value) {
   jspb.Message.setField(this, 5, value || []);
 };
@@ -461,14 +461,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyUint32List = function
 
 /**
  * repeated uint64 my_uint64 = 6;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyUint64List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 6));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 6));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyUint64List = function(value) {
   jspb.Message.setField(this, 6, value || []);
 };
@@ -490,14 +490,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyUint64List = function
 
 /**
  * repeated sint32 my_sint32 = 7;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySint32List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 7));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 7));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMySint32List = function(value) {
   jspb.Message.setField(this, 7, value || []);
 };
@@ -519,14 +519,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySint32List = function
 
 /**
  * repeated sint64 my_sint64 = 8;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySint64List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 8));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 8));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMySint64List = function(value) {
   jspb.Message.setField(this, 8, value || []);
 };
@@ -548,14 +548,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySint64List = function
 
 /**
  * repeated fixed32 my_fixed32 = 9;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyFixed32List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 9));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 9));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyFixed32List = function(value) {
   jspb.Message.setField(this, 9, value || []);
 };
@@ -577,14 +577,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyFixed32List = functio
 
 /**
  * repeated fixed64 my_fixed64 = 10;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyFixed64List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 10));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 10));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyFixed64List = function(value) {
   jspb.Message.setField(this, 10, value || []);
 };
@@ -606,14 +606,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyFixed64List = functio
 
 /**
  * repeated sfixed32 my_sfixed32 = 11;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySfixed32List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 11));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 11));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMySfixed32List = function(value) {
   jspb.Message.setField(this, 11, value || []);
 };
@@ -635,14 +635,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySfixed32List = functi
 
 /**
  * repeated sfixed64 my_sfixed64 = 12;
- * @return {!Array<number>}
+ * @return {!Array.<number>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMySfixed64List = function() {
-  return /** @type {!Array<number>} */ (jspb.Message.getRepeatedField(this, 12));
+  return /** @type {!Array.<number>} */ (jspb.Message.getRepeatedField(this, 12));
 };
 
 
-/** @param {!Array<number>} value */
+/** @param {!Array.<number>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMySfixed64List = function(value) {
   jspb.Message.setField(this, 12, value || []);
 };
@@ -666,14 +666,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMySfixed64List = functi
  * repeated bool my_bool = 13;
  * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
  * You should avoid comparisons like {@code val === true/false} in those cases.
- * @return {!Array<boolean>}
+ * @return {!Array.<boolean>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBoolList = function() {
-  return /** @type {!Array<boolean>} */ (jspb.Message.getRepeatedField(this, 13));
+  return /** @type {!Array.<boolean>} */ (jspb.Message.getRepeatedField(this, 13));
 };
 
 
-/** @param {!Array<boolean>} value */
+/** @param {!Array.<boolean>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyBoolList = function(value) {
   jspb.Message.setField(this, 13, value || []);
 };
@@ -695,14 +695,14 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.clearMyBoolList = function()
 
 /**
  * repeated string my_string = 14;
- * @return {!Array<string>}
+ * @return {!Array.<string>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyStringList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 14));
+  return /** @type {!Array.<string>} */ (jspb.Message.getRepeatedField(this, 14));
 };
 
 
-/** @param {!Array<string>} value */
+/** @param {!Array.<string>} value */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.setMyStringList = function(value) {
   jspb.Message.setField(this, 14, value || []);
 };
@@ -734,10 +734,10 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBytesList = function() 
 /**
  * repeated bytes my_bytes = 15;
  * This is a type-conversion wrapper around `getMyBytesList()`
- * @return {!Array<string>}
+ * @return {!Array.<string>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBytesList_asB64 = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.bytesListAsB64(
+  return /** @type {!Array.<string>} */ (jspb.Message.bytesListAsB64(
       this.getMyBytesList()));
 };
 
@@ -747,10 +747,10 @@ proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBytesList_asB64 = funct
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getMyBytesList()`
- * @return {!Array<!Uint8Array>}
+ * @return {!Array.<!Uint8Array>}
  */
 proto.examplecom.RepeatedPrimitiveMessage.prototype.getMyBytesList_asU8 = function() {
-  return /** @type {!Array<!Uint8Array>} */ (jspb.Message.bytesListAsU8(
+  return /** @type {!Array.<!Uint8Array>} */ (jspb.Message.bytesListAsU8(
       this.getMyBytesList()));
 };
 
