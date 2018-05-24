@@ -1,7 +1,16 @@
+## Unreleased
+
+### Changes
+* Don't use reserved keywords as function names in grpc service stubs [@jonahbron](https://github.com/jonahbron) and [@jonny-improbable]((https://github.com/jonny-improbable)) in [#61](https://github.com/improbable-eng/ts-protoc-gen/pull/61)
+
+### Fixes
+* Fix casing mismatch for oneOf declarations. [@jonnyreeves](https://github.com/jonnyreeves) in [#67](https://github.com/improbable-eng/ts-protoc-gen/pull/67)
+* Fix Bazel build [@coltonmorris](https://github.com/coltonmorris) in [#71](https://github.com/improbable-eng/ts-protoc-gen/pull/71)
+
 ## 0.6.0
 
 ### Changes
-* Generate gRPC Service Stubs for use with grpc-web [@jonahbron](https://github.com/jonahbron) and [@jonny-improbable]((https://github.com/jonny-improbable)) in [#40](https://github.com/improbable-eng/ts-protoc-gen/pull/40)
+* Generate gRPC Service Stubs for use with grpc-web [@jonahbron](https://github.com/jonahbron) and [@jonny-improbable](https://github.com/jonny-improbable) in [#40](https://github.com/improbable-eng/ts-protoc-gen/pull/40)
 * Fix filename manipulation bug which would cause problems for users who store generated files with `.proto` in the path. [@easyCZ](https://github.com/easyCZ) in [#56](https://github.com/improbable-eng/ts-protoc-gen/pull/56)
 
 ## 0.5.2
