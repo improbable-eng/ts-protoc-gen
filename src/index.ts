@@ -4,6 +4,7 @@ import {replaceProtoSuffix, withAllStdIn} from "./util";
 import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
+import {generateGrpcService} from "./service/grpcnative";
 
 /**
  * This is the ProtoC compiler plugin.
@@ -26,6 +27,7 @@ withAllStdIn((inputBuff: Buffer) => {
 
     // Generate separate `.ts` files for services if param is set
     const generateServices = codeGenRequest.getParameter() === "service=true";
+    const generateGrpc = codeGenRequest.getParameter() === "grpc=true";
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       fileNameToDescriptor[protoFileDescriptor.getName()] = protoFileDescriptor;
@@ -38,6 +40,11 @@ withAllStdIn((inputBuff: Buffer) => {
       thisFile.setName(outputFileName + ".d.ts");
       thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
       codeGenResponse.addFile(thisFile);
+
+      if (generateGrpc) {
+        generateGrpcService(outputFileName, fileNameToDescriptor[fileName], exportMap)
+          .forEach(file => codeGenResponse.addFile(file));
+      }
 
       if (generateServices) {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
