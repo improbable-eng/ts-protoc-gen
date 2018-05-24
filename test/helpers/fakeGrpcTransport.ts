@@ -2,7 +2,6 @@ import { Message } from "google-protobuf";
 import { grpc } from "grpc-web-client";
 import { Transport, TransportConstructor, TransportOptions } from "grpc-web-client/dist/transports/Transport";
 import * as _ from "lodash";
-import { TextEncoder } from "text-encoding";
 
 function frameResponse(request: Message): Uint8Array {
   const bytes = request.serializeBinary();
@@ -17,7 +16,7 @@ function frameTrailers(trailers: grpc.Metadata): Uint8Array {
   trailers.forEach((key: string, values: string[]) => {
     asString += `${key}: ${values.join(", ")}\r\n`;
   });
-  const bytes = new TextEncoder().encode(asString);
+  const bytes = new Buffer(asString);
   const frame = new ArrayBuffer(bytes.byteLength + 5);
   const dataview = new DataView(frame, 0, 5);
   dataview.setUint32(1, bytes.length, false /* big endian */);
