@@ -1,4 +1,4 @@
-## Unreleased
+## 0.7.0-pre (Unreleased)
 
 ### Changes
 * Don't use reserved keywords as function names in grpc service stubs [@jonahbron](https://github.com/jonahbron) and [@jonny-improbable]((https://github.com/jonny-improbable)) in [#61](https://github.com/improbable-eng/ts-protoc-gen/pull/61)
