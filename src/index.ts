@@ -26,8 +26,8 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     // Generate separate `.ts` files for services if param is set
-    const generateServices = codeGenRequest.getParameter() === "service=true";
-    const generateGrpc = codeGenRequest.getParameter() === "grpc=true";
+    const generateServices = codeGenRequest.getParameter() === "service=grpc-web";
+    const generateGrpc = codeGenRequest.getParameter() === "service=node-grpc";
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       fileNameToDescriptor[protoFileDescriptor.getName()] = protoFileDescriptor;
@@ -44,9 +44,7 @@ withAllStdIn((inputBuff: Buffer) => {
       if (generateGrpc) {
         generateGrpcService(outputFileName, fileNameToDescriptor[fileName], exportMap)
           .forEach(file => codeGenResponse.addFile(file));
-      }
-
-      if (generateServices) {
+      } else if (generateServices) {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
           .forEach(file => codeGenResponse.addFile(file));
       }
