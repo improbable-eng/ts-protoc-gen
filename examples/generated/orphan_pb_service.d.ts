@@ -38,6 +38,13 @@ interface ResponseStream<T> {
   on(type: 'end', handler: () => void): ResponseStream<T>;
   on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;
 }
+interface RequestStream<T> {
+  write(message: T): void;
+  end(): void;
+  cancel(): void;
+  on(type: 'end', handler: () => void): RequestStream<T>;
+  on(type: 'status', handler: (status: Status) => void): RequestStream<T>;
+}
 
 export class OrphanServiceClient {
   readonly serviceHost: string;

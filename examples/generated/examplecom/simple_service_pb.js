@@ -12,6 +12,7 @@ var goog = jspb;
 var global = Function('return this')();
 
 var othercom_external_child_message_pb = require('../othercom/external_child_message_pb.js');
+var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
 var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 goog.exportSymbol('proto.examplecom.StreamRequest', null, global);
 goog.exportSymbol('proto.examplecom.UnaryRequest', null, global);

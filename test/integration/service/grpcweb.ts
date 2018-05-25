@@ -21,12 +21,12 @@ describe("service/grpc-web", () => {
     assert.strictEqual(SimpleService.DoUnary.requestType, UnaryRequest);
     assert.strictEqual(SimpleService.DoUnary.responseType, ExternalChildMessage);
 
-    assert.strictEqual(SimpleService.DoStream.methodName, "DoStream");
-    assert.strictEqual(SimpleService.DoStream.service, SimpleService);
-    assert.strictEqual(SimpleService.DoStream.requestStream, false);
-    assert.strictEqual(SimpleService.DoStream.responseStream, true);
-    assert.strictEqual(SimpleService.DoStream.requestType, StreamRequest);
-    assert.strictEqual(SimpleService.DoStream.responseType, ExternalChildMessage);
+    assert.strictEqual(SimpleService.DoServerStream.methodName, "DoServerStream");
+    assert.strictEqual(SimpleService.DoServerStream.service, SimpleService);
+    assert.strictEqual(SimpleService.DoServerStream.requestStream, false);
+    assert.strictEqual(SimpleService.DoServerStream.responseStream, true);
+    assert.strictEqual(SimpleService.DoServerStream.requestType, StreamRequest);
+    assert.strictEqual(SimpleService.DoServerStream.responseType, ExternalChildMessage);
   });
 
   it("should not output imports for namespaces that are not used in the service definition", () => {
@@ -67,13 +67,13 @@ describe("service/grpc-web", () => {
     assert.strictEqual(typeof sandbox.exports.SimpleService, "function");
     assert.strictEqual(sandbox.exports.SimpleService.serviceName, "examplecom.SimpleService");
 
-    assert.strictEqual(typeof sandbox.exports.SimpleService.DoStream, "object");
-    assert.strictEqual(sandbox.exports.SimpleService.DoStream.methodName, "DoStream");
-    assert.strictEqual(sandbox.exports.SimpleService.DoStream.service, sandbox.exports.SimpleService);
-    assert.strictEqual(sandbox.exports.SimpleService.DoStream.requestStream, false);
-    assert.strictEqual(sandbox.exports.SimpleService.DoStream.responseStream, true);
-    assert.strictEqual(sandbox.exports.SimpleService.DoStream.requestType, StreamRequest);
-    assert.strictEqual(sandbox.exports.SimpleService.DoStream.responseType, ExternalChildMessage);
+    assert.strictEqual(typeof sandbox.exports.SimpleService.DoServerStream, "object");
+    assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.methodName, "DoServerStream");
+    assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.service, sandbox.exports.SimpleService);
+    assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.requestStream, false);
+    assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.responseStream, true);
+    assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.requestType, StreamRequest);
+    assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.responseType, ExternalChildMessage);
 
     assert.strictEqual(typeof sandbox.exports.SimpleService.DoUnary, "object");
     assert.strictEqual(sandbox.exports.SimpleService.DoUnary.methodName, "DoUnary");
@@ -106,7 +106,7 @@ describe("service/grpc-web", () => {
 
       assert.equal(client.serviceHost, "http://localhost:1", "Service host should be stored from constructor");
       assert.typeOf(client.doUnary, "function", "Service should have doUnary method");
-      assert.typeOf(client.doStream, "function", "Service should have doStream method");
+      assert.typeOf(client.doServerStream, "function", "Service should have doServerStream method");
     });
 
     describe("unary", () => {
@@ -170,14 +170,14 @@ describe("service/grpc-web", () => {
       });
     });
 
-    describe("streaming", () => {
+    describe("server streaming", () => {
       it("should route the request to the expected endpoint", (done) => {
         let targetUrl = "";
 
         makeClient(new StubTransportBuilder().withRequestListener(options => targetUrl = options.url))
-          .doStream(new StreamRequest())
+          .doServerStream(new StreamRequest())
           .on("end", () => {
-            assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoStream");
+            assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoServerStream");
             done();
           });
       });
@@ -187,7 +187,7 @@ describe("service/grpc-web", () => {
         let onEndInvoked = false;
 
         makeClient(new StubTransportBuilder().withMessages([payload]))
-          .doStream(new StreamRequest())
+          .doServerStream(new StreamRequest())
           .on("end", () => { onEndInvoked = true; })
           .on("status", () => {
             assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
@@ -197,7 +197,7 @@ describe("service/grpc-web", () => {
 
       it("should handle an error returned ahead of any data by the unary endpoint", (done) => {
         makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
-          .doStream(new StreamRequest())
+          .doServerStream(new StreamRequest())
           .on("status", (status) => {
             assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
             assert.equal(status.details, "some error", "expected grpc error details returned");
@@ -213,7 +213,7 @@ describe("service/grpc-web", () => {
           .withMessages([payload])
           .withPreTrailersError(grpc.Code.Internal, "some error")
         )
-          .doStream(new StreamRequest())
+          .doServerStream(new StreamRequest())
           .on("data", payload => actualData.push(payload))
           .on("status", status => {
             assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
@@ -229,7 +229,7 @@ describe("service/grpc-web", () => {
         let actualData: ExternalChildMessage[] = [];
 
         makeClient(new StubTransportBuilder().withMessages([payload1, payload2]))
-          .doStream(new StreamRequest())
+          .doServerStream(new StreamRequest())
           .on("data", payload => actualData.push(payload))
           .on("status", status => {
             assert.equal(status.code, grpc.Code.OK, "status code is ok");
@@ -244,7 +244,7 @@ describe("service/grpc-web", () => {
         let sentHeaders: grpc.Metadata;
 
         makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
-          .doStream(new StreamRequest(), new grpc.Metadata({ "foo": "bar" }))
+          .doServerStream(new StreamRequest(), new grpc.Metadata({ "foo": "bar" }))
           .on("end", () => {
             assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
             done();
@@ -262,7 +262,7 @@ describe("service/grpc-web", () => {
         let onEndFired = false;
         let onStatusFired = false;
 
-        const handle = client.doStream(new StreamRequest())
+        const handle = client.doServerStream(new StreamRequest())
           .on("data", () => messageCount++)
           .on("end", () => onEndFired = true)
           .on("status", () => onStatusFired = true);
@@ -274,6 +274,83 @@ describe("service/grpc-web", () => {
 
         setTimeout(() => {
           assert.equal(messageCount, 0, "invocation cancelled before any messages were sent");
+          assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
+          assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
+          done();
+        }, 20);
+      });
+    });
+
+    describe("client streaming", () => {
+      it("should route the request to the expected endpoint", (done) => {
+        let targetUrl = "";
+
+        makeClient(new StubTransportBuilder().withRequestListener(options => targetUrl = options.url))
+          .doClientStream()
+          .on("end", () => {
+            assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoClientStream");
+            done();
+          })
+          .end();
+      });
+
+      it("should invoke onEnd before onStatus", (done) => {
+        const [payload] = makePayloads("some value");
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withMessages([payload]))
+          .doClientStream()
+          .on("end", () => { onEndInvoked = true; })
+          .on("status", () => {
+            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+            done();
+          })
+          .end();
+      });
+
+      it("should handle an error returned ahead of any data by the server", (done) => {
+        makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
+          .doClientStream()
+          .on("status", (status) => {
+            assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+            assert.equal(status.details, "some error", "expected grpc error details returned");
+            done();
+          })
+          .end();
+      });
+
+      it("should allow the caller to supply Metadata", (done) => {
+        let sentHeaders: grpc.Metadata;
+
+        makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
+          .doClientStream(new grpc.Metadata({ "foo": "bar" }))
+          .on("end", () => {
+            assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
+            done();
+          })
+          .end();
+      });
+
+      it("should allow the caller to cancel the request", (done) => {
+        const transport = new StubTransportBuilder()
+          .withMessages(makePayloads("foo", "bar"))
+          .withManualTrigger()
+          .build();
+
+        const client = new SimpleServiceClient("http://localhost:1", { transport });
+        let onEndFired = false;
+        let onStatusFired = false;
+
+        const handle = client.doClientStream()
+          .on("end", () => onEndFired = true)
+          .on("status", () => onStatusFired = true);
+
+        transport.sendHeaders();
+        handle.cancel();
+        transport.sendMessages();
+        transport.sendTrailers();
+
+        setTimeout(() => {
           assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
           assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
           done();

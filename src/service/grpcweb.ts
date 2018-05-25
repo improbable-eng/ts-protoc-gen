@@ -211,6 +211,13 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
   printer.printLn(`}`);
+  printer.printLn(`interface RequestStream<T> {`);
+  printer.printIndentedLn(`write(message: T): void;`);
+  printer.printIndentedLn(`end(): void;`);
+  printer.printIndentedLn(`cancel(): void;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
+  printer.printLn(`}`);
   printer.printEmptyLn();
 
   // Add a client stub that talks with the grpc-web-client library
@@ -364,14 +371,46 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
   .dedent().printLn(`};`);
 }
 
-function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}() {`)
-    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
-  .dedent().printLn(`}`);
+           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
+    .indent().printLn(`var listeners = {`)
+      .indent().printLn(`end: [],`)
+               .printLn(`status: []`)
+    .dedent().printLn(`};`)
+             .printLn(`var client = grpc.client(${method.serviceName}.${method.nameAsPascalCase}, {`)
+      .indent().printLn(`host: this.serviceHost,`)
+               .printLn(`transport: this.options.transport`)
+    .dedent().printLn(`});`)
+             .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
+      .indent().printLn(`listeners.end.forEach(function (handler) {`)
+        .indent().printLn(`handler();`)
+      .dedent().printLn(`});`)
+               .printLn(`listeners.status.forEach(function (handler) {`)
+        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
+      .dedent().printLn(`});`)
+               .printLn(`listeners = null;`)
+    .dedent().printLn(`});`)
+             .printLn(`return {`)
+      .indent().printLn(`on: function (type, handler) {`)
+        .indent().printLn(`listeners[type].push(handler);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`write: function (requestMessage) {`)
+        .indent().printLn(`client.send(requestMessage);`)
+      .dedent().printLn(`},`)
+               .printLn(`end: function () {`)
+        .indent().printLn(`client.finishSend();`)
+      .dedent().printLn(`},`)
+               .printLn(`cancel: function () {`)
+        .indent().printLn(`listeners = null;`)
+                 .printLn(`client.close();`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
 }
 
-function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}() {`)
     .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
@@ -418,10 +457,10 @@ function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMetho
   printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): ResponseStream<${method.responseType}>;`);
 }
 
-function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(): void;`);
+function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.responseType}>;`);
 }
 
-function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(): void;`);
 }

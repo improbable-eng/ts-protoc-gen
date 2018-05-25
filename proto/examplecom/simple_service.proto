@@ -3,6 +3,7 @@ syntax = "proto3";
 package examplecom;
 
 import "othercom/external_child_message.proto";
+import "google/protobuf/empty.proto";
 
 // this import should not be output in the generated typescript service
 import "google/protobuf/timestamp.proto";
@@ -20,7 +21,8 @@ message StreamRequest {
 
 service SimpleService {
   rpc DoUnary(UnaryRequest) returns (othercom.ExternalChildMessage) {}
-  rpc DoStream(StreamRequest) returns (stream othercom.ExternalChildMessage) {}
+  rpc DoServerStream(StreamRequest) returns (stream othercom.ExternalChildMessage) {}
+  rpc DoClientStream(stream StreamRequest) returns (google.protobuf.Empty) {}
 
   // checks that rpc methods that use reserved JS words don't generate invalid code
   rpc Delete(UnaryRequest) returns (UnaryResponse) {}
