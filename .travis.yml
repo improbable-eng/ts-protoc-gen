@@ -1,18 +1,28 @@
 language: node_js
 env:
-  - PROTOBUF_VER="3.2.0"
+- PROTOBUF_VER="3.2.0"
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email:
+    secure: WRWu/LodEL9DQO/p65MwFzOOAmfezOOVB7N7Wh56NImUSX0/Ves4Uuzm1yWhqb/OuonW3Ofm3wxmLiwjpJpiNf45OivI1N2Z/noKn+ZiAC/beuHUYXDR5FlHZvf0VmXXhjFnJPu1cRGHdTD2RIloL4z5TUajNta4FZdIo37lLfNodafaiTd+F/OQR3LsC7R7oyMKH3MLDbEEAZkfCv7Vfk+kxLhSezWJuy24APGG856oOEj49sy6s27hWsX89SruOQggbZFnw8yxWC0rkEp4ACNhdWx3FxhoQ5XR5AT4OB2Ydfgr8+YHQReBqZnHBn0RAQ5qLc+hJUhLGZZlw0WCbuAc8W+zd2IH5ufLUzTn3RfMCeDb50cfX9Dz7Zi9wPJDxCE8DMFJfHuCEV6GEuso5bu9vB175lGrwuOrkpvLlen/5HykLKSobAZ7gixnsg7F6oVV+CgM1xA7eN6oA2KPWzudMtydJ7aRDkHMyyHN7LsTMUmE5iTWTBZV0+o3x6dskc3xfSfXHjUuD3qefdraW0cV4gFrpq7r+dB3x6jUfKlwPeQkPb0RMsOw+v179kYmbS5M+ejvNI3Ta9ffrOvTZyEOq3b6WXJZU2TGa1hIazP8BXzZ6AEh6Oq7tRczlyNT9DM0bpocwPyPUF1+dduBxa10PJGkoRbBYT4abk2e7MI=
+  api_key:
+    secure: lSqMHFgvNO9ABjx4dqBYLkbiD8oCoZPRISQZMamg9A+jZdSbH7UYDaGpckbM552w5Oi3jJOKdt82xGoii/IAhIaLFIhf9tzpKQjW5UlYzSmRVL6FB2KpNPa6iondpPeXYdpA5As4N8Peee2EfEsCsA82e54X++Dv/HyovnXUp4dQ0BqZOBihPcWeuTBcD25UaPCClKdX3XSTP8pN5uSfYPpBSQ15JYaLD2EUtpqZ//a0o0wtS1vFjKUz71SnqiHktCz4vKSxmPRpe2bksYfa0kecq41TXG3foAmeVbsXXWpJCvUyEuiRI/mtS4/X9ALWMKGO1ob2VXOz+iUhcwcqQnJs6UvIHlAOR7+d2bzFb4VAIhdvfJuMy7fwIufuIvE0v8fHcIyp1vqbelYj43dBgTyCBwUiNzGe6O3+Kan6OaXqoO9342JUCD1V6NzAHRri/362oTvq02OLUwSUjSBho7a4MIdmy0Yinyd4/pvWOPXR0Kdi/6oZ4k9m1hrrFDYEXz5FQaFGzdiunmYzaoZ8UEszH8WIhqITS79VIM2DXlO0Oa4N0g+uH9/3TN0KvYuUf0j+qhBLh5Lr7BabYPhs2QHxX7pqJQQg8+XuimX0E/MDEuKmGcDClpsFOzSNB/YUfJ4ImaloWAowuzGoE6DCvjwXbpFOh3M+EgcGfqolyZw=
+  tag: next
+  on:
+    branch: master
 cache:
   directories:
-    - node_modules
+  - node_modules
 before_install:
-  - wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel_0.11.0-linux-x86_64.deb
-  - sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
+- wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel_0.11.0-linux-x86_64.deb
+- sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
 install:
-  - sudo apt-get install unzip
-  - bash install-protobuf.sh
-  - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
-  - npm install
+- sudo apt-get install unzip
+- bash install-protobuf.sh
+- export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
+- npm install
 script:
-  - npm run lint
-  - bazel build //...:all # build with Bazel
-  - npm test # build and test with NPM
+- npm run lint
+- bazel build //...:all
+- npm test
