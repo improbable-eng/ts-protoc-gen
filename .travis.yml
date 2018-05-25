@@ -23,6 +23,4 @@ install:
 - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
 - npm install
 script:
-- npm run lint
-- bazel build //...:all
-- npm test
+- ./travis-ci-build.sh
