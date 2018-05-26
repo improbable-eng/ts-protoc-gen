@@ -67,5 +67,9 @@ npm version patch
 BUMPED_PKG_VERSION=$(node -p "require('./package.json').version + '-pre'");
 npm version ${BUMPED_PKG_VERSION}
 
+echo -e "## ${BUMPED_PKG_VERSION}\n" | cat - CHANGELOG.md > tmp.md
+mv tmp.md CHANGELOG.md
+
 git reset --soft HEAD~2 &&
-git commit "Bumped to v${BUMPED_PKG_VERSION}"
+git commit -m "Bumped to v${BUMPED_PKG_VERSION}"
+git push origin master
