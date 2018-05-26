@@ -13,9 +13,9 @@ also output service definitions as both `.js` and `.d.ts` files in the structure
 This plugin is tested and written using TypeScript 2.7.
 
 ## Installation
-As a prerequisite, install the standard C++ implementation of protocol buffers from [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers)
+As a prerequisite, download or install `protoc` (the protocol buffer compiler) for your platform from the [github releases page](https://github.com/google/protobuf/releases) or via a package manager (ie: [brew](http://brewformulas.org/Protobuf), [apt](https://www.ubuntuupdates.org/pm/protobuf-compiler)).
 
-For the latest stable version:
+For the latest stable version of the ts-protoc-gen plugin:
 
 ```bash
 npm install ts-protoc-gen
