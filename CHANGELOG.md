@@ -1,3 +1,8 @@
+## 0.7.1
+
+### Changes
+* Fixing bad npm publish
+
 ## 0.7.0
 
 ### Changes
