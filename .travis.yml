@@ -14,8 +14,9 @@ before_deploy: |
   # If this is a pre-release version, give the package a unique version so we can publish it to npm
   # (as npm does not allow us to overwrite previously published packages)
   if [ "$NPM_TAG" == "next" ]; then
-    npm version "${PKG_VERSION}.${SHORT_COMMIT_HASH}"
-    echo "Set package version to ${PKG_VERSION}.${SHORT_COMMIT_HASH}"
+    UNIQUE_PKG_VERSION="${PKG_VERSION}.${SHORT_COMMIT_HASH}"
+    npm version ${UNIQUE_PKG_VERSION}
+    echo "Set package version to ${UNIQUE_PKG_VERSION}"
     cat package.json
   fi
 deploy:
