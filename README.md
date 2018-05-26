@@ -1,11 +1,10 @@
-# ts-protoc-gen
-> Protoc Plugin for generating TypeScript Declarations
-
-
 [![Master Build](https://travis-ci.org/improbable-eng/ts-protoc-gen.svg?branch=master)](https://travis-ci.org/improbable-eng/ts-protoc-gen)
 [![NPM](https://img.shields.io/npm/v/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
+[![NPM](https://img.shields.io/npm/dm/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
 [![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-![quality: alpha](https://img.shields.io/badge/quality-beta-orange.svg)
+
+# ts-protoc-gen
+> Protoc Plugin for generating TypeScript Declarations
 
 This repository contains a [protoc](https://github.com/google/protobuf) plugin that generates TypeScript declarations 
 (`.d.ts` files) that match the JavaScript output of `protoc --js_out=import_style=commonjs,binary`. This plugin can
@@ -14,8 +13,22 @@ also output service definitions as both `.js` and `.d.ts` files in the structure
 This plugin is tested and written using TypeScript 2.7.
 
 ## Installation
-* Install the standard C++ implementation of protocol buffers from [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers)
-* Install this package using npm, eg: `npm install ts-protoc-gen` or clone, install and build this repository.
+As a prerequisite, install the standard C++ implementation of protocol buffers from [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers)
+
+For the latest stable version:
+
+```bash
+npm install ts-protoc-gen
+```
+
+For our latest build straight from master:
+
+```bash
+npm install ts-protoc-gen@next
+```
+
+## Contributing
+Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
 
 ## Usage
 As mentioned above, this plugin for `protoc` serves two purposes:
@@ -84,7 +97,3 @@ client.getUser(req, (err, user) => { /* ... */ });
 
 ## Examples
 For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples)
-
-
-## Contributing
-Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
