@@ -18,22 +18,19 @@ function git_branch_name() {
 
 function is_up_to_date() {
   git fetch
-  if [[ $(git rev-parse HEAD) == $(git rev-parse @{u}) ]]; then
-    return 1
-  fi
-  return 0
+  [[ $(git rev-parse HEAD) == $(git rev-parse @{u}) ]]
 }
 
 if ! workspace_is_clean; then
-  die "workspace has uncommitted/un-pushed changes, please commit them and try again"
+  die "workspace has uncommitted changes, please commit them and try again"
 fi
 
 if [[ "$(git_branch_name)" != "master" ]]; then
   die "releases can only be made from the 'master' branch, you currently have '$(git_branch_name)' checked out"
 fi
 
-if [[ ! is_up_to_date ]]; then
-  die "you have un-pushed commits, please push them and try again"
+if ! is_up_to_date; then
+  die "workspace has un-pushed commits, please push them and try again"
 fi
 
 PKG_VERSION=$(node -p "require('./package.json').version")
