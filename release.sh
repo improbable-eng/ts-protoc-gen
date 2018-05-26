@@ -60,4 +60,5 @@ fi
 git tag "${PKG_VERSION}"
 git push origin "refs/tags/${PKG_VERSION}"
 
-npm publish "${PKG_VERSION}"
+npm publish
+npm version prepatch
