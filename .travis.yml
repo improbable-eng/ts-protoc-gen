@@ -6,12 +6,15 @@ before_deploy: |
   if [[ "$TRAVIS_TAG" = *-pre ]]; then
     NPM_TAG="next"
   fi
+  echo "NPM_TAG=${NPM_TAG}"
 
   # If this is a pre-release version, give the package a unique version so we can publish it to npm
   # (as npm does not allow us to overwrite previously published packages)
   if [ "$NPM_TAG" == "next" ]; then
     PKG_VERSION=$(node -p "require('./package.json').version")
     npm version "${TRAVIS_TAG}.${COMMIT_HASH}"
+    echo "Set package version to ${TRAVIS_TAG}.${COMMIT_HASH}"
+    cat package.json
   fi
 deploy:
   skip_cleanup: true
