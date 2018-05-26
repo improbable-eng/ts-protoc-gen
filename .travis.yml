@@ -2,8 +2,10 @@ language: node_js
 env:
 - PROTOBUF_VER="3.2.0"
 before_deploy: |
+  PKG_VERSION=$(node -p "require('./package.json').version")
   NPM_TAG="latest"
-  if [[ "$TRAVIS_TAG" = *-pre ]]; then
+
+  if [[ "${PKG_VERSION}" = *-pre ]]; then
     NPM_TAG="next"
   fi
   echo "NPM_TAG=${NPM_TAG}"
@@ -11,8 +13,7 @@ before_deploy: |
   # If this is a pre-release version, give the package a unique version so we can publish it to npm
   # (as npm does not allow us to overwrite previously published packages)
   if [ "$NPM_TAG" == "next" ]; then
-    PKG_VERSION=$(node -p "require('./package.json').version")
-    npm version "${TRAVIS_TAG}.${COMMIT_HASH}"
+    npm version "${PKG_VERSION}.${COMMIT_HASH}"
     echo "Set package version to ${TRAVIS_TAG}.${COMMIT_HASH}"
     cat package.json
   fi
