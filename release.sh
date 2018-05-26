@@ -23,7 +23,7 @@ function is_up_to_date() {
 }
 
 if [[ is_workspace_dirty ]]; then
-  die "workspace has uncommitted changes, please commit them and try again"
+  die "workspace has uncommitted/un-pushed changes, please commit them and try again"
 fi
 
 if [[ "$(git_branch_name)" != "master" ]]; then
