@@ -4,11 +4,12 @@
 
 function die() {
   echo ERROR: "$1"
-  #exit 1
+  exit 1
 }
 
-function is_workspace_dirty() {
+function workspace_is_clean() {
   git diff-index --quiet HEAD
+  return $?
 }
 
 function git_branch_name() {
@@ -20,9 +21,10 @@ function is_up_to_date() {
   if [[ $(git rev-parse HEAD) == $(git rev-parse @{u}) ]]; then
     return 1
   fi
+  return 0
 }
 
-if [[ is_workspace_dirty ]]; then
+if ! workspace_is_clean; then
   die "workspace has uncommitted/un-pushed changes, please commit them and try again"
 fi
 
@@ -39,8 +41,8 @@ if [[ "${PKG_VERSION}" = *-pre ]]; then
   die "package.json version (${PKG_VERSION}) must not end with a '-pre' suffix for a production release"
 fi
 
-npm -s install
-if [[ is_workspace_dirty ]]; then
+npm install
+if ! workspace_is_clean; then
   die "workspace changes detected after npm install; please commit these changes and try again"
 fi
 
