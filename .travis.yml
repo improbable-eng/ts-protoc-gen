@@ -3,6 +3,7 @@ env:
 - PROTOBUF_VER="3.2.0"
 before_deploy: |
   PKG_VERSION=$(node -p "require('./package.json').version")
+  SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
   NPM_TAG="latest"
 
   if [[ "${PKG_VERSION}" = *-pre ]]; then
@@ -13,8 +14,8 @@ before_deploy: |
   # If this is a pre-release version, give the package a unique version so we can publish it to npm
   # (as npm does not allow us to overwrite previously published packages)
   if [ "$NPM_TAG" == "next" ]; then
-    npm version "${PKG_VERSION}.${COMMIT_HASH}"
-    echo "Set package version to ${TRAVIS_TAG}.${COMMIT_HASH}"
+    npm version "${PKG_VERSION}.${SHORT_COMMIT_HASH}"
+    echo "Set package version to ${PKG_VERSION}.${SHORT_COMMIT_HASH}"
     cat package.json
   fi
 deploy:
