@@ -66,10 +66,11 @@ echo "Rolling to the next version"
 npm version patch
 BUMPED_PKG_VERSION=$(node -p "require('./package.json').version + '-pre'");
 npm version ${BUMPED_PKG_VERSION}
+git reset --soft HEAD~2
 
 echo -e "## ${BUMPED_PKG_VERSION}\n" | cat - CHANGELOG.md > tmp.md
 mv tmp.md CHANGELOG.md
+git add CHANGELOG.md
 
-git reset --soft HEAD~2 &&
 git commit -m "Bumped to v${BUMPED_PKG_VERSION}"
 git push origin master
