@@ -61,4 +61,11 @@ git tag "${PKG_VERSION}"
 git push origin "refs/tags/${PKG_VERSION}"
 
 npm publish
-npm version prepatch
+
+echo "Rolling to the next version"
+npm version patch
+BUMPED_PKG_VERSION=$(node -p "require('./package.json').version + '-pre'");
+npm version ${BUMPED_PKG_VERSION}
+
+git reset --soft HEAD~2 &&
+git commit "Bumped to v${BUMPED_PKG_VERSION}"

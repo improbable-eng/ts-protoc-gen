@@ -1,3 +1,8 @@
+## 0.7.2
+
+### Changes
+* None (testing release script...)
+
 ## 0.7.1
 
 ### Changes
