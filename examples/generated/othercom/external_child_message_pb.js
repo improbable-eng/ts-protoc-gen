@@ -150,7 +150,7 @@ proto.othercom.ExternalChildMessage.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.othercom.ExternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

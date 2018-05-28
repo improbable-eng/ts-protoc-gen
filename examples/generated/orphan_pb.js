@@ -322,7 +322,7 @@ proto.OrphanMessage.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.OrphanMessage.prototype.setMyString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -339,7 +339,7 @@ proto.OrphanMessage.prototype.getMyBool = function() {
 
 /** @param {boolean} value */
 proto.OrphanMessage.prototype.setMyBool = function(value) {
-  jspb.Message.setField(this, 2, value);
+  jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 
@@ -354,7 +354,7 @@ proto.OrphanMessage.prototype.getMyEnum = function() {
 
 /** @param {!proto.OrphanEnum} value */
 proto.OrphanMessage.prototype.setMyEnum = function(value) {
-  jspb.Message.setField(this, 3, value);
+  jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 
@@ -496,7 +496,7 @@ proto.OrphanUnaryRequest.prototype.getSomeInt64 = function() {
 
 /** @param {number} value */
 proto.OrphanUnaryRequest.prototype.setSomeInt64 = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -638,7 +638,7 @@ proto.OrphanStreamRequest.prototype.getSomeString = function() {
 
 /** @param {string} value */
 proto.OrphanStreamRequest.prototype.setSomeString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

@@ -205,7 +205,7 @@ proto.examplecom.EnumMessage.prototype.getInternalEnum = function() {
 
 /** @param {!proto.examplecom.EnumMessage.InternalEnum} value */
 proto.examplecom.EnumMessage.prototype.setInternalEnum = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3EnumField(this, 1, value);
 };
 
 
@@ -249,7 +249,7 @@ proto.examplecom.EnumMessage.prototype.getExternalEnum = function() {
 
 /** @param {!proto.othercom.ExternalEnum} value */
 proto.examplecom.EnumMessage.prototype.setExternalEnum = function(value) {
-  jspb.Message.setField(this, 3, value);
+  jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 
