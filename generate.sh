@@ -1,7 +1,7 @@
 #!/bin/bash -x
 # Generate typescript definitions and service definitions from proto files
 
-set -x
+set -e
 
 EXAMPLES_GENERATED_DIR=examples/generated
 
