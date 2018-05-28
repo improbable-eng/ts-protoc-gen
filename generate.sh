@@ -20,12 +20,13 @@ npm install
 echo "Compiling ts-protoc-gen..."
 npm run build
 
-echo "Downloading protoc v3.5.1... for ${platform}"
+PROTOC_VERSION="3.5.1"
+echo "Downloading protoc v${PROTOC_VERSION} for ${platform}..."
 mkdir -p protoc
 if [[ $platform == 'Linux' ]]; then
-    curl -L https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip | tar xz -C protoc
+    curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip | tar xz -C protoc
 elif [[ $platform == 'Mac' ]]; then
-    curl -L https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-osx-x86_64.zip | tar xz -C protoc
+    curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-osx-x86_64.zip | tar xz -C protoc
 else
     echo "Cannot download protoc. ${platform} is not currently supported by ts-protoc-gen"
     exit 1
