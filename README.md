@@ -96,4 +96,6 @@ client.getUser(req, (err, user) => { /* ... */ });
 ```
 
 ## Examples
-For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples)
+For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples).
+
+To generate the examples from protos, please run `./generate.sh`

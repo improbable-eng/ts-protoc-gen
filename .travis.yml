@@ -37,7 +37,6 @@ before_install:
 - sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
 install:
 - sudo apt-get install unzip
-- bash install-protobuf.sh
 - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
 - npm install
 script:
