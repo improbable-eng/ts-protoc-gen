@@ -20,7 +20,7 @@ npm install
 echo "Compiling ts-protoc-gen..."
 npm run build
 
-echo "Downloading protobuf v3.5.1... for ${platform}"
+echo "Downloading protoc v3.5.1... for ${platform}"
 mkdir -p protoc
 if [[ $platform == 'Linux' ]]; then
     curl -L https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip | tar xz -C protoc
