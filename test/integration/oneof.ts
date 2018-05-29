@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {OneOfMessage, CamelCasedOneOfMessage} from "../../examples/generated/examplecom/oneof_message_pb";
-import {ExternalChildMessage} from "../../examples/generated/othercom/external_child_message_pb";
+import {OneOfMessage, CamelCasedOneOfMessage} from "../../examples/generated/proto/examplecom/oneof_message_pb";
+import {ExternalChildMessage} from "../../examples/generated/proto/othercom/external_child_message_pb";
 import InternalChildMessage = OneOfMessage.InternalChildMessage;
 
 describe("oneofs", () => {

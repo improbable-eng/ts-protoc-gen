@@ -11,8 +11,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var othercom_external_enum_pb = require('../othercom/external_enum_pb.js');
-var othercom_external_child_message_pb = require('../othercom/external_child_message_pb.js');
+var proto_othercom_external_enum_pb = require('../../proto/othercom/external_enum_pb.js');
+var proto_othercom_external_child_message_pb = require('../../proto/othercom/external_child_message_pb.js');
 goog.exportSymbol('proto.examplecom.MapMessage', null, global);
 goog.exportSymbol('proto.examplecom.MapMessage.InternalChildMessage', null, global);
 goog.exportSymbol('proto.examplecom.MapMessage.InternalEnum', null, global);

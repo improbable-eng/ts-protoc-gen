@@ -1,5 +1,5 @@
 // package: examplecom
-// file: examplecom/primitive_message_v2.proto
+// file: proto/examplecom/primitive_message_v2.proto
 
 import * as jspb from "google-protobuf";
 

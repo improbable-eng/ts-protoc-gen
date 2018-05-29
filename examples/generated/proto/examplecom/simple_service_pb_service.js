@@ -1,8 +1,8 @@
 // package: examplecom
-// file: examplecom/simple_service.proto
+// file: proto/examplecom/simple_service.proto
 
-var examplecom_simple_service_pb = require("../examplecom/simple_service_pb");
-var othercom_external_child_message_pb = require("../othercom/external_child_message_pb");
+var proto_examplecom_simple_service_pb = require("../../proto/examplecom/simple_service_pb");
+var proto_othercom_external_child_message_pb = require("../../proto/othercom/external_child_message_pb");
 var grpc = require("grpc-web-client").grpc;
 
 var SimpleService = (function () {
@@ -16,8 +16,8 @@ SimpleService.DoUnary = {
   service: SimpleService,
   requestStream: false,
   responseStream: false,
-  requestType: examplecom_simple_service_pb.UnaryRequest,
-  responseType: othercom_external_child_message_pb.ExternalChildMessage
+  requestType: proto_examplecom_simple_service_pb.UnaryRequest,
+  responseType: proto_othercom_external_child_message_pb.ExternalChildMessage
 };
 
 SimpleService.DoStream = {
@@ -25,8 +25,8 @@ SimpleService.DoStream = {
   service: SimpleService,
   requestStream: false,
   responseStream: true,
-  requestType: examplecom_simple_service_pb.StreamRequest,
-  responseType: othercom_external_child_message_pb.ExternalChildMessage
+  requestType: proto_examplecom_simple_service_pb.StreamRequest,
+  responseType: proto_othercom_external_child_message_pb.ExternalChildMessage
 };
 
 SimpleService.Delete = {
@@ -34,8 +34,8 @@ SimpleService.Delete = {
   service: SimpleService,
   requestStream: false,
   responseStream: false,
-  requestType: examplecom_simple_service_pb.UnaryRequest,
-  responseType: examplecom_simple_service_pb.UnaryResponse
+  requestType: proto_examplecom_simple_service_pb.UnaryRequest,
+  responseType: proto_examplecom_simple_service_pb.UnaryResponse
 };
 
 exports.SimpleService = SimpleService;

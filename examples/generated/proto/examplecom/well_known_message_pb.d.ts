@@ -1,5 +1,5 @@
 // package: examplecom
-// file: examplecom/well_known_message.proto
+// file: proto/examplecom/well_known_message.proto
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_any_pb from "google-protobuf/google/protobuf/any_pb";

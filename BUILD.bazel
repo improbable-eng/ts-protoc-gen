@@ -1,2 +1,12 @@
 package(default_visibility = ["//visibility:public"])
+
 exports_files(["tsconfig.json"])
+
+filegroup(
+  name = "generate_ts",
+  srcs = [
+    "//proto:generate",
+    "//proto/examplecom:generate",
+    "//proto/othercom:generate",
+  ],
+)

@@ -1,8 +1,8 @@
 // package: examplecom
-// file: examplecom/enum_message.proto
+// file: proto/examplecom/enum_message.proto
 
 import * as jspb from "google-protobuf";
-import * as othercom_external_enum_pb from "../othercom/external_enum_pb";
+import * as proto_othercom_external_enum_pb from "../../proto/othercom/external_enum_pb";
 
 export class EnumMessage extends jspb.Message {
   getInternalEnum(): EnumMessage.InternalEnum;
@@ -13,13 +13,13 @@ export class EnumMessage extends jspb.Message {
   setInternalEnumsList(value: Array<EnumMessage.InternalEnum>): void;
   addInternalEnums(value: EnumMessage.InternalEnum, index?: number): EnumMessage.InternalEnum;
 
-  getExternalEnum(): othercom_external_enum_pb.ExternalEnum;
-  setExternalEnum(value: othercom_external_enum_pb.ExternalEnum): void;
+  getExternalEnum(): proto_othercom_external_enum_pb.ExternalEnum;
+  setExternalEnum(value: proto_othercom_external_enum_pb.ExternalEnum): void;
 
   clearExternalEnumsList(): void;
-  getExternalEnumsList(): Array<othercom_external_enum_pb.ExternalEnum>;
-  setExternalEnumsList(value: Array<othercom_external_enum_pb.ExternalEnum>): void;
-  addExternalEnums(value: othercom_external_enum_pb.ExternalEnum, index?: number): othercom_external_enum_pb.ExternalEnum;
+  getExternalEnumsList(): Array<proto_othercom_external_enum_pb.ExternalEnum>;
+  setExternalEnumsList(value: Array<proto_othercom_external_enum_pb.ExternalEnum>): void;
+  addExternalEnums(value: proto_othercom_external_enum_pb.ExternalEnum, index?: number): proto_othercom_external_enum_pb.ExternalEnum;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): EnumMessage.AsObject;
@@ -35,8 +35,8 @@ export namespace EnumMessage {
   export type AsObject = {
     internalEnum: EnumMessage.InternalEnum,
     internalEnumsList: Array<EnumMessage.InternalEnum>,
-    externalEnum: othercom_external_enum_pb.ExternalEnum,
-    externalEnumsList: Array<othercom_external_enum_pb.ExternalEnum>,
+    externalEnum: proto_othercom_external_enum_pb.ExternalEnum,
+    externalEnumsList: Array<proto_othercom_external_enum_pb.ExternalEnum>,
   }
 
   export enum InternalEnum {

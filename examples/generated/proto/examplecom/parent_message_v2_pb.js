@@ -11,7 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var othercom_external_child_message_pb = require('../othercom/external_child_message_pb.js');
+var proto_othercom_external_child_message_pb = require('../../proto/othercom/external_child_message_pb.js');
 goog.exportSymbol('proto.examplecom.ParentMessageV2', null, global);
 goog.exportSymbol('proto.examplecom.ParentMessageV2.InternalChildMessage', null, global);
 
@@ -72,10 +72,10 @@ proto.examplecom.ParentMessageV2.toObject = function(includeInstance, msg) {
     optInternalChildMessage: (f = msg.getOptInternalChildMessage()) && proto.examplecom.ParentMessageV2.InternalChildMessage.toObject(includeInstance, f),
     internalChildrenList: jspb.Message.toObjectList(msg.getInternalChildrenList(),
     proto.examplecom.ParentMessageV2.InternalChildMessage.toObject, includeInstance),
-    externalChildMessage: (f = msg.getExternalChildMessage()) && othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
-    optExternalChildMessage: (f = msg.getOptExternalChildMessage()) && othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
+    externalChildMessage: (f = msg.getExternalChildMessage()) && proto_othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
+    optExternalChildMessage: (f = msg.getOptExternalChildMessage()) && proto_othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
     externalChildrenList: jspb.Message.toObjectList(msg.getExternalChildrenList(),
-    othercom_external_child_message_pb.ExternalChildMessage.toObject, includeInstance)
+    proto_othercom_external_child_message_pb.ExternalChildMessage.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -128,18 +128,18 @@ proto.examplecom.ParentMessageV2.deserializeBinaryFromReader = function(msg, rea
       msg.addInternalChildren(value);
       break;
     case 4:
-      var value = new othercom_external_child_message_pb.ExternalChildMessage;
-      reader.readMessage(value,othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.setExternalChildMessage(value);
       break;
     case 5:
-      var value = new othercom_external_child_message_pb.ExternalChildMessage;
-      reader.readMessage(value,othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.setOptExternalChildMessage(value);
       break;
     case 6:
-      var value = new othercom_external_child_message_pb.ExternalChildMessage;
-      reader.readMessage(value,othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.addExternalChildren(value);
       break;
     default:
@@ -200,7 +200,7 @@ proto.examplecom.ParentMessageV2.serializeBinaryToWriter = function(message, wri
     writer.writeMessage(
       4,
       f,
-      othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
   }
   f = message.getOptExternalChildMessage();
@@ -208,7 +208,7 @@ proto.examplecom.ParentMessageV2.serializeBinaryToWriter = function(message, wri
     writer.writeMessage(
       5,
       f,
-      othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
   }
   f = message.getExternalChildrenList();
@@ -216,7 +216,7 @@ proto.examplecom.ParentMessageV2.serializeBinaryToWriter = function(message, wri
     writer.writeRepeatedMessage(
       6,
       f,
-      othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
   }
 };
@@ -475,7 +475,7 @@ proto.examplecom.ParentMessageV2.prototype.clearInternalChildrenList = function(
  */
 proto.examplecom.ParentMessageV2.prototype.getExternalChildMessage = function() {
   return /** @type{!proto.othercom.ExternalChildMessage} */ (
-    jspb.Message.getWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 4, 1));
+    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 4, 1));
 };
 
 
@@ -505,7 +505,7 @@ proto.examplecom.ParentMessageV2.prototype.hasExternalChildMessage = function() 
  */
 proto.examplecom.ParentMessageV2.prototype.getOptExternalChildMessage = function() {
   return /** @type{?proto.othercom.ExternalChildMessage} */ (
-    jspb.Message.getWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 5));
+    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 5));
 };
 
 
@@ -535,7 +535,7 @@ proto.examplecom.ParentMessageV2.prototype.hasOptExternalChildMessage = function
  */
 proto.examplecom.ParentMessageV2.prototype.getExternalChildrenList = function() {
   return /** @type{!Array.<!proto.othercom.ExternalChildMessage>} */ (
-    jspb.Message.getRepeatedWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 6));
+    jspb.Message.getRepeatedWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 6));
 };
 
 

@@ -1,7 +1,7 @@
 // package: 
-// file: orphan.proto
+// file: proto/orphan.proto
 
-var orphan_pb = require("./orphan_pb");
+var proto_orphan_pb = require("../proto/orphan_pb");
 var grpc = require("grpc-web-client").grpc;
 
 var OrphanService = (function () {
@@ -15,8 +15,8 @@ OrphanService.DoUnary = {
   service: OrphanService,
   requestStream: false,
   responseStream: false,
-  requestType: orphan_pb.OrphanUnaryRequest,
-  responseType: orphan_pb.OrphanMessage
+  requestType: proto_orphan_pb.OrphanUnaryRequest,
+  responseType: proto_orphan_pb.OrphanMessage
 };
 
 OrphanService.DoStream = {
@@ -24,8 +24,8 @@ OrphanService.DoStream = {
   service: OrphanService,
   requestStream: false,
   responseStream: true,
-  requestType: orphan_pb.OrphanStreamRequest,
-  responseType: orphan_pb.OrphanMessage
+  requestType: proto_orphan_pb.OrphanStreamRequest,
+  responseType: proto_orphan_pb.OrphanMessage
 };
 
 exports.OrphanService = OrphanService;

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package examplecom;
 
-import "othercom/external_child_message.proto";
+import "proto/othercom/external_child_message.proto";
 
 message OneOfMessage {
     message InternalChildMessage {
