@@ -348,7 +348,7 @@ proto.examplecom.OneOfMessage.InternalChildMessage.prototype.getMyString = funct
 
 /** @param {string} value */
 proto.examplecom.OneOfMessage.InternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

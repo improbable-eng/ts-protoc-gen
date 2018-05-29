@@ -332,7 +332,7 @@ proto.examplecom.ParentMessageV3.InternalChildMessage.prototype.getMyString = fu
 
 /** @param {string} value */
 proto.examplecom.ParentMessageV3.InternalChildMessage.prototype.setMyString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

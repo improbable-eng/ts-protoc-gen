@@ -168,7 +168,7 @@ proto.examplecom.UnaryRequest.prototype.getSomeInt64 = function() {
 
 /** @param {number} value */
 proto.examplecom.UnaryRequest.prototype.setSomeInt64 = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
@@ -456,7 +456,7 @@ proto.examplecom.StreamRequest.prototype.getSomeString = function() {
 
 /** @param {string} value */
 proto.examplecom.StreamRequest.prototype.setSomeString = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3StringField(this, 1, value);
 };
 
 

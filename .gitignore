@@ -6,3 +6,4 @@ npm-debug*
 lib/
 **/mocha-report.json
 bazel-*
+protoc/

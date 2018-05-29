@@ -330,7 +330,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyDouble = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyDouble = function(value) {
-  jspb.Message.setField(this, 1, value);
+  jspb.Message.setProto3FloatField(this, 1, value);
 };
 
 
@@ -345,7 +345,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyFloat = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyFloat = function(value) {
-  jspb.Message.setField(this, 2, value);
+  jspb.Message.setProto3FloatField(this, 2, value);
 };
 
 
@@ -360,7 +360,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyInt32 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyInt32 = function(value) {
-  jspb.Message.setField(this, 3, value);
+  jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
@@ -375,7 +375,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyInt64 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyInt64 = function(value) {
-  jspb.Message.setField(this, 4, value);
+  jspb.Message.setProto3IntField(this, 4, value);
 };
 
 
@@ -390,7 +390,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyUint32 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyUint32 = function(value) {
-  jspb.Message.setField(this, 5, value);
+  jspb.Message.setProto3IntField(this, 5, value);
 };
 
 
@@ -405,7 +405,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyUint64 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyUint64 = function(value) {
-  jspb.Message.setField(this, 6, value);
+  jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
@@ -420,7 +420,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMySint32 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMySint32 = function(value) {
-  jspb.Message.setField(this, 7, value);
+  jspb.Message.setProto3IntField(this, 7, value);
 };
 
 
@@ -435,7 +435,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMySint64 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMySint64 = function(value) {
-  jspb.Message.setField(this, 8, value);
+  jspb.Message.setProto3IntField(this, 8, value);
 };
 
 
@@ -450,7 +450,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyFixed32 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyFixed32 = function(value) {
-  jspb.Message.setField(this, 9, value);
+  jspb.Message.setProto3IntField(this, 9, value);
 };
 
 
@@ -465,7 +465,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyFixed64 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyFixed64 = function(value) {
-  jspb.Message.setField(this, 10, value);
+  jspb.Message.setProto3IntField(this, 10, value);
 };
 
 
@@ -480,7 +480,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMySfixed32 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMySfixed32 = function(value) {
-  jspb.Message.setField(this, 11, value);
+  jspb.Message.setProto3IntField(this, 11, value);
 };
 
 
@@ -495,7 +495,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMySfixed64 = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMySfixed64 = function(value) {
-  jspb.Message.setField(this, 12, value);
+  jspb.Message.setProto3IntField(this, 12, value);
 };
 
 
@@ -512,7 +512,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyBool = function() {
 
 /** @param {boolean} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyBool = function(value) {
-  jspb.Message.setField(this, 13, value);
+  jspb.Message.setProto3BooleanField(this, 13, value);
 };
 
 
@@ -527,7 +527,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyString = function() {
 
 /** @param {string} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyString = function(value) {
-  jspb.Message.setField(this, 14, value);
+  jspb.Message.setProto3StringField(this, 14, value);
 };
 
 
@@ -566,7 +566,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyBytes_asU8 = function() {
 
 /** @param {!(string|Uint8Array)} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyBytes = function(value) {
-  jspb.Message.setField(this, 15, value);
+  jspb.Message.setProto3BytesField(this, 15, value);
 };
 
 
@@ -581,7 +581,7 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyNumber = function() {
 
 /** @param {number} value */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyNumber = function(value) {
-  jspb.Message.setField(this, 16, value);
+  jspb.Message.setProto3IntField(this, 16, value);
 };
 
 
