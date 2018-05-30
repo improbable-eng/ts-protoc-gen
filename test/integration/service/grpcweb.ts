@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { assert } from "chai";
 import { grpc } from "grpc-web-client";
 import { createContext, runInContext } from "vm";
@@ -27,6 +27,11 @@ describe("service/grpc-web", () => {
     assert.strictEqual(SimpleService.DoStream.responseStream, true);
     assert.strictEqual(SimpleService.DoStream.requestType, StreamRequest);
     assert.strictEqual(SimpleService.DoStream.responseType, ExternalChildMessage);
+  });
+
+  it("should generate service definition files for protos that have no service definitions", () => {
+    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/examplecom/empty_message_no_service_pb_service.d.ts")));
+    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/examplecom/empty_message_no_service_pb_service.js")));
   });
 
   it("should not output imports for namespaces that are not used in the service definition", () => {

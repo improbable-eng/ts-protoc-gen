@@ -11,9 +11,6 @@ import {getFieldType, MESSAGE_TYPE} from "../ts/FieldTypes";
 import {CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 
 export function generateGrpcWebService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap): CodeGeneratorResponse.File[] {
-  if (descriptor.getServiceList().length === 0) {
-    return [];
-  }
   return [
     createFile(generateTypescriptDefinition(descriptor, exportMap), `${filename}_service.d.ts`),
     createFile(generateJavaScript(descriptor, exportMap), `${filename}_service.js`),
@@ -165,6 +162,10 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
+  if (serviceDescriptor.services.length === 0) {
+    return printer.getOutput();
+  }
+
   // Import statements.
   serviceDescriptor.imports
     .forEach(importDescriptor => {
@@ -231,6 +232,10 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   printer.printLn(`// package: ${serviceDescriptor.packageName}`);
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
+
+  if (serviceDescriptor.services.length === 0) {
+    return printer.getOutput();
+  }
 
   // Import Statements
   serviceDescriptor.imports
