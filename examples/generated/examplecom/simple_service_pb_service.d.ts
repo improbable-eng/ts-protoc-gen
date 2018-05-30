@@ -61,7 +61,7 @@ interface ResponseStream<T> {
   on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;
 }
 interface RequestStream<T> {
-  write(message: T): void;
+  write(message: T): RequestStream<T>;
   end(): void;
   cancel(): void;
   on(type: 'end', handler: () => void): RequestStream<T>;

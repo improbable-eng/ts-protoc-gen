@@ -212,7 +212,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
   printer.printLn(`}`);
   printer.printLn(`interface RequestStream<T> {`);
-  printer.printIndentedLn(`write(message: T): void;`);
+  printer.printIndentedLn(`write(message: T): RequestStream<T>;`);
   printer.printIndentedLn(`end(): void;`);
   printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
@@ -373,13 +373,14 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
 
 function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
+           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
     .indent().printLn(`var listeners = {`)
       .indent().printLn(`end: [],`)
                .printLn(`status: []`)
     .dedent().printLn(`};`)
              .printLn(`var client = grpc.client(${method.serviceName}.${method.nameAsPascalCase}, {`)
       .indent().printLn(`host: this.serviceHost,`)
+               .printLn(`metadata: metadata,`)
                .printLn(`transport: this.options.transport`)
     .dedent().printLn(`});`)
              .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
@@ -397,7 +398,11 @@ function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
                  .printLn(`return this;`)
       .dedent().printLn(`},`)
                .printLn(`write: function (requestMessage) {`)
-        .indent().printLn(`client.send(requestMessage);`)
+        .indent().printLn(`if (!client.started) {`)
+          .indent().printLn(`client.start(metadata);`)
+        .dedent().printLn(`}`)
+                 .printLn(`client.send(requestMessage);`)
+                 .printLn(`return this;`)
       .dedent().printLn(`},`)
                .printLn(`end: function () {`)
         .indent().printLn(`client.finishSend();`)

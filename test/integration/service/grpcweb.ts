@@ -282,6 +282,8 @@ describe("service/grpc-web", () => {
     });
 
     describe("client streaming", () => {
+      const [ payload ] = makePayloads("some value");
+
       it("should route the request to the expected endpoint", (done) => {
         let targetUrl = "";
 
@@ -291,20 +293,21 @@ describe("service/grpc-web", () => {
             assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoClientStream");
             done();
           })
+          .write(payload)
           .end();
       });
 
       it("should invoke onEnd before onStatus", (done) => {
-        const [payload] = makePayloads("some value");
         let onEndInvoked = false;
 
-        makeClient(new StubTransportBuilder().withMessages([payload]))
+        makeClient(new StubTransportBuilder())
           .doClientStream()
           .on("end", () => { onEndInvoked = true; })
           .on("status", () => {
             assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
             done();
           })
+          .write(payload)
           .end();
       });
 
@@ -316,6 +319,7 @@ describe("service/grpc-web", () => {
             assert.equal(status.details, "some error", "expected grpc error details returned");
             done();
           })
+          .write(payload)
           .end();
       });
 
@@ -328,12 +332,12 @@ describe("service/grpc-web", () => {
             assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
             done();
           })
+          .write(payload)
           .end();
       });
 
       it("should allow the caller to cancel the request", (done) => {
         const transport = new StubTransportBuilder()
-          .withMessages(makePayloads("foo", "bar"))
           .withManualTrigger()
           .build();
 
@@ -343,11 +347,11 @@ describe("service/grpc-web", () => {
 
         const handle = client.doClientStream()
           .on("end", () => onEndFired = true)
-          .on("status", () => onStatusFired = true);
+          .on("status", () => onStatusFired = true)
+          .write(payload);
 
         transport.sendHeaders();
         handle.cancel();
-        transport.sendMessages();
         transport.sendTrailers();
 
         setTimeout(() => {

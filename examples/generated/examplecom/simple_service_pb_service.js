@@ -114,13 +114,14 @@ SimpleServiceClient.prototype.doServerStream = function doServerStream(requestMe
   };
 };
 
-SimpleService.prototype.doClientStream = function doClientStream(metadata) {
+SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata) {
   var listeners = {
     end: [],
     status: []
   };
   var client = grpc.client(SimpleService.DoClientStream, {
     host: this.serviceHost,
+    metadata: metadata,
     transport: this.options.transport
   });
   client.onEnd(function (status, statusMessage, trailers) {
@@ -138,7 +139,11 @@ SimpleService.prototype.doClientStream = function doClientStream(metadata) {
       return this;
     },
     write: function (requestMessage) {
+      if (!client.started) {
+        client.start(metadata);
+      }
       client.send(requestMessage);
+      return this;
     },
     end: function () {
       client.finishSend();
@@ -148,7 +153,7 @@ SimpleService.prototype.doClientStream = function doClientStream(metadata) {
       client.close();
     }
   };
-}
+};
 
 SimpleServiceClient.prototype.delete = function pb_delete(requestMessage, metadata, callback) {
   if (arguments.length === 2) {

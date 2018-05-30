@@ -12,11 +12,16 @@ if [[ -z "${TEST_SUITE}" ]]; then
  exit 1
 fi
 
+if [[ "x${MOCHA_DEBUG}" != "x" ]]; then
+  MOCHA_DEBUG="--inspect-brk"
+fi
+
 mocha \
     --reporter mocha-spec-json-output-reporter \
     --reporter-options fileName=./test/mocha-report.json \
     --require ts-node/register/type-check \
     --require source-map-support/register \
+    ${MOCHA_DEBUG} \
     "${TEST_SUITE}"
 
 node ./test/mocha-check-report ./test/mocha-report.json
