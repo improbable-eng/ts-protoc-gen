@@ -86,6 +86,8 @@ protoc \
 
 The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs.
 
+**Note** Both `js` and `d.ts` service files will be generated regardless of whether there are service definitions in the proto files.
+
 ```js
 import { UserServiceClient, GetUserRequest } from "../generated/users_pb_service"
 
