@@ -96,7 +96,7 @@ typescript_proto_library(
   proto = ":proto",
 )
 ```    
-For an example of how to generate `gRPC Service Stubs`, take a look at the root `BUILD.bazel` in this repo.
+For an example of how to generate gRPC Service Stubs, take a look at the root `BUILD.bazel` in this repo.
 
 ## Contributing
 Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
