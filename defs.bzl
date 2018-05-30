@@ -26,10 +26,7 @@ def proto_path(proto):
   return path
 
 def append_to_outputs(ctx, file_name, outputs, file_modifications):
-  generated_filenames = ["_pb.d.ts", "_pb.js"]
-
-  if file_name in ctx.attr.services:
-    generated_filenames += ["_pb_service.js", "_pb_service.d.ts"]
+  generated_filenames = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
 
   for f in generated_filenames:
     outputs.append(declare_file(ctx, file_name + f, file_modifications))
@@ -57,9 +54,7 @@ def _typescript_proto_library_impl(ctx):
 
   descriptor_sets = [desc.path for desc in ctx.attr.proto.proto.transitive_descriptor_sets]
 
-  ts_out = ""
-  if ctx.attr.services:
-    ts_out = "service=true:"
+  ts_out = "service=true:"
 
   protoc_command = "%s --plugin=protoc-gen-ts=%s --ts_out=%s%s --js_out=import_style=commonjs,binary:%s --descriptor_set_in=%s %s" % (ctx.file._protoc.path, ctx.files._ts_protoc_gen[1].path, ts_out, ctx.var["BINDIR"], ctx.var["BINDIR"], ":".join(descriptor_sets), " ".join(proto_inputs))
 
@@ -87,11 +82,6 @@ typescript_proto_library = rule(
       allow_files = True,
       single_file = True,
       providers = ["proto"],
-    ),
-    "services": attr.string_list(
-      doc="An array of service names. Protoc-gen-ts can output additional files for grpc-web. Each element of this array should be the name of the service that will be generated. This is derived from the name of the service. If this proto service is named 'SimpleService', the correct value would be 'simple_service'.",
-      default = [],
-      allow_empty = True,
     ),
     "remove_dependencies": attr.string_list(
       doc = "Each string given will be grepped and removed from the generated files. This can be useful if your proto files are importing a dependency that the generated Typescript does not use.",

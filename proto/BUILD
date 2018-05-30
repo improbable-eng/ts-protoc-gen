@@ -16,7 +16,4 @@ proto_library(
 typescript_proto_library(
   name = "generate",
   proto = ":proto",
-  services = [
-    "orphan",
-  ],
 )
