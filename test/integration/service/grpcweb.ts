@@ -4,7 +4,7 @@ import { assert } from "chai";
 import { grpc } from "grpc-web-client";
 import { createContext, runInContext } from "vm";
 
-import { StubTransportBuilder } from "../../helpers/fakeGrpcTransport";
+import {frameRequest, StubTransportBuilder} from "../../helpers/fakeGrpcTransport";
 import { ExternalChildMessage } from "../../../examples/generated/othercom/external_child_message_pb";
 import { SimpleService, SimpleServiceClient } from "../../../examples/generated/examplecom/simple_service_pb_service";
 import { StreamRequest, UnaryRequest } from "../../../examples/generated/examplecom/simple_service_pb";
@@ -153,6 +153,23 @@ describe("service/grpc-web", () => {
               assert.equal(response!.getMyString(), "some value", "should return the expected payload");
               done();
             });
+      });
+
+      it("should send the supplied payload to the server", (done) => {
+        let sentMessageBytes: ArrayBufferView = new Uint8Array(0);
+
+        const payload = new UnaryRequest();
+        payload.setSomeInt64(42);
+
+        makeClient(new StubTransportBuilder().withMessageListener(v => sentMessageBytes = v))
+          .doUnary(
+            payload,
+            (err) => {
+              assert.ok(err === null, "should not yield an error");
+              assert.deepEqual(sentMessageBytes, frameRequest(payload), "expected request message supplied to transport");
+              done();
+            }
+          );
       });
 
       it("should allow the caller to supply Metadata", (done) => {
@@ -320,6 +337,23 @@ describe("service/grpc-web", () => {
             done();
           })
           .write(payload)
+          .end();
+      });
+
+      it("should allow the caller to supplied multiple messages", (done) => {
+        const [ reqMsgOne, reqMsgTwo ] = makePayloads("one", "two");
+        const sentMessageBytes: ArrayBufferView[] = [];
+
+        makeClient(new StubTransportBuilder().withMessageListener(v => { sentMessageBytes.push(v); }))
+          .doClientStream()
+          .on("end", () => {
+            assert.equal(sentMessageBytes.length, 2, "Two messages are sent");
+            assert.deepEqual(sentMessageBytes[0], frameRequest(reqMsgOne));
+            assert.deepEqual(sentMessageBytes[1], frameRequest(reqMsgTwo));
+            done();
+          })
+          .write(reqMsgOne)
+          .write(reqMsgTwo)
           .end();
       });
 
