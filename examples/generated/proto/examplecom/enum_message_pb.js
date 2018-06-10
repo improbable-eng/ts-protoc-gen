@@ -11,7 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var othercom_external_enum_pb = require('../othercom/external_enum_pb.js');
+var proto_othercom_external_enum_pb = require('../../proto/othercom/external_enum_pb.js');
 goog.exportSymbol('proto.examplecom.EnumMessage', null, global);
 goog.exportSymbol('proto.examplecom.EnumMessage.InternalEnum', null, global);
 

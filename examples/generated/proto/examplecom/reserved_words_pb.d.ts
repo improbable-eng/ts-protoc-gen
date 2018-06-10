@@ -1,5 +1,5 @@
 // package: examplecom
-// file: examplecom/reserved_words.proto
+// file: proto/examplecom/reserved_words.proto
 
 import * as jspb from "google-protobuf";
 

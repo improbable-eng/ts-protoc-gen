@@ -11,7 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var othercom_external_child_message_pb = require('../othercom/external_child_message_pb.js');
+var proto_othercom_external_child_message_pb = require('../../proto/othercom/external_child_message_pb.js');
 goog.exportSymbol('proto.examplecom.ParentMessageV3', null, global);
 goog.exportSymbol('proto.examplecom.ParentMessageV3.InternalChildMessage', null, global);
 
@@ -71,9 +71,9 @@ proto.examplecom.ParentMessageV3.toObject = function(includeInstance, msg) {
     internalChildMessage: (f = msg.getInternalChildMessage()) && proto.examplecom.ParentMessageV3.InternalChildMessage.toObject(includeInstance, f),
     internalChildrenList: jspb.Message.toObjectList(msg.getInternalChildrenList(),
     proto.examplecom.ParentMessageV3.InternalChildMessage.toObject, includeInstance),
-    externalChildMessage: (f = msg.getExternalChildMessage()) && othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
+    externalChildMessage: (f = msg.getExternalChildMessage()) && proto_othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
     externalChildrenList: jspb.Message.toObjectList(msg.getExternalChildrenList(),
-    othercom_external_child_message_pb.ExternalChildMessage.toObject, includeInstance)
+    proto_othercom_external_child_message_pb.ExternalChildMessage.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -121,13 +121,13 @@ proto.examplecom.ParentMessageV3.deserializeBinaryFromReader = function(msg, rea
       msg.addInternalChildren(value);
       break;
     case 3:
-      var value = new othercom_external_child_message_pb.ExternalChildMessage;
-      reader.readMessage(value,othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.setExternalChildMessage(value);
       break;
     case 4:
-      var value = new othercom_external_child_message_pb.ExternalChildMessage;
-      reader.readMessage(value,othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.addExternalChildren(value);
       break;
     default:
@@ -180,7 +180,7 @@ proto.examplecom.ParentMessageV3.serializeBinaryToWriter = function(message, wri
     writer.writeMessage(
       3,
       f,
-      othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
   }
   f = message.getExternalChildrenList();
@@ -188,7 +188,7 @@ proto.examplecom.ParentMessageV3.serializeBinaryToWriter = function(message, wri
     writer.writeRepeatedMessage(
       4,
       f,
-      othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
   }
 };
@@ -403,7 +403,7 @@ proto.examplecom.ParentMessageV3.prototype.clearInternalChildrenList = function(
  */
 proto.examplecom.ParentMessageV3.prototype.getExternalChildMessage = function() {
   return /** @type{?proto.othercom.ExternalChildMessage} */ (
-    jspb.Message.getWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 3));
+    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 3));
 };
 
 
@@ -433,7 +433,7 @@ proto.examplecom.ParentMessageV3.prototype.hasExternalChildMessage = function() 
  */
 proto.examplecom.ParentMessageV3.prototype.getExternalChildrenList = function() {
   return /** @type{!Array.<!proto.othercom.ExternalChildMessage>} */ (
-    jspb.Message.getRepeatedWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 4));
+    jspb.Message.getRepeatedWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 4));
 };
 
 

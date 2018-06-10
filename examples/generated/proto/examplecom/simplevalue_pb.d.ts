@@ -1,5 +1,5 @@
 // package: examplecom
-// file: examplecom/simplevalue.proto
+// file: proto/examplecom/simplevalue.proto
 
 import * as jspb from "google-protobuf";
 

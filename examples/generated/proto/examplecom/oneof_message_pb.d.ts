@@ -1,8 +1,8 @@
 // package: examplecom
-// file: examplecom/oneof_message.proto
+// file: proto/examplecom/oneof_message.proto
 
 import * as jspb from "google-protobuf";
-import * as othercom_external_child_message_pb from "../othercom/external_child_message_pb";
+import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
 
 export class OneOfMessage extends jspb.Message {
   hasInternalChildMessage(): boolean;
@@ -12,8 +12,8 @@ export class OneOfMessage extends jspb.Message {
 
   hasExternalChildMessage(): boolean;
   clearExternalChildMessage(): void;
-  getExternalChildMessage(): othercom_external_child_message_pb.ExternalChildMessage | undefined;
-  setExternalChildMessage(value?: othercom_external_child_message_pb.ExternalChildMessage): void;
+  getExternalChildMessage(): proto_othercom_external_child_message_pb.ExternalChildMessage | undefined;
+  setExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): void;
 
   hasMyString(): boolean;
   clearMyString(): void;
@@ -39,7 +39,7 @@ export class OneOfMessage extends jspb.Message {
 export namespace OneOfMessage {
   export type AsObject = {
     internalChildMessage?: OneOfMessage.InternalChildMessage.AsObject,
-    externalChildMessage?: othercom_external_child_message_pb.ExternalChildMessage.AsObject,
+    externalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage.AsObject,
     myString: string,
     myInt64: number,
   }

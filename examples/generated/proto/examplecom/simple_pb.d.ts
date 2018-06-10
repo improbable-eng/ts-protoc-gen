@@ -1,5 +1,5 @@
 // package: examplecom
-// file: examplecom/simple.proto
+// file: proto/examplecom/simple.proto
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_compiler_plugin_pb from "google-protobuf/google/protobuf/compiler/plugin_pb";

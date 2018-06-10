@@ -1,5 +1,5 @@
 // package: othercom
-// file: othercom/external_child_message.proto
+// file: proto/othercom/external_child_message.proto
 
 import * as jspb from "google-protobuf";
 

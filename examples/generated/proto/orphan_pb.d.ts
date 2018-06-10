@@ -1,5 +1,5 @@
 // package: 
-// file: orphan.proto
+// file: proto/orphan.proto
 
 import * as jspb from "google-protobuf";
 

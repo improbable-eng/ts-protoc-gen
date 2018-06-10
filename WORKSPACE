@@ -16,29 +16,25 @@ http_archive(
   urls = [
     "https://github.com/bazelbuild/rules_webtesting/archive/master.tar.gz",
     ],
-)
+  )
 load("@io_bazel_rules_webtesting//web:repositories.bzl", "browser_repositories", "web_test_repositories")
 web_test_repositories()
 
 git_repository(
   name = "build_bazel_rules_nodejs",
   remote = "https://github.com/bazelbuild/rules_nodejs.git",
-  tag = "0.9.1",
+  commit = "d334fd8e2274fb939cf447106dced97472534e80",
 )
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
 node_repositories(package_json = ["//:package.json"])
 
-# installs our node_modules
-npm_install(
-  name = "deps",
-  package_json = "//:package.json",
-  package_lock_json = "//:package-lock.json",
-)
+load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
+typescript_proto_dependencies()
 
 git_repository(
   name = "build_bazel_rules_typescript",
   remote = "https://github.com/bazelbuild/rules_typescript.git",
-  tag = "0.14.0",
-)
+  commit = "3488d4fb89c6a02d79875d217d1029182fbcd797",
+  )
 load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
 ts_setup_workspace()

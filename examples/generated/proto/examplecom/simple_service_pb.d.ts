@@ -1,8 +1,8 @@
 // package: examplecom
-// file: examplecom/simple_service.proto
+// file: proto/examplecom/simple_service.proto
 
 import * as jspb from "google-protobuf";
-import * as othercom_external_child_message_pb from "../othercom/external_child_message_pb";
+import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 
 export class UnaryRequest extends jspb.Message {

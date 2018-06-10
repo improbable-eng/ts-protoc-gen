@@ -11,7 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var othercom_external_child_message_pb = require('../othercom/external_child_message_pb.js');
+var proto_othercom_external_child_message_pb = require('../../proto/othercom/external_child_message_pb.js');
 goog.exportSymbol('proto.examplecom.CamelCasedOneOfMessage', null, global);
 goog.exportSymbol('proto.examplecom.OneOfMessage', null, global);
 goog.exportSymbol('proto.examplecom.OneOfMessage.InternalChildMessage', null, global);
@@ -91,7 +91,7 @@ proto.examplecom.OneOfMessage.prototype.toObject = function(opt_includeInstance)
 proto.examplecom.OneOfMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
     internalChildMessage: (f = msg.getInternalChildMessage()) && proto.examplecom.OneOfMessage.InternalChildMessage.toObject(includeInstance, f),
-    externalChildMessage: (f = msg.getExternalChildMessage()) && othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
+    externalChildMessage: (f = msg.getExternalChildMessage()) && proto_othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
     myString: jspb.Message.getFieldWithDefault(msg, 3, ""),
     myInt64: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
@@ -136,8 +136,8 @@ proto.examplecom.OneOfMessage.deserializeBinaryFromReader = function(msg, reader
       msg.setInternalChildMessage(value);
       break;
     case 2:
-      var value = new othercom_external_child_message_pb.ExternalChildMessage;
-      reader.readMessage(value,othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.setExternalChildMessage(value);
       break;
     case 3:
@@ -190,7 +190,7 @@ proto.examplecom.OneOfMessage.serializeBinaryToWriter = function(message, writer
     writer.writeMessage(
       2,
       f,
-      othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
   }
   f = /** @type {string} */ (jspb.Message.getField(message, 3));
@@ -388,7 +388,7 @@ proto.examplecom.OneOfMessage.prototype.hasInternalChildMessage = function() {
  */
 proto.examplecom.OneOfMessage.prototype.getExternalChildMessage = function() {
   return /** @type{?proto.othercom.ExternalChildMessage} */ (
-    jspb.Message.getWrapperField(this, othercom_external_child_message_pb.ExternalChildMessage, 2));
+    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 2));
 };
 
 

@@ -1,7 +1,7 @@
 // package: 
-// file: orphan.proto
+// file: proto/orphan.proto
 
-import * as orphan_pb from "./orphan_pb";
+import * as proto_orphan_pb from "../proto/orphan_pb";
 import {grpc} from "grpc-web-client";
 
 type OrphanServiceDoUnary = {
@@ -9,8 +9,8 @@ type OrphanServiceDoUnary = {
   readonly service: typeof OrphanService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof orphan_pb.OrphanUnaryRequest;
-  readonly responseType: typeof orphan_pb.OrphanMessage;
+  readonly requestType: typeof proto_orphan_pb.OrphanUnaryRequest;
+  readonly responseType: typeof proto_orphan_pb.OrphanMessage;
 };
 
 type OrphanServiceDoStream = {
@@ -18,8 +18,8 @@ type OrphanServiceDoStream = {
   readonly service: typeof OrphanService;
   readonly requestStream: false;
   readonly responseStream: true;
-  readonly requestType: typeof orphan_pb.OrphanStreamRequest;
-  readonly responseType: typeof orphan_pb.OrphanMessage;
+  readonly requestType: typeof proto_orphan_pb.OrphanStreamRequest;
+  readonly responseType: typeof proto_orphan_pb.OrphanMessage;
 };
 
 export class OrphanService {
@@ -44,14 +44,14 @@ export class OrphanServiceClient {
 
   constructor(serviceHost: string, options?: ServiceClientOptions);
   doUnary(
-    requestMessage: orphan_pb.OrphanUnaryRequest,
+    requestMessage: proto_orphan_pb.OrphanUnaryRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError, responseMessage: orphan_pb.OrphanMessage|null) => void
+    callback: (error: ServiceError, responseMessage: proto_orphan_pb.OrphanMessage|null) => void
   ): void;
   doUnary(
-    requestMessage: orphan_pb.OrphanUnaryRequest,
-    callback: (error: ServiceError, responseMessage: orphan_pb.OrphanMessage|null) => void
+    requestMessage: proto_orphan_pb.OrphanUnaryRequest,
+    callback: (error: ServiceError, responseMessage: proto_orphan_pb.OrphanMessage|null) => void
   ): void;
-  doStream(requestMessage: orphan_pb.OrphanStreamRequest, metadata?: grpc.Metadata): ResponseStream<orphan_pb.OrphanMessage>;
+  doStream(requestMessage: proto_orphan_pb.OrphanStreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_orphan_pb.OrphanMessage>;
 }
 

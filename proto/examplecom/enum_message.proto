@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package examplecom;
 
-import "othercom/external_enum.proto";
+import "proto/othercom/external_enum.proto";
 
 message EnumMessage {
     enum InternalEnum {

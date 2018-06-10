@@ -1,5 +1,5 @@
 // package: othercom
-// file: othercom/external_enum.proto
+// file: proto/othercom/external_enum.proto
 
 import * as jspb from "google-protobuf";
 
