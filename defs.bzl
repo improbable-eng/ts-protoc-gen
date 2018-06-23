@@ -25,14 +25,19 @@ def proto_path(proto):
   if path.startswith("/"): path = path[1:]
   return path
 
-def append_to_outputs(ctx, file_name, outputs, file_modifications):
+def append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications):
   generated_filenames = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
 
   for f in generated_filenames:
-    outputs.append(declare_file(ctx, file_name + f, file_modifications))
+    output = declare_file(ctx, file_name + f, file_modifications)
+    if f.endswith('.d.ts'):
+      dts_outputs.append(output)
+    else:
+      js_outputs.append(output)
 
 def _typescript_proto_library_impl(ctx):
-  outputs = []
+  js_outputs = []
+  dts_outputs = []
   proto_inputs = []
   file_modifications = []
 
@@ -43,7 +48,9 @@ def _typescript_proto_library_impl(ctx):
     file_name = src.basename[:-len(src.extension) - 1]
     normalized_file = proto_path(src)
     proto_inputs.append(normalized_file)
-    append_to_outputs(ctx, file_name, outputs, file_modifications)
+    append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications)
+  
+  outputs = dts + js
 
   if not file_modifications:
     file_modifications.append("echo \"No services generated\"")
@@ -70,9 +77,27 @@ def _typescript_proto_library_impl(ctx):
     print("service file modification: ", file_modifications)
     print("ctx.var['BINDIR']: ", ctx.var["BINDIR"])
     print("normalized_file: ", normalized_file)
-
-  return DefaultInfo(
-    files = depset(outputs),
+   
+  outputs = depset(outputs)
+  js_outputs = depset(js_outputs)
+  
+  # Return backwards-compatible legacy struct for ts_library_support
+  return struct(
+    typescript = struct(
+      declarations = dts_outputs,
+      transitive_declarations = dts_outputs,
+      type_blacklisted_declarations = [],
+      es5_sources = js_outputs,
+      es6_sources = js_outputs,
+      transitive_es5_sources = depset(),
+      transitive_es6_sources = js_outputs
+    ),
+    legacy_info = struct(
+      files = outputs,
+    ),
+    providers = [
+      DefaultInfo(files = outputs)
+    ]
   )
 
 typescript_proto_library = rule(
