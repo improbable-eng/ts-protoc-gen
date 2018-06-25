@@ -50,7 +50,7 @@ def _typescript_proto_library_impl(ctx):
     proto_inputs.append(normalized_file)
     append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications)
   
-  outputs = dts + js
+  outputs = dts_outputs + js_outputs
 
   if not file_modifications:
     file_modifications.append("echo \"No services generated\"")
