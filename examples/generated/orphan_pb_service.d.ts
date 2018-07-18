@@ -45,6 +45,14 @@ interface RequestStream<T> {
   on(type: 'end', handler: () => void): RequestStream<T>;
   on(type: 'status', handler: (status: Status) => void): RequestStream<T>;
 }
+interface BidirectionalStream<T> {
+  write(message: T): BidirectionalStream<T>;
+  end(): void;
+  cancel(): void;
+  on(type: 'data', handler: (message: T) => void): BidirectionalStream<T>;
+  on(type: 'end', handler: () => void): BidirectionalStream<T>;
+  on(type: 'status', handler: (status: Status) => void): BidirectionalStream<T>;
+}
 
 export class OrphanServiceClient {
   readonly serviceHost: string;

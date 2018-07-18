@@ -8,25 +8,51 @@ import {frameRequest, StubTransportBuilder} from "../../helpers/fakeGrpcTranspor
 import { ExternalChildMessage } from "../../../examples/generated/othercom/external_child_message_pb";
 import { SimpleService, SimpleServiceClient } from "../../../examples/generated/examplecom/simple_service_pb_service";
 import { StreamRequest, UnaryRequest } from "../../../examples/generated/examplecom/simple_service_pb";
+import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 
 
 describe("service/grpc-web", () => {
-  it("should generate a service definition", () => {
-    assert.strictEqual(SimpleService.serviceName, "examplecom.SimpleService");
+  describe("generated service definitions", () => {
 
-    assert.strictEqual(SimpleService.DoUnary.methodName, "DoUnary");
-    assert.strictEqual(SimpleService.DoUnary.service, SimpleService);
-    assert.strictEqual(SimpleService.DoUnary.requestStream, false);
-    assert.strictEqual(SimpleService.DoUnary.responseStream, false);
-    assert.strictEqual(SimpleService.DoUnary.requestType, UnaryRequest);
-    assert.strictEqual(SimpleService.DoUnary.responseType, ExternalChildMessage);
+    it("should be exported", () => {
+      assert.strictEqual(SimpleService.serviceName, "examplecom.SimpleService");
+    });
 
-    assert.strictEqual(SimpleService.DoServerStream.methodName, "DoServerStream");
-    assert.strictEqual(SimpleService.DoServerStream.service, SimpleService);
-    assert.strictEqual(SimpleService.DoServerStream.requestStream, false);
-    assert.strictEqual(SimpleService.DoServerStream.responseStream, true);
-    assert.strictEqual(SimpleService.DoServerStream.requestType, StreamRequest);
-    assert.strictEqual(SimpleService.DoServerStream.responseType, ExternalChildMessage);
+    it("should contain the expected DoUnary method", () => {
+      assert.strictEqual(SimpleService.DoUnary.methodName, "DoUnary");
+      assert.strictEqual(SimpleService.DoUnary.service, SimpleService);
+      assert.strictEqual(SimpleService.DoUnary.requestStream, false);
+      assert.strictEqual(SimpleService.DoUnary.responseStream, false);
+      assert.strictEqual(SimpleService.DoUnary.requestType, UnaryRequest);
+      assert.strictEqual(SimpleService.DoUnary.responseType, ExternalChildMessage);
+    });
+
+    it("should contain the expected DoServerStream method", () => {
+      assert.strictEqual(SimpleService.DoServerStream.methodName, "DoServerStream");
+      assert.strictEqual(SimpleService.DoServerStream.service, SimpleService);
+      assert.strictEqual(SimpleService.DoServerStream.requestStream, false);
+      assert.strictEqual(SimpleService.DoServerStream.responseStream, true);
+      assert.strictEqual(SimpleService.DoServerStream.requestType, StreamRequest);
+      assert.strictEqual(SimpleService.DoServerStream.responseType, ExternalChildMessage);
+    });
+
+    it("should contain the expected  DoClientStream method", () => {
+      assert.strictEqual(SimpleService.DoClientStream.methodName, "DoClientStream");
+      assert.strictEqual(SimpleService.DoClientStream.service, SimpleService);
+      assert.strictEqual(SimpleService.DoClientStream.requestStream, true);
+      assert.strictEqual(SimpleService.DoClientStream.responseStream, false);
+      assert.strictEqual(SimpleService.DoClientStream.requestType, StreamRequest);
+      assert.strictEqual(SimpleService.DoClientStream.responseType, Empty);
+    });
+
+    it("should contain the expected  DoClientStream method", () => {
+      assert.strictEqual(SimpleService.DoBidiStream.methodName, "DoBidiStream");
+      assert.strictEqual(SimpleService.DoBidiStream.service, SimpleService);
+      assert.strictEqual(SimpleService.DoBidiStream.requestStream, true);
+      assert.strictEqual(SimpleService.DoBidiStream.responseStream, true);
+      assert.strictEqual(SimpleService.DoBidiStream.requestType, StreamRequest);
+      assert.strictEqual(SimpleService.DoBidiStream.responseType, ExternalChildMessage);
+    });
   });
 
   it("should not output imports for namespaces that are not used in the service definition", () => {
@@ -67,6 +93,14 @@ describe("service/grpc-web", () => {
     assert.strictEqual(typeof sandbox.exports.SimpleService, "function");
     assert.strictEqual(sandbox.exports.SimpleService.serviceName, "examplecom.SimpleService");
 
+    assert.strictEqual(typeof sandbox.exports.SimpleService.DoUnary, "object");
+    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.methodName, "DoUnary");
+    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.service, sandbox.exports.SimpleService);
+    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.requestStream, false);
+    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.responseStream, false);
+    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.requestType, UnaryRequest);
+    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.responseType, ExternalChildMessage);
+
     assert.strictEqual(typeof sandbox.exports.SimpleService.DoServerStream, "object");
     assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.methodName, "DoServerStream");
     assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.service, sandbox.exports.SimpleService);
@@ -75,13 +109,6 @@ describe("service/grpc-web", () => {
     assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.requestType, StreamRequest);
     assert.strictEqual(sandbox.exports.SimpleService.DoServerStream.responseType, ExternalChildMessage);
 
-    assert.strictEqual(typeof sandbox.exports.SimpleService.DoUnary, "object");
-    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.methodName, "DoUnary");
-    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.service, sandbox.exports.SimpleService);
-    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.requestStream, false);
-    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.responseStream, false);
-    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.requestType, UnaryRequest);
-    assert.strictEqual(sandbox.exports.SimpleService.DoUnary.responseType, ExternalChildMessage);
   });
 
   describe("grpc-web service stubs", () => {
@@ -394,6 +421,105 @@ describe("service/grpc-web", () => {
           done();
         }, 20);
       });
+    });
+
+    describe("bidirectional streaming", () => {
+      // const [ payload ] = makePayloads("some value");
+
+      it("should route the request to the expected endpoint", (done) => {
+        let targetUrl = "";
+
+        makeClient(new StubTransportBuilder().withRequestListener(options => targetUrl = options.url))
+          .doBidiStream()
+          .on("end", () => {
+            assert.equal(targetUrl, "http://localhost:1/examplecom.SimpleService/DoBidiStream");
+            done();
+          })
+          .end();
+      });
+
+      
+      it("should invoke onEnd before onStatus", (done) => {
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder())
+          .doClientStream()
+          .on("end", () => { onEndInvoked = true; })
+          .on("status", () => {
+            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+            done();
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should handle an error returned ahead of any data by the server", (done) => {
+        makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
+          .doClientStream()
+          .on("status", (status) => {
+            assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+            assert.equal(status.details, "some error", "expected grpc error details returned");
+            done();
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should allow the caller to supplied multiple messages", (done) => {
+        const [ reqMsgOne, reqMsgTwo ] = makePayloads("one", "two");
+        const sentMessageBytes: ArrayBufferView[] = [];
+
+        makeClient(new StubTransportBuilder().withMessageListener(v => { sentMessageBytes.push(v); }))
+          .doClientStream()
+          .on("end", () => {
+            assert.equal(sentMessageBytes.length, 2, "Two messages are sent");
+            assert.deepEqual(sentMessageBytes[0], frameRequest(reqMsgOne));
+            assert.deepEqual(sentMessageBytes[1], frameRequest(reqMsgTwo));
+            done();
+          })
+          .write(reqMsgOne)
+          .write(reqMsgTwo)
+          .end();
+      });
+
+      it("should allow the caller to supply Metadata", (done) => {
+        let sentHeaders: grpc.Metadata;
+
+        makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
+          .doClientStream(new grpc.Metadata({ "foo": "bar" }))
+          .on("end", () => {
+            assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
+            done();
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should allow the caller to cancel the request", (done) => {
+        const transport = new StubTransportBuilder()
+          .withManualTrigger()
+          .build();
+
+        const client = new SimpleServiceClient("http://localhost:1", { transport });
+        let onEndFired = false;
+        let onStatusFired = false;
+
+        const handle = client.doClientStream()
+          .on("end", () => onEndFired = true)
+          .on("status", () => onStatusFired = true)
+          .write(payload);
+
+        transport.sendHeaders();
+        handle.cancel();
+        transport.sendTrailers();
+
+        setTimeout(() => {
+          assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
+          assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
+          done();
+        }, 20);
+      });
+      */
     });
 
     describe("methods named using reserved words", () => {

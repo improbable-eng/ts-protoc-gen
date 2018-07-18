@@ -33,6 +33,15 @@ type SimpleServiceDoClientStream = {
   readonly responseType: typeof google_protobuf_empty_pb.Empty;
 };
 
+type SimpleServiceDoBidiStream = {
+  readonly methodName: string;
+  readonly service: typeof SimpleService;
+  readonly requestStream: true;
+  readonly responseStream: true;
+  readonly requestType: typeof examplecom_simple_service_pb.StreamRequest;
+  readonly responseType: typeof othercom_external_child_message_pb.ExternalChildMessage;
+};
+
 type SimpleServiceDelete = {
   readonly methodName: string;
   readonly service: typeof SimpleService;
@@ -47,6 +56,7 @@ export class SimpleService {
   static readonly DoUnary: SimpleServiceDoUnary;
   static readonly DoServerStream: SimpleServiceDoServerStream;
   static readonly DoClientStream: SimpleServiceDoClientStream;
+  static readonly DoBidiStream: SimpleServiceDoBidiStream;
   static readonly Delete: SimpleServiceDelete;
 }
 
@@ -67,6 +77,14 @@ interface RequestStream<T> {
   on(type: 'end', handler: () => void): RequestStream<T>;
   on(type: 'status', handler: (status: Status) => void): RequestStream<T>;
 }
+interface BidirectionalStream<T> {
+  write(message: T): BidirectionalStream<T>;
+  end(): void;
+  cancel(): void;
+  on(type: 'data', handler: (message: T) => void): BidirectionalStream<T>;
+  on(type: 'end', handler: () => void): BidirectionalStream<T>;
+  on(type: 'status', handler: (status: Status) => void): BidirectionalStream<T>;
+}
 
 export class SimpleServiceClient {
   readonly serviceHost: string;
@@ -83,6 +101,7 @@ export class SimpleServiceClient {
   ): void;
   doServerStream(requestMessage: examplecom_simple_service_pb.StreamRequest, metadata?: grpc.Metadata): ResponseStream<othercom_external_child_message_pb.ExternalChildMessage>;
   doClientStream(metadata?: grpc.Metadata): RequestStream<google_protobuf_empty_pb.Empty>;
+  doBidiStream(metadata?: grpc.Metadata): BidirectionalStream<othercom_external_child_message_pb.ExternalChildMessage>;
   delete(
     requestMessage: examplecom_simple_service_pb.UnaryRequest,
     metadata: grpc.Metadata,

@@ -17,7 +17,6 @@ if [[ "x${MOCHA_DEBUG}" != "x" ]]; then
 fi
 
 mocha \
-    --reporter mocha-spec-json-output-reporter \
     --reporter-options fileName=./test/mocha-report.json \
     --require ts-node/register/type-check \
     --require source-map-support/register \
