@@ -1,4 +1,10 @@
-## 0.7.4-pre
+## 0.7.4
+
+### Changes
+* Download protoc when generating protos to ensure a consistent version is being used. [@easyCZ](https://github.com/easyCZ) in [#80](https://github.com/improbable-eng/ts-protoc-gen/pull/80) 
+* Always generate Service Definitions (`pb_service.d.js` and `pb_service.d.ts`) even if the proto does not define any services. [@lx223 ](https://github.com/lx223) in [#83](https://github.com/improbable-eng/ts-protoc-gen/pull/83) 
+* Add custom Bazel rule which uses ts-protoc-gen for generation. [@coltonmorris](https://github.com/coltonmorris) in [#84](https://github.com/improbable-eng/ts-protoc-gen/pull/84)
+* Add `debug` to `ServiceClientOptions`. [@bianbian-org](https://github.com/bianbian-org) in [#90](https://github.com/improbable-eng/ts-protoc-gen/pull/90)
 
 ## 0.7.3
 
