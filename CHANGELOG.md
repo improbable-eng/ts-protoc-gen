@@ -1,4 +1,7 @@
-## 0.7.6-pre
+## 0.7.6
+
+### Fixes
+* Broken integration tests on master 
 
 ## 0.7.5
 
