@@ -1,4 +1,7 @@
-## 0.7.5-pre
+## 0.7.5
+
+### Fixes
+* Fixed NPM publish.
 
 ## 0.7.4
 
