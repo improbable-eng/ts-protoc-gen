@@ -36,8 +36,8 @@ git_repository(
     commit = "6bee898391a42971289a7989c0f459ab5a4a84dd",  # master as of May 10th, 2018
     remote = "https://github.com/bazelbuild/rules_go.git",
     )
-  load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-  go_rules_dependencies()
+load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_rules_dependencies()
 go_register_toolchains()
 
 http_archive(
@@ -57,6 +57,12 @@ git_repository(
 )
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
 node_repositories(package_json = ["//:package.json"])
+
+git_repository(
+    name = "ts_protoc_gen",
+    remote = "https://github.com/improbable-eng/ts-protoc-gen.git",
+    commit = "05c52b843edf9420be3a9549d01352dfeff76a5e",
+)
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
 typescript_proto_dependencies()
@@ -84,11 +90,6 @@ proto_library(
   srcs = [
     ":proto_files",
   ],
-)
-
-typescript_proto_library(
-  name = "generate",
-  proto = ":proto",
 )
 
 typescript_proto_library(
