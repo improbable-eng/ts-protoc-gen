@@ -30,8 +30,8 @@ describe("service/grpc-web", () => {
   });
 
   it("should generate service definition files for protos that have no service definitions", () => {
-    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/examplecom/empty_message_no_service_pb_service.d.ts")));
-    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/examplecom/empty_message_no_service_pb_service.js")));
+    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/proto/examplecom/empty_message_no_service_pb_service.d.ts")));
+    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/proto/examplecom/empty_message_no_service_pb_service.js")));
   });
 
   it("should not output imports for namespaces that are not used in the service definition", () => {
