@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {ReservedWordsMessage} from "../../examples/generated/examplecom/reserved_words_pb";
+import {ReservedWordsMessage} from "../../examples/generated/proto/examplecom/reserved_words_pb";
 
 describe("reserved words", () => {
 

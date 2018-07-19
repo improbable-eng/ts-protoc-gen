@@ -1,11 +1,10 @@
-# ts-protoc-gen
-> Protoc Plugin for generating TypeScript Declarations
-
-
 [![Master Build](https://travis-ci.org/improbable-eng/ts-protoc-gen.svg?branch=master)](https://travis-ci.org/improbable-eng/ts-protoc-gen)
 [![NPM](https://img.shields.io/npm/v/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
+[![NPM](https://img.shields.io/npm/dm/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
 [![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-![quality: alpha](https://img.shields.io/badge/quality-beta-orange.svg)
+
+# ts-protoc-gen
+> Protoc Plugin for generating TypeScript Declarations
 
 This repository contains a [protoc](https://github.com/google/protobuf) plugin that generates TypeScript declarations 
 (`.d.ts` files) that match the JavaScript output of `protoc --js_out=import_style=commonjs,binary`. This plugin can
@@ -14,8 +13,93 @@ also output service definitions as both `.js` and `.d.ts` files in the structure
 This plugin is tested and written using TypeScript 2.7.
 
 ## Installation
-* Install the standard C++ implementation of protocol buffers from [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers)
-* Install this package using npm, eg: `npm install ts-protoc-gen` or clone, install and build this repository.
+
+### npm
+As a prerequisite, download or install `protoc` (the protocol buffer compiler) for your platform from the [github releases page](https://github.com/google/protobuf/releases) or via a package manager (ie: [brew](http://brewformulas.org/Protobuf), [apt](https://www.ubuntuupdates.org/pm/protobuf-compiler)).
+
+For the latest stable version of the ts-protoc-gen plugin:
+
+```bash
+npm install ts-protoc-gen
+```
+
+For our latest build straight from master:
+
+```bash
+npm install ts-protoc-gen@next
+```
+### bazel
+Include the following in your `WORKSPACE`:   
+```python
+git_repository(
+    name = "io_bazel_rules_go",
+    commit = "6bee898391a42971289a7989c0f459ab5a4a84dd",  # master as of May 10th, 2018
+    remote = "https://github.com/bazelbuild/rules_go.git",
+    )
+load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_rules_dependencies()
+go_register_toolchains()
+
+http_archive(
+  name = "io_bazel_rules_webtesting",
+  strip_prefix = "rules_webtesting-master",
+  urls = [
+    "https://github.com/bazelbuild/rules_webtesting/archive/master.tar.gz",
+  ],
+)
+load("@io_bazel_rules_webtesting//web:repositories.bzl", "browser_repositories", "web_test_repositories")
+web_test_repositories()
+
+git_repository(
+  name = "build_bazel_rules_nodejs",
+  remote = "https://github.com/bazelbuild/rules_nodejs.git",
+  commit = "d334fd8e2274fb939cf447106dced97472534e80",
+)
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
+node_repositories(package_json = ["//:package.json"])
+
+git_repository(
+    name = "ts_protoc_gen",
+    remote = "https://github.com/improbable-eng/ts-protoc-gen.git",
+    commit = "05c52b843edf9420be3a9549d01352dfeff76a5e",
+)
+
+load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
+typescript_proto_dependencies()
+
+git_repository(
+  name = "build_bazel_rules_typescript",
+  remote = "https://github.com/bazelbuild/rules_typescript.git",
+  commit = "3488d4fb89c6a02d79875d217d1029182fbcd797",
+)
+load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
+ts_setup_workspace()
+```   
+
+Now in your `BUILD.bazel`:   
+```python
+load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
+
+filegroup(
+  name = "proto_files",
+  srcs = glob(["*.proto"]),
+)
+
+proto_library(
+  name = "proto",
+  srcs = [
+    ":proto_files",
+  ],
+)
+
+typescript_proto_library(
+  name = "generate",
+  proto = ":proto",
+)
+```    
+
+## Contributing
+Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
 
 ## Usage
 As mentioned above, this plugin for `protoc` serves two purposes:
@@ -73,6 +157,8 @@ protoc \
 
 The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs.
 
+**Note** Both `js` and `d.ts` service files will be generated regardless of whether there are service definitions in the proto files.
+
 ```js
 import { UserServiceClient, GetUserRequest } from "../generated/users_pb_service"
 
@@ -83,8 +169,6 @@ client.getUser(req, (err, user) => { /* ... */ });
 ```
 
 ## Examples
-For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples)
+For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples).
 
-
-## Contributing
-Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
+To generate the examples from protos, please run `./generate.sh`

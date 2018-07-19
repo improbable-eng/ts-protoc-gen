@@ -1,18 +1,39 @@
 language: node_js
-env:
-  - PROTOBUF_VER="3.2.0"
+before_deploy: |
+  PKG_VERSION=$(node -p "require('./package.json').version")
+  SHORT_COMMIT_HASH=$(git rev-parse --short HEAD)
+  NPM_TAG="latest"
+
+  if [[ "${PKG_VERSION}" = *-pre ]]; then
+    NPM_TAG="next"
+  fi
+  echo "NPM_TAG=${NPM_TAG}"
+
+  # If this is a pre-release version, give the package a unique version so we can publish it to npm
+  # (as npm does not allow us to overwrite previously published packages)
+  if [ "$NPM_TAG" == "next" ]; then
+    UNIQUE_PKG_VERSION="${PKG_VERSION}.${SHORT_COMMIT_HASH}"
+    npm version ${UNIQUE_PKG_VERSION}
+    echo "Set package version to ${UNIQUE_PKG_VERSION}"
+    cat package.json
+  fi
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email:
+    secure: WRWu/LodEL9DQO/p65MwFzOOAmfezOOVB7N7Wh56NImUSX0/Ves4Uuzm1yWhqb/OuonW3Ofm3wxmLiwjpJpiNf45OivI1N2Z/noKn+ZiAC/beuHUYXDR5FlHZvf0VmXXhjFnJPu1cRGHdTD2RIloL4z5TUajNta4FZdIo37lLfNodafaiTd+F/OQR3LsC7R7oyMKH3MLDbEEAZkfCv7Vfk+kxLhSezWJuy24APGG856oOEj49sy6s27hWsX89SruOQggbZFnw8yxWC0rkEp4ACNhdWx3FxhoQ5XR5AT4OB2Ydfgr8+YHQReBqZnHBn0RAQ5qLc+hJUhLGZZlw0WCbuAc8W+zd2IH5ufLUzTn3RfMCeDb50cfX9Dz7Zi9wPJDxCE8DMFJfHuCEV6GEuso5bu9vB175lGrwuOrkpvLlen/5HykLKSobAZ7gixnsg7F6oVV+CgM1xA7eN6oA2KPWzudMtydJ7aRDkHMyyHN7LsTMUmE5iTWTBZV0+o3x6dskc3xfSfXHjUuD3qefdraW0cV4gFrpq7r+dB3x6jUfKlwPeQkPb0RMsOw+v179kYmbS5M+ejvNI3Ta9ffrOvTZyEOq3b6WXJZU2TGa1hIazP8BXzZ6AEh6Oq7tRczlyNT9DM0bpocwPyPUF1+dduBxa10PJGkoRbBYT4abk2e7MI=
+  api_key:
+    secure: V5ha4R/5SByBygSa5V9Tm9gpxY3RhmPJueboD8gRIJ952IddUPwCL0wd3yp1Sln0/Ppeh9T6mAl3zCVCqGc4GTwpgh7CwhjXDQZ9kdjixqD464Giv2cxyQ2ZFDO7HDHbQyk+yLIFCQZr1CVMoMkkPxLx72zcJRVuISEITckeYozs32Fn3QciefJqzXr1l2BIQFtCV23StVx4QykPVyY/0l50xAoY3AJudh0MJYQ9gQBfCLgm8SCD0kVf5uAx1mowUDk+AjEbaYuxevZ6ovjuMt/CPzOoYSSOSgh+4///VtBxHcsk+8pGeamgZ0x6CDS9CVQ7tqydXWLrteB6qbkLsegJCcLZYGDHeaIaV+WQbyCzOD41G9hrFUFp49x0zb5XFvdZn7YKViRdeMrdS2yZdyj7gYLo/Cmkn86dvlSpoUx5ic0L5cEMhBHWIntRgyrSwR8zrxwOD+70Fq/nmAzRzN1qsgOIo5aqoVQakEMEFa5SQznE6Zw4skAxW8RtLQQfBbPWegwGVm/Ph9ERbcN1ZGCtQANW1gNPh0LmquiITGO5TH00uAOBoUoQ8X5LTFxmK5tihJX7gtAzWEg1N+JziLiJEEU6dJZqYa/HB5PQe/+uy89Tk2y4nk+S5U3iZuC0y7dbmfyNAmdDOEu38GL9wMSLrDDO3Uq/97QdQnaofVk=
+  tag: "$NPM_TAG"
+  on:
+    branch: master
 cache:
   directories:
-    - node_modules
+  - node_modules
 before_install:
-  - wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel_0.11.0-linux-x86_64.deb
-  - sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
+- wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel_0.11.0-linux-x86_64.deb
+- sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
 install:
-  - sudo apt-get install unzip
-  - bash install-protobuf.sh
-  - export PATH=$TRAVIS_BUILD_DIR/protobuf/bin:$PATH
-  - npm install
+- npm install
 script:
-  - npm run lint
-  - bazel build //...:all # build with Bazel
-  - npm test # build and test with NPM
+- "./travis-ci-build.sh"

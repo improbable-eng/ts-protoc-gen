@@ -11,9 +11,6 @@ import {getFieldType, MESSAGE_TYPE} from "../ts/FieldTypes";
 import {CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 
 export function generateGrpcWebService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap): CodeGeneratorResponse.File[] {
-  if (descriptor.getServiceList().length === 0) {
-    return [];
-  }
   return [
     createFile(generateTypescriptDefinition(descriptor, exportMap), `${filename}_service.d.ts`),
     createFile(generateJavaScript(descriptor, exportMap), `${filename}_service.js`),
@@ -165,6 +162,10 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
 
+  if (serviceDescriptor.services.length === 0) {
+    return printer.getOutput();
+  }
+
   // Import statements.
   serviceDescriptor.imports
     .forEach(importDescriptor => {
@@ -203,7 +204,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
-  printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor }`);
+  printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor; debug?: boolean }`);
   printer.printEmptyLn();
   printer.printLn(`interface ResponseStream<T> {`);
   printer.printIndentedLn(`cancel(): void;`);
@@ -246,6 +247,10 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   printer.printLn(`// package: ${serviceDescriptor.packageName}`);
   printer.printLn(`// file: ${serviceDescriptor.filename}`);
   printer.printEmptyLn();
+
+  if (serviceDescriptor.services.length === 0) {
+    return printer.getOutput();
+  }
 
   // Import Statements
   serviceDescriptor.imports
@@ -325,6 +330,7 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
                  .printLn(`host: this.serviceHost,`)
                  .printLn(`metadata: metadata,`)
                  .printLn(`transport: this.options.transport,`)
+                 .printLn(`debug: this.options.debug,`)
                  .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
             .indent().printLn(`if (response.status !== grpc.Code.OK) {`)
@@ -351,6 +357,7 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
                .printLn(`host: this.serviceHost,`)
                .printLn(`metadata: metadata,`)
                .printLn(`transport: this.options.transport,`)
+               .printLn(`debug: this.options.debug,`)
                .printLn(`onMessage: function (responseMessage) {`)
         .indent().printLn(`listeners.data.forEach(function (handler) {`)
           .indent().printLn(`handler(responseMessage);`)
