@@ -36,8 +36,8 @@ git_repository(
     commit = "6bee898391a42971289a7989c0f459ab5a4a84dd",  # master as of May 10th, 2018
     remote = "https://github.com/bazelbuild/rules_go.git",
     )
-  load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-  go_rules_dependencies()
+load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_rules_dependencies()
 go_register_toolchains()
 
 http_archive(
@@ -84,11 +84,6 @@ proto_library(
   srcs = [
     ":proto_files",
   ],
-)
-
-typescript_proto_library(
-  name = "generate",
-  proto = ":proto",
 )
 
 typescript_proto_library(

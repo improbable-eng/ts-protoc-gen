@@ -54,6 +54,7 @@ SimpleServiceClient.prototype.doUnary = function doUnary(requestMessage, metadat
     host: this.serviceHost,
     metadata: metadata,
     transport: this.options.transport,
+    debug: this.options.debug,
     onEnd: function (response) {
       if (callback) {
         if (response.status !== grpc.Code.OK) {
@@ -77,6 +78,7 @@ SimpleServiceClient.prototype.doStream = function doStream(requestMessage, metad
     host: this.serviceHost,
     metadata: metadata,
     transport: this.options.transport,
+    debug: this.options.debug,
     onMessage: function (responseMessage) {
       listeners.data.forEach(function (handler) {
         handler(responseMessage);
@@ -113,6 +115,7 @@ SimpleServiceClient.prototype.delete = function pb_delete(requestMessage, metada
     host: this.serviceHost,
     metadata: metadata,
     transport: this.options.transport,
+    debug: this.options.debug,
     onEnd: function (response) {
       if (callback) {
         if (response.status !== grpc.Code.OK) {
