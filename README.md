@@ -172,3 +172,12 @@ client.getUser(req, (err, user) => { /* ... */ });
 For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples).
 
 To generate the examples from protos, please run `./generate.sh`
+
+## Gotchas
+By default the google-protobuf library will use the JavaScript number type to store 64bit float and integer values; this can lead to overflow problems as you exceed JavaScript's `Number.MAX_VALUE`. To work around this, you should consider using the `jstype` annotation on any 64bit fields, ie:
+
+```proto
+message Example {
+  uint64 bigInt = 1 [jstype = JS_STRING];
+}
+```
