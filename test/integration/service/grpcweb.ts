@@ -1,14 +1,14 @@
 import { resolve } from "path";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { assert } from "chai";
 import { grpc } from "grpc-web-client";
 import { createContext, runInContext } from "vm";
 
-import {frameRequest, StubTransportBuilder} from "../../helpers/fakeGrpcTransport";
+import { frameRequest, StubTransportBuilder } from "../../helpers/fakeGrpcTransport";
 import { ExternalChildMessage } from "../../../examples/generated/proto/othercom/external_child_message_pb";
 import { SimpleService, SimpleServiceClient } from "../../../examples/generated/proto/examplecom/simple_service_pb_service";
 import { StreamRequest, UnaryRequest } from "../../../examples/generated/proto/examplecom/simple_service_pb";
-import {Empty} from "google-protobuf/google/protobuf/empty_pb";
+import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 
 
 describe("service/grpc-web", () => {
@@ -61,6 +61,11 @@ describe("service/grpc-web", () => {
 
     const generatedProto = readFileSync(resolve(__dirname, "../../../examples/generated/proto/examplecom/simple_service_pb.js"), "utf8");
     assert.include(generatedProto, "google-protobuf/google/protobuf/timestamp_pb");
+  });
+
+  it("should generate service definition files for protos that have no service definitions", () => {
+    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/proto/examplecom/empty_message_no_service_pb_service.d.ts")));
+    assert.isTrue(existsSync(resolve(__dirname, "../../../examples/generated/proto/examplecom/empty_message_no_service_pb_service.js")));
   });
 
   it("should generate valid javascript sources", () => {
