@@ -239,7 +239,7 @@ describe("service/grpc-web", () => {
           });
       });
 
-      it("should handle an error returned ahead of any data by the unary endpoint", (done) => {
+      it("should handle an error returned ahead of any data by the endpoint", (done) => {
         makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
           .doServerStream(new StreamRequest())
           .on("status", (status) => {
@@ -249,7 +249,7 @@ describe("service/grpc-web", () => {
           });
       });
 
-      it("should handle an error returned mid-stream by the unary endpoint", (done) => {
+      it("should handle an error returned mid-stream by the endpoint", (done) => {
         const [payload] = makePayloads("some value");
         let actualData: ExternalChildMessage[] = [];
 
@@ -296,8 +296,11 @@ describe("service/grpc-web", () => {
       });
 
       it("should allow the caller to cancel the request", (done) => {
+        let cancelInvoked = false;
+
         const transport = new StubTransportBuilder()
           .withMessages(makePayloads("foo", "bar"))
+          .withCancelListener(() => cancelInvoked = true)
           .withManualTrigger()
           .build();
 
@@ -317,6 +320,7 @@ describe("service/grpc-web", () => {
         transport.sendTrailers();
 
         setTimeout(() => {
+          assert.equal(cancelInvoked, true, "the Transport should have been cancelled by the client");
           assert.equal(messageCount, 0, "invocation cancelled before any messages were sent");
           assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
           assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
@@ -341,6 +345,18 @@ describe("service/grpc-web", () => {
           .end();
       });
 
+      it("should close the connection when end() is invoked", (done) => {
+        let finishSendInvoked = false;
+        makeClient(new StubTransportBuilder().withFinishSendListener(() => finishSendInvoked = true))
+          .doClientStream()
+          .on("end", () => {
+            assert.ok(finishSendInvoked);
+            done();
+          })
+          .write(payload)
+          .end();
+      });
+
       it("should invoke onEnd before onStatus", (done) => {
         let onEndInvoked = false;
 
@@ -367,7 +383,7 @@ describe("service/grpc-web", () => {
           .end();
       });
 
-      it("should allow the caller to supplied multiple messages", (done) => {
+      it("should allow the caller to supply multiple messages", (done) => {
         const [ reqMsgOne, reqMsgTwo ] = makePayloads("one", "two");
         const sentMessageBytes: ArrayBufferView[] = [];
 
@@ -398,7 +414,10 @@ describe("service/grpc-web", () => {
       });
 
       it("should allow the caller to cancel the request", (done) => {
+        let cancelInvoked = true;
+
         const transport = new StubTransportBuilder()
+          .withCancelListener(() => cancelInvoked = true)
           .withManualTrigger()
           .build();
 
@@ -416,6 +435,7 @@ describe("service/grpc-web", () => {
         transport.sendTrailers();
 
         setTimeout(() => {
+          assert.equal(cancelInvoked, true, "the Transport should have been cancelled by the client");
           assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
           assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
           done();
@@ -424,7 +444,7 @@ describe("service/grpc-web", () => {
     });
 
     describe("bidirectional streaming", () => {
-      // const [ payload ] = makePayloads("some value");
+      const [ payload ] = makePayloads("some value");
 
       it("should route the request to the expected endpoint", (done) => {
         let targetUrl = "";
@@ -438,12 +458,11 @@ describe("service/grpc-web", () => {
           .end();
       });
 
-      /*
-      it("should invoke onEnd before onStatus", (done) => {
+      it("should invoke onEnd before onStatus if the client ends the stream", (done) => {
         let onEndInvoked = false;
 
         makeClient(new StubTransportBuilder())
-          .doClientStream()
+          .doBidiStream()
           .on("end", () => { onEndInvoked = true; })
           .on("status", () => {
             assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
@@ -451,6 +470,30 @@ describe("service/grpc-web", () => {
           })
           .write(payload)
           .end();
+      });
+
+      it("should close the connection when end() is invoked", (done) => {
+        let finishSendInvoked = false;
+        makeClient(new StubTransportBuilder().withFinishSendListener(() => finishSendInvoked = true))
+          .doBidiStream()
+          .on("end", () => {
+            assert.ok(finishSendInvoked);
+            done();
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should invoke onEnd before onStatus if the server ends the stream", (done) => {
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+          .doBidiStream()
+          .on("end", () => { onEndInvoked = true; })
+          .on("status", () => {
+            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+            done();
+          });
       });
 
       it("should handle an error returned ahead of any data by the server", (done) => {
@@ -461,16 +504,33 @@ describe("service/grpc-web", () => {
             assert.equal(status.details, "some error", "expected grpc error details returned");
             done();
           })
-          .write(payload)
-          .end();
+          .write(payload);
       });
 
-      it("should allow the caller to supplied multiple messages", (done) => {
+      it("should handle an error returned mid-stream by the server", (done) => {
+        let actualData: ExternalChildMessage[] = [];
+
+        makeClient(new StubTransportBuilder()
+          .withMessages([payload])
+          .withPreTrailersError(grpc.Code.Internal, "some error")
+        )
+          .doBidiStream()
+          .on("data", payload => actualData.push(payload))
+          .on("status", status => {
+            assert.equal(status.code, grpc.Code.Internal, "expected grpc status code returned");
+            assert.equal(status.details, "some error", "expected grpc error details returned");
+            assert.equal(actualData.length, 1, "messages sent by the server, ahead of any error are exposed");
+            assert.equal(actualData[0].getMyString(), "some value", "payload is well formed");
+            done();
+          });
+      });
+
+      it("should allow the caller to supply multiple messages", (done) => {
         const [ reqMsgOne, reqMsgTwo ] = makePayloads("one", "two");
         const sentMessageBytes: ArrayBufferView[] = [];
 
         makeClient(new StubTransportBuilder().withMessageListener(v => { sentMessageBytes.push(v); }))
-          .doClientStream()
+          .doBidiStream()
           .on("end", () => {
             assert.equal(sentMessageBytes.length, 2, "Two messages are sent");
             assert.deepEqual(sentMessageBytes[0], frameRequest(reqMsgOne));
@@ -486,7 +546,7 @@ describe("service/grpc-web", () => {
         let sentHeaders: grpc.Metadata;
 
         makeClient(new StubTransportBuilder().withHeadersListener(headers => sentHeaders = headers))
-          .doClientStream(new grpc.Metadata({ "foo": "bar" }))
+          .doBidiStream(new grpc.Metadata({ "foo": "bar" }))
           .on("end", () => {
             assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
             done();
@@ -496,15 +556,18 @@ describe("service/grpc-web", () => {
       });
 
       it("should allow the caller to cancel the request", (done) => {
+        let cancelInvoked = false;
+
         const transport = new StubTransportBuilder()
           .withManualTrigger()
+          .withCancelListener(() => cancelInvoked = true)
           .build();
 
         const client = new SimpleServiceClient("http://localhost:1", { transport });
         let onEndFired = false;
         let onStatusFired = false;
 
-        const handle = client.doClientStream()
+        const handle = client.doBidiStream()
           .on("end", () => onEndFired = true)
           .on("status", () => onStatusFired = true)
           .write(payload);
@@ -514,12 +577,12 @@ describe("service/grpc-web", () => {
         transport.sendTrailers();
 
         setTimeout(() => {
+          assert.equal(cancelInvoked, true, "the Transport should have been cancelled by the client");
           assert.equal(onEndFired, false, "'end' should not have fired when the invocation is cancelled");
           assert.equal(onStatusFired, false, "'status' should not have fired when the invocation is cancelled");
           done();
         }, 20);
       });
-      */
     });
 
     describe("methods named using reserved words", () => {
