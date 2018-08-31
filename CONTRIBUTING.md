@@ -16,3 +16,10 @@ Please review and follow our [Code of Conduct](https://github.com/improbable-eng
 
 ## Releasing
 Your changes will be released with the next version release.
+
+## Debugging
+You can attach the Chrome Inspector when running the tests by setting the `MOCHA_DEBUG` environment variable before running the tests, ie:
+
+```
+MOCHA_DEBUG=true npm test
+```
