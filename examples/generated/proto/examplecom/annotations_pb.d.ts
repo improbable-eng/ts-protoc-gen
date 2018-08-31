@@ -4,8 +4,20 @@
 import * as jspb from "google-protobuf";
 
 export class AnnotatedMessage extends jspb.Message {
-  getBigint(): string;
-  setBigint(value: string): void;
+  getMyunit64(): string;
+  setMyunit64(value: string): void;
+
+  getMyint64(): string;
+  setMyint64(value: string): void;
+
+  getMyfixed64(): string;
+  setMyfixed64(value: string): void;
+
+  getMysint64(): string;
+  setMysint64(value: string): void;
+
+  getMysfixed64(): string;
+  setMysfixed64(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AnnotatedMessage.AsObject;
@@ -19,7 +31,11 @@ export class AnnotatedMessage extends jspb.Message {
 
 export namespace AnnotatedMessage {
   export type AsObject = {
-    bigint: string,
+    myunit64: string,
+    myint64: string,
+    myfixed64: string,
+    mysint64: string,
+    mysfixed64: string,
   }
 }
 

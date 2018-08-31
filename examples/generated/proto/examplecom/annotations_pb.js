@@ -59,7 +59,11 @@ proto.examplecom.AnnotatedMessage.prototype.toObject = function(opt_includeInsta
  */
 proto.examplecom.AnnotatedMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
-    bigint: jspb.Message.getFieldWithDefault(msg, 1, "0")
+    myunit64: jspb.Message.getFieldWithDefault(msg, 1, "0"),
+    myint64: jspb.Message.getFieldWithDefault(msg, 2, "0"),
+    myfixed64: jspb.Message.getFieldWithDefault(msg, 3, "0"),
+    mysint64: jspb.Message.getFieldWithDefault(msg, 4, "0"),
+    mysfixed64: jspb.Message.getFieldWithDefault(msg, 5, "0")
   };
 
   if (includeInstance) {
@@ -98,7 +102,23 @@ proto.examplecom.AnnotatedMessage.deserializeBinaryFromReader = function(msg, re
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readUint64String());
-      msg.setBigint(value);
+      msg.setMyunit64(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readInt64String());
+      msg.setMyint64(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readFixed64String());
+      msg.setMyfixed64(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readSint64String());
+      msg.setMysint64(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readSfixed64String());
+      msg.setMysfixed64(value);
       break;
     default:
       reader.skipField();
@@ -129,10 +149,38 @@ proto.examplecom.AnnotatedMessage.prototype.serializeBinary = function() {
  */
 proto.examplecom.AnnotatedMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getBigint();
+  f = message.getMyunit64();
   if (parseInt(f, 10) !== 0) {
     writer.writeUint64String(
       1,
+      f
+    );
+  }
+  f = message.getMyint64();
+  if (parseInt(f, 10) !== 0) {
+    writer.writeInt64String(
+      2,
+      f
+    );
+  }
+  f = message.getMyfixed64();
+  if (parseInt(f, 10) !== 0) {
+    writer.writeFixed64String(
+      3,
+      f
+    );
+  }
+  f = message.getMysint64();
+  if (parseInt(f, 10) !== 0) {
+    writer.writeSint64String(
+      4,
+      f
+    );
+  }
+  f = message.getMysfixed64();
+  if (parseInt(f, 10) !== 0) {
+    writer.writeSfixed64String(
+      5,
       f
     );
   }
@@ -140,17 +188,77 @@ proto.examplecom.AnnotatedMessage.serializeBinaryToWriter = function(message, wr
 
 
 /**
- * optional uint64 bigInt = 1;
+ * optional uint64 myUnit64 = 1;
  * @return {string}
  */
-proto.examplecom.AnnotatedMessage.prototype.getBigint = function() {
+proto.examplecom.AnnotatedMessage.prototype.getMyunit64 = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, "0"));
 };
 
 
 /** @param {string} value */
-proto.examplecom.AnnotatedMessage.prototype.setBigint = function(value) {
+proto.examplecom.AnnotatedMessage.prototype.setMyunit64 = function(value) {
   jspb.Message.setProto3StringIntField(this, 1, value);
+};
+
+
+/**
+ * optional int64 myInt64 = 2;
+ * @return {string}
+ */
+proto.examplecom.AnnotatedMessage.prototype.getMyint64 = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, "0"));
+};
+
+
+/** @param {string} value */
+proto.examplecom.AnnotatedMessage.prototype.setMyint64 = function(value) {
+  jspb.Message.setProto3StringIntField(this, 2, value);
+};
+
+
+/**
+ * optional fixed64 myFixed64 = 3;
+ * @return {string}
+ */
+proto.examplecom.AnnotatedMessage.prototype.getMyfixed64 = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, "0"));
+};
+
+
+/** @param {string} value */
+proto.examplecom.AnnotatedMessage.prototype.setMyfixed64 = function(value) {
+  jspb.Message.setProto3StringIntField(this, 3, value);
+};
+
+
+/**
+ * optional sint64 mySint64 = 4;
+ * @return {string}
+ */
+proto.examplecom.AnnotatedMessage.prototype.getMysint64 = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, "0"));
+};
+
+
+/** @param {string} value */
+proto.examplecom.AnnotatedMessage.prototype.setMysint64 = function(value) {
+  jspb.Message.setProto3StringIntField(this, 4, value);
+};
+
+
+/**
+ * optional sfixed64 mySfixed64 = 5;
+ * @return {string}
+ */
+proto.examplecom.AnnotatedMessage.prototype.getMysfixed64 = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, "0"));
+};
+
+
+/** @param {string} value */
+proto.examplecom.AnnotatedMessage.prototype.setMysfixed64 = function(value) {
+  jspb.Message.setProto3StringIntField(this, 5, value);
 };
 
 
