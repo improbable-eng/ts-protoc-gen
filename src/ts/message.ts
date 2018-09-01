@@ -3,12 +3,16 @@ import {
   withinNamespaceFromExportEntry, normaliseFieldObjectName
 } from "../util";
 import {ExportMap} from "../ExportMap";
-import {FieldDescriptorProto, FileDescriptorProto, DescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
+import {
+  FieldDescriptorProto, FileDescriptorProto, DescriptorProto,
+  FieldOptions
+} from "google-protobuf/google/protobuf/descriptor_pb";
 import {MESSAGE_TYPE, BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName} from "./FieldTypes";
 import {Printer} from "../Printer";
 import {printEnum} from "./enum";
 import {printOneOfDecl} from "./oneof";
 import {printExtension} from "./extensions";
+import JSType = FieldOptions.JSType;
 
 function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescriptorProto): boolean {
   if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {
@@ -104,7 +108,20 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         exportType = filePathToPseudoNamespace(fieldEnumType.fileName) + "." + withinNamespace;
       }
     } else {
-      exportType = getTypeName(type);
+      if (field.getOptions() && field.getOptions().hasJstype()) {
+        switch (field.getOptions().getJstype()) {
+          case JSType.JS_NUMBER:
+            exportType = "number";
+            break;
+          case JSType.JS_STRING:
+            exportType = "string";
+            break;
+          default:
+            exportType = getTypeName(type);
+        }
+      } else {
+        exportType = getTypeName(type);
+      }
     }
 
     let hasClearMethod = false;
