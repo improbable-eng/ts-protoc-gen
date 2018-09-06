@@ -38,6 +38,21 @@ interface ResponseStream<T> {
   on(type: 'end', handler: () => void): ResponseStream<T>;
   on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;
 }
+interface RequestStream<T> {
+  write(message: T): RequestStream<T>;
+  end(): void;
+  cancel(): void;
+  on(type: 'end', handler: () => void): RequestStream<T>;
+  on(type: 'status', handler: (status: Status) => void): RequestStream<T>;
+}
+interface BidirectionalStream<T> {
+  write(message: T): BidirectionalStream<T>;
+  end(): void;
+  cancel(): void;
+  on(type: 'data', handler: (message: T) => void): BidirectionalStream<T>;
+  on(type: 'end', handler: () => void): BidirectionalStream<T>;
+  on(type: 'status', handler: (status: Status) => void): BidirectionalStream<T>;
+}
 
 export class OrphanServiceClient {
   readonly serviceHost: string;

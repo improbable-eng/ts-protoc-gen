@@ -28,6 +28,7 @@ For our latest build straight from master:
 ```bash
 npm install ts-protoc-gen@next
 ```
+
 ### bazel
 Include the following in your `WORKSPACE`:   
 ```python
