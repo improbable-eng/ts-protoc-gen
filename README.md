@@ -30,7 +30,10 @@ npm install ts-protoc-gen@next
 ```
 
 ### bazel
+<details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build/>bazel">bazel</a> build environment</summary><p>
+
 Include the following in your `WORKSPACE`:   
+
 ```python
 git_repository(
     name = "io_bazel_rules_go",
@@ -77,7 +80,8 @@ load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
 ts_setup_workspace()
 ```   
 
-Now in your `BUILD.bazel`:   
+Now in your `BUILD.bazel`:
+
 ```python
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
 
@@ -97,7 +101,9 @@ typescript_proto_library(
   name = "generate",
   proto = ":proto",
 )
-```    
+```
+
+</p></details>
 
 ## Contributing
 Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
