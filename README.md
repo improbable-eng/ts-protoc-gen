@@ -162,8 +162,9 @@ protoc \
     users.proto base.proto
 ```
 
-The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs.
+The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs. 
 
+**Note** Note that these modules require a CommonJS environment. If you intend to consume these stubs in a browser environment you will need to use a module bundler such as [webpack](https://webpack.js.org/).
 **Note** Both `js` and `d.ts` service files will be generated regardless of whether there are service definitions in the proto files.
 
 ```js
