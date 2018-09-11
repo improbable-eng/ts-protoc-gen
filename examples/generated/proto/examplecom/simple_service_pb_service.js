@@ -6,6 +6,8 @@ var proto_othercom_external_child_message_pb = require("../../proto/othercom/ext
 var google_protobuf_empty_pb = require("google-protobuf/google/protobuf/empty_pb");
 var grpc = require("grpc-web-client").grpc;
 
+var exports = (typeof module === 'object' && module !== null && module.exports !== undefined) ? module.exports : {};
+
 var SimpleService = (function () {
   function SimpleService() {}
   SimpleService.serviceName = "examplecom.SimpleService";

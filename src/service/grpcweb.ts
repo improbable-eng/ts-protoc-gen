@@ -260,6 +260,10 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   printer.printLn(`var grpc = require("grpc-web-client").grpc;`);
   printer.printEmptyLn();
 
+  // Module Export Boilerplate
+  printer.printLn(`var exports = (typeof module === 'object' && module !== null && module.exports !== undefined) ? module.exports : {};`);
+  printer.printEmptyLn();
+
   // Services.
   serviceDescriptor.services
     .forEach(service => {
