@@ -4,6 +4,8 @@
 var proto_orphan_pb = require("../proto/orphan_pb");
 var grpc = require("grpc-web-client").grpc;
 
+var exports = (typeof module === 'object' && module !== null && module.exports !== undefined) ? module.exports : {};
+
 var OrphanService = (function () {
   function OrphanService() {}
   OrphanService.serviceName = "OrphanService";
