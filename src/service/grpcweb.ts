@@ -509,11 +509,11 @@ function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescri
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
                .printLn(`metadata: grpc.Metadata,`)
-               .printLn(`callback: (error: ServiceError, responseMessage: ${method.responseType}|null) => void`)
+               .printLn(`callback: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
     .dedent().printLn(`): void;`)
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
-               .printLn(`callback: (error: ServiceError, responseMessage: ${method.responseType}|null) => void`)
+               .printLn(`callback: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
     .dedent().printLn(`): void;`);
 }
 

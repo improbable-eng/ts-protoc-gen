@@ -166,9 +166,9 @@ describe("service/grpc-web", () => {
               assert.ok(error !== null && typeof error === "object", "should yield an error");
               assert.ok(response === null, "should yield null instead of a response");
 
-              assert.equal(error.message, "some internal error", "should expose the grpc error message (.message)");
-              assert.equal(error.code, 13, "should expose the grpc status code (.code)");
-              assert.ok(error.metadata instanceof grpc.Metadata, "should expose the trailing response metadata (.metadata)");
+              assert.equal(error!.message, "some internal error", "should expose the grpc error message (.message)");
+              assert.equal(error!.code, 13, "should expose the grpc status code (.code)");
+              assert.ok(error!.metadata instanceof grpc.Metadata, "should expose the trailing response metadata (.metadata)");
               done();
             });
       });
