@@ -21,7 +21,7 @@ export function isProto2(fileDescriptor: FileDescriptorProto): boolean {
 }
 
 export function oneOfName(name: string) {
-  return uppercaseFirst(name.toLowerCase());
+  return uppercaseFirst(snakeToCamel(name.toLowerCase()));
 }
 
 export function generateIndent(indentLevel: number): string {

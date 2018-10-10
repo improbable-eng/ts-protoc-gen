@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {replaceProtoSuffix} from "../../src/util";
+import {oneOfName, replaceProtoSuffix} from "../../src/util";
 
 describe("util", () => {
 
@@ -26,6 +26,24 @@ describe("util", () => {
       it(`should map '${scenario.in}' to '${scenario.out}'`, () => {
         const actual = replaceProtoSuffix(scenario.in);
         assert.equal(actual, scenario.out);
+      });
+    });
+  });
+
+  describe("oneOfName", () => {
+    [{
+      in: "one_of_name",
+      out: "OneOfName",
+    }, {
+      in: "ONE_OF_NAME",
+      out: "OneOfName",
+    }, {
+      in: "OneOfName",
+      out: "Oneofname"
+    }].forEach(senario => {
+      it(`should map '${senario.in}' to '${senario.out}'`, () => {
+          const actual = oneOfName(senario.in);
+          assert.equal(actual, senario.out);
       });
     });
   });
