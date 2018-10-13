@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {OneOfMessage, CamelCasedOneOfMessage} from "../../examples/generated/proto/examplecom/oneof_message_pb";
+import {OneOfMessage, CamelCasedOneOfMessage, SnakeCasedOneOfMessage} from "../../examples/generated/proto/examplecom/oneof_message_pb";
 import {ExternalChildMessage} from "../../examples/generated/proto/othercom/external_child_message_pb";
 import InternalChildMessage = OneOfMessage.InternalChildMessage;
 
@@ -79,5 +79,6 @@ describe("oneofs", () => {
 
   it("should handle casing inconsistencies present in protoc-gen's javascript implementation (see #63)", () => {
     assert.strictEqual(typeof CamelCasedOneOfMessage.CamelcasedmessageCase, "object");
+    assert.strictEqual(typeof SnakeCasedOneOfMessage.SnakeCasedMessageCase, "object");
   });
 });
