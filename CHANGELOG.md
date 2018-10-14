@@ -2,6 +2,9 @@
 
 ### Fixes
 * Replace usage of `Object.assign` to fix webpack issue. [@jonny-improbable](https://github.com/jonny-improbable) in [#110](https://github.com/improbable-eng/ts-protoc-gen/pull/110)
+* Errors returned by Unary Services should be optionally null. [@colinking](https://github.com/collinking) in [#116](https://github.com/improbable-eng/ts-protoc-gen/pull/116)
+* Fix snake_cased oneof message are generated to incorrect types. [@riku179](https://github.com/riku179) in [#118](https://github.com/improbable-eng/ts-protoc-gen/pull/118)
+* `.deb` artificats being deployment to npm. [@jonnyreeves](https://github.com/jonnyreeves) in [#121](https://github.com/improbable-eng/ts-protoc-gen/pull/121)
 
 ### Changes
 * Add support for `jstype` proto annotations. [@jonny-improbable](https://github.com/jonny-improbable) in [#104](https://github.com/improbable-eng/ts-protoc-gen/pull/104)
