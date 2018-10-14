@@ -1,6 +1,7 @@
 test/
 src/
 .*
+*.deb
 release.sh
 generate.sh
 examples/
