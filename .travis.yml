@@ -33,7 +33,7 @@ cache:
 before_install:
 - BAZEL_VERSION=0.11.0
 - BAZEL_DEB="bazel_${BAZEL_VERSION}-linux-x86_64.deb"
-- wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/${BAZEL_DEB}
+- wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/${BAZEL_DEB} -O "${BAZEL_DEB}"
 - sudo dpkg -i ${BAZEL_DEB}
 - rm ${BAZEL_DEB}
 install:
