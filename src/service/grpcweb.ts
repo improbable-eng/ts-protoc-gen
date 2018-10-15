@@ -206,6 +206,9 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor; debug?: boolean }`);
   printer.printEmptyLn();
+  printer.printLn("interface UnaryResponse {");
+  printer.printIndentedLn("cancel(): void;");
+  printer.printLn("}");
   printer.printLn(`interface ResponseStream<T> {`);
   printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
@@ -325,7 +328,7 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
       .indent().printLn(`if (arguments.length === 2) {`)
         .indent().printLn(`callback = arguments[1];`)
       .dedent().printLn("}")
-               .printLn(`grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
+               .printLn(`var client = grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
         .indent().printLn(`request: requestMessage,`)
                  .printLn(`host: this.serviceHost,`)
                  .printLn(`metadata: metadata,`)
@@ -344,7 +347,13 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
           .dedent().printLn(`}`)
         .dedent().printLn(`}`)
       .dedent().printLn(`});`)
-    .dedent().printLn(`};`);
+             .printLn(`return {`)
+      .indent().printLn(`cancel: function () {`)
+        .indent().printLn(`callback = null;`)
+                 .printLn(`client.close();`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
 }
 
 function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
@@ -510,11 +519,11 @@ function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescri
       .indent().printLn(`requestMessage: ${method.requestType},`)
                .printLn(`metadata: grpc.Metadata,`)
                .printLn(`callback: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
-    .dedent().printLn(`): void;`)
+    .dedent().printLn(`): UnaryResponse;`)
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
                .printLn(`callback: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
-    .dedent().printLn(`): void;`);
+    .dedent().printLn(`): UnaryResponse;`);
 }
 
 function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
