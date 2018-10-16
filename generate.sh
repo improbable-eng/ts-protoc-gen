@@ -33,7 +33,7 @@ else
 fi
 
 wget ${PROTOC_URL} --output-document="protoc-${PROTOC_VERSION}.zip"
-tar -C protoc -xzf "protoc-${PROTOC_VERSION}.zip"
+unzip "protoc-${PROTOC_VERSION}.zip" -d protoc
 rm "protoc-${PROTOC_VERSION}.zip"
 
 PROTOC=./protoc/bin/protoc
