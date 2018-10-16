@@ -204,7 +204,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
-  printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor; debug?: boolean }`);
+  printer.printLn(`export type ServiceClientOptions = { transport?: grpc.TransportConstructor; debug?: boolean }`);
   printer.printEmptyLn();
   printer.printLn("interface UnaryResponse {");
   printer.printIndentedLn("cancel(): void;");

@@ -30,7 +30,7 @@ export class OrphanService {
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
 export type Status = { details: string, code: number; metadata: grpc.Metadata }
-export type ServiceClientOptions = { transport: grpc.TransportConstructor; debug?: boolean }
+export type ServiceClientOptions = { transport?: grpc.TransportConstructor; debug?: boolean }
 
 interface UnaryResponse {
   cancel(): void;
