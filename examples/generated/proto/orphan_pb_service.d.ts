@@ -32,6 +32,9 @@ export type ServiceError = { message: string, code: number; metadata: grpc.Metad
 export type Status = { details: string, code: number; metadata: grpc.Metadata }
 export type ServiceClientOptions = { transport: grpc.TransportConstructor; debug?: boolean }
 
+interface UnaryResponse {
+  cancel(): void;
+}
 interface ResponseStream<T> {
   cancel(): void;
   on(type: 'data', handler: (message: T) => void): ResponseStream<T>;
@@ -62,11 +65,11 @@ export class OrphanServiceClient {
     requestMessage: proto_orphan_pb.OrphanUnaryRequest,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: proto_orphan_pb.OrphanMessage|null) => void
-  ): void;
+  ): UnaryResponse;
   doUnary(
     requestMessage: proto_orphan_pb.OrphanUnaryRequest,
     callback: (error: ServiceError|null, responseMessage: proto_orphan_pb.OrphanMessage|null) => void
-  ): void;
+  ): UnaryResponse;
   doStream(requestMessage: proto_orphan_pb.OrphanStreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_orphan_pb.OrphanMessage>;
 }
 
