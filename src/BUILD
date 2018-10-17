@@ -3,12 +3,13 @@ load("@build_bazel_rules_typescript//:defs.bzl", "ts_library")
 
 ts_library(
     name = "src",
-    node_modules = "@deps//:node_modules",
     srcs = glob([
         "*.ts",
         "service/*.ts",
         "ts/*.ts",
     ]),
-    deps = [],
-    tsconfig = "//:tsconfig.json",
+    deps = [
+        "@npm//@types/node",
+        "@npm//@types/google-protobuf",
+    ],
 )

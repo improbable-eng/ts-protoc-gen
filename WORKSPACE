@@ -10,31 +10,34 @@ load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_too
 go_rules_dependencies()
 go_register_toolchains()
 
-http_archive(
+git_repository(
   name = "io_bazel_rules_webtesting",
-  strip_prefix = "rules_webtesting-master",
-  urls = [
-    "https://github.com/bazelbuild/rules_webtesting/archive/master.tar.gz",
-    ],
-  )
+  tag = "0.2.1",
+  remote = "https://github.com/bazelbuild/rules_webtesting",
+)
 load("@io_bazel_rules_webtesting//web:repositories.bzl", "browser_repositories", "web_test_repositories")
 web_test_repositories()
 
 git_repository(
   name = "build_bazel_rules_nodejs",
   remote = "https://github.com/bazelbuild/rules_nodejs.git",
-  commit = "d334fd8e2274fb939cf447106dced97472534e80",
+  tag = "0.15.0",
 )
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
-node_repositories(package_json = ["//:package.json"])
-
-load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
-typescript_proto_dependencies()
+node_repositories(preserve_symlinks = True) # hermetic version of node
+npm_install(
+  name = "npm",
+  package_json = "@ts_protoc_gen//:package.json",
+  package_lock_json = "@ts_protoc_gen//:package-lock.json",
+)
 
 git_repository(
   name = "build_bazel_rules_typescript",
-  remote = "https://github.com/bazelbuild/rules_typescript.git",
-  commit = "3488d4fb89c6a02d79875d217d1029182fbcd797",
-  )
+  tag = "0.20.3",
+  remote = "https://github.com/bazelbuild/rules_typescript",
+)
+load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dependencies")
+rules_typescript_dependencies()
+
 load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
 ts_setup_workspace()

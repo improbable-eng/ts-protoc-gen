@@ -97,7 +97,7 @@ typescript_proto_library = rule(
       allow_files = True,
       executable = True,
       cfg = "host",
-      default = Label("@ts_protoc_gen//bin:protoc-gen-ts"),
+      default = Label("//bin:protoc-gen-ts"),
     ),
     "_protoc": attr.label(
       allow_files = True,
@@ -109,13 +109,3 @@ typescript_proto_library = rule(
   },
     implementation = _typescript_proto_library_impl,
 )
-
-def typescript_proto_dependencies():
-  """To be run in user's WORKSPACE to install ts-protoc-gen dependencies.
-"""
-
-  npm_install(
-    name = "deps",
-    package_json = "@ts_protoc_gen//:package.json",
-    package_lock_json = "@ts_protoc_gen//:package-lock.json",
-  )

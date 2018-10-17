@@ -32,6 +32,7 @@
     "google-protobuf": "^3.6.1"
   },
   "devDependencies": {
+    "@bazel/typescript": "^0.20.3",
     "@types/chai": "^3.5.2",
     "@types/google-protobuf": "^3.2.7",
     "@types/lodash": "^4.14.106",
