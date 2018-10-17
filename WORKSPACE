@@ -23,7 +23,7 @@ git_repository(
   remote = "https://github.com/bazelbuild/rules_nodejs.git",
   tag = "0.15.0",
 )
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "npm_install")
 node_repositories(preserve_symlinks = True) # hermetic version of node
 npm_install(
   name = "npm",
