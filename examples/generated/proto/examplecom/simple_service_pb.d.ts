@@ -3,6 +3,7 @@
 
 import * as jspb from "google-protobuf";
 import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 
 export class UnaryRequest extends jspb.Message {

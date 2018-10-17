@@ -31,8 +31,11 @@ cache:
   directories:
   - node_modules
 before_install:
-- wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel_0.11.0-linux-x86_64.deb
-- sudo dpkg -i bazel_0.11.0-linux-x86_64.deb
+- BAZEL_VERSION=0.11.0
+- BAZEL_DEB="bazel_${BAZEL_VERSION}-linux-x86_64.deb"
+- wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/${BAZEL_DEB} -O "${BAZEL_DEB}"
+- sudo dpkg -i ${BAZEL_DEB}
+- rm ${BAZEL_DEB}
 install:
 - npm install
 script:

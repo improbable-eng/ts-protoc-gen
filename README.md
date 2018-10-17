@@ -28,8 +28,12 @@ For our latest build straight from master:
 ```bash
 npm install ts-protoc-gen@next
 ```
+
 ### bazel
+<details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build/>bazel">bazel</a> build environment</summary><p>
+
 Include the following in your `WORKSPACE`:   
+
 ```python
 git_repository(
     name = "io_bazel_rules_go",
@@ -70,7 +74,8 @@ load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
 ts_setup_workspace()
 ```   
 
-Now in your `BUILD.bazel`:   
+Now in your `BUILD.bazel`:
+
 ```python
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
 
@@ -90,7 +95,9 @@ typescript_proto_library(
   name = "generate",
   proto = ":proto",
 )
-```    
+```
+
+</p></details>
 
 ## Contributing
 Contributions are welcome! Please refer to [CONTRIBUTING.md](https://github.com/improbable-eng/ts-protoc-gen/blob/master/CONTRIBUTING.md) for more information.
@@ -136,7 +143,7 @@ msg.setName("John Doe");
 To generate client-side service stubs from your protobuf files you must configure ts-protoc-gen to emit service definitions by passing the `service=true` param to the `--ts_out` flag, eg:
 
 ```
-# Path to this plugin
+# Path to this plugin, Note this must be an abolsute path on Windows (see #15)
 PROTOC_GEN_TS_PATH="./node_modules/.bin/protoc-gen-ts"
 
 # Directory to write generated code to (.js and .d.ts files) 
@@ -149,8 +156,9 @@ protoc \
     users.proto base.proto
 ```
 
-The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs.
+The `generated` folder will now contain both `pb_service.js` and `pb_service.d.ts` files which you can reference in your TypeScript project to make RPCs. 
 
+**Note** Note that these modules require a CommonJS environment. If you intend to consume these stubs in a browser environment you will need to use a module bundler such as [webpack](https://webpack.js.org/).
 **Note** Both `js` and `d.ts` service files will be generated regardless of whether there are service definitions in the proto files.
 
 ```js
@@ -166,3 +174,12 @@ client.getUser(req, (err, user) => { /* ... */ });
 For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples).
 
 To generate the examples from protos, please run `./generate.sh`
+
+## Gotchas
+By default the google-protobuf library will use the JavaScript number type to store 64bit float and integer values; this can lead to overflow problems as you exceed JavaScript's `Number.MAX_VALUE`. To work around this, you should consider using the `jstype` annotation on any 64bit fields, ie:
+
+```proto
+message Example {
+  uint64 bigInt = 1 [jstype = JS_STRING];
+}
+```

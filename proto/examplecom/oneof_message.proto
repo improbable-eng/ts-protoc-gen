@@ -23,3 +23,10 @@ message CamelCasedOneOfMessage {
         string theString = 2;
     }
 }
+
+message SnakeCasedOneOfMessage {
+    oneof snake_cased_message {
+        int32 anint = 1;
+        string theString = 2;
+    }
+}

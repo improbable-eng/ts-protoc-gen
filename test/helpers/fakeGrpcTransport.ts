@@ -11,6 +11,14 @@ function frameResponse(request: Message): Uint8Array {
   return new Uint8Array(frame);
 }
 
+export function frameRequest(request: Message): ArrayBufferView {
+  const bytes = request.serializeBinary();
+  const frame = new ArrayBuffer(bytes.byteLength + 5);
+  new DataView(frame, 1, 4).setUint32(0, bytes.length, false /* big endian */);
+  new Uint8Array(frame, 5).set(bytes);
+  return new Uint8Array(frame);
+}
+
 function frameTrailers(trailers: grpc.Metadata): Uint8Array {
   let asString = "";
   trailers.forEach((key: string, values: string[]) => {

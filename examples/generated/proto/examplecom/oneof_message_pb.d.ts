@@ -108,3 +108,38 @@ export namespace CamelCasedOneOfMessage {
   }
 }
 
+export class SnakeCasedOneOfMessage extends jspb.Message {
+  hasAnint(): boolean;
+  clearAnint(): void;
+  getAnint(): number;
+  setAnint(value: number): void;
+
+  hasThestring(): boolean;
+  clearThestring(): void;
+  getThestring(): string;
+  setThestring(value: string): void;
+
+  getSnakeCasedMessageCase(): SnakeCasedOneOfMessage.SnakeCasedMessageCase;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SnakeCasedOneOfMessage.AsObject;
+  static toObject(includeInstance: boolean, msg: SnakeCasedOneOfMessage): SnakeCasedOneOfMessage.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: SnakeCasedOneOfMessage, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SnakeCasedOneOfMessage;
+  static deserializeBinaryFromReader(message: SnakeCasedOneOfMessage, reader: jspb.BinaryReader): SnakeCasedOneOfMessage;
+}
+
+export namespace SnakeCasedOneOfMessage {
+  export type AsObject = {
+    anint: number,
+    thestring: string,
+  }
+
+  export enum SnakeCasedMessageCase {
+    SNAKE_CASED_MESSAGE_NOT_SET = 0,
+    ANINT = 1,
+    THESTRING = 2,
+  }
+}
+

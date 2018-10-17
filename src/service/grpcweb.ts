@@ -204,13 +204,31 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
-  printer.printLn(`export type ServiceClientOptions = { transport: grpc.TransportConstructor; debug?: boolean }`);
+  printer.printLn(`export type ServiceClientOptions = { transport?: grpc.TransportConstructor; debug?: boolean }`);
   printer.printEmptyLn();
+  printer.printLn("interface UnaryResponse {");
+  printer.printIndentedLn("cancel(): void;");
+  printer.printLn("}");
   printer.printLn(`interface ResponseStream<T> {`);
   printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
+  printer.printLn(`}`);
+  printer.printLn(`interface RequestStream<T> {`);
+  printer.printIndentedLn(`write(message: T): RequestStream<T>;`);
+  printer.printIndentedLn(`end(): void;`);
+  printer.printIndentedLn(`cancel(): void;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
+  printer.printLn(`}`);
+  printer.printLn(`interface BidirectionalStream<T> {`);
+  printer.printIndentedLn(`write(message: T): BidirectionalStream<T>;`);
+  printer.printIndentedLn(`end(): void;`);
+  printer.printIndentedLn(`cancel(): void;`);
+  printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): BidirectionalStream<T>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): BidirectionalStream<T>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): BidirectionalStream<T>;`);
   printer.printLn(`}`);
   printer.printEmptyLn();
 
@@ -310,7 +328,7 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
       .indent().printLn(`if (arguments.length === 2) {`)
         .indent().printLn(`callback = arguments[1];`)
       .dedent().printLn("}")
-               .printLn(`grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
+               .printLn(`var client = grpc.unary(${method.serviceName}.${method.nameAsPascalCase}, {`)
         .indent().printLn(`request: requestMessage,`)
                  .printLn(`host: this.serviceHost,`)
                  .printLn(`metadata: metadata,`)
@@ -319,14 +337,23 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
                  .printLn(`onEnd: function (response) {`)
           .indent().printLn(`if (callback) {`)
             .indent().printLn(`if (response.status !== grpc.Code.OK) {`)
-              .indent().printLn(`callback(Object.assign(new Error(response.statusMessage), { code: response.status, metadata: response.trailers }), null);`)
+              .indent().printLn(`var err = new Error(response.statusMessage);`)
+                       .printLn(`err.code = response.status;`)
+                       .printLn(`err.metadata = response.trailers;`)
+                       .printLn(`callback(err, null);`)
             .dedent().printLn(`} else {`)
               .indent().printLn(`callback(null, response.message);`)
             .dedent().printLn(`}`)
           .dedent().printLn(`}`)
         .dedent().printLn(`}`)
       .dedent().printLn(`});`)
-    .dedent().printLn(`};`);
+             .printLn(`return {`)
+      .indent().printLn(`cancel: function () {`)
+        .indent().printLn(`callback = null;`)
+                 .printLn(`client.close();`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
 }
 
 function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
@@ -371,18 +398,96 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
   .dedent().printLn(`};`);
 }
 
-function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer
-           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}() {`)
-    .indent().printLn(`throw new Error("Client streaming is not currently supported");`)
-  .dedent().printLn(`}`);
-}
-
 function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}.prototype.${method.nameAsCamelCase} = function ${method.functionName}() {`)
-    .indent().printLn(`throw new Error("Bi-directional streaming is not currently supported");`)
-  .dedent().printLn(`}`);
+           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
+    .indent().printLn(`var listeners = {`)
+      .indent().printLn(`end: [],`)
+               .printLn(`status: []`)
+    .dedent().printLn(`};`)
+             .printLn(`var client = grpc.client(${method.serviceName}.${method.nameAsPascalCase}, {`)
+      .indent().printLn(`host: this.serviceHost,`)
+               .printLn(`metadata: metadata,`)
+               .printLn(`transport: this.options.transport`)
+    .dedent().printLn(`});`)
+             .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
+      .indent().printLn(`listeners.end.forEach(function (handler) {`)
+        .indent().printLn(`handler();`)
+      .dedent().printLn(`});`)
+               .printLn(`listeners.status.forEach(function (handler) {`)
+        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
+      .dedent().printLn(`});`)
+               .printLn(`listeners = null;`)
+    .dedent().printLn(`});`)
+             .printLn(`return {`)
+      .indent().printLn(`on: function (type, handler) {`)
+        .indent().printLn(`listeners[type].push(handler);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`write: function (requestMessage) {`)
+        .indent().printLn(`if (!client.started) {`)
+          .indent().printLn(`client.start(metadata);`)
+        .dedent().printLn(`}`)
+                 .printLn(`client.send(requestMessage);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`end: function () {`)
+        .indent().printLn(`client.finishSend();`)
+      .dedent().printLn(`},`)
+               .printLn(`cancel: function () {`)
+        .indent().printLn(`listeners = null;`)
+                 .printLn(`client.close();`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
+}
+
+function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer
+           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
+    .indent().printLn(`var listeners = {`)
+      .indent().printLn(`data: [],`)
+               .printLn(`end: [],`)
+               .printLn(`status: []`)
+    .dedent().printLn(`};`)
+             .printLn(`var client = grpc.client(${method.serviceName}.${method.nameAsPascalCase}, {`)
+      .indent().printLn(`host: this.serviceHost,`)
+               .printLn(`metadata: metadata,`)
+               .printLn(`transport: this.options.transport`)
+    .dedent().printLn(`});`)
+             .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
+      .indent().printLn(`listeners.end.forEach(function (handler) {`)
+        .indent().printLn(`handler();`)
+      .dedent().printLn(`});`)
+               .printLn(`listeners.status.forEach(function (handler) {`)
+        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
+      .dedent().printLn(`});`)
+               .printLn(`listeners = null;`)
+    .dedent().printLn(`});`)
+             .printLn(`client.onMessage(function (message) {`)
+      .indent().printLn(`listeners.data.forEach(function (handler) {`)
+        .indent().printLn(`handler(message);`)
+      .dedent().printLn(`})`)
+    .dedent().printLn(`});`)
+             .printLn(`client.start(metadata);`)
+             .printLn(`return {`)
+      .indent().printLn(`on: function (type, handler) {`)
+        .indent().printLn(`listeners[type].push(handler);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`write: function (requestMessage) {`)
+        .indent().printLn(`client.send(requestMessage);`)
+                 .printLn(`return this;`)
+      .dedent().printLn(`},`)
+               .printLn(`end: function () {`)
+        .indent().printLn(`client.finishSend();`)
+      .dedent().printLn(`},`)
+               .printLn(`cancel: function () {`)
+        .indent().printLn(`listeners = null;`)
+                 .printLn(`client.close();`)
+      .dedent().printLn(`}`)
+    .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
 }
 
 function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
@@ -413,22 +518,22 @@ function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescri
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
                .printLn(`metadata: grpc.Metadata,`)
-               .printLn(`callback: (error: ServiceError, responseMessage: ${method.responseType}|null) => void`)
-    .dedent().printLn(`): void;`)
+               .printLn(`callback: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
+    .dedent().printLn(`): UnaryResponse;`)
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
-               .printLn(`callback: (error: ServiceError, responseMessage: ${method.responseType}|null) => void`)
-    .dedent().printLn(`): void;`);
+               .printLn(`callback: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
+    .dedent().printLn(`): UnaryResponse;`);
 }
 
 function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): ResponseStream<${method.responseType}>;`);
 }
 
-function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(): void;`);
+function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.responseType}>;`);
 }
 
-function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(): void;`);
+function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): BidirectionalStream<${method.responseType}>;`);
 }

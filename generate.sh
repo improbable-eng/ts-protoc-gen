@@ -24,13 +24,17 @@ PROTOC_VERSION="3.5.1"
 echo "Downloading protoc v${PROTOC_VERSION} for ${platform}..."
 mkdir -p protoc
 if [[ $platform == 'Linux' ]]; then
-    curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip | tar xz -C protoc
+    PROTOC_URL="https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip"
 elif [[ $platform == 'Mac' ]]; then
-    curl -L https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-osx-x86_64.zip | tar xz -C protoc
+    PROTOC_URL="https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-osx-x86_64.zip"
 else
     echo "Cannot download protoc. ${platform} is not currently supported by ts-protoc-gen"
     exit 1
 fi
+
+wget ${PROTOC_URL} --output-document="protoc-${PROTOC_VERSION}.zip"
+unzip "protoc-${PROTOC_VERSION}.zip" -d protoc
+rm "protoc-${PROTOC_VERSION}.zip"
 
 PROTOC=./protoc/bin/protoc
 
