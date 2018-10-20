@@ -222,13 +222,13 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
   printer.printLn(`}`);
-  printer.printLn(`interface BidirectionalStream<T> {`);
-  printer.printIndentedLn(`write(message: T): BidirectionalStream<T>;`);
+  printer.printLn(`interface BidirectionalStream<ReqT, ResT> {`);
+  printer.printIndentedLn(`write(message: ReqT): BidirectionalStream<ReqT, ResT>;`);
   printer.printIndentedLn(`end(): void;`);
   printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): BidirectionalStream<T>;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): BidirectionalStream<T>;`);
-  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): BidirectionalStream<T>;`);
+  printer.printIndentedLn(`on(type: 'data', handler: (message: ResT) => void): BidirectionalStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): BidirectionalStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;`);
   printer.printLn(`}`);
   printer.printEmptyLn();
 
@@ -531,9 +531,9 @@ function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMetho
 }
 
 function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.responseType}>;`);
+  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.requestType}>;`);
 }
 
 function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): BidirectionalStream<${method.responseType}>;`);
+  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): BidirectionalStream<${method.requestType}, ${method.responseType}>;`);
 }

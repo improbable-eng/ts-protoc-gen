@@ -80,13 +80,13 @@ interface RequestStream<T> {
   on(type: 'end', handler: () => void): RequestStream<T>;
   on(type: 'status', handler: (status: Status) => void): RequestStream<T>;
 }
-interface BidirectionalStream<T> {
-  write(message: T): BidirectionalStream<T>;
+interface BidirectionalStream<ReqT, ResT> {
+  write(message: ReqT): BidirectionalStream<ReqT, ResT>;
   end(): void;
   cancel(): void;
-  on(type: 'data', handler: (message: T) => void): BidirectionalStream<T>;
-  on(type: 'end', handler: () => void): BidirectionalStream<T>;
-  on(type: 'status', handler: (status: Status) => void): BidirectionalStream<T>;
+  on(type: 'data', handler: (message: ResT) => void): BidirectionalStream<ReqT, ResT>;
+  on(type: 'end', handler: () => void): BidirectionalStream<ReqT, ResT>;
+  on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;
 }
 
 export class SimpleServiceClient {
@@ -103,8 +103,8 @@ export class SimpleServiceClient {
     callback: (error: ServiceError|null, responseMessage: proto_othercom_external_child_message_pb.ExternalChildMessage|null) => void
   ): UnaryResponse;
   doServerStream(requestMessage: proto_examplecom_simple_service_pb.StreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  doClientStream(metadata?: grpc.Metadata): RequestStream<google_protobuf_empty_pb.Empty>;
-  doBidiStream(metadata?: grpc.Metadata): BidirectionalStream<proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doClientStream(metadata?: grpc.Metadata): RequestStream<proto_examplecom_simple_service_pb.StreamRequest>;
+  doBidiStream(metadata?: grpc.Metadata): BidirectionalStream<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
   delete(
     requestMessage: proto_examplecom_simple_service_pb.UnaryRequest,
     metadata: grpc.Metadata,
