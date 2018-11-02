@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package test.bazel.proto;
+
+import "test/bazel/proto/common/pizza.proto";
+import "test/bazel/proto/common/delivery_person.proto";
+
+service PizzaService {
+  rpc OrderPizza(OrderPizzaRequest) returns (OrderPizzaResponse) {}
+}
+
+
+message OrderPizzaRequest {
+  // The list of pizzas to order.
+  repeated Pizza pizzas = 1;
+}
+
+message OrderPizzaResponse {
+  // The person that will deliver the pizza.
+  DeliveryPerson delivery_person = 1;
+}

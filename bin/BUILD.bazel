@@ -1,12 +1,13 @@
-package(default_visibility=["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
+
 load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
 
 nodejs_binary(
     name = "protoc-gen-ts",
-    node_modules = "@deps//:node_modules",
+    args = ["--node_options=--expose-gc"],
     data = [
-      "//src:src",
+        "//src",
     ],
     entry_point = "ts_protoc_gen/src/index",
-    args = ["--node_options=--expose-gc"],
+    node_modules = "@ts_protoc_gen_deps//:node_modules",
 )

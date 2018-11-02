@@ -28,17 +28,20 @@
   ],
   "author": "Improbable",
   "license": "Apache-2.0",
-  "dependencies": {
-    "google-protobuf": "^3.6.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@bazel/karma": "0.21.0",
+    "@bazel/typescript": "0.21.0",
     "@types/chai": "^3.5.2",
     "@types/google-protobuf": "^3.2.7",
+    "@types/jasmine": "^2.8.9",
     "@types/lodash": "^4.14.106",
     "@types/mocha": "^2.2.46",
     "@types/node": "^7.0.52",
     "babel": "^6.5.2",
+    "browser-headers": "^0.4.1",
     "chai": "^3.5.0",
+    "google-protobuf": "^3.6.1",
     "grpc-web-client": "^0.7.0",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
