@@ -204,7 +204,6 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
 
   printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
   printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
-  printer.printLn(`export type ServiceClientOptions = { transport?: grpc.TransportConstructor; debug?: boolean }`);
   printer.printEmptyLn();
   printer.printLn("interface UnaryResponse {");
   printer.printIndentedLn("cancel(): void;");
@@ -497,7 +496,7 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
            .printLn(`export class ${service.name}Client {`)
     .indent().printLn(`readonly serviceHost: string;`)
         .printEmptyLn()
-             .printLn(`constructor(serviceHost: string, options?: ServiceClientOptions);`);
+             .printLn(`constructor(serviceHost: string, options?: grpc.RpcOptions);`);
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
     if (method.requestStream && method.responseStream) {

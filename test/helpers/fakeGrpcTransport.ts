@@ -1,6 +1,5 @@
 import { Message } from "google-protobuf";
 import { grpc } from "grpc-web-client";
-import { Transport, TransportConstructor, TransportOptions } from "grpc-web-client/dist/transports/Transport";
 import * as _ from "lodash";
 
 function frameResponse(request: Message): Uint8Array {
@@ -34,7 +33,7 @@ function frameTrailers(trailers: grpc.Metadata): Uint8Array {
 }
 
 export class StubTransportBuilder {
-  private requestListener: (options: TransportOptions) => void;
+  private requestListener: (options: grpc.TransportOptions) => void;
   private headersListener: (headers: grpc.Metadata) => void;
   private messageListener: (messageBytes: ArrayBufferView) => void;
   private finishSendListener: () => void;
@@ -47,7 +46,7 @@ export class StubTransportBuilder {
   private trailers: grpc.Metadata | null = null;
   private autoTrigger: boolean = true;
 
-  withRequestListener(requestListener: (options: TransportOptions) => void) {
+  withRequestListener(requestListener: (options: grpc.TransportOptions) => void) {
     this.requestListener = requestListener;
     return this;
   }
@@ -111,7 +110,7 @@ export class StubTransportBuilder {
     const mock = this;
 
     const triggers = {
-      options: null as (TransportOptions | null),
+      options: null as (grpc.TransportOptions | null),
       sendHeaders: () => {
         if (!triggers.options) {
           throw new Error("sendHeaders called before transport had been invoked");
@@ -170,7 +169,7 @@ export class StubTransportBuilder {
       },
     };
 
-    const transportConstructor: TransportConstructor = (optionsArg: TransportOptions) => {
+    const transportConstructor = (optionsArg: grpc.TransportOptions) => {
       triggers.options = optionsArg;
 
       if (mock.requestListener) {
@@ -208,8 +207,7 @@ export class StubTransportBuilder {
   }
 }
 
-export interface TriggerableTransport {
-  (options: TransportOptions): Transport;
+export interface TriggerableTransport extends grpc.TransportFactory {
   sendHeaders(): boolean;
   sendMessages(): boolean;
   sendTrailers(): boolean;
