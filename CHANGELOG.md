@@ -1,4 +1,11 @@
-## 0.7.8-pre
+## 0.8.0
+
+### Fixes
+* [#131](https://github.com/improbable-eng/ts-protoc-gen/pull/131) Fix code-gen problems in client-side and bi-di stream stubs. ([@johanbrandhorst](https://github.com/johanbrandhorst))
+
+### Changes
+* [#139](https://github.com/improbable-eng/ts-protoc-gen/pull/139) Provide support for grpc-web-client v0.7.0+ ([@jonny-improbable](https://github.com/jonny-improbable))
+* [#124](https://github.com/improbable-eng/ts-protoc-gen/pull/124) Provide support for cancelling unary calls. ([@virtuald](https://github.com/virtuald))
 
 ## 0.7.7
 
