@@ -10,7 +10,6 @@ import { SimpleService, SimpleServiceClient } from "../../../examples/generated/
 import { StreamRequest, UnaryRequest } from "../../../examples/generated/proto/examplecom/simple_service_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 
-
 describe("service/grpc-web", () => {
   describe("generated service definitions", () => {
 

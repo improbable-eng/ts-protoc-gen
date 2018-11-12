@@ -39,7 +39,7 @@
     "@types/node": "^7.0.52",
     "babel": "^6.5.2",
     "chai": "^3.5.0",
-    "grpc-web-client": "^0.6.0",
+    "grpc-web-client": "^0.7.0",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
     "mocha": "^5.2.0",
