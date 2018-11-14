@@ -4,6 +4,7 @@
 set -e
 
 EXAMPLES_GENERATED_DIR=examples/generated
+EXAMPLES_FLOW_GENERATED_DIR=examples/flow/generated
 
 # Determine which platform we're running on
 unameOut="$(uname -s)"
@@ -50,6 +51,20 @@ $PROTOC \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_DIR \
   --ts_out=service=true:$EXAMPLES_GENERATED_DIR \
+  ./proto/othercom/*.proto \
+  ./proto/examplecom/*.proto \
+  ./proto/*.proto
+
+if [ -d "$EXAMPLES_FLOW_GENERATED_DIR" ]
+then
+    rm -rf "$EXAMPLES_FLOW_GENERATED_DIR"
+fi
+mkdir -p "$EXAMPLES_FLOW_GENERATED_DIR"
+
+$PROTOC \
+  --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
+  --js_out=import_style=commonjs,binary:$EXAMPLES_FLOW_GENERATED_DIR \
+  --ts_out=flow=true:$EXAMPLES_FLOW_GENERATED_DIR \
   ./proto/othercom/*.proto \
   ./proto/examplecom/*.proto \
   ./proto/*.proto

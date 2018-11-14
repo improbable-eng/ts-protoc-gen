@@ -1,0 +1,26 @@
+{
+  "name": "ts-protoc-gen",
+  "version": "0.8.1-pre",
+  "description": "Protoc Plugin for TypeScript Declarations and Service Definitions",
+  "scripts": {
+    "flow": "flow"
+  },
+  "repository": "https://github.com/improbable-eng/ts-protoc-gen",
+  "keywords": [
+    "protobuf",
+    "protoc",
+    "typescript",
+    "ts",
+    "grpc",
+    "service",
+    "proto3"
+  ],
+  "author": "Improbable",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "google-protobuf": "^3.6.1"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.86.0"
+  }
+}

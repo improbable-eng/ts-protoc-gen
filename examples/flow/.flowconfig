@@ -1,0 +1,14 @@
+[ignore]
+.*/node_modules/.*[^(package)]\.json$
+
+[libs]
+
+
+[lints]
+
+[options]
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
+
+[strict]
+
+[untyped]
