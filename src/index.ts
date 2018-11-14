@@ -1,4 +1,5 @@
-import {printFileDescriptorTSD} from "./ts/fileDescriptorTSD";
+import { printFileDescriptorTSD } from "./ts/fileDescriptorTSD";
+import {printFileDescriptorFlow} from "./flow/fileDescriptorFlow";
 import {ExportMap} from "./ExportMap";
 import {replaceProtoSuffix, withAllStdIn} from "./util";
 import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
@@ -24,8 +25,11 @@ withAllStdIn((inputBuff: Buffer) => {
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
+    const params = codeGenRequest.getParameter().split(",");
     // Generate separate `.ts` files for services if param is set
-    const generateServices = codeGenRequest.getParameter() === "service=true";
+    const generateServices = params.indexOf("service=true") !== -1;
+
+    const generateFlow = params.indexOf("flow=true") !== -1;
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       fileNameToDescriptor[protoFileDescriptor.getName()] = protoFileDescriptor;
@@ -34,10 +38,20 @@ withAllStdIn((inputBuff: Buffer) => {
 
     codeGenRequest.getFileToGenerateList().forEach(fileName => {
       const outputFileName = replaceProtoSuffix(fileName);
-      const thisFile = new CodeGeneratorResponse.File();
-      thisFile.setName(outputFileName + ".d.ts");
-      thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
-      codeGenResponse.addFile(thisFile);
+
+      if (generateFlow) {
+        // Generate Flowtype Files
+        const thisFileFlow = new CodeGeneratorResponse.File();
+        thisFileFlow.setName(outputFileName + ".flow.js");
+        thisFileFlow.setContent(printFileDescriptorFlow(fileNameToDescriptor[fileName], exportMap));
+        codeGenResponse.addFile(thisFileFlow);
+      } else {
+        // Generate TS Files
+        const thisFile = new CodeGeneratorResponse.File();
+        thisFile.setName(outputFileName + ".d.ts");
+        thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
+        codeGenResponse.addFile(thisFile);
+      }
 
       if (generateServices) {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
