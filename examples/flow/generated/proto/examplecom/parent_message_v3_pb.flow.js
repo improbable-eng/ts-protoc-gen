@@ -3,61 +3,61 @@
 // file: proto/examplecom/parent_message_v3.proto
 
 import * as jspb from "google-protobuf";
-import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
+import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb.flow.js";
 
-export class ParentMessageV3 extends jspb.Message {
+export class ParentMessageV3$AsClass extends jspb.Message {
   hasInternalChildMessage: () => boolean;
   clearInternalChildMessage: () => void;
-  getInternalChildMessage: () => ?ParentMessageV3.InternalChildMessage;
-  setInternalChildMessage: (value?: ParentMessageV3.InternalChildMessage) => void;
+  getInternalChildMessage: () => ?ParentMessageV3$AsClass$InternalChildMessage$AsClass;
+  setInternalChildMessage: (value?: ParentMessageV3$AsClass$InternalChildMessage$AsClass) => void;
 
   clearInternalChildrenList: () => void;
-  getInternalChildrenList: () => Array<ParentMessageV3.InternalChildMessage>;
-  setInternalChildrenList: (value: Array<ParentMessageV3.InternalChildMessage>) => void;
-  addInternalChildren: (value?: ParentMessageV3.InternalChildMessage, index?: number) => ParentMessageV3.InternalChildMessage;
+  getInternalChildrenList: () => Array<ParentMessageV3$AsClass$InternalChildMessage$AsClass>;
+  setInternalChildrenList: (value: Array<ParentMessageV3$AsClass$InternalChildMessage$AsClass>) => void;
+  addInternalChildren: (value?: ParentMessageV3$AsClass$InternalChildMessage$AsClass, index?: number) => ParentMessageV3$AsClass$InternalChildMessage$AsClass;
 
   hasExternalChildMessage: () => boolean;
   clearExternalChildMessage: () => void;
-  getExternalChildMessage: () => ?proto_othercom_external_child_message_pb.ExternalChildMessage;
-  setExternalChildMessage: (value?: proto_othercom_external_child_message_pb.ExternalChildMessage) => void;
+  getExternalChildMessage: () => ?proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass;
+  setExternalChildMessage: (value?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass) => void;
 
   clearExternalChildrenList: () => void;
-  getExternalChildrenList: () => Array<proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  setExternalChildrenList: (value: Array<proto_othercom_external_child_message_pb.ExternalChildMessage>) => void;
-  addExternalChildren: (value?: proto_othercom_external_child_message_pb.ExternalChildMessage, index?: number) => proto_othercom_external_child_message_pb.ExternalChildMessage;
+  getExternalChildrenList: () => Array<proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass>;
+  setExternalChildrenList: (value: Array<proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass>) => void;
+  addExternalChildren: (value?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass, index?: number) => proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => ParentMessageV3$AsObject;
-  static toObject: (includeInstance: boolean, msg: ParentMessageV3) => ParentMessageV3$AsObject;
+  toObject: (includeInstance?: boolean) => ParentMessageV3$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: ParentMessageV3$AsClass) => ParentMessageV3$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: ParentMessageV3, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => ParentMessageV3;
-  static deserializeBinaryFromReader: (message: ParentMessageV3, reader: jspb.BinaryReader) => ParentMessageV3;
+  static serializeBinaryToWriter: (message: ParentMessageV3$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => ParentMessageV3$AsClass;
+  static deserializeBinaryFromReader: (message: ParentMessageV3$AsClass, reader: jspb.BinaryReader) => ParentMessageV3$AsClass;
 }
 
-export type ParentMessageV3$AsObject = {
-  internalChildMessage?: ParentMessageV3.InternalChildMessage$AsObject,
-  internalChildrenList: Array<ParentMessageV3.InternalChildMessage.AsObject>,
-  externalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsObject,
-  externalChildrenList: Array<proto_othercom_external_child_message_pb.ExternalChildMessage.AsObject>,
+export type ParentMessageV3$AsClass$AsObject = {
+  internalChildMessage?: ParentMessageV3$AsClass$InternalChildMessage$AsClass$AsObject,
+  internalChildrenList: Array<ParentMessageV3$AsClass$InternalChildMessage$AsClass$AsObject>,
+  externalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass$AsObject,
+  externalChildrenList: Array<proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass$AsObject>,
 }
 
-export class InternalChildMessage extends jspb.Message {
+export class ParentMessageV3$AsClass$InternalChildMessage$AsClass extends jspb.Message {
   getMyString: () => string;
   setMyString: (value: string) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => InternalChildMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: InternalChildMessage) => InternalChildMessage$AsObject;
+  toObject: (includeInstance?: boolean) => ParentMessageV3$AsClass$InternalChildMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: ParentMessageV3$AsClass$InternalChildMessage$AsClass) => ParentMessageV3$AsClass$InternalChildMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: InternalChildMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => InternalChildMessage;
-  static deserializeBinaryFromReader: (message: InternalChildMessage, reader: jspb.BinaryReader) => InternalChildMessage;
+  static serializeBinaryToWriter: (message: ParentMessageV3$AsClass$InternalChildMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => ParentMessageV3$AsClass$InternalChildMessage$AsClass;
+  static deserializeBinaryFromReader: (message: ParentMessageV3$AsClass$InternalChildMessage$AsClass, reader: jspb.BinaryReader) => ParentMessageV3$AsClass$InternalChildMessage$AsClass;
 }
 
-export type InternalChildMessage$AsObject = {
+export type ParentMessageV3$AsClass$InternalChildMessage$AsClass$AsObject = {
   myString: string,
 }
 

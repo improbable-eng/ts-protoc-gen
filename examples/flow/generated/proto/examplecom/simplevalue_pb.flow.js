@@ -4,7 +4,7 @@
 
 import * as jspb from "google-protobuf";
 
-export class SimpleValue extends jspb.Message {
+export class SimpleValue$AsClass extends jspb.Message {
   getFirstField: () => string;
   setFirstField: (value: string) => void;
 
@@ -41,19 +41,19 @@ export class SimpleValue extends jspb.Message {
   getBool2Value: () => boolean;
   setBool2Value: (value: boolean) => void;
 
-  getKindCase: () => typeof SimpleValue$KindCase;
-  getAnotherCase: () => typeof SimpleValue$AnotherCase;
+  getKindCase: () => $Values<typeof SimpleValue$AsClass$KindCase>;
+  getAnotherCase: () => $Values<typeof SimpleValue$AsClass$AnotherCase>;
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => SimpleValue$AsObject;
-  static toObject: (includeInstance: boolean, msg: SimpleValue) => SimpleValue$AsObject;
+  toObject: (includeInstance?: boolean) => SimpleValue$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: SimpleValue$AsClass) => SimpleValue$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: SimpleValue, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => SimpleValue;
-  static deserializeBinaryFromReader: (message: SimpleValue, reader: jspb.BinaryReader) => SimpleValue;
+  static serializeBinaryToWriter: (message: SimpleValue$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => SimpleValue$AsClass;
+  static deserializeBinaryFromReader: (message: SimpleValue$AsClass, reader: jspb.BinaryReader) => SimpleValue$AsClass;
 }
 
-export type SimpleValue$AsObject = {
+export type SimpleValue$AsClass$AsObject = {
   firstField: string,
   secondField: number,
   numberValue: number,
@@ -64,14 +64,14 @@ export type SimpleValue$AsObject = {
   bool2Value: boolean,
 }
 
-export const SimpleValue$KindCase = {
+export const SimpleValue$AsClass$KindCase = {
   KIND_NOT_SET: 0,
   NUMBER_VALUE: 3,
   STRING_VALUE: 6,
   BOOL_VALUE: 8,
 }
 
-export const SimpleValue$AnotherCase = {
+export const SimpleValue$AsClass$AnotherCase = {
   ANOTHER_NOT_SET: 0,
   NUMBER2_VALUE: 4,
   STRING2_VALUE: 5,

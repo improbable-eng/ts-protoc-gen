@@ -4,7 +4,7 @@
 
 import * as jspb from "google-protobuf";
 
-export class RepeatedPrimitiveMessage extends jspb.Message {
+export class RepeatedPrimitiveMessage$AsClass extends jspb.Message {
   clearMyDoubleList: () => void;
   getMyDoubleList: () => Array<number>;
   setMyDoubleList: (value: Array<number>) => void;
@@ -83,16 +83,16 @@ export class RepeatedPrimitiveMessage extends jspb.Message {
   addMyBytes: (value: Uint8Array | string, index?: number) => Uint8Array | string;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => RepeatedPrimitiveMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: RepeatedPrimitiveMessage) => RepeatedPrimitiveMessage$AsObject;
+  toObject: (includeInstance?: boolean) => RepeatedPrimitiveMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: RepeatedPrimitiveMessage$AsClass) => RepeatedPrimitiveMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: RepeatedPrimitiveMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => RepeatedPrimitiveMessage;
-  static deserializeBinaryFromReader: (message: RepeatedPrimitiveMessage, reader: jspb.BinaryReader) => RepeatedPrimitiveMessage;
+  static serializeBinaryToWriter: (message: RepeatedPrimitiveMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => RepeatedPrimitiveMessage$AsClass;
+  static deserializeBinaryFromReader: (message: RepeatedPrimitiveMessage$AsClass, reader: jspb.BinaryReader) => RepeatedPrimitiveMessage$AsClass;
 }
 
-export type RepeatedPrimitiveMessage$AsObject = {
+export type RepeatedPrimitiveMessage$AsClass$AsObject = {
   myDoubleList: Array<number>,
   myFloatList: Array<number>,
   myInt32List: Array<number>,

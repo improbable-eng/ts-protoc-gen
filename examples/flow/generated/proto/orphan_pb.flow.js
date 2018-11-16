@@ -4,82 +4,82 @@
 
 import * as jspb from "google-protobuf";
 
-export class OrphanMapMessage extends jspb.Message {
+export class OrphanMapMessage$AsClass extends jspb.Message {
   getPrimitiveIntsMap: () => jspb.Map<string, number>;
   clearPrimitiveIntsMap: () => void;
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => OrphanMapMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: OrphanMapMessage) => OrphanMapMessage$AsObject;
+  toObject: (includeInstance?: boolean) => OrphanMapMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: OrphanMapMessage$AsClass) => OrphanMapMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: OrphanMapMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => OrphanMapMessage;
-  static deserializeBinaryFromReader: (message: OrphanMapMessage, reader: jspb.BinaryReader) => OrphanMapMessage;
+  static serializeBinaryToWriter: (message: OrphanMapMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => OrphanMapMessage$AsClass;
+  static deserializeBinaryFromReader: (message: OrphanMapMessage$AsClass, reader: jspb.BinaryReader) => OrphanMapMessage$AsClass;
 }
 
-export type OrphanMapMessage$AsObject = {
+export type OrphanMapMessage$AsClass$AsObject = {
   primitiveIntsMap: Array<[string, number]>,
 }
 
-export class OrphanMessage extends jspb.Message {
+export class OrphanMessage$AsClass extends jspb.Message {
   getMyString: () => string;
   setMyString: (value: string) => void;
 
   getMyBool: () => boolean;
   setMyBool: (value: boolean) => void;
 
-  getMyEnum: () => typeof OrphanEnum;
-  setMyEnum: (value: typeof OrphanEnum) => void;
+  getMyEnum: () => $Values<typeof OrphanEnum>;
+  setMyEnum: (value: $Values<typeof OrphanEnum>) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => OrphanMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: OrphanMessage) => OrphanMessage$AsObject;
+  toObject: (includeInstance?: boolean) => OrphanMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: OrphanMessage$AsClass) => OrphanMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: OrphanMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => OrphanMessage;
-  static deserializeBinaryFromReader: (message: OrphanMessage, reader: jspb.BinaryReader) => OrphanMessage;
+  static serializeBinaryToWriter: (message: OrphanMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => OrphanMessage$AsClass;
+  static deserializeBinaryFromReader: (message: OrphanMessage$AsClass, reader: jspb.BinaryReader) => OrphanMessage$AsClass;
 }
 
-export type OrphanMessage$AsObject = {
+export type OrphanMessage$AsClass$AsObject = {
   myString: string,
   myBool: boolean,
-  myEnum: typeof OrphanEnum,
+  myEnum: $Values<typeof OrphanEnum>,
 }
 
-export class OrphanUnaryRequest extends jspb.Message {
+export class OrphanUnaryRequest$AsClass extends jspb.Message {
   getSomeInt64: () => number;
   setSomeInt64: (value: number) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => OrphanUnaryRequest$AsObject;
-  static toObject: (includeInstance: boolean, msg: OrphanUnaryRequest) => OrphanUnaryRequest$AsObject;
+  toObject: (includeInstance?: boolean) => OrphanUnaryRequest$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: OrphanUnaryRequest$AsClass) => OrphanUnaryRequest$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: OrphanUnaryRequest, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => OrphanUnaryRequest;
-  static deserializeBinaryFromReader: (message: OrphanUnaryRequest, reader: jspb.BinaryReader) => OrphanUnaryRequest;
+  static serializeBinaryToWriter: (message: OrphanUnaryRequest$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => OrphanUnaryRequest$AsClass;
+  static deserializeBinaryFromReader: (message: OrphanUnaryRequest$AsClass, reader: jspb.BinaryReader) => OrphanUnaryRequest$AsClass;
 }
 
-export type OrphanUnaryRequest$AsObject = {
+export type OrphanUnaryRequest$AsClass$AsObject = {
   someInt64: number,
 }
 
-export class OrphanStreamRequest extends jspb.Message {
+export class OrphanStreamRequest$AsClass extends jspb.Message {
   getSomeString: () => string;
   setSomeString: (value: string) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => OrphanStreamRequest$AsObject;
-  static toObject: (includeInstance: boolean, msg: OrphanStreamRequest) => OrphanStreamRequest$AsObject;
+  toObject: (includeInstance?: boolean) => OrphanStreamRequest$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: OrphanStreamRequest$AsClass) => OrphanStreamRequest$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: OrphanStreamRequest, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => OrphanStreamRequest;
-  static deserializeBinaryFromReader: (message: OrphanStreamRequest, reader: jspb.BinaryReader) => OrphanStreamRequest;
+  static serializeBinaryToWriter: (message: OrphanStreamRequest$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => OrphanStreamRequest$AsClass;
+  static deserializeBinaryFromReader: (message: OrphanStreamRequest$AsClass, reader: jspb.BinaryReader) => OrphanStreamRequest$AsClass;
 }
 
-export type OrphanStreamRequest$AsObject = {
+export type OrphanStreamRequest$AsClass$AsObject = {
   someString: string,
 }
 

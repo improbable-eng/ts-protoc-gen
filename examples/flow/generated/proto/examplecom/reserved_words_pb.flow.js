@@ -4,7 +4,7 @@
 
 import * as jspb from "google-protobuf";
 
-export class ReservedWordsMessage extends jspb.Message {
+export class ReservedWordsMessage$AsClass extends jspb.Message {
   getAbstract: () => string;
   setAbstract: (value: string) => void;
 
@@ -180,16 +180,16 @@ export class ReservedWordsMessage extends jspb.Message {
   setWith: (value: string) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => ReservedWordsMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: ReservedWordsMessage) => ReservedWordsMessage$AsObject;
+  toObject: (includeInstance?: boolean) => ReservedWordsMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: ReservedWordsMessage$AsClass) => ReservedWordsMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: ReservedWordsMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => ReservedWordsMessage;
-  static deserializeBinaryFromReader: (message: ReservedWordsMessage, reader: jspb.BinaryReader) => ReservedWordsMessage;
+  static serializeBinaryToWriter: (message: ReservedWordsMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => ReservedWordsMessage$AsClass;
+  static deserializeBinaryFromReader: (message: ReservedWordsMessage$AsClass, reader: jspb.BinaryReader) => ReservedWordsMessage$AsClass;
 }
 
-export type ReservedWordsMessage$AsObject = {
+export type ReservedWordsMessage$AsClass$AsObject = {
   pb_abstract: string,
   pb_boolean: string,
   pb_break: string,

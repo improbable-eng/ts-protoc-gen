@@ -4,7 +4,7 @@
 
 import * as jspb from "google-protobuf";
 
-export class PrimitiveMessageV3 extends jspb.Message {
+export class PrimitiveMessageV3$AsClass extends jspb.Message {
   getMyDouble: () => number;
   setMyDouble: (value: number) => void;
 
@@ -56,16 +56,16 @@ export class PrimitiveMessageV3 extends jspb.Message {
   setMyNumber: (value: number) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => PrimitiveMessageV3$AsObject;
-  static toObject: (includeInstance: boolean, msg: PrimitiveMessageV3) => PrimitiveMessageV3$AsObject;
+  toObject: (includeInstance?: boolean) => PrimitiveMessageV3$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: PrimitiveMessageV3$AsClass) => PrimitiveMessageV3$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: PrimitiveMessageV3, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => PrimitiveMessageV3;
-  static deserializeBinaryFromReader: (message: PrimitiveMessageV3, reader: jspb.BinaryReader) => PrimitiveMessageV3;
+  static serializeBinaryToWriter: (message: PrimitiveMessageV3$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => PrimitiveMessageV3$AsClass;
+  static deserializeBinaryFromReader: (message: PrimitiveMessageV3$AsClass, reader: jspb.BinaryReader) => PrimitiveMessageV3$AsClass;
 }
 
-export type PrimitiveMessageV3$AsObject = {
+export type PrimitiveMessageV3$AsClass$AsObject = {
   myDouble: number,
   myFloat: number,
   myInt32: number,

@@ -4,7 +4,7 @@
 
 import * as jspb from "google-protobuf";
 
-export class AnnotatedMessage extends jspb.Message {
+export class AnnotatedMessage$AsClass extends jspb.Message {
   getMyunit64: () => string;
   setMyunit64: (value: string) => void;
 
@@ -21,16 +21,16 @@ export class AnnotatedMessage extends jspb.Message {
   setMysfixed64: (value: string) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => AnnotatedMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: AnnotatedMessage) => AnnotatedMessage$AsObject;
+  toObject: (includeInstance?: boolean) => AnnotatedMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: AnnotatedMessage$AsClass) => AnnotatedMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: AnnotatedMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => AnnotatedMessage;
-  static deserializeBinaryFromReader: (message: AnnotatedMessage, reader: jspb.BinaryReader) => AnnotatedMessage;
+  static serializeBinaryToWriter: (message: AnnotatedMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => AnnotatedMessage$AsClass;
+  static deserializeBinaryFromReader: (message: AnnotatedMessage$AsClass, reader: jspb.BinaryReader) => AnnotatedMessage$AsClass;
 }
 
-export type AnnotatedMessage$AsObject = {
+export type AnnotatedMessage$AsClass$AsObject = {
   myunit64: string,
   myint64: string,
   myfixed64: string,

@@ -28,12 +28,12 @@ export function printFileDescriptorFlow(fileDescriptor: FileDescriptorProto, exp
       printer.printLn(`import * as ${pseudoNamespace} from "${WellKnownTypesMap[dependency]}";`);
     } else {
       const filePath = replaceProtoSuffix(dependency);
-      printer.printLn(`import * as ${pseudoNamespace} from "${upToRoot}${filePath}";`);
+      printer.printLn(`import * as ${pseudoNamespace} from "${upToRoot}${filePath}.flow.js";`);
     }
   });
 
-  fileDescriptor.getMessageTypeList().forEach(enumType => {
-    printer.print(printMessage(fileName, exportMap, enumType, 0, fileDescriptor));
+  fileDescriptor.getMessageTypeList().forEach(messageType => {
+    printer.print(printMessage(fileName, exportMap, messageType, 0, fileDescriptor));
   });
 
   fileDescriptor.getExtensionList().forEach(extension => {

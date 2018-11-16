@@ -3,57 +3,57 @@
 // file: proto/examplecom/map_message.proto
 
 import * as jspb from "google-protobuf";
-import * as proto_othercom_external_enum_pb from "../../proto/othercom/external_enum_pb";
-import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
+import * as proto_othercom_external_enum_pb from "../../proto/othercom/external_enum_pb.flow.js";
+import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb.flow.js";
 
-export class MapMessage extends jspb.Message {
-  getInternalEnumsMap: () => jspb.Map<number, MapMessage.InternalEnum>;
+export class MapMessage$AsClass extends jspb.Message {
+  getInternalEnumsMap: () => jspb.Map<number, $Values<typeof MapMessage$AsClass$InternalEnum>>;
   clearInternalEnumsMap: () => void;
-  getInternalChildrenMap: () => jspb.Map<string, MapMessage.InternalChildMessage>;
+  getInternalChildrenMap: () => jspb.Map<string, MapMessage$AsClass$InternalChildMessage$AsClass$AsObject>;
   clearInternalChildrenMap: () => void;
-  getExternalEnumsMap: () => jspb.Map<number, proto_othercom_external_enum_pb.ExternalEnum>;
+  getExternalEnumsMap: () => jspb.Map<number, $Values<typeof proto_othercom_external_enum_pb.ExternalEnum>>;
   clearExternalEnumsMap: () => void;
-  getExternalChildrenMap: () => jspb.Map<string, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  getExternalChildrenMap: () => jspb.Map<string, proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass$AsObject>;
   clearExternalChildrenMap: () => void;
   getPrimitiveIntsMap: () => jspb.Map<string, number>;
   clearPrimitiveIntsMap: () => void;
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => MapMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: MapMessage) => MapMessage$AsObject;
+  toObject: (includeInstance?: boolean) => MapMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: MapMessage$AsClass) => MapMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: MapMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => MapMessage;
-  static deserializeBinaryFromReader: (message: MapMessage, reader: jspb.BinaryReader) => MapMessage;
+  static serializeBinaryToWriter: (message: MapMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => MapMessage$AsClass;
+  static deserializeBinaryFromReader: (message: MapMessage$AsClass, reader: jspb.BinaryReader) => MapMessage$AsClass;
 }
 
-export type MapMessage$AsObject = {
-  internalEnumsMap: Array<[number, MapMessage.InternalEnum]>,
-  internalChildrenMap: Array<[string, MapMessage.InternalChildMessage$AsObject]>,
-  externalEnumsMap: Array<[number, proto_othercom_external_enum_pb.ExternalEnum]>,
-  externalChildrenMap: Array<[string, proto_othercom_external_child_message_pb.ExternalChildMessage$AsObject]>,
+export type MapMessage$AsClass$AsObject = {
+  internalEnumsMap: Array<[number, $Values<typeof MapMessage$AsClass$InternalEnum>]>,
+  internalChildrenMap: Array<[string, MapMessage$AsClass$InternalChildMessage$AsClass$AsObject]>,
+  externalEnumsMap: Array<[number, $Values<typeof proto_othercom_external_enum_pb.ExternalEnum>]>,
+  externalChildrenMap: Array<[string, proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass$AsObject]>,
   primitiveIntsMap: Array<[string, number]>,
 }
 
-export class InternalChildMessage extends jspb.Message {
+export class MapMessage$AsClass$InternalChildMessage$AsClass extends jspb.Message {
   getMyString: () => string;
   setMyString: (value: string) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => InternalChildMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: InternalChildMessage) => InternalChildMessage$AsObject;
+  toObject: (includeInstance?: boolean) => MapMessage$AsClass$InternalChildMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: MapMessage$AsClass$InternalChildMessage$AsClass) => MapMessage$AsClass$InternalChildMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: InternalChildMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => InternalChildMessage;
-  static deserializeBinaryFromReader: (message: InternalChildMessage, reader: jspb.BinaryReader) => InternalChildMessage;
+  static serializeBinaryToWriter: (message: MapMessage$AsClass$InternalChildMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => MapMessage$AsClass$InternalChildMessage$AsClass;
+  static deserializeBinaryFromReader: (message: MapMessage$AsClass$InternalChildMessage$AsClass, reader: jspb.BinaryReader) => MapMessage$AsClass$InternalChildMessage$AsClass;
 }
 
-export type InternalChildMessage$AsObject = {
+export type MapMessage$AsClass$InternalChildMessage$AsClass$AsObject = {
   myString: string,
 }
 
-export const MapMessage$InternalEnum = {
+export const MapMessage$AsClass$InternalEnum = {
   DEFAULT: 0,
   FIRST: 1,
   SECOND: 2,

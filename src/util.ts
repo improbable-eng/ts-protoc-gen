@@ -41,6 +41,13 @@ export function withinNamespaceFromExportEntry(name: string, exportEntry: Export
   return exportEntry.pkg ? name.substring(exportEntry.pkg.length + 1) : name;
 }
 
+export function withinNamespaceFromExportEntryFlow(name: string, exportEntry: ExportMessageEntry | ExportEnumEntry) {
+  if (exportEntry.pkg) {
+    return name.substring(exportEntry.pkg.length + 1).replace(".", "$AsClass$");
+  }
+  return name;
+}
+
 export function replaceProtoSuffix(protoFilePath: string): string {
   const suffix = ".proto";
   const hasProtoSuffix = protoFilePath.slice(protoFilePath.length - suffix.length) === suffix;

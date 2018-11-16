@@ -1,13 +1,13 @@
 import {
   filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2,
-  withinNamespaceFromExportEntry, normaliseFieldObjectName
+  normaliseFieldObjectName, withinNamespaceFromExportEntryFlow
 } from "../util";
 import {ExportMap} from "../ExportMap";
 import {
   FieldDescriptorProto, FileDescriptorProto, DescriptorProto,
   FieldOptions
 } from "google-protobuf/google/protobuf/descriptor_pb";
-import {MESSAGE_TYPE, BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName} from "../ts/FieldTypes";
+import {MESSAGE_TYPE, BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName} from "./FieldTypes";
 import {Printer} from "../Printer";
 import {printEnum} from "./enum";
 import {printOneOfDecl} from "./oneof";
@@ -34,8 +34,10 @@ function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescr
   return false;
 }
 
-export function printMessage(fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto, indentLevel: number, fileDescriptor: FileDescriptorProto) {
-  const messageName = messageDescriptor.getName();
+export function printMessage(fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto, indentLevel: number, fileDescriptor: FileDescriptorProto, prefixName?: string) {
+  const classTypeName = `AsClass`;
+
+  const messageName = prefixName && prefixName !== "" ? `${prefixName}$${messageDescriptor.getName() + "$AsClass"}` : messageDescriptor.getName() + "$AsClass";
   const messageOptions = messageDescriptor.getOptions();
   if (messageOptions !== undefined && messageOptions.getMapEntry()) {
     // this message type is the entry tuple for a map - don't output it
@@ -85,27 +87,33 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         if (valueType === BYTES_TYPE) {
           valueTypeName = "Uint8Array | string";
         }
+        if (valueType === MESSAGE_TYPE) {
+          valueTypeName += `$${objectTypeName}`;
+        }
+        if (valueType === ENUM_TYPE) {
+          valueTypeName = `$Values<typeof ${valueTypeName}>`
+        }
         printer.printIndentedLn(`get${withUppercase}Map: () => jspb.Map<${keyTypeName}, ${valueTypeName}>;`);
         printer.printIndentedLn(`clear${withUppercase}Map: () => void;`);
-        toObjectType.printIndentedLn(`${camelCaseName}Map: Array<[${keyTypeName}${keyType === MESSAGE_TYPE ? "$AsObject" : ""}, ${valueTypeName}${valueType === MESSAGE_TYPE ? "$AsObject" : ""}]>,`);
+        toObjectType.printIndentedLn(`${camelCaseName}Map: Array<[${keyTypeName}${keyType === MESSAGE_TYPE ? `$${objectTypeName}` : ""}, ${valueTypeName}]>,`);
         return;
       }
-      const withinNamespace = withinNamespaceFromExportEntry(fullTypeName, fieldMessageType);
+      const withinNamespace = withinNamespaceFromExportEntryFlow(fullTypeName, fieldMessageType);
       if (fieldMessageType.fileName === fileName) {
-        exportType = withinNamespace;
+        exportType = `${withinNamespace}$${classTypeName}`;
       } else {
-        exportType = filePathToPseudoNamespace(fieldMessageType.fileName) + "." + withinNamespace;
+        exportType = filePathToPseudoNamespace(fieldMessageType.fileName) + "." + `${withinNamespace}$${classTypeName}`;
       }
     } else if (type === ENUM_TYPE) {
       const fieldEnumType = exportMap.getEnum(fullTypeName);
       if (fieldEnumType === undefined) {
         throw new Error("No enum export for: " + fullTypeName);
       }
-      const withinNamespace = withinNamespaceFromExportEntry(fullTypeName, fieldEnumType);
+      const withinNamespace = withinNamespaceFromExportEntryFlow(fullTypeName, fieldEnumType);
       if (fieldEnumType.fileName === fileName) {
-        exportType = withinNamespace;
+        exportType = `$Values<typeof ${withinNamespace}>`;
       } else {
-        exportType = filePathToPseudoNamespace(fieldEnumType.fileName) + "." + withinNamespace;
+        exportType = `$Values<typeof ${filePathToPseudoNamespace(fieldEnumType.fileName) + "." + withinNamespace}>`;
       }
     } else {
       if (field.getOptions() && field.getOptions().hasJstype()) {
@@ -152,7 +160,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         printer.printIndentedLn(`set${withUppercase}List: (value: Array<Uint8Array | string>) => void;`);
         printRepeatedAddMethod("Uint8Array | string");
       } else {
-        toObjectType.printIndentedLn(`${camelCaseName}List: Array<${exportType}${type === MESSAGE_TYPE ? ".AsObject" : ""}>,`);
+        toObjectType.printIndentedLn(`${camelCaseName}List: Array<${exportType}${type === MESSAGE_TYPE ? `$${objectTypeName}` : ""}>,`);
         printer.printIndentedLn(`get${withUppercase}List: () => Array<${exportType}>;`);
         printer.printIndentedLn(`set${withUppercase}List: (value: Array<${exportType}>) => void;`);
         printRepeatedAddMethod(exportType);
@@ -178,9 +186,9 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
           }
         }
         const fieldObjectName = normaliseFieldObjectName(camelCaseName);
-        toObjectType.printIndentedLn(`${fieldObjectName}${canBeUndefined ? "?" : ""}: ${type === ENUM_TYPE ? `typeof ${fieldObjectType}` : fieldObjectType},`);
-        printer.printIndentedLn(`get${withUppercase}: () => ${canBeUndefined ? "?" : ""}${type === ENUM_TYPE ? `typeof ${exportType}`: exportType};`);
-        printer.printIndentedLn(`set${withUppercase}: (value${type === MESSAGE_TYPE ? "?" : ""}: ${type === ENUM_TYPE ? `typeof ${exportType}`: exportType}) => void;`);
+        toObjectType.printIndentedLn(`${fieldObjectName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
+        printer.printIndentedLn(`get${withUppercase}: () => ${canBeUndefined ? "?" : ""}${exportType};`);
+        printer.printIndentedLn(`set${withUppercase}: (value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}) => void;`);
       }
     }
     printer.printEmptyLn();
@@ -189,7 +197,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   toObjectType.printLn(`}`);
 
   messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
-    printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case: () => typeof ${messageName}$${oneOfName(oneOfDecl.getName())}Case;`);
+    printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case: () => $Values<typeof ${messageName}$${oneOfName(oneOfDecl.getName())}Case>;`);
   });
 
   printer.printIndentedLn(`serializeBinary: () => Uint8Array;`);
@@ -207,7 +215,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   printer.print(toObjectType.getOutput());
 
   messageDescriptor.getNestedTypeList().forEach(nested => {
-    const msgOutput = printMessage(fileName, exportMap, nested, indentLevel, fileDescriptor);
+    const msgOutput = printMessage(fileName, exportMap, nested, indentLevel, fileDescriptor, messageName);
     if (msgOutput !== "") {
       // If the message class is a Map entry then it isn't output, so don't print the namespace block
       printer.print(msgOutput);

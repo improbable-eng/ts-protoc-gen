@@ -3,18 +3,18 @@
 // file: proto/examplecom/oneof_message.proto
 
 import * as jspb from "google-protobuf";
-import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
+import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb.flow.js";
 
-export class OneOfMessage extends jspb.Message {
+export class OneOfMessage$AsClass extends jspb.Message {
   hasInternalChildMessage: () => boolean;
   clearInternalChildMessage: () => void;
-  getInternalChildMessage: () => ?OneOfMessage.InternalChildMessage;
-  setInternalChildMessage: (value?: OneOfMessage.InternalChildMessage) => void;
+  getInternalChildMessage: () => ?OneOfMessage$AsClass$InternalChildMessage$AsClass;
+  setInternalChildMessage: (value?: OneOfMessage$AsClass$InternalChildMessage$AsClass) => void;
 
   hasExternalChildMessage: () => boolean;
   clearExternalChildMessage: () => void;
-  getExternalChildMessage: () => ?proto_othercom_external_child_message_pb.ExternalChildMessage;
-  setExternalChildMessage: (value?: proto_othercom_external_child_message_pb.ExternalChildMessage) => void;
+  getExternalChildMessage: () => ?proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass;
+  setExternalChildMessage: (value?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass) => void;
 
   hasMyString: () => boolean;
   clearMyString: () => void;
@@ -26,43 +26,43 @@ export class OneOfMessage extends jspb.Message {
   getMyInt64: () => number;
   setMyInt64: (value: number) => void;
 
-  getGroupCase: () => typeof OneOfMessage$GroupCase;
+  getGroupCase: () => $Values<typeof OneOfMessage$AsClass$GroupCase>;
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => OneOfMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: OneOfMessage) => OneOfMessage$AsObject;
+  toObject: (includeInstance?: boolean) => OneOfMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: OneOfMessage$AsClass) => OneOfMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: OneOfMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => OneOfMessage;
-  static deserializeBinaryFromReader: (message: OneOfMessage, reader: jspb.BinaryReader) => OneOfMessage;
+  static serializeBinaryToWriter: (message: OneOfMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => OneOfMessage$AsClass;
+  static deserializeBinaryFromReader: (message: OneOfMessage$AsClass, reader: jspb.BinaryReader) => OneOfMessage$AsClass;
 }
 
-export type OneOfMessage$AsObject = {
-  internalChildMessage?: OneOfMessage.InternalChildMessage$AsObject,
-  externalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsObject,
+export type OneOfMessage$AsClass$AsObject = {
+  internalChildMessage?: OneOfMessage$AsClass$InternalChildMessage$AsClass$AsObject,
+  externalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage$AsClass$AsObject,
   myString: string,
   myInt64: number,
 }
 
-export class InternalChildMessage extends jspb.Message {
+export class OneOfMessage$AsClass$InternalChildMessage$AsClass extends jspb.Message {
   getMyString: () => string;
   setMyString: (value: string) => void;
 
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => InternalChildMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: InternalChildMessage) => InternalChildMessage$AsObject;
+  toObject: (includeInstance?: boolean) => OneOfMessage$AsClass$InternalChildMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: OneOfMessage$AsClass$InternalChildMessage$AsClass) => OneOfMessage$AsClass$InternalChildMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: InternalChildMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => InternalChildMessage;
-  static deserializeBinaryFromReader: (message: InternalChildMessage, reader: jspb.BinaryReader) => InternalChildMessage;
+  static serializeBinaryToWriter: (message: OneOfMessage$AsClass$InternalChildMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => OneOfMessage$AsClass$InternalChildMessage$AsClass;
+  static deserializeBinaryFromReader: (message: OneOfMessage$AsClass$InternalChildMessage$AsClass, reader: jspb.BinaryReader) => OneOfMessage$AsClass$InternalChildMessage$AsClass;
 }
 
-export type InternalChildMessage$AsObject = {
+export type OneOfMessage$AsClass$InternalChildMessage$AsClass$AsObject = {
   myString: string,
 }
 
-export const OneOfMessage$GroupCase = {
+export const OneOfMessage$AsClass$GroupCase = {
   GROUP_NOT_SET: 0,
   INTERNAL_CHILD_MESSAGE: 1,
   EXTERNAL_CHILD_MESSAGE: 2,
@@ -70,7 +70,7 @@ export const OneOfMessage$GroupCase = {
   MY_INT64: 4,
 }
 
-export class CamelCasedOneOfMessage extends jspb.Message {
+export class CamelCasedOneOfMessage$AsClass extends jspb.Message {
   hasAnint: () => boolean;
   clearAnint: () => void;
   getAnint: () => number;
@@ -81,29 +81,29 @@ export class CamelCasedOneOfMessage extends jspb.Message {
   getThestring: () => string;
   setThestring: (value: string) => void;
 
-  getCamelcasedmessageCase: () => typeof CamelCasedOneOfMessage$CamelcasedmessageCase;
+  getCamelcasedmessageCase: () => $Values<typeof CamelCasedOneOfMessage$AsClass$CamelcasedmessageCase>;
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => CamelCasedOneOfMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: CamelCasedOneOfMessage) => CamelCasedOneOfMessage$AsObject;
+  toObject: (includeInstance?: boolean) => CamelCasedOneOfMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: CamelCasedOneOfMessage$AsClass) => CamelCasedOneOfMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: CamelCasedOneOfMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => CamelCasedOneOfMessage;
-  static deserializeBinaryFromReader: (message: CamelCasedOneOfMessage, reader: jspb.BinaryReader) => CamelCasedOneOfMessage;
+  static serializeBinaryToWriter: (message: CamelCasedOneOfMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => CamelCasedOneOfMessage$AsClass;
+  static deserializeBinaryFromReader: (message: CamelCasedOneOfMessage$AsClass, reader: jspb.BinaryReader) => CamelCasedOneOfMessage$AsClass;
 }
 
-export type CamelCasedOneOfMessage$AsObject = {
+export type CamelCasedOneOfMessage$AsClass$AsObject = {
   anint: number,
   thestring: string,
 }
 
-export const CamelCasedOneOfMessage$CamelcasedmessageCase = {
+export const CamelCasedOneOfMessage$AsClass$CamelcasedmessageCase = {
   CAMELCASEDMESSAGE_NOT_SET: 0,
   ANINT: 1,
   THESTRING: 2,
 }
 
-export class SnakeCasedOneOfMessage extends jspb.Message {
+export class SnakeCasedOneOfMessage$AsClass extends jspb.Message {
   hasAnint: () => boolean;
   clearAnint: () => void;
   getAnint: () => number;
@@ -114,23 +114,23 @@ export class SnakeCasedOneOfMessage extends jspb.Message {
   getThestring: () => string;
   setThestring: (value: string) => void;
 
-  getSnakeCasedMessageCase: () => typeof SnakeCasedOneOfMessage$SnakeCasedMessageCase;
+  getSnakeCasedMessageCase: () => $Values<typeof SnakeCasedOneOfMessage$AsClass$SnakeCasedMessageCase>;
   serializeBinary: () => Uint8Array;
-  toObject: (includeInstance?: boolean) => SnakeCasedOneOfMessage$AsObject;
-  static toObject: (includeInstance: boolean, msg: SnakeCasedOneOfMessage) => SnakeCasedOneOfMessage$AsObject;
+  toObject: (includeInstance?: boolean) => SnakeCasedOneOfMessage$AsClass$AsObject;
+  static toObject: (includeInstance: boolean, msg: SnakeCasedOneOfMessage$AsClass) => SnakeCasedOneOfMessage$AsClass$AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter: (message: SnakeCasedOneOfMessage, writer: jspb.BinaryWriter) => void;
-  static deserializeBinary: (bytes: Uint8Array) => SnakeCasedOneOfMessage;
-  static deserializeBinaryFromReader: (message: SnakeCasedOneOfMessage, reader: jspb.BinaryReader) => SnakeCasedOneOfMessage;
+  static serializeBinaryToWriter: (message: SnakeCasedOneOfMessage$AsClass, writer: jspb.BinaryWriter) => void;
+  static deserializeBinary: (bytes: Uint8Array) => SnakeCasedOneOfMessage$AsClass;
+  static deserializeBinaryFromReader: (message: SnakeCasedOneOfMessage$AsClass, reader: jspb.BinaryReader) => SnakeCasedOneOfMessage$AsClass;
 }
 
-export type SnakeCasedOneOfMessage$AsObject = {
+export type SnakeCasedOneOfMessage$AsClass$AsObject = {
   anint: number,
   thestring: string,
 }
 
-export const SnakeCasedOneOfMessage$SnakeCasedMessageCase = {
+export const SnakeCasedOneOfMessage$AsClass$SnakeCasedMessageCase = {
   SNAKE_CASED_MESSAGE_NOT_SET: 0,
   ANINT: 1,
   THESTRING: 2,
