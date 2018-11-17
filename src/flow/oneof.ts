@@ -3,7 +3,7 @@ import {OneofDescriptorProto, FieldDescriptorProto} from "google-protobuf/google
 import {oneOfName} from "../util";
 
 export function printOneOfDecl(oneOfDecl: OneofDescriptorProto, oneOfFields: Array<FieldDescriptorProto>, indentLevel: number, prefixName?: string) {
-  const oneOfTitle = prefixName && prefixName !== "" ? `${prefixName}$${oneOfName(oneOfDecl.getName())}` : oneOfName(oneOfDecl.getName())
+  const oneOfTitle = prefixName && prefixName !== "" ? `${prefixName}$${oneOfName(oneOfDecl.getName())}` : oneOfName(oneOfDecl.getName());
   const printer = new Printer(indentLevel);
   printer.printEmptyLn();
   printer.printLn(`export const ${oneOfTitle}Case = {`);

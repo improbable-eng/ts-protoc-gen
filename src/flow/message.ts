@@ -91,7 +91,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
           valueTypeName += `$${objectTypeName}`;
         }
         if (valueType === ENUM_TYPE) {
-          valueTypeName = `$Values<typeof ${valueTypeName}>`
+          valueTypeName = `$Values<typeof ${valueTypeName}>`;
         }
         printer.printIndentedLn(`get${withUppercase}Map: () => jspb.Map<${keyTypeName}, ${valueTypeName}>;`);
         printer.printIndentedLn(`clear${withUppercase}Map: () => void;`);
