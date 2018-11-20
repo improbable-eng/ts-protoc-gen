@@ -5,7 +5,7 @@ npm run lint
 npm test
 
 ./generate.sh
-MODIFIED_FILES=$(git diff --name-only)
+MODIFIED_FILES=$(git diff)
 if [[ -n $MODIFIED_FILES ]]; then
   echo "ERROR: Changes detected in generated code, please run './generate.sh' and check-in the changes."
   exit 1
