@@ -27,9 +27,7 @@ deploy:
   tag: "$NPM_TAG"
   on:
     branch: master
-cache:
-  directories:
-  - node_modules
+cache: false
 before_install:
 - BAZEL_VERSION=0.11.0
 - BAZEL_DEB="bazel_${BAZEL_VERSION}-linux-x86_64.deb"
