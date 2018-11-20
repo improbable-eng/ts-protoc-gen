@@ -1,8 +1,7 @@
 [ignore]
 .*/node_modules/.*[^(package)]\.json$
 
-[libs]
-
+[include]
 
 [lints]
 

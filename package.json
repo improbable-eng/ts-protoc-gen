@@ -8,9 +8,10 @@
     "clean": "rm -rf lib",
     "build": "npm run clean && tsc",
     "generate": "./generate.sh",
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "npm run test:unit && npm run test:integration && npm run test-flow:integration",
     "test:unit": "./test/mocha-run-suite.sh 'test/unit/**/*.ts'",
     "test:integration": "./test/mocha-run-suite.sh 'test/integration/**/*.ts'",
+    "test-flow:integration": "./test/flow/mocha-run-suite.sh 'test/flow/integration/**/*.js'",
     "prepublishOnly": "npm run build"
   },
   "bin": {
@@ -29,9 +30,14 @@
   "author": "Improbable",
   "license": "Apache-2.0",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "google-protobuf": "^3.6.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@types/chai": "^3.5.2",
     "@types/google-protobuf": "^3.2.7",
     "@types/lodash": "^4.14.106",
@@ -39,6 +45,7 @@
     "@types/node": "^7.0.52",
     "babel": "^6.5.2",
     "chai": "^3.5.0",
+    "flow-bin": "^0.86.0",
     "grpc-web-client": "^0.7.0",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
