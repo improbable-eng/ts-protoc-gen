@@ -71,3 +71,9 @@ describe("enum casing", () => {
     );
   });
 });
+
+describe("enum reverse lookup", () => {
+  it("should export enums with reverse lookup", () => {
+    assert.strictEqual(ExternalEnum[ExternalEnum.FIRST], "FIRST");
+  });
+});

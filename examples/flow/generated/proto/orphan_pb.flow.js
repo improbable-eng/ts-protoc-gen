@@ -85,7 +85,10 @@ export type OrphanStreamRequest$AsClass$AsObject = {
 
 export const OrphanEnum = {
   UNKNOWN: 0,
+  "0": "UNKNOWN",
   ONE: 1,
+  "1": "ONE",
   TWO: 2,
+  "2": "TWO",
 }
 

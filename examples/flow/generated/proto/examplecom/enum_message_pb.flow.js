@@ -41,8 +41,12 @@ export type EnumMessage$AsClass$AsObject = {
 
 export const EnumMessage$AsClass$InternalEnum = {
   DEFAULT: 0,
+  "0": "DEFAULT",
   FIRST: 1,
+  "1": "FIRST",
   SECOND: 2,
+  "2": "SECOND",
   THIRD: 3,
+  "3": "THIRD",
 }
 
