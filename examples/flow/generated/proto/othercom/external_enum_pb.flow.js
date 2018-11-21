@@ -4,12 +4,15 @@
 
 import * as jspb from "google-protobuf";
 
-export const ExternalEnum = {
+export const ExternalEnum = Object.freeze({
   DEFAULT: 0,
-  "0": "DEFAULT",
   FIRST: 1,
-  "1": "FIRST",
   SECOND: 2,
+})
+
+export const ExternalEnum$ReverseLookUp = Object.freeze({
+  "0": "DEFAULT",
+  "1": "FIRST",
   "2": "SECOND",
-}
+})
 

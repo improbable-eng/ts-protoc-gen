@@ -37,7 +37,7 @@ function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescr
 export function printMessage(fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto, indentLevel: number, fileDescriptor: FileDescriptorProto, prefixName?: string) {
   const classTypeName = `AsClass`;
 
-  const messageName = prefixName && prefixName !== "" ? `${prefixName}$${messageDescriptor.getName() + "$AsClass"}` : messageDescriptor.getName() + "$AsClass";
+  const messageName = prefixName && prefixName !== "" ? `${prefixName}_${messageDescriptor.getName() + "$AsClass"}` : messageDescriptor.getName() + "$AsClass";
   const messageOptions = messageDescriptor.getOptions();
   if (messageOptions !== undefined && messageOptions.getMapEntry()) {
     // this message type is the entry tuple for a map - don't output it
@@ -197,7 +197,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   toObjectType.printLn(`}`);
 
   messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
-    printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case: () => $Values<typeof ${messageName}$${oneOfName(oneOfDecl.getName())}Case>;`);
+    printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case: () => $Values<typeof ${messageName}_${oneOfName(oneOfDecl.getName())}Case>;`);
   });
 
   printer.printIndentedLn(`serializeBinary: () => Uint8Array;`);

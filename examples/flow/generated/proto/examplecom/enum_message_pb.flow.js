@@ -6,13 +6,13 @@ import * as jspb from "google-protobuf";
 import * as proto_othercom_external_enum_pb from "../../proto/othercom/external_enum_pb.flow.js";
 
 export class EnumMessage$AsClass extends jspb.Message {
-  getInternalEnum: () => $Values<typeof EnumMessage$AsClass$InternalEnum>;
-  setInternalEnum: (value: $Values<typeof EnumMessage$AsClass$InternalEnum>) => void;
+  getInternalEnum: () => $Values<typeof EnumMessage$AsClass_InternalEnum>;
+  setInternalEnum: (value: $Values<typeof EnumMessage$AsClass_InternalEnum>) => void;
 
   clearInternalEnumsList: () => void;
-  getInternalEnumsList: () => Array<$Values<typeof EnumMessage$AsClass$InternalEnum>>;
-  setInternalEnumsList: (value: Array<$Values<typeof EnumMessage$AsClass$InternalEnum>>) => void;
-  addInternalEnums: (value: $Values<typeof EnumMessage$AsClass$InternalEnum>, index?: number) => $Values<typeof EnumMessage$AsClass$InternalEnum>;
+  getInternalEnumsList: () => Array<$Values<typeof EnumMessage$AsClass_InternalEnum>>;
+  setInternalEnumsList: (value: Array<$Values<typeof EnumMessage$AsClass_InternalEnum>>) => void;
+  addInternalEnums: (value: $Values<typeof EnumMessage$AsClass_InternalEnum>, index?: number) => $Values<typeof EnumMessage$AsClass_InternalEnum>;
 
   getExternalEnum: () => $Values<typeof proto_othercom_external_enum_pb.ExternalEnum>;
   setExternalEnum: (value: $Values<typeof proto_othercom_external_enum_pb.ExternalEnum>) => void;
@@ -33,20 +33,23 @@ export class EnumMessage$AsClass extends jspb.Message {
 }
 
 export type EnumMessage$AsClass$AsObject = {
-  internalEnum: $Values<typeof EnumMessage$AsClass$InternalEnum>,
-  internalEnumsList: Array<$Values<typeof EnumMessage$AsClass$InternalEnum>>,
+  internalEnum: $Values<typeof EnumMessage$AsClass_InternalEnum>,
+  internalEnumsList: Array<$Values<typeof EnumMessage$AsClass_InternalEnum>>,
   externalEnum: $Values<typeof proto_othercom_external_enum_pb.ExternalEnum>,
   externalEnumsList: Array<$Values<typeof proto_othercom_external_enum_pb.ExternalEnum>>,
 }
 
-export const EnumMessage$AsClass$InternalEnum = {
+export const EnumMessage$AsClass_InternalEnum = Object.freeze({
   DEFAULT: 0,
-  "0": "DEFAULT",
   FIRST: 1,
-  "1": "FIRST",
   SECOND: 2,
-  "2": "SECOND",
   THIRD: 3,
+})
+
+export const EnumMessage$AsClass_InternalEnum$ReverseLookUp = Object.freeze({
+  "0": "DEFAULT",
+  "1": "FIRST",
+  "2": "SECOND",
   "3": "THIRD",
-}
+})
 

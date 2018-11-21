@@ -83,12 +83,15 @@ export type OrphanStreamRequest$AsClass$AsObject = {
   someString: string,
 }
 
-export const OrphanEnum = {
+export const OrphanEnum = Object.freeze({
   UNKNOWN: 0,
-  "0": "UNKNOWN",
   ONE: 1,
-  "1": "ONE",
   TWO: 2,
+})
+
+export const OrphanEnum$ReverseLookUp = Object.freeze({
+  "0": "UNKNOWN",
+  "1": "ONE",
   "2": "TWO",
-}
+})
 

@@ -43,7 +43,7 @@ export function withinNamespaceFromExportEntry(name: string, exportEntry: Export
 
 export function withinNamespaceFromExportEntryFlow(name: string, exportEntry: ExportMessageEntry | ExportEnumEntry) {
   if (exportEntry.pkg) {
-    return name.substring(exportEntry.pkg.length + 1).replace(".", "$AsClass$");
+    return name.substring(exportEntry.pkg.length + 1).replace(".", "$AsClass_");
   }
   return name;
 }

@@ -41,8 +41,8 @@ export class SimpleValue$AsClass extends jspb.Message {
   getBool2Value: () => boolean;
   setBool2Value: (value: boolean) => void;
 
-  getKindCase: () => $Values<typeof SimpleValue$AsClass$KindCase>;
-  getAnotherCase: () => $Values<typeof SimpleValue$AsClass$AnotherCase>;
+  getKindCase: () => $Values<typeof SimpleValue$AsClass_KindCase>;
+  getAnotherCase: () => $Values<typeof SimpleValue$AsClass_AnotherCase>;
   serializeBinary: () => Uint8Array;
   toObject: (includeInstance?: boolean) => SimpleValue$AsClass$AsObject;
   static toObject: (includeInstance: boolean, msg: SimpleValue$AsClass) => SimpleValue$AsClass$AsObject;
@@ -64,14 +64,14 @@ export type SimpleValue$AsClass$AsObject = {
   bool2Value: boolean,
 }
 
-export const SimpleValue$AsClass$KindCase = {
+export const SimpleValue$AsClass_KindCase = {
   KIND_NOT_SET: 0,
   NUMBER_VALUE: 3,
   STRING_VALUE: 6,
   BOOL_VALUE: 8,
 }
 
-export const SimpleValue$AsClass$AnotherCase = {
+export const SimpleValue$AsClass_AnotherCase = {
   ANOTHER_NOT_SET: 0,
   NUMBER2_VALUE: 4,
   STRING2_VALUE: 5,

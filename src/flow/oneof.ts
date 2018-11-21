@@ -2,8 +2,11 @@ import {Printer} from "../Printer";
 import {OneofDescriptorProto, FieldDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {oneOfName} from "../util";
 
-export function printOneOfDecl(oneOfDecl: OneofDescriptorProto, oneOfFields: Array<FieldDescriptorProto>, indentLevel: number, prefixName?: string) {
-  const oneOfTitle = prefixName && prefixName !== "" ? `${prefixName}$${oneOfName(oneOfDecl.getName())}` : oneOfName(oneOfDecl.getName());
+export function printOneOfDecl(oneOfDecl: OneofDescriptorProto, oneOfFields: Array<FieldDescriptorProto>, indentLevel: number, parentMessageName?: string) {
+  const oneOfTitle = parentMessageName && parentMessageName !== "" ?
+    `${parentMessageName}_${oneOfName(oneOfDecl.getName())}` :
+    oneOfName(oneOfDecl.getName());
+
   const printer = new Printer(indentLevel);
   printer.printEmptyLn();
   printer.printLn(`export const ${oneOfTitle}Case = {`);
