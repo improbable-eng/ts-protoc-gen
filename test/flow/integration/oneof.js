@@ -6,9 +6,11 @@ import {
   SnakeCasedOneOfMessage
 } from "../../../examples/flow/generated/proto/examplecom/oneof_message_pb";
 import {
+  CamelCasedOneOfMessage$AsClass_CamelcasedmessageCase,
+  SnakeCasedOneOfMessage$AsClass_SnakeCasedMessageCase,
   OneOfMessage$AsClass,
-  OneOfMessage$AsClass$InternalChildMessage$AsClass,
-  OneOfMessage$AsClass$GroupCase,
+  OneOfMessage$AsClass_GroupCase,
+  OneOfMessage$AsClass_InternalChildMessage$AsClass,
   CamelCasedOneOfMessage$AsClass,
   SnakeCasedOneOfMessage$AsClass
 } from "../../../examples/flow/generated/proto/examplecom/oneof_message_pb.flow";
@@ -22,7 +24,7 @@ describe("oneofs", () => {
   it("should allow getting oneof fields on an empty message", () => {
     const parentMsg: OneOfMessage$AsClass = new OneOfMessage();
     assert.strictEqual(
-      (parentMsg.getInternalChildMessage(): ?OneOfMessage$AsClass$InternalChildMessage$AsClass),
+      (parentMsg.getInternalChildMessage(): ?OneOfMessage$AsClass_InternalChildMessage$AsClass),
       undefined
     );
     assert.strictEqual(
@@ -33,23 +35,23 @@ describe("oneofs", () => {
     assert.strictEqual((parentMsg.getMyString(): string), "");
     assert.strictEqual(
       (parentMsg.getGroupCase(): $Values<
-        typeof OneOfMessage$AsClass$GroupCase
+        typeof OneOfMessage$AsClass_GroupCase
       >),
-      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass$GroupCase)
+      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass_GroupCase)
         .GROUP_NOT_SET
     );
   });
 
   it("should allow setting and getting oneof fields", () => {
     const parentMsg: OneOfMessage$AsClass = new OneOfMessage();
-    const internalChildMessage: OneOfMessage$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const internalChildMessage: OneOfMessage$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     internalChildMessage.setMyString("internal");
     parentMsg.setInternalChildMessage(internalChildMessage);
     assert.strictEqual(
       (parentMsg.getGroupCase(): $Values<
-        typeof OneOfMessage$AsClass$GroupCase
+        typeof OneOfMessage$AsClass_GroupCase
       >),
-      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass$GroupCase)
+      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass_GroupCase)
         .INTERNAL_CHILD_MESSAGE
     );
 
@@ -68,9 +70,9 @@ describe("oneofs", () => {
     parentMsg.setExternalChildMessage(externalChildMessage);
     assert.strictEqual(
       (parentMsg.getGroupCase(): $Values<
-        typeof OneOfMessage$AsClass$GroupCase
+        typeof OneOfMessage$AsClass_GroupCase
       >),
-      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass$GroupCase)
+      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass_GroupCase)
         .EXTERNAL_CHILD_MESSAGE
     );
 
@@ -85,16 +87,16 @@ describe("oneofs", () => {
     }
 
     assert.strictEqual(
-      (parentMsg.getInternalChildMessage(): ?OneOfMessage$AsClass$InternalChildMessage$AsClass),
+      (parentMsg.getInternalChildMessage(): ?OneOfMessage$AsClass_InternalChildMessage$AsClass),
       undefined
     );
 
     parentMsg.setExternalChildMessage(undefined);
     assert.strictEqual(
       (parentMsg.getGroupCase(): $Values<
-        typeof OneOfMessage$AsClass$GroupCase
+        typeof OneOfMessage$AsClass_GroupCase
       >),
-      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass$GroupCase)
+      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass_GroupCase)
         .GROUP_NOT_SET
     );
     assert.strictEqual(
@@ -102,21 +104,21 @@ describe("oneofs", () => {
       undefined
     );
     assert.strictEqual(
-      (parentMsg.getInternalChildMessage(): ?OneOfMessage$AsClass$InternalChildMessage$AsClass),
+      (parentMsg.getInternalChildMessage(): ?OneOfMessage$AsClass_InternalChildMessage$AsClass),
       undefined
     );
   });
 
   it("should only show one of the fields in toObject", () => {
     const parentMsg: OneOfMessage$AsClass = new OneOfMessage();
-    const internalChildMessage = new InternalChildMessage();
+    const internalChildMessage: OneOfMessage$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     internalChildMessage.setMyString("internal");
     parentMsg.setInternalChildMessage(internalChildMessage);
     assert.strictEqual(
       (parentMsg.getGroupCase(): $Values<
-        typeof OneOfMessage$AsClass$GroupCase
+        typeof OneOfMessage$AsClass_GroupCase
       >),
-      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass$GroupCase)
+      (OneOfMessage.GroupCase: typeof OneOfMessage$AsClass_GroupCase)
         .INTERNAL_CHILD_MESSAGE
     );
     const icm = parentMsg.getInternalChildMessage();
@@ -173,11 +175,11 @@ describe("oneofs", () => {
 
   it("should handle casing inconsistencies present in protoc-gen's javascript implementation (see #63)", () => {
     assert.strictEqual(
-      typeof CamelCasedOneOfMessage.CamelcasedmessageCase,
+      typeof CamelCasedOneOfMessage$AsClass_CamelcasedmessageCase,
       "object"
     );
     assert.strictEqual(
-      typeof SnakeCasedOneOfMessage.SnakeCasedMessageCase,
+      typeof SnakeCasedOneOfMessage$AsClass_SnakeCasedMessageCase,
       "object"
     );
   });

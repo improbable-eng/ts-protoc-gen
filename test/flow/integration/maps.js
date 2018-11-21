@@ -2,9 +2,9 @@
 import { assert } from "chai";
 import { MapMessage } from "../../../examples/flow/generated/proto/examplecom/map_message_pb";
 import {
-  type MapMessage$AsClass,
-  type MapMessage$AsClass$InternalChildMessage$AsClass,
-  MapMessage$AsClass$InternalEnum
+  MapMessage$AsClass,
+  MapMessage$AsClass_InternalEnum,
+  MapMessage$AsClass_InternalChildMessage$AsClass
 } from "../../../examples/flow/generated/proto/examplecom/map_message_pb.flow";
 
 import { ExternalEnum } from "../../../examples/flow/generated/proto/othercom/external_enum_pb";
@@ -13,7 +13,7 @@ import { ExternalEnum as GeneratedExternalEnum } from "../../../examples/flow/ge
 import { ExternalChildMessage } from "../../../examples/flow/generated/proto/othercom/external_child_message_pb";
 import { type ExternalChildMessage$AsClass } from "../../../examples/flow/generated/proto/othercom/external_child_message_pb.flow";
 
-const InternalEnum = MapMessage.InternalEnum;
+const InternalEnum = MapMessage$AsClass_InternalEnum;
 const InternalChildMessage = MapMessage.InternalChildMessage;
 import { OrphanMapMessage } from "../../../examples/flow/generated/proto/orphan_pb";
 import { type OrphanMapMessage$AsClass } from "../../../examples/flow/generated/proto/orphan_pb.flow";
@@ -23,10 +23,10 @@ describe("maps", () => {
     describe("internal message maps", () => {
       it("should allow setting and getting internal map fields", () => {
         const parentMsg: MapMessage$AsClass = new MapMessage();
-        const childMsgOne: MapMessage$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+        const childMsgOne: MapMessage$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
         childMsgOne.setMyString("one");
 
-        const childMsgTwo: MapMessage$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+        const childMsgTwo: MapMessage$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
         childMsgTwo.setMyString("two");
 
         const myMap = parentMsg.getInternalChildrenMap();
@@ -155,11 +155,11 @@ describe("maps", () => {
         myMap
           .set(
             123,
-            (InternalEnum: typeof MapMessage$AsClass$InternalEnum).FIRST
+            (InternalEnum: typeof MapMessage$AsClass_InternalEnum).FIRST
           )
           .set(
             456,
-            (InternalEnum: typeof MapMessage$AsClass$InternalEnum).SECOND
+            (InternalEnum: typeof MapMessage$AsClass_InternalEnum).SECOND
           );
 
         assert.strictEqual(
@@ -178,17 +178,17 @@ describe("maps", () => {
           .next().value;
         assert.strictEqual((firstEntry[0]: number), 123);
         assert.strictEqual(
-          (firstEntry[1]: typeof MapMessage$AsClass$InternalEnum),
-          (InternalEnum: typeof MapMessage$AsClass$InternalEnum).FIRST
+          (firstEntry[1]: typeof MapMessage$AsClass_InternalEnum),
+          (InternalEnum: typeof MapMessage$AsClass_InternalEnum).FIRST
         );
 
         assert.deepEqual(
           (parentMsg.getInternalEnumsMap().toObject(false): Array<
-            [number, InternalEnum]
+            [number, typeof InternalEnum]
           >),
           [
-            [123, (InternalEnum: typeof MapMessage$AsClass$InternalEnum).FIRST],
-            [456, (InternalEnum: typeof MapMessage$AsClass$InternalEnum).SECOND]
+            [123, (InternalEnum: typeof MapMessage$AsClass_InternalEnum).FIRST],
+            [456, (InternalEnum: typeof MapMessage$AsClass_InternalEnum).SECOND]
           ]
         );
       });
@@ -308,9 +308,9 @@ describe("maps", () => {
     it("should have types", () => {
       const parentMsg: MapMessage$AsClass = new MapMessage();
 
-      const childMsgOne: MapMessage$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+      const childMsgOne: MapMessage$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
       childMsgOne.setMyString("one");
-      const childMsgTwo: MapMessage$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+      const childMsgTwo: MapMessage$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
       childMsgTwo.setMyString("two");
       const internalChildrenMap = parentMsg.getInternalChildrenMap();
       internalChildrenMap.set("first", childMsgOne).set("second", childMsgTwo);
@@ -341,7 +341,7 @@ describe("maps", () => {
           ]
         >,
         internalEnumsMap: Array<
-          [number, $Values<typeof MapMessage$AsClass$InternalEnum>]
+          [number, $Values<typeof MapMessage$AsClass_InternalEnum>]
         >,
         externalEnumsMap: Array<
           [number, $Values<typeof GeneratedExternalEnum>]
@@ -362,8 +362,8 @@ describe("maps", () => {
           ]
         >),
         internalEnumsMap: [
-          [123, (InternalEnum: typeof MapMessage$AsClass$InternalEnum).FIRST],
-          [456, (InternalEnum: typeof MapMessage$AsClass$InternalEnum).SECOND]
+          [123, (InternalEnum: typeof MapMessage$AsClass_InternalEnum).FIRST],
+          [456, (InternalEnum: typeof MapMessage$AsClass_InternalEnum).SECOND]
         ],
         internalChildrenMap: [
           [

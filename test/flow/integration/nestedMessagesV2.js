@@ -3,8 +3,8 @@ import { assert } from "chai";
 import { ParentMessageV2 } from "../../../examples/flow/generated/proto/examplecom/parent_message_v2_pb";
 import {
   ParentMessageV2$AsClass,
-  ParentMessageV2$AsClass$InternalChildMessage$AsClass,
-  type ParentMessageV2$AsClass$InternalChildMessage$AsClass$AsObject
+  ParentMessageV2$AsClass_InternalChildMessage$AsClass,
+  type ParentMessageV2$AsClass_InternalChildMessage$AsClass$AsObject
 } from "../../../examples/flow/generated/proto/examplecom/parent_message_v2_pb.flow";
 
 const InternalChildMessage = ParentMessageV2.InternalChildMessage;
@@ -24,7 +24,7 @@ describe("proto2 - internal nested messages", () => {
       );
     }
     assert.deepEqual(
-      (parentMsg.getInternalChildrenList(): Array<ParentMessageV2$AsClass$InternalChildMessage$AsClass>),
+      (parentMsg.getInternalChildrenList(): Array<ParentMessageV2$AsClass_InternalChildMessage$AsClass>),
       []
     );
   });
@@ -32,7 +32,7 @@ describe("proto2 - internal nested messages", () => {
   it("should allow setting and getting required internal message fields", () => {
     const parentMsg: ParentMessageV2$AsClass = new ParentMessageV2();
     assert.strictEqual((parentMsg.hasInternalChildMessage(): boolean), false);
-    const childMsg: ParentMessageV2$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const childMsg: ParentMessageV2$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     childMsg.setMyString("hello world");
     parentMsg.setInternalChildMessage(childMsg);
     const icm = parentMsg.getInternalChildMessage();
@@ -69,7 +69,7 @@ describe("proto2 - internal nested messages", () => {
       (parentMsg.hasOptInternalChildMessage(): boolean),
       false
     );
-    const childMsg: ParentMessageV2$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const childMsg: ParentMessageV2$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     childMsg.setMyString("hello world");
     parentMsg.setOptInternalChildMessage(childMsg);
 
@@ -86,7 +86,7 @@ describe("proto2 - internal nested messages", () => {
     assert.strictEqual((parentMsg.hasOptInternalChildMessage(): boolean), true);
     parentMsg.setOptInternalChildMessage(undefined);
     assert.strictEqual(
-      (parentMsg.getOptInternalChildMessage(): ?ParentMessageV2$AsClass$InternalChildMessage$AsClass),
+      (parentMsg.getOptInternalChildMessage(): ?ParentMessageV2$AsClass_InternalChildMessage$AsClass),
       undefined
     );
     assert.strictEqual(
@@ -105,26 +105,26 @@ describe("proto2 - internal nested messages", () => {
 
   it("should allow setting and getting repeated internal message fields", () => {
     const parentMsg: ParentMessageV2$AsClass = new ParentMessageV2();
-    const childMsgOne: ParentMessageV2$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const childMsgOne: ParentMessageV2$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     childMsgOne.setMyString("one");
 
-    const childMsgTwo: ParentMessageV2$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const childMsgTwo: ParentMessageV2$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     childMsgTwo.setMyString("two");
 
     parentMsg.setInternalChildrenList([childMsgOne, childMsgTwo]);
 
     assert.deepEqual(
-      (parentMsg.getInternalChildrenList(): Array<ParentMessageV2$AsClass$InternalChildMessage$AsClass>),
+      (parentMsg.getInternalChildrenList(): Array<ParentMessageV2$AsClass_InternalChildMessage$AsClass>),
       [childMsgOne, childMsgTwo]
     );
   });
 
   it("should allow adding and getting repeated internal message fields", () => {
     const parentMsg: ParentMessageV2$AsClass = new ParentMessageV2();
-    const childMsgOne: ParentMessageV2$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const childMsgOne: ParentMessageV2$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     childMsgOne.setMyString("one");
 
-    const childMsgTwo: ParentMessageV2$AsClass$InternalChildMessage$AsClass = new InternalChildMessage();
+    const childMsgTwo: ParentMessageV2$AsClass_InternalChildMessage$AsClass = new InternalChildMessage();
     childMsgTwo.setMyString("two");
 
     const addedOne = parentMsg.addInternalChildren(childMsgOne);
@@ -133,7 +133,7 @@ describe("proto2 - internal nested messages", () => {
     assert.strictEqual(childMsgTwo, addedTwo);
 
     assert.deepEqual(
-      (parentMsg.getInternalChildrenList(): Array<ParentMessageV2$AsClass$InternalChildMessage$AsClass>),
+      (parentMsg.getInternalChildrenList(): Array<ParentMessageV2$AsClass_InternalChildMessage$AsClass>),
       [childMsgOne, childMsgTwo]
     );
   });
@@ -257,7 +257,7 @@ describe("proto2 - toObject", () => {
     const parentMsg: ParentMessageV2$AsClass = new ParentMessageV2();
     const asObjectUnset = parentMsg.toObject();
     assert.deepEqual(
-      (asObjectUnset.internalChildMessage: ParentMessageV2$AsClass$InternalChildMessage$AsClass$AsObject),
+      (asObjectUnset.internalChildMessage: ParentMessageV2$AsClass_InternalChildMessage$AsClass$AsObject),
       { myString: undefined }
     );
     const childMsg = new InternalChildMessage();

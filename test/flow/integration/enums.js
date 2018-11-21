@@ -5,15 +5,18 @@ import { describe, it } from "mocha";
 // EnumMessage
 import { EnumMessage } from "../../../examples/flow/generated/proto/examplecom/enum_message_pb";
 import {
-  EnumMessage$AsClass$InternalEnum,
-  type EnumMessage$AsClass
+  EnumMessage$AsClass,
+  EnumMessage$AsClass_InternalEnum
 } from "../../../examples/flow/generated/proto/examplecom/enum_message_pb.flow";
 
 // InternalEnum
-const InternalEnum = EnumMessage$AsClass$InternalEnum;
+const InternalEnum = EnumMessage$AsClass_InternalEnum;
 
 // External Enum
-import { ExternalEnum } from "../../../examples/flow/generated/proto/othercom/external_enum_pb.flow";
+import {
+  ExternalEnum,
+  ExternalEnum$ReverseLookUp
+} from "../../../examples/flow/generated/proto/othercom/external_enum_pb.flow";
 
 describe("internal enums", () => {
   it("should allow getting internal enum fields on an empty enum", () => {
@@ -74,6 +77,10 @@ describe("enum casing", () => {
 
 describe("enum reverse lookup", () => {
   it("should export enums with reverse lookup", () => {
-    assert.strictEqual(ExternalEnum[ExternalEnum.FIRST], "FIRST");
+    assert.strictEqual(ExternalEnum$ReverseLookUp[ExternalEnum.FIRST], "FIRST");
+  });
+
+  it("should correctly forward lookup", () => {
+    assert.strictEqual(ExternalEnum[ExternalEnum$ReverseLookUp[0]], 0);
   });
 });
