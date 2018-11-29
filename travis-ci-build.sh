@@ -12,3 +12,4 @@ if [[ -n $MODIFIED_FILES ]]; then
 fi
 
 bazel build //...:all
+bazel test //...:all

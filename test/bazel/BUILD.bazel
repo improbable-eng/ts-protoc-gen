@@ -1,0 +1,71 @@
+load("@build_bazel_rules_typescript//:defs.bzl", "ts_library", "ts_web_test_suite")
+
+# Copy the google-protobuf library and convert it to a AMD module so it can be loaded in the
+# RequireJS test environment.
+genrule(
+    name = "google_protobuf_requirejs",
+    srcs = [
+        "@npm//node_modules/google-protobuf:google-protobuf.js",
+    ],
+    outs = [
+        "google-protobuf.js",
+    ],
+    cmd = """echo "define('google-protobuf', function(require, exports, module) {" > $@ \
+             && cat $< >> $@ \
+             && echo '});' >> $@""",
+)
+
+ts_library(
+    name = "proto_with_deps_test",
+    testonly = 1,
+    srcs = ["proto_with_deps_test.spec.ts"],
+    tsconfig = ":tsconfig.json",
+    deps = [
+        "//test/bazel/proto/common:delivery_person_ts_proto",
+        "@npm//@types/jasmine",
+        # Don't put pizza_ts_proto here, we want to test it is included transitively
+    ],
+)
+
+ts_web_test_suite(
+    name = "proto_with_deps_test_suite",
+    browsers = [
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
+    ],
+    deps = [
+        ":google_protobuf_requirejs",
+        ":proto_with_deps_test",
+    ],
+)
+
+ts_library(
+    name = "pizza_service_proto_test",
+    testonly = 1,
+    srcs = ["pizza_service_proto_test.spec.ts"],
+    tsconfig = ":tsconfig.json",
+    deps = [
+        "//test/bazel/proto:pizza_service_ts_proto",
+        "//test/bazel/proto/common:pizza_ts_proto",
+        "@npm//@types/jasmine",
+        # Don't put delivery_person_ts_proto here, we want to test it is included transitively
+    ],
+)
+
+ts_web_test_suite(
+    name = "pizza_service_proto_test_suite",
+    srcs = [
+        "require.config.js",
+    ],
+    browsers = [
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
+    ],
+    # Files are served under /base/<WORKSPACE_NAME>/<path>
+    static_files = [
+        "@npm//node_modules/grpc-web-client:dist/grpc-web-client.umd.js",
+        "@npm//node_modules/browser-headers:dist/browser-headers.umd.js",
+    ],
+    deps = [
+        ":google_protobuf_requirejs",
+        ":pizza_service_proto_test",
+    ],
+)

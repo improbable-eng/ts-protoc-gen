@@ -1,13 +1,15 @@
 package(default_visibility = ["//visibility:public"])
 
-
-exports_files(["tsconfig.json"])
+exports_files([
+    "tsconfig.json",
+    "node_modules/google-protobuf/google-protobuf.js",
+])
 
 filegroup(
-  name = "generate_ts",
-  srcs = [
-    "//proto:generate",
-    "//proto/examplecom:generate",
-    "//proto/othercom:generate",
-  ],
+    name = "generate_ts",
+    srcs = [
+        "//proto:generate",
+        "//proto/examplecom:generate",
+        "//proto/othercom:generate",
+    ],
 )
