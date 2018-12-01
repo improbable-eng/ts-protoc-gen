@@ -32,76 +32,106 @@ npm install ts-protoc-gen@next
 ### bazel
 <details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build/>bazel">bazel</a> build environment</summary><p>
 
-Include the following in your `WORKSPACE`:   
+Include the following in your `WORKSPACE` - _Most of this setup is for
+[rules_typescript](https://github.com/bazelbuild/rules_typescript), see their instructions for more
+info:_
 
 ```python
-git_repository(
-    name = "io_bazel_rules_go",
-    commit = "6bee898391a42971289a7989c0f459ab5a4a84dd",  # master as of May 10th, 2018
-    remote = "https://github.com/bazelbuild/rules_go.git",
-    )
-load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-go_rules_dependencies()
-go_register_toolchains()
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
-  name = "io_bazel_rules_webtesting",
-  strip_prefix = "rules_webtesting-master",
-  urls = [
-    "https://github.com/bazelbuild/rules_webtesting/archive/master.tar.gz",
-  ],
+    name = "build_bazel_rules_typescript",
+    sha256 = "e4f51c408ed3278a3a1dd227564a69f293ae2ac4ae1564b3a6d2637ae9447b47",
+    strip_prefix = "rules_typescript-0.21.0",
+    urls = ["https://github.com/bazelbuild/rules_typescript/archive/0.21.0.zip"],
 )
+
+http_archive(
+    name = "ts_protoc_gen",
+    # NOTE: Update these values to the latest version
+    sha256 = "355bd8e7a3d4889a3fb222366ac3427229acc968455670378f8ffe1b4bfc5a95",
+    strip_prefix = "ts-protoc-gen-14d69f6203c291f15017a8c0abbb1d4b52b00b64",
+    urls = ["https://github.com/improbable-eng/ts-protoc-gen/archive/14d69f6203c291f15017a8c0abbb1d4b52b00b64.zip"],
+)
+
+load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dependencies")
+
+rules_typescript_dependencies()
+
+load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
+
+ts_setup_workspace()
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
+
+node_repositories()
+
+yarn_install(
+    name = "npm",
+    package_json = "//:package.json",
+    yarn_lock = "//:yarn.lock",
+)
+
+load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains()
+
 load("@io_bazel_rules_webtesting//web:repositories.bzl", "browser_repositories", "web_test_repositories")
+
 web_test_repositories()
 
-git_repository(
-  name = "build_bazel_rules_nodejs",
-  remote = "https://github.com/bazelbuild/rules_nodejs.git",
-  commit = "d334fd8e2274fb939cf447106dced97472534e80",
-)
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
-node_repositories(package_json = ["//:package.json"])
-
-git_repository(
-    name = "ts_protoc_gen",
-    remote = "https://github.com/improbable-eng/ts-protoc-gen.git",
-    commit = "05c52b843edf9420be3a9549d01352dfeff76a5e",
+browser_repositories(
+    chromium = True,
 )
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
+
 typescript_proto_dependencies()
+```
 
-git_repository(
-  name = "build_bazel_rules_typescript",
-  remote = "https://github.com/bazelbuild/rules_typescript.git",
-  commit = "3488d4fb89c6a02d79875d217d1029182fbcd797",
-)
-load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
-ts_setup_workspace()
-```   
+Also make sure you have the following in your `package.json`:
 
-Now in your `BUILD.bazel`:
+```json
+{
+  "dependencies": {
+    "google-protobuf": "^3.6.1",
+    "grpc-web-client": "0.7.0",
+    "browser-headers": "^0.4.1"
+  },
+  "devDependencies": {
+    "@bazel/karma": "^0.21.0",
+    "@bazel/typescript": "^0.21.0",
+    "@types/google-protobuf": "^3.2.7",
+    "typescript": "^3.1.1"
+  }
+}
+```
+
+> Run `yarn install` to generate the `yarn.lock` file.
+
+Finally, in your `BUILD.bazel`:
 
 ```python
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
 
-filegroup(
-  name = "proto_files",
-  srcs = glob(["*.proto"]),
-)
-
 proto_library(
-  name = "proto",
+  name = "test_proto",
   srcs = [
-    ":proto_files",
+    "test.proto",
   ],
 )
 
 typescript_proto_library(
-  name = "generate",
-  proto = ":proto",
+  name = "test_ts_proto",
+  proto = ":test_proto",
 )
 ```
+
+You can use the `test_ts_proto` as a `dep` in other `ts_library` targets. However, you will need to
+include `google-protobuf`, `grpc-web-client`, and `browser-headers` at runtime yourself. See 
+`//test/bazel:pizza_service_proto_test_suite` for an example.
 
 </p></details>
 
