@@ -28,8 +28,8 @@ deploy:
   on:
     branch: master
 cache:
-  directories:	
-    - node_modules
+  directories:
+  - node_modules
 before_install:
 - BAZEL_VERSION=0.11.0
 - BAZEL_DEB="bazel_${BAZEL_VERSION}-linux-x86_64.deb"
