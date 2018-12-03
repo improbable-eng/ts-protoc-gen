@@ -1,6 +1,7 @@
-// used for flow type stripping and
+// used for flow type stripping
 module.exports = function(api) {
-  api.cache(false);
+  // https://babeljs.io/docs/en/config-files#apicache
+  api.cache.forever()
   return {
     presets: ["@babel/preset-env", "@babel/preset-flow"]
   };
