@@ -236,6 +236,8 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     .forEach(service => {
       printServiceStubTypes(printer, service);
       printer.printEmptyLn();
+      printPromiseServiceStubTypes(printer, service);
+      printer.printEmptyLn();
     });
 
   return printer.getOutput();
@@ -290,6 +292,8 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
       // Add a client stub that talks with the grpc-web-client library
       printServiceStub(printer, service);
 
+      printServicePromisesStub(printer, service);
+
       printer.printEmptyLn();
     });
 
@@ -319,6 +323,23 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
     printer.printEmptyLn();
   });
   printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
+}
+
+function printServicePromisesStub(methodPrinter: Printer, service: RPCDescriptor) {
+  const printer = new CodePrinter(0, methodPrinter);
+
+  printer.printLn(`function ${service.name}PromisesClient(serviceHost, options) {`)
+    .indent().printLn(`this.client = new ${service.name}Client(serviceHost, options);`)
+    .dedent().printLn(`}`)
+    .printEmptyLn();
+
+  service.methods.forEach((method: RPCMethodDescriptor) => {
+    if (!method.requestStream && !method.responseStream) {
+      printUnaryPromiseStubMethod(printer, method);
+    }
+    printer.printEmptyLn();
+  });
+  printer.printLn(`exports.${service.name}PromisesClient = ${service.name}PromisesClient;`);
 }
 
 function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
@@ -352,6 +373,21 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
                  .printLn(`client.close();`)
       .dedent().printLn(`}`)
     .dedent().printLn(`};`)
+  .dedent().printLn(`};`);
+}
+
+function printUnaryPromiseStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer.printLn(`${method.serviceName}PromisesClient.prototype.${method.nameAsCamelCase} = function ${method.functionName}(requestMessage) {`)
+    .indent().printLn(`var client = this.client;`)
+             .printLn(`return new Promise(function (resolve, reject) {`)
+      .indent().printLn(`client.${method.functionName}(requestMessage, function(error, responseMessage) {`)
+        .indent().printLn(`if (error !== null) {`)
+          .indent().printLn(`reject(error);`)
+        .dedent().printLn(`} else {`)
+          .indent().printLn(`resolve(responseMessage);`)
+        .dedent().printLn(`}`)
+      .dedent().printLn(`});`)
+    .dedent().printLn(`});`)
   .dedent().printLn(`};`);
 }
 
@@ -489,6 +525,23 @@ function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDes
   .dedent().printLn(`};`);
 }
 
+function printPromiseServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
+  const printer = new CodePrinter(0, methodPrinter);
+
+  printer.printLn(`export class ${service.name}PromisesClient {`)
+    .indent().printLn(`readonly serviceHost: string;`)
+    .printEmptyLn()
+    .printLn(`constructor(serviceHost: string, options?: grpc.RpcOptions);`);
+
+  service.methods.forEach((method: RPCMethodDescriptor) => {
+    if (!method.requestStream && !method.responseStream) {
+      printUnaryPromiseStubMethodTypes(printer, method);
+    }
+  });
+
+  printer.dedent().printLn("}");
+}
+
 function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
   const printer = new CodePrinter(0, methodPrinter);
 
@@ -510,6 +563,12 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
     }
   });
   printer.dedent().printLn("}");
+}
+
+function printUnaryPromiseStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+  printer.printLn(`${method.nameAsCamelCase}(`)
+    .indent().printLn(`requestMessage: ${method.requestType},`)
+    .dedent().printLn(`): Promise<${method.responseType}>;`);
 }
 
 function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {

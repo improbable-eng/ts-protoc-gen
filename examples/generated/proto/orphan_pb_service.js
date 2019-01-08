@@ -106,4 +106,23 @@ OrphanServiceClient.prototype.doStream = function doStream(requestMessage, metad
 };
 
 exports.OrphanServiceClient = OrphanServiceClient;
+function OrphanServicePromisesClient(serviceHost, options) {
+  this.client = new OrphanServiceClient(serviceHost, options);
+}
+
+OrphanServicePromisesClient.prototype.doUnary = function doUnary(requestMessage) {
+  var client = this.client;
+  return new Promise(function (resolve, reject) {
+    client.doUnary(requestMessage, function(error, responseMessage) {
+      if (error !== null) {
+        reject(error);
+      } else {
+        resolve(responseMessage);
+      }
+    });
+  });
+};
+
+
+exports.OrphanServicePromisesClient = OrphanServicePromisesClient;
 

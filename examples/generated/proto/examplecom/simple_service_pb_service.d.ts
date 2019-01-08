@@ -115,3 +115,15 @@ export class SimpleServiceClient {
   ): UnaryResponse;
 }
 
+export class SimpleServicePromisesClient {
+  readonly serviceHost: string;
+
+  constructor(serviceHost: string, options?: grpc.RpcOptions);
+  doUnary(
+    requestMessage: proto_examplecom_simple_service_pb.UnaryRequest,
+  ): Promise<proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  delete(
+    requestMessage: proto_examplecom_simple_service_pb.UnaryRequest,
+  ): Promise<proto_examplecom_simple_service_pb.UnaryResponse>;
+}
+
