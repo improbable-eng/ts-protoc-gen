@@ -32,6 +32,7 @@
   "devDependencies": {
     "@bazel/karma": "0.21.0",
     "@bazel/typescript": "0.21.0",
+    "@improbable-eng/grpc-web": "^0.8.0",
     "@types/chai": "^3.5.2",
     "@types/google-protobuf": "^3.2.7",
     "@types/jasmine": "^2.8.9",
@@ -42,7 +43,6 @@
     "browser-headers": "^0.4.1",
     "chai": "^3.5.0",
     "google-protobuf": "^3.6.1",
-    "grpc-web-client": "^0.7.0",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
     "mocha": "^5.2.0",

@@ -1,5 +1,5 @@
 import { Message } from "google-protobuf";
-import { grpc } from "grpc-web-client";
+import { grpc } from "@improbable-eng/grpc-web";
 import * as _ from "lodash";
 
 function frameResponse(request: Message): Uint8Array {

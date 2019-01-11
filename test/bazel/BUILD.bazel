@@ -61,7 +61,7 @@ ts_web_test_suite(
     ],
     # Files are served under /base/<WORKSPACE_NAME>/<path>
     static_files = [
-        "@npm//node_modules/grpc-web-client:dist/grpc-web-client.umd.js",
+        "@npm//node_modules/@improbable-eng/grpc-web:dist/grpc-web-client.umd.js",
         "@npm//node_modules/browser-headers:dist/browser-headers.umd.js",
     ],
     deps = [

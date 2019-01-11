@@ -4,7 +4,7 @@
 var proto_examplecom_simple_service_pb = require("../../proto/examplecom/simple_service_pb");
 var proto_othercom_external_child_message_pb = require("../../proto/othercom/external_child_message_pb");
 var google_protobuf_empty_pb = require("google-protobuf/google/protobuf/empty_pb");
-var grpc = require("grpc-web-client").grpc;
+var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var SimpleService = (function () {
   function SimpleService() {}

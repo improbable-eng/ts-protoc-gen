@@ -2,7 +2,7 @@
 // file: proto/orphan.proto
 
 var proto_orphan_pb = require("../proto/orphan_pb");
-var grpc = require("grpc-web-client").grpc;
+var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var OrphanService = (function () {
   function OrphanService() {}

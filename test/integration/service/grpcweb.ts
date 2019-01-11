@@ -1,7 +1,7 @@
 import { resolve } from "path";
 import { readFileSync, existsSync } from "fs";
 import { assert } from "chai";
-import { grpc } from "grpc-web-client";
+import { grpc } from "@improbable-eng/grpc-web";
 import { createContext, runInContext } from "vm";
 
 import { frameRequest, StubTransportBuilder } from "../../helpers/fakeGrpcTransport";

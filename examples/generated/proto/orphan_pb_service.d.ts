@@ -2,7 +2,7 @@
 // file: proto/orphan.proto
 
 import * as proto_orphan_pb from "../proto/orphan_pb";
-import {grpc} from "grpc-web-client";
+import {grpc} from "@improbable-eng/grpc-web";
 
 type OrphanServiceDoUnary = {
   readonly methodName: string;
