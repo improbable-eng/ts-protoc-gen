@@ -1,4 +1,7 @@
-## 0.8.1-pre
+## 0.9.0
+
+### Changes
+* [#147](https://github.com/improbable-eng/ts-protoc-gen/pull/147) Use `@improbable-eng/grpc-web` package instead of the soon to be deprecated `grpc-web-client` package. ([@johanbrandhorst](https://github.com/johanbrandhorst))
 
 ## 0.8.0
 
