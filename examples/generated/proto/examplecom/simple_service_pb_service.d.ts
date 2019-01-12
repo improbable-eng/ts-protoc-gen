@@ -4,7 +4,7 @@
 import * as proto_examplecom_simple_service_pb from "../../proto/examplecom/simple_service_pb";
 import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
-import {grpc} from "grpc-web-client";
+import {grpc} from "@improbable-eng/grpc-web";
 
 type SimpleServiceDoUnary = {
   readonly methodName: string;

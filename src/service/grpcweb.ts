@@ -171,7 +171,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     .forEach(importDescriptor => {
       printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
     });
-  printer.printLn(`import {grpc} from "grpc-web-client";`);
+  printer.printLn(`import {grpc} from "@improbable-eng/grpc-web";`);
   printer.printEmptyLn();
 
   // Services.
@@ -231,7 +231,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`}`);
   printer.printEmptyLn();
 
-  // Add a client stub that talks with the grpc-web-client library
+  // Add a client stub that talks with the @improbable-eng/grpc-web library
   serviceDescriptor.services
     .forEach(service => {
       printServiceStubTypes(printer, service);
@@ -259,7 +259,7 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
     .forEach(importDescriptor => {
       printer.printLn(`var ${importDescriptor.namespace} = require("${importDescriptor.path}");`);
     });
-  printer.printLn(`var grpc = require("grpc-web-client").grpc;`);
+  printer.printLn(`var grpc = require("@improbable-eng/grpc-web").grpc;`);
   printer.printEmptyLn();
 
   // Services.
@@ -287,7 +287,7 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
       printer.printLn(`exports.${service.name} = ${service.name};`);
       printer.printEmptyLn();
 
-      // Add a client stub that talks with the grpc-web-client library
+      // Add a client stub that talks with the @improbable-eng/grpc-web library
       printServiceStub(printer, service);
 
       printer.printEmptyLn();

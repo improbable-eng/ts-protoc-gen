@@ -27,6 +27,13 @@
     source-map-support "0.5.9"
     tsutils "2.27.2"
 
+"@improbable-eng/grpc-web@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@improbable-eng/grpc-web/-/grpc-web-0.8.0.tgz#c7a9a23560c6667f75cf0e69d5a672aa026683d4"
+  integrity sha512-0K9owV6BGGGVNkGXifsnMAE0Xoy675qqMdr8id4FOILbwxLk9HsJtZKz/zxfRXev1YY9JcAHm4vpZmbr6O+lyw==
+  dependencies:
+    browser-headers "^0.4.0"
+
 "@types/chai@^3.5.2":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.5.2.tgz#c11cd2817d3a401b7ba0f5a420f35c56139b1c1e"
@@ -1285,12 +1292,6 @@ graceful-fs@^4.1.0, graceful-fs@^4.1.11, graceful-fs@^4.1.2:
 growl@1.10.5:
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
-
-grpc-web-client@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/grpc-web-client/-/grpc-web-client-0.7.0.tgz#db19d331ad1fec49ed56744031340ee6af8529b9"
-  dependencies:
-    browser-headers "^0.4.0"
 
 har-schema@^2.0.0:
   version "2.0.0"
