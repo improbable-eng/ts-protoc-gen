@@ -32,13 +32,11 @@ else
     exit 1
 fi
 
-wget ${PROTOC_URL} --output-document="protoc-${PROTOC_VERSION}.zip"
-unzip "protoc-${PROTOC_VERSION}.zip" -d protoc
+wget ${PROTOC_URL} --output-document="protoc-${PROTOC_VERSION}.zip" --quiet
+unzip -q -d protoc "protoc-${PROTOC_VERSION}.zip"
 rm "protoc-${PROTOC_VERSION}.zip"
 
 PROTOC=./protoc/bin/protoc
-
-echo "Generating proto definitions..."
 
 if [ -d "$EXAMPLES_GENERATED_DIR" ]
 then
@@ -46,8 +44,9 @@ then
 fi
 mkdir -p "$EXAMPLES_GENERATED_DIR"
 
-PROTO_SOURCES=$(find -E ./proto -regex ".*\.(proto)")
+PROTO_SOURCES=$(npx glob-cli2 './proto/**/*.proto')
 
+echo "Generating proto definitions..."
 $PROTOC \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_DIR \
