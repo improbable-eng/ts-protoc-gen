@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package issue_150;
+
+import "proto/issues/150/position_info.proto";
+
+message ReportDto {
+	PositionInfoDto positionInfoDto = 2;
+	int32 poiId = 3;
+	ReportType reportType = 4;
+	enum ReportType {
+		Unknown = 0;
+		Accident = 1;
+
+	}
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package issue_150;
+
+message PositionPointDto {
+	oneof latitudeValue {
+		double latitude = 1;
+	}
+	oneof longitudeValue {
+		double longitude = 2;
+	}
+}

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 # Generate typescript definitions and service definitions from proto files
 
 set -e
@@ -46,13 +46,13 @@ then
 fi
 mkdir -p "$EXAMPLES_GENERATED_DIR"
 
+PROTO_SOURCES=$(find -E ./proto -regex ".*\.(proto)")
+
 $PROTOC \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_DIR \
   --ts_out=service=true:$EXAMPLES_GENERATED_DIR \
-  ./proto/othercom/*.proto \
-  ./proto/examplecom/*.proto \
-  ./proto/*.proto
+  ${PROTO_SOURCES}
 
 # Cleanup downloaded proto directory
 rm -r protoc

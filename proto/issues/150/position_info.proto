@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package issue_150;
+
+import "proto/issues/150/position_point.proto";
+
+message PositionInfoDto {
+	PositionPointDto positionPointDto = 1;
+	oneof speedValue {
+		double speed = 2; // Speed at which the vehicle is moving
+	}
+	oneof headingValue {
+		double heading = 3; // The direction in which the vehicel is moving
+	}
+	oneof locationAccuracyValue {
+		double locationAccuracy = 4; // Accuracy of the GPS location
+	}
+}
