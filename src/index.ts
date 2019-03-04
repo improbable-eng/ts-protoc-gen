@@ -47,12 +47,12 @@ withAllStdIn((inputBuff: Buffer) => {
       codeGenResponse.addFile(patchFile);
 
       // type definition file is added for TypeScript imports
-      const patchFileName = outputFileName.split('/').pop();
+      const patchFileName = outputFileName.split("/").pop();
       const patchFileType = new CodeGeneratorResponse.File();
       patchFileType.setName(outputFileName + ".patch.d.ts");
-      let patchFileContent = '// this dummy constant is created for TypeScript compiler not to freak out when this module (empty) is imported\n';
+      let patchFileContent = "// this dummy constant is created for TypeScript compiler not to freak out when this module (empty) is imported\n";
       patchFileContent += `export const ${patchFileName} = "${patchFileName}";`;
-      patchFileContent += '\n';
+      patchFileContent += "\n";
       patchFileType.setContent(patchFileContent);
       codeGenResponse.addFile(patchFileType);
 
