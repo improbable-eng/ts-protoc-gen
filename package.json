@@ -1,5 +1,5 @@
 {
-  "name": "ts-protoc-gen",
+  "name": "carbon-ts-protoc-gen",
   "version": "0.9.1-pre",
   "description": "Protoc Plugin for TypeScript Declarations and Service Definitions",
   "scripts": {
