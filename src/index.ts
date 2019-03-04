@@ -1,3 +1,4 @@
+import { printFileDescriptorPatch } from "./ts/fileDescriptorPatch";
 import {printFileDescriptorTSD} from "./ts/fileDescriptorTSD";
 import {ExportMap} from "./ExportMap";
 import {replaceProtoSuffix, withAllStdIn} from "./util";
@@ -38,6 +39,22 @@ withAllStdIn((inputBuff: Buffer) => {
       thisFile.setName(outputFileName + ".d.ts");
       thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
       codeGenResponse.addFile(thisFile);
+
+      // patch file is created to add 'deserializeJson' function to proto model
+      const patchFile = new CodeGeneratorResponse.File();
+      patchFile.setName(outputFileName + ".patch.js");
+      patchFile.setContent(printFileDescriptorPatch(fileNameToDescriptor[fileName], exportMap));
+      codeGenResponse.addFile(patchFile);
+
+      // type definition file is added for TypeScript imports
+      const patchFileName = outputFileName.split('/').pop();
+      const patchFileType = new CodeGeneratorResponse.File();
+      patchFileType.setName(outputFileName + ".patch.d.ts");
+      let patchFileContent = '// this dummy constant is created for TypeScript compiler not to freak out when this module (empty) is imported\n';
+      patchFileContent += `export const ${patchFileName} = "${patchFileName}";`;
+      patchFileContent += '\n';
+      patchFileType.setContent(patchFileContent);
+      codeGenResponse.addFile(patchFileType);
 
       if (generateServices) {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)

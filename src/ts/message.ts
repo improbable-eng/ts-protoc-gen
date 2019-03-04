@@ -229,3 +229,100 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   return printer.getOutput();
 }
+
+export function printPatch(packageName: string, fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto) {
+  const messageName = messageDescriptor.getName();
+  const messageOptions = messageDescriptor.getOptions();
+  if (messageOptions !== undefined && messageOptions.getMapEntry()) {
+    // this message type is the entry tuple for a map - don't output it
+    return "";
+  }
+
+  const objectTypeName = `AsObject`;
+  const toObjectType = new Printer(1);
+  toObjectType.printLn(`export type ${objectTypeName} = {`);
+
+  const printer = new Printer(0);
+  printer.printEmptyLn();
+  printer.printLn(`proto.${packageName}.${messageName}.deserializeJson = function(json) {`);
+  printer.printIndentedLn(`var msg = new proto.${packageName}.${messageName};`);
+
+  const oneOfGroups: Array<Array<FieldDescriptorProto>> = [];
+
+  messageDescriptor.getFieldList().forEach(field => {
+    if (field.hasOneofIndex()) {
+      const oneOfIndex = field.getOneofIndex();
+      let existing = oneOfGroups[oneOfIndex];
+      if (existing === undefined) {
+        existing = [];
+        oneOfGroups[oneOfIndex] = existing;
+      }
+      existing.push(field);
+    }
+    const snakeCaseName = field.getName().toLowerCase();
+    const camelCaseName = snakeToCamel(snakeCaseName);
+    const withUppercase = uppercaseFirst(camelCaseName);
+    const type = field.getType();
+
+    let exportType;
+    const fullTypeName = field.getTypeName().slice(1);
+    if (type === MESSAGE_TYPE) {
+      const fieldMessageType = exportMap.getMessage(fullTypeName);
+      if (fieldMessageType === undefined) {
+        throw new Error("No message export for: " + fullTypeName);
+      }
+
+      const withinNamespace = withinNamespaceFromExportEntry(fullTypeName, fieldMessageType);
+      if (fieldMessageType.fileName === fileName) {
+        exportType = withinNamespace;
+      } else {
+        exportType = filePathToPseudoNamespace(fieldMessageType.fileName) + "." + withinNamespace;
+      }
+    } else if (type === ENUM_TYPE) {
+      const fieldEnumType = exportMap.getEnum(fullTypeName);
+      if (fieldEnumType === undefined) {
+        throw new Error("No enum export for: " + fullTypeName);
+      }
+      const withinNamespace = withinNamespaceFromExportEntry(fullTypeName, fieldEnumType);
+      if (fieldEnumType.fileName === fileName) {
+        exportType = withinNamespace;
+      } else {
+        exportType = filePathToPseudoNamespace(fieldEnumType.fileName) + "." + withinNamespace;
+      }
+    } else {
+      if (field.getOptions() && field.getOptions().hasJstype()) {
+        switch (field.getOptions().getJstype()) {
+          case JSType.JS_NUMBER:
+            exportType = "number";
+            break;
+          case JSType.JS_STRING:
+            exportType = "string";
+            break;
+          default:
+            exportType = getTypeName(type);
+        }
+      } else {
+        exportType = getTypeName(type);
+      }
+    }
+
+    if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {// is repeated
+      printer.printEmptyLn();
+      printer.printIndentedLn(`const ${camelCaseName} = [];`);
+      printer.printIndentedLn(`for(const item of json.${camelCaseName}) {`);
+      printer.printIndentedLn(`  ${camelCaseName}.push(${exportType}.deserializeJson(item))`);
+      printer.printIndentedLn(`}`);
+      printer.printIndentedLn(`msg.set${withUppercase}List(languages);`);
+      printer.printEmptyLn();
+    } else {
+      const fieldObjectName = normaliseFieldObjectName(camelCaseName);
+      printer.printIndentedLn(`msg.set${withUppercase}(json.${fieldObjectName});`);
+    }
+  });
+
+  printer.printIndentedLn(`return msg;`);
+  printer.printLn(`};`);
+
+  return printer.getOutput();
+}
+
