@@ -3,23 +3,12 @@ workspace(name = "ts_protoc_gen")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
-    name = "build_bazel_rules_typescript",
-    sha256 = "e4f51c408ed3278a3a1dd227564a69f293ae2ac4ae1564b3a6d2637ae9447b47",
-    strip_prefix = "rules_typescript-0.21.0",
-    urls = ["https://github.com/bazelbuild/rules_typescript/archive/0.21.0.zip"],
+    name = "build_bazel_rules_nodejs",
+    sha256 = "88e5e579fb9edfbd19791b8a3c6bfbe16ae3444dba4b428e5efd36856db7cf16",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/0.27.8/rules_nodejs-0.27.8.tar.gz"],
 )
 
-load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dependencies")
-
-rules_typescript_dependencies()
-
-load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
-
-ts_setup_workspace()
-
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
-
-node_repositories()
+load("@build_bazel_rules_nodejs//:defs.bzl", "yarn_install")
 
 yarn_install(
     name = "npm",
@@ -27,19 +16,25 @@ yarn_install(
     yarn_lock = "//:yarn.lock",
 )
 
-load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
 
-go_rules_dependencies()
+install_bazel_dependencies()
 
-go_register_toolchains()
+load("@npm_bazel_karma//:package.bzl", "rules_karma_dependencies")
 
-load("@io_bazel_rules_webtesting//web:repositories.bzl", "browser_repositories", "web_test_repositories")
+rules_karma_dependencies()
+
+load("@io_bazel_rules_webtesting//web:repositories.bzl", "web_test_repositories")
 
 web_test_repositories()
 
-browser_repositories(
-    chromium = True,
-)
+load("@npm_bazel_karma//:browser_repositories.bzl", "browser_repositories")
+
+browser_repositories()
+
+load("@npm_bazel_typescript//:defs.bzl", "ts_setup_workspace")
+
+ts_setup_workspace()
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
 

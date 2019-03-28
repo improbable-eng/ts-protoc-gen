@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@build_bazel_rules_nodejs//:defs.bzl", "yarn_install")
 
 TypescriptProtoLibraryAspect = provider(
@@ -210,6 +211,30 @@ def typescript_proto_dependencies():
     load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
     typescript_proto_dependencies()
     """
+
+    if "net_zlib" not in native.existing_rules():
+        http_archive(
+            name = "net_zlib",
+            build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
+            sha256 = "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1",
+            strip_prefix = "zlib-1.2.11",
+            urls = ["https://zlib.net/zlib-1.2.11.tar.gz"],
+        )
+
+    if "zlib" not in native.existing_rules():
+        # Loading zlib could be replaced with protobuf/protobuf_deps.bzl, but it's not in the most recent release
+        native.bind(
+            name = "zlib",
+            actual = "@net_zlib//:zlib",
+        )
+
+    if "com_google_protobuf" not in native.existing_rules():
+        http_archive(
+            name = "com_google_protobuf",
+            sha256 = "f976a4cd3f1699b6d20c1e944ca1de6754777918320c719742e1674fcf247b7e",
+            strip_prefix = "protobuf-3.7.1",
+            urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.7.1.zip"],
+        )
 
     yarn_install(
         name = "ts_protoc_gen_deps",

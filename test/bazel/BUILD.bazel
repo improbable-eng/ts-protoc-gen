@@ -1,4 +1,5 @@
-load("@build_bazel_rules_typescript//:defs.bzl", "ts_library", "ts_web_test_suite")
+load("@npm_bazel_typescript//:defs.bzl", "ts_library")
+load("@npm_bazel_karma//:defs.bzl", "ts_web_test_suite")
 
 # Copy the google-protobuf library and convert it to a AMD module so it can be loaded in the
 # RequireJS test environment.
