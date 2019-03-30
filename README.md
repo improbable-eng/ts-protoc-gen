@@ -33,7 +33,7 @@ npm install ts-protoc-gen@next
 
 ### bazel
 
-<details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build/>bazel">bazel</a> build environment</summary><p>
+<details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build">bazel</a> build environment</summary><p>
 
 Include the following in your `WORKSPACE` - _Most of this setup is for
 [rules_typescript](https://github.com/bazelbuild/rules_typescript), see their instructions for more
