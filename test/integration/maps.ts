@@ -1,8 +1,9 @@
 import {assert} from "chai";
 import {MapMessage} from "../../examples/generated/proto/examplecom/map_message_pb";
-import {ExternalEnum} from "../../examples/generated/proto/othercom/external_enum_pb";
+import {ExternalEnum, ExternalEnumMap} from "../../examples/generated/proto/othercom/external_enum_pb";
 import {ExternalChildMessage} from "../../examples/generated/proto/othercom/external_child_message_pb";
 import InternalEnum = MapMessage.InternalEnum;
+import InternalEnumMap = MapMessage.InternalEnumMap;
 import InternalChildMessage = MapMessage.InternalChildMessage;
 import {OrphanMapMessage} from "../../examples/generated/proto/orphan_pb";
 
@@ -98,9 +99,9 @@ describe("maps", () => {
 
         const firstEntry = parentMsg.getInternalEnumsMap().entries().next().value;
         assert.strictEqual(firstEntry[0] as number, 123);
-        assert.strictEqual(firstEntry[1] as InternalEnum, InternalEnum.FIRST);
+        assert.strictEqual(firstEntry[1], InternalEnum.FIRST);
 
-        assert.deepEqual(parentMsg.getInternalEnumsMap().toObject(false) as Array<[number, InternalEnum]>, [
+        assert.deepEqual(parentMsg.getInternalEnumsMap().toObject(false) as Array<[number, InternalEnumMap[keyof InternalEnumMap]]>, [
           [123, InternalEnum.FIRST],
           [456, InternalEnum.SECOND],
         ]);
@@ -119,9 +120,9 @@ describe("maps", () => {
 
         const firstEntry = parentMsg.getExternalEnumsMap().entries().next().value;
         assert.strictEqual(firstEntry[0] as number, 123);
-        assert.strictEqual(firstEntry[1] as ExternalEnum, ExternalEnum.FIRST);
+        assert.strictEqual(firstEntry[1], ExternalEnum.FIRST);
 
-        assert.deepEqual(parentMsg.getExternalEnumsMap().toObject(false) as Array<[number, ExternalEnum]>, [
+        assert.deepEqual(parentMsg.getExternalEnumsMap().toObject(false) as Array<[number, InternalEnumMap[keyof InternalEnumMap]]>, [
           [123, ExternalEnum.FIRST],
           [456, ExternalEnum.SECOND],
         ]);
@@ -204,14 +205,14 @@ describe("maps", () => {
         externalChildrenMap: Array<[string, {
           myString: string,
         }]>,
-        internalEnumsMap: Array<[number, InternalEnum]>
-        externalEnumsMap: Array<[number, ExternalEnum]>
+        internalEnumsMap: Array<[number, InternalEnumMap[keyof InternalEnumMap]]>
+        externalEnumsMap: Array<[number, ExternalEnumMap[keyof ExternalEnumMap]]>
         primitiveIntsMap: Array<[string, number]>
 
       };
       const actual = parentMsg.toObject() as mapType;
       const expected: mapType = {
-        externalEnumsMap: [] as Array<[number, ExternalEnum]>,
+        externalEnumsMap: [] as Array<[number, ExternalEnumMap[keyof ExternalEnumMap]]>,
         externalChildrenMap: [] as Array<[string, {
           myString: string,
         }]>,
