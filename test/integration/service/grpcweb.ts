@@ -115,7 +115,7 @@ describe("service/grpc-web", () => {
 
   });
 
-  describe("grpc-web service stubs", () => {
+  describe("grpc-web service clients", () => {
     function makeClient(transportBuilder: StubTransportBuilder): SimpleServiceClient {
       return new SimpleServiceClient("http://localhost:1", {
         transport: transportBuilder.build(),
@@ -130,7 +130,7 @@ describe("service/grpc-web", () => {
       });
     }
 
-    it("should generate a service stub", () => {
+    it("should generate a service client", () => {
       assert.typeOf(SimpleServiceClient, "function", "SimpleServiceClient class shoudl exist");
 
       const client = new SimpleServiceClient("http://localhost:1");

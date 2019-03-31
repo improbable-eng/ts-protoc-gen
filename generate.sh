@@ -49,7 +49,7 @@ mkdir -p "$EXAMPLES_GENERATED_DIR"
 $PROTOC \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_DIR \
-  --ts_out=service=true:$EXAMPLES_GENERATED_DIR \
+  --ts_out=service=client:$EXAMPLES_GENERATED_DIR \
   ./proto/othercom/*.proto \
   ./proto/examplecom/*.proto \
   ./proto/*.proto

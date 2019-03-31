@@ -178,13 +178,18 @@ const msg = new MyMessage();
 msg.setName("John Doe");
 ```
 
-### Generating gRPC Service Stubs for use with grpc-web
+### Generating gRPC Service Stubs/Clients for use with grpc-web
 
 [gRPC](https://grpc.io/) is a framework that enables client and server applications to communicate transparently, and makes it easier to build connected systems.
 
 [grpc-web](https://github.com/improbable-eng/grpc-web) is a comparability layer on both the server and client-side which allows gRPC to function natively in modern web-browsers.
 
-To generate client-side service stubs from your protobuf files you must configure ts-protoc-gen to emit service definitions by passing the `service=true` param to the `--ts_out` flag, eg:
+To generate client-side service client/stubs from your protobuf files you must configure ts-protoc-gen to emit service definitions by passing one of `service=client`, or `service=stub` as a param to the `--ts_out` flag.
+
+| parameter | result |
+|-----------|--------|
+| service=client | standalone grpc-web clients are generated which can be imported and used directly; these are more convenient but result in a larger generated file-size |
+| service=stub | minimal grpc-web stubs are generated which can be invoked via the grpc-web package; this produces the minimal file-size overhead |
 
 ```
 # Path to this plugin, Note this must be an abolsute path on Windows (see #15)
@@ -196,7 +201,7 @@ OUT_DIR="./generated"
 protoc \
     --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
     --js_out="import_style=commonjs,binary:${OUT_DIR}" \
-    --ts_out="service=true:${OUT_DIR}" \
+    --ts_out="service=client:${OUT_DIR}" \
     users.proto base.proto
 ```
 
@@ -204,20 +209,6 @@ The `generated` folder will now contain both `pb_service.js` and `pb_service.d.t
 
 **Note** Note that these modules require a CommonJS environment. If you intend to consume these stubs in a browser environment you will need to use a module bundler such as [webpack](https://webpack.js.org/).
 **Note** Both `js` and `d.ts` service files will be generated regardless of whether there are service definitions in the proto files.
-
-```js
-import {
-  UserServiceClient,
-  GetUserRequest
-} from "../generated/users_pb_service";
-
-const client = new UserServiceClient("https://my.grpc/server");
-const req = new GetUserRequest();
-req.setUsername("johndoe");
-client.getUser(req, (err, user) => {
-  /* ... */
-});
-```
 
 ## Examples
 

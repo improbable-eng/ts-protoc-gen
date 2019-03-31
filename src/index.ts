@@ -24,9 +24,6 @@ withAllStdIn((inputBuff: Buffer) => {
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
-    // Generate separate `.ts` files for services if param is set
-    const generateServices = codeGenRequest.getParameter() === "service=true";
-
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       fileNameToDescriptor[protoFileDescriptor.getName()] = protoFileDescriptor;
       exportMap.addFileDescriptor(protoFileDescriptor);
@@ -39,8 +36,10 @@ withAllStdIn((inputBuff: Buffer) => {
       thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
       codeGenResponse.addFile(thisFile);
 
-      if (generateServices) {
-        generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
+      const options = parseParams(codeGenRequest.getParameter());
+
+      if (options.serviceType !== "none") {
+        generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap, options)
           .forEach(file => codeGenResponse.addFile(file));
       }
     });
@@ -51,3 +50,17 @@ withAllStdIn((inputBuff: Buffer) => {
     process.exit(1);
   }
 });
+
+export type Options = {
+  serviceType: "client" | "stub" | "none"
+};
+
+function parseParams(params: string): Options {
+  if (params === "service=true" || params === "service=client") {
+    return { serviceType: "client" };
+  }
+  if (params === "service=stub") {
+    return { serviceType: "stub" };
+  }
+  return { serviceType: "none" };
+}

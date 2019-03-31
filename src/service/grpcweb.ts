@@ -9,11 +9,12 @@ import {
 import {WellKnownTypesMap} from "../WellKnown";
 import {getFieldType, MESSAGE_TYPE} from "../ts/FieldTypes";
 import {CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
+import {Options} from "../index";
 
-export function generateGrpcWebService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap): CodeGeneratorResponse.File[] {
+export function generateGrpcWebService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap, options: Options): CodeGeneratorResponse.File[] {
   return [
-    createFile(generateTypescriptDefinition(descriptor, exportMap), `${filename}_service.d.ts`),
-    createFile(generateJavaScript(descriptor, exportMap), `${filename}_service.js`),
+    createFile(generateTypescriptDefinition(descriptor, exportMap, options), `${filename}_service.d.ts`),
+    createFile(generateJavaScript(descriptor, exportMap, options), `${filename}_service.js`),
   ];
 }
 
@@ -153,7 +154,7 @@ class GrpcWebServiceDescriptor {
   }
 }
 
-function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
+function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, exportMap: ExportMap, options: Options) {
   const serviceDescriptor = new GrpcWebServiceDescriptor(fileDescriptor, exportMap);
   const printer = new Printer(0);
 
@@ -201,47 +202,21 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
     });
 
 
+  if (options.serviceType === "client") {
+    printClientInterfaces(printer);
 
-  printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
-  printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
-  printer.printEmptyLn();
-  printer.printLn("interface UnaryResponse {");
-  printer.printIndentedLn("cancel(): void;");
-  printer.printLn("}");
-  printer.printLn(`interface ResponseStream<T> {`);
-  printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
-  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
-  printer.printLn(`}`);
-  printer.printLn(`interface RequestStream<T> {`);
-  printer.printIndentedLn(`write(message: T): RequestStream<T>;`);
-  printer.printIndentedLn(`end(): void;`);
-  printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
-  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
-  printer.printLn(`}`);
-  printer.printLn(`interface BidirectionalStream<ReqT, ResT> {`);
-  printer.printIndentedLn(`write(message: ReqT): BidirectionalStream<ReqT, ResT>;`);
-  printer.printIndentedLn(`end(): void;`);
-  printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`on(type: 'data', handler: (message: ResT) => void): BidirectionalStream<ReqT, ResT>;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): BidirectionalStream<ReqT, ResT>;`);
-  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;`);
-  printer.printLn(`}`);
-  printer.printEmptyLn();
+    // Add a service client that talks with the @improbable-eng/grpc-web library
+    serviceDescriptor.services
+      .forEach(service => {
+        printServiceClientTypes(printer, service);
+        printer.printEmptyLn();
+      });
 
-  // Add a client stub that talks with the @improbable-eng/grpc-web library
-  serviceDescriptor.services
-    .forEach(service => {
-      printServiceStubTypes(printer, service);
-      printer.printEmptyLn();
-    });
-
+  }
   return printer.getOutput();
 }
 
-function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
+function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: ExportMap, options: Options) {
   const serviceDescriptor = new GrpcWebServiceDescriptor(fileDescriptor, exportMap);
   const printer = new Printer(0);
 
@@ -287,16 +262,17 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
       printer.printLn(`exports.${service.name} = ${service.name};`);
       printer.printEmptyLn();
 
-      // Add a client stub that talks with the @improbable-eng/grpc-web library
-      printServiceStub(printer, service);
-
+      if (options.serviceType === "client") {
+        // Add a service client that talks with the @improbable-eng/grpc-web library
+        printServiceClients(printer, service);
+      }
       printer.printEmptyLn();
     });
 
   return printer.getOutput();
 }
 
-function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
+function printServiceClients(methodPrinter: Printer, service: RPCDescriptor) {
   const printer = new CodePrinter(0, methodPrinter);
 
   printer
@@ -308,20 +284,20 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
     if (method.requestStream && method.responseStream) {
-      printBidirectionalStubMethod(printer, method);
+      printBidirectionalClientMethod(printer, method);
     } else if (method.requestStream) {
-      printClientStreamStubMethod(printer, method);
+      printClientStreamClientMethod(printer, method);
     } else if (method.responseStream) {
-      printServerStreamStubMethod(printer, method);
+      printServerStreamClientMethod(printer, method);
     } else {
-      printUnaryStubMethod(printer, method);
+      printUnaryClientMethod(printer, method);
     }
     printer.printEmptyLn();
   });
   printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
 }
 
-function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printUnaryClientMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
              .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(requestMessage, metadata, callback) {`)
       .indent().printLn(`if (arguments.length === 2) {`)
@@ -355,7 +331,7 @@ function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor)
   .dedent().printLn(`};`);
 }
 
-function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printServerStreamClientMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(requestMessage, metadata) {`)
     .indent().printLn(`var listeners = {`)
@@ -397,7 +373,7 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
   .dedent().printLn(`};`);
 }
 
-function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printClientStreamClientMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
     .indent().printLn(`var listeners = {`)
@@ -441,7 +417,7 @@ function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
   .dedent().printLn(`};`);
 }
 
-function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printBidirectionalClientMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
            .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
     .indent().printLn(`var listeners = {`)
@@ -489,7 +465,38 @@ function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDes
   .dedent().printLn(`};`);
 }
 
-function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
+function printClientInterfaces(printer: Printer) {
+  printer.printLn(`export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }`);
+  printer.printLn(`export type Status = { details: string, code: number; metadata: grpc.Metadata }`);
+  printer.printEmptyLn();
+  printer.printLn("interface UnaryResponse {");
+  printer.printIndentedLn("cancel(): void;");
+  printer.printLn("}");
+  printer.printLn(`interface ResponseStream<T> {`);
+  printer.printIndentedLn(`cancel(): void;`);
+  printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
+  printer.printLn(`}`);
+  printer.printLn(`interface RequestStream<T> {`);
+  printer.printIndentedLn(`write(message: T): RequestStream<T>;`);
+  printer.printIndentedLn(`end(): void;`);
+  printer.printIndentedLn(`cancel(): void;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
+  printer.printLn(`}`);
+  printer.printLn(`interface BidirectionalStream<ReqT, ResT> {`);
+  printer.printIndentedLn(`write(message: ReqT): BidirectionalStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`end(): void;`);
+  printer.printIndentedLn(`cancel(): void;`);
+  printer.printIndentedLn(`on(type: 'data', handler: (message: ResT) => void): BidirectionalStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: () => void): BidirectionalStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;`);
+  printer.printLn(`}`);
+  printer.printEmptyLn();
+}
+
+function printServiceClientTypes(methodPrinter: Printer, service: RPCDescriptor) {
   const printer = new CodePrinter(0, methodPrinter);
 
   printer
@@ -500,19 +507,19 @@ function printServiceStubTypes(methodPrinter: Printer, service: RPCDescriptor) {
 
   service.methods.forEach((method: RPCMethodDescriptor) => {
     if (method.requestStream && method.responseStream) {
-      printBidirectionalStubMethodTypes(printer, method);
+      printBidirectionalClientMethodTypes(printer, method);
     } else if (method.requestStream) {
-      printClientStreamStubMethodTypes(printer, method);
+      printClientStreamClientMethodTypes(printer, method);
     } else if (method.responseStream) {
-      printServerStreamStubMethodTypes(printer, method);
+      printServerStreamClientMethodTypes(printer, method);
     } else {
-      printUnaryStubMethodTypes(printer, method);
+      printUnaryClientMethodTypes(printer, method);
     }
   });
   printer.dedent().printLn("}");
 }
 
-function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printUnaryClientMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
              .printLn(`${method.nameAsCamelCase}(`)
       .indent().printLn(`requestMessage: ${method.requestType},`)
@@ -525,14 +532,14 @@ function printUnaryStubMethodTypes(printer: CodePrinter, method: RPCMethodDescri
     .dedent().printLn(`): UnaryResponse;`);
 }
 
-function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printServerStreamClientMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(requestMessage: ${method.requestType}, metadata?: grpc.Metadata): ResponseStream<${method.responseType}>;`);
 }
 
-function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printClientStreamClientMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.requestType}>;`);
 }
 
-function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
+function printBidirectionalClientMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): BidirectionalStream<${method.requestType}, ${method.responseType}>;`);
 }

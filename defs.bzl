@@ -94,7 +94,7 @@ def typescript_proto_library_aspect_(target, ctx):
     protoc_command = "%s" % (ctx.file._protoc.path)
 
     protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.files._ts_protoc_gen[1].path)
-    protoc_command += " --ts_out=service=true:%s" % (protoc_output_dir)
+    protoc_command += " --ts_out=service=client:%s" % (protoc_output_dir)
     protoc_command += " --js_out=import_style=commonjs,binary:%s" % (protoc_output_dir)
     protoc_command += " --descriptor_set_in=%s" % (":".join(descriptor_sets_paths))
     protoc_command += " %s" % (" ".join(proto_inputs))
