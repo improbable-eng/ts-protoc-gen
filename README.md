@@ -210,6 +210,38 @@ The `generated` folder will now contain both `pb_service.js` and `pb_service.d.t
 **Note** Note that these modules require a CommonJS environment. If you intend to consume these stubs in a browser environment you will need to use a module bundler such as [webpack](https://webpack.js.org/).
 **Note** Both `js` and `d.ts` service files will be generated regardless of whether there are service definitions in the proto files.
 
+#### Service Client Usage
+```js
+import {
+  UserServiceClient,
+  GetUserRequest
+} from "../generated/users_pb_service";
+
+const client = new UserServiceClient("https://my.grpc/server");
+const request = new GetUserRequest();
+request.setUsername("johndoe");
+client.getUser(response, (err, user) => {
+  /* ... */
+});
+```
+
+#### Service Stub Usage
+```ts
+import { grpc } from "@improbable-eng/grpc-web";
+import { GetUserRequest } from "../generated/users_pb_service";
+
+grpc.invoke(GetUserRequest, {
+    request: requestMessage,
+    host: "https://my.grpc/server"
+    onMessage: function (responseMessage) {
+        /* ... */
+    },
+    onEnd: function (status, statusMessage, trailers) {
+        /* ... */
+    }
+});
+```
+
 ## Examples
 
 For a sample of the generated protos and service definitions, see [examples](https://github.com/improbable-eng/ts-protoc-gen/tree/master/examples).
