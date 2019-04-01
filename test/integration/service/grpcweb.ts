@@ -230,17 +230,17 @@ describe("service/grpc-web", () => {
           });
       });
 
-      it("should invoke onEnd before onStatus", (done) => {
+      it("should invoke onStatus before onEnd", (done) => {
         const [payload] = makePayloads("some value");
-        let onEndInvoked = false;
+        let onStatusInvoked = false;
 
         makeClient(new StubTransportBuilder().withMessages([payload]))
           .doServerStream(new StreamRequest())
-          .on("end", () => { onEndInvoked = true; })
-          .on("status", () => {
-            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+          .on("end", () => {
+            assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
             done();
-          });
+          })
+          .on("status", () => { onStatusInvoked = true; });
       });
 
       it("should handle an error returned ahead of any data by the endpoint", (done) => {
@@ -362,15 +362,17 @@ describe("service/grpc-web", () => {
           .end();
       });
 
-      it("should invoke onEnd before onStatus", (done) => {
-        let onEndInvoked = false;
+      it("should invoke onStatus before onEnd", (done) => {
+        let onStatusInvoked = false;
 
         makeClient(new StubTransportBuilder())
           .doClientStream()
-          .on("end", () => { onEndInvoked = true; })
-          .on("status", () => {
-            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+          .on("end", () => {
+            assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
             done();
+          })
+          .on("status", () => {
+            onStatusInvoked = true;
           })
           .write(payload)
           .end();
@@ -467,16 +469,16 @@ describe("service/grpc-web", () => {
           .end();
       });
 
-      it("should invoke onEnd before onStatus if the client ends the stream", (done) => {
-        let onEndInvoked = false;
+      it("should invoke onStatus before onEnd if the client ends the stream", (done) => {
+        let onStatusInvoked = false;
 
         makeClient(new StubTransportBuilder())
           .doBidiStream()
-          .on("end", () => { onEndInvoked = true; })
-          .on("status", () => {
-            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+          .on("end", () => {
+            assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
             done();
           })
+          .on("status", () => { onStatusInvoked = true; })
           .write(payload)
           .end();
       });
@@ -493,15 +495,17 @@ describe("service/grpc-web", () => {
           .end();
       });
 
-      it("should invoke onEnd before onStatus if the server ends the stream", (done) => {
-        let onEndInvoked = false;
+      it("should invoke onStatus before onEnd if the server ends the stream", (done) => {
+        let onStatusInvoked = false;
 
         makeClient(new StubTransportBuilder().withMessages([ payload ]))
           .doBidiStream()
-          .on("end", () => { onEndInvoked = true; })
-          .on("status", () => {
-            assert.ok(onEndInvoked, "onEnd callback should be invoked before onStatus");
+          .on("end", () => {
+            assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
             done();
+          })
+          .on("status", () => {
+            onStatusInvoked = true;
           });
       });
 
