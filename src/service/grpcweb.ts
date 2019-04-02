@@ -211,14 +211,14 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`interface ResponseStream<T> {`);
   printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`on(type: 'data', handler: (message: T) => void): ResponseStream<T>;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): ResponseStream<T>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: (status?: Status) => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
   printer.printLn(`}`);
   printer.printLn(`interface RequestStream<T> {`);
   printer.printIndentedLn(`write(message: T): RequestStream<T>;`);
   printer.printIndentedLn(`end(): void;`);
   printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): RequestStream<T>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: (status?: Status) => void): RequestStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
   printer.printLn(`}`);
   printer.printLn(`interface BidirectionalStream<ReqT, ResT> {`);
@@ -226,7 +226,7 @@ function generateTypescriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printIndentedLn(`end(): void;`);
   printer.printIndentedLn(`cancel(): void;`);
   printer.printIndentedLn(`on(type: 'data', handler: (message: ResT) => void): BidirectionalStream<ReqT, ResT>;`);
-  printer.printIndentedLn(`on(type: 'end', handler: () => void): BidirectionalStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: (status?: Status) => void): BidirectionalStream<ReqT, ResT>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;`);
   printer.printLn(`}`);
   printer.printEmptyLn();
@@ -375,10 +375,10 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
         .dedent().printLn(`});`)
       .dedent().printLn(`},`)
                .printLn(`onEnd: function (status, statusMessage, trailers) {`)
-        .indent().printLn(`listeners.end.forEach(function (handler) {`)
-          .indent().printLn(`handler();`)
+        .indent().printLn(`listeners.status.forEach(function (handler) {`)
+          .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
         .dedent().printLn(`});`)
-                 .printLn(`listeners.status.forEach(function (handler) {`)
+                 .printLn(`listeners.end.forEach(function (handler) {`)
           .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
         .dedent().printLn(`});`)
                  .printLn(`listeners = null;`)
@@ -410,10 +410,10 @@ function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
                .printLn(`transport: this.options.transport`)
     .dedent().printLn(`});`)
              .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
-      .indent().printLn(`listeners.end.forEach(function (handler) {`)
-        .indent().printLn(`handler();`)
+      .indent().printLn(`listeners.status.forEach(function (handler) {`)
+        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
       .dedent().printLn(`});`)
-               .printLn(`listeners.status.forEach(function (handler) {`)
+               .printLn(`listeners.end.forEach(function (handler) {`)
         .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
       .dedent().printLn(`});`)
                .printLn(`listeners = null;`)
@@ -455,10 +455,10 @@ function printBidirectionalStubMethod(printer: CodePrinter, method: RPCMethodDes
                .printLn(`transport: this.options.transport`)
     .dedent().printLn(`});`)
              .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
-      .indent().printLn(`listeners.end.forEach(function (handler) {`)
-        .indent().printLn(`handler();`)
+      .indent().printLn(`listeners.status.forEach(function (handler) {`)
+        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
       .dedent().printLn(`});`)
-               .printLn(`listeners.status.forEach(function (handler) {`)
+               .printLn(`listeners.end.forEach(function (handler) {`)
         .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
       .dedent().printLn(`});`)
                .printLn(`listeners = null;`)
