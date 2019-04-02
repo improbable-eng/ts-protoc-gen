@@ -6,7 +6,7 @@ import { createContext, runInContext } from "vm";
 
 import { frameRequest, StubTransportBuilder } from "../../helpers/fakeGrpcTransport";
 import { ExternalChildMessage } from "../../../examples/generated/proto/othercom/external_child_message_pb";
-import { SimpleService, SimpleServiceClient } from "../../../examples/generated/proto/examplecom/simple_service_pb_service";
+import { SimpleService, SimpleServiceClient, Status } from "../../../examples/generated/proto/examplecom/simple_service_pb_service";
 import { StreamRequest, UnaryRequest } from "../../../examples/generated/proto/examplecom/simple_service_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 
@@ -243,6 +243,19 @@ describe("service/grpc-web", () => {
           .on("status", () => { onStatusInvoked = true; });
       });
 
+      it("should invoke onEnd with the same status as onStatus", (done) => {
+        const [payload] = makePayloads("some value");
+        let statusFromOnStatus: Status;
+
+        makeClient(new StubTransportBuilder().withMessages([payload]))
+          .doServerStream(new StreamRequest())
+          .on("end", (endStatus) => {
+            assert.deepEqual(endStatus, statusFromOnStatus);
+            done();
+          })
+          .on("status", (status) => { statusFromOnStatus = status; });
+      });
+
       it("should handle an error returned ahead of any data by the endpoint", (done) => {
         makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
           .doServerStream(new StreamRequest())
@@ -371,9 +384,21 @@ describe("service/grpc-web", () => {
             assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
             done();
           })
-          .on("status", () => {
-            onStatusInvoked = true;
+          .on("status", () => { onStatusInvoked = true; })
+          .write(payload)
+          .end();
+      });
+
+      it("should invoke onEnd with the same status as onStatus", (done) => {
+        let statusFromOnStatus: Status;
+
+        makeClient(new StubTransportBuilder())
+          .doClientStream()
+          .on("end", (endStatus) => {
+            assert.deepEqual(endStatus, statusFromOnStatus);
+            done();
           })
+          .on("status", (status) => { statusFromOnStatus = status; })
           .write(payload)
           .end();
       });
@@ -483,6 +508,20 @@ describe("service/grpc-web", () => {
           .end();
       });
 
+      it("should invoke onEnd with the same status as onStatus if client ends the stream", (done) => {
+        let statusFromOnStatus: Status;
+
+        makeClient(new StubTransportBuilder())
+          .doBidiStream()
+          .on("end", (endStatus) => {
+            assert.deepEqual(endStatus, statusFromOnStatus);
+            done();
+          })
+          .on("status", (status) => { statusFromOnStatus = status; })
+          .write(payload)
+          .end();
+      });
+
       it("should close the connection when end() is invoked", (done) => {
         let finishSendInvoked = false;
         makeClient(new StubTransportBuilder().withFinishSendListener(() => finishSendInvoked = true))
@@ -504,9 +543,19 @@ describe("service/grpc-web", () => {
             assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
             done();
           })
-          .on("status", () => {
-            onStatusInvoked = true;
-          });
+          .on("status", () => { onStatusInvoked = true; });
+      });
+
+      it("should invoke onEnd with the same status as onStatus if server ends the stream", (done) => {
+        let statusFromOnStatus: Status;
+
+        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+          .doBidiStream()
+          .on("end", (endStatus) => {
+            assert.deepEqual(endStatus, statusFromOnStatus);
+            done();
+          })
+          .on("status", (status) => { statusFromOnStatus = status; });
       });
 
       it("should handle an error returned ahead of any data by the server", (done) => {
