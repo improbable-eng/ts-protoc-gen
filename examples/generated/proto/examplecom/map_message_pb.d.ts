@@ -6,11 +6,11 @@ import * as proto_othercom_external_enum_pb from "../../proto/othercom/external_
 import * as proto_othercom_external_child_message_pb from "../../proto/othercom/external_child_message_pb";
 
 export class MapMessage extends jspb.Message {
-  getInternalEnumsMap(): jspb.Map<number, MapMessage.InternalEnum>;
+  getInternalEnumsMap(): jspb.Map<number, MapMessage.InternalEnumMap[keyof MapMessage.InternalEnumMap]>;
   clearInternalEnumsMap(): void;
   getInternalChildrenMap(): jspb.Map<string, MapMessage.InternalChildMessage>;
   clearInternalChildrenMap(): void;
-  getExternalEnumsMap(): jspb.Map<number, proto_othercom_external_enum_pb.ExternalEnum>;
+  getExternalEnumsMap(): jspb.Map<number, proto_othercom_external_enum_pb.ExternalEnum[keyof proto_othercom_external_enum_pb.ExternalEnum]>;
   clearExternalEnumsMap(): void;
   getExternalChildrenMap(): jspb.Map<string, proto_othercom_external_child_message_pb.ExternalChildMessage>;
   clearExternalChildrenMap(): void;
@@ -28,9 +28,9 @@ export class MapMessage extends jspb.Message {
 
 export namespace MapMessage {
   export type AsObject = {
-    internalEnumsMap: Array<[number, MapMessage.InternalEnum]>,
+    internalEnumsMap: Array<[number, MapMessage.InternalEnumMap[keyof MapMessage.InternalEnumMap]]>,
     internalChildrenMap: Array<[string, MapMessage.InternalChildMessage.AsObject]>,
-    externalEnumsMap: Array<[number, proto_othercom_external_enum_pb.ExternalEnum]>,
+    externalEnumsMap: Array<[number, proto_othercom_external_enum_pb.ExternalEnum[keyof proto_othercom_external_enum_pb.ExternalEnum]]>,
     externalChildrenMap: Array<[string, proto_othercom_external_child_message_pb.ExternalChildMessage.AsObject]>,
     primitiveIntsMap: Array<[string, number]>,
   }
@@ -55,10 +55,12 @@ export namespace MapMessage {
     }
   }
 
-  export enum InternalEnum {
-    DEFAULT = 0,
-    FIRST = 1,
-    SECOND = 2,
+  export interface InternalEnumMap {
+    DEFAULT: 0;
+    FIRST: 1;
+    SECOND: 2;
   }
+
+  export const InternalEnum: InternalEnumMap;
 }
 

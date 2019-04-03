@@ -85,6 +85,9 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         if (valueType === BYTES_TYPE) {
           valueTypeName = "Uint8Array | string";
         }
+        if (valueType === ENUM_TYPE) {
+          valueTypeName = `${valueTypeName}[keyof ${valueTypeName}]`;
+        }
         printer.printIndentedLn(`get${withUppercase}Map(): jspb.Map<${keyTypeName}, ${valueTypeName}>;`);
         printer.printIndentedLn(`clear${withUppercase}Map(): void;`);
         toObjectType.printIndentedLn(`${camelCaseName}Map: Array<[${keyTypeName}${keyType === MESSAGE_TYPE ? ".AsObject" : ""}, ${valueTypeName}${valueType === MESSAGE_TYPE ? ".AsObject" : ""}]>,`);
@@ -107,6 +110,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       } else {
         exportType = filePathToPseudoNamespace(fieldEnumType.fileName) + "." + withinNamespace;
       }
+      exportType = `${exportType}Map[keyof ${exportType}Map]`;
     } else {
       if (field.getOptions() && field.getOptions().hasJstype()) {
         switch (field.getOptions().getJstype()) {

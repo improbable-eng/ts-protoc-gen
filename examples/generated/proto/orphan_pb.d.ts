@@ -29,8 +29,8 @@ export class OrphanMessage extends jspb.Message {
   getMyBool(): boolean;
   setMyBool(value: boolean): void;
 
-  getMyEnum(): OrphanEnum;
-  setMyEnum(value: OrphanEnum): void;
+  getMyEnum(): OrphanEnumMap[keyof OrphanEnumMap];
+  setMyEnum(value: OrphanEnumMap[keyof OrphanEnumMap]): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OrphanMessage.AsObject;
@@ -46,7 +46,7 @@ export namespace OrphanMessage {
   export type AsObject = {
     myString: string,
     myBool: boolean,
-    myEnum: OrphanEnum,
+    myEnum: OrphanEnumMap[keyof OrphanEnumMap],
   }
 }
 
@@ -90,9 +90,11 @@ export namespace OrphanStreamRequest {
   }
 }
 
-export enum OrphanEnum {
-  UNKNOWN = 0,
-  ONE = 1,
-  TWO = 2,
+export interface OrphanEnumMap {
+  UNKNOWN: 0;
+  ONE: 1;
+  TWO: 2;
 }
+
+export const OrphanEnum: OrphanEnumMap;
 
