@@ -35,19 +35,15 @@ npm install ts-protoc-gen@next
 
 <details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build">bazel</a> build environment</summary><p>
 
-Include the following in your `WORKSPACE` - _Most of this setup is for
-[rules_typescript](https://github.com/bazelbuild/rules_typescript), see their instructions for more
-info:_
+Prerequisites:
+- Setup [rules_nodejs](https://github.com/bazelbuild/rules_nodejs) in your project
+
+Then, include the following in your `WORKSPACE`:
 
 ```python
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-http_archive(
-    name = "build_bazel_rules_typescript",
-    sha256 = "e4f51c408ed3278a3a1dd227564a69f293ae2ac4ae1564b3a6d2637ae9447b47",
-    strip_prefix = "rules_typescript-0.21.0",
-    urls = ["https://github.com/bazelbuild/rules_typescript/archive/0.21.0.zip"],
-)
+# NOTE: Setup rules_nodejs
 
 http_archive(
     name = "ts_protoc_gen",
@@ -55,38 +51,6 @@ http_archive(
     sha256 = "355bd8e7a3d4889a3fb222366ac3427229acc968455670378f8ffe1b4bfc5a95",
     strip_prefix = "ts-protoc-gen-14d69f6203c291f15017a8c0abbb1d4b52b00b64",
     urls = ["https://github.com/improbable-eng/ts-protoc-gen/archive/14d69f6203c291f15017a8c0abbb1d4b52b00b64.zip"],
-)
-
-load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dependencies")
-
-rules_typescript_dependencies()
-
-load("@build_bazel_rules_typescript//:defs.bzl", "ts_setup_workspace")
-
-ts_setup_workspace()
-
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories", "yarn_install")
-
-node_repositories()
-
-yarn_install(
-    name = "npm",
-    package_json = "//:package.json",
-    yarn_lock = "//:yarn.lock",
-)
-
-load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
-
-go_rules_dependencies()
-
-go_register_toolchains()
-
-load("@io_bazel_rules_webtesting//web:repositories.bzl", "browser_repositories", "web_test_repositories")
-
-web_test_repositories()
-
-browser_repositories(
-    chromium = True,
 )
 
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
@@ -104,8 +68,8 @@ Also make sure you have the following in your `package.json`:
     "browser-headers": "^0.4.1"
   },
   "devDependencies": {
-    "@bazel/karma": "^0.21.0",
-    "@bazel/typescript": "^0.21.0",
+    "@bazel/karma": "0.27.8",
+    "@bazel/typescript": "^0.27.7",
     "@types/google-protobuf": "^3.2.7",
     "typescript": "^3.1.1"
   }
