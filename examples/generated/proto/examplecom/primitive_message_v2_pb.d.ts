@@ -164,6 +164,7 @@ export class PrimitiveMessageV2 extends jspb.Message {
   setOptNumber(value: number): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): PrimitiveMessageV2;
   toObject(includeInstance?: boolean): PrimitiveMessageV2.AsObject;
   static toObject(includeInstance: boolean, msg: PrimitiveMessageV2): PrimitiveMessageV2.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

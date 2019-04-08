@@ -179,6 +179,7 @@ export class ReservedWordsMessage extends jspb.Message {
   setWith(value: string): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): ReservedWordsMessage;
   toObject(includeInstance?: boolean): ReservedWordsMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ReservedWordsMessage): ReservedWordsMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

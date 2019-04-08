@@ -27,6 +27,7 @@ export class OneOfMessage extends jspb.Message {
 
   getGroupCase(): OneOfMessage.GroupCase;
   serializeBinary(): Uint8Array;
+  cloneMessage(): OneOfMessage;
   toObject(includeInstance?: boolean): OneOfMessage.AsObject;
   static toObject(includeInstance: boolean, msg: OneOfMessage): OneOfMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -49,6 +50,7 @@ export namespace OneOfMessage {
     setMyString(value: string): void;
 
     serializeBinary(): Uint8Array;
+    cloneMessage(): InternalChildMessage;
     toObject(includeInstance?: boolean): InternalChildMessage.AsObject;
     static toObject(includeInstance: boolean, msg: InternalChildMessage): InternalChildMessage.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -86,6 +88,7 @@ export class CamelCasedOneOfMessage extends jspb.Message {
 
   getCamelcasedmessageCase(): CamelCasedOneOfMessage.CamelcasedmessageCase;
   serializeBinary(): Uint8Array;
+  cloneMessage(): CamelCasedOneOfMessage;
   toObject(includeInstance?: boolean): CamelCasedOneOfMessage.AsObject;
   static toObject(includeInstance: boolean, msg: CamelCasedOneOfMessage): CamelCasedOneOfMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -121,6 +124,7 @@ export class SnakeCasedOneOfMessage extends jspb.Message {
 
   getSnakeCasedMessageCase(): SnakeCasedOneOfMessage.SnakeCasedMessageCase;
   serializeBinary(): Uint8Array;
+  cloneMessage(): SnakeCasedOneOfMessage;
   toObject(includeInstance?: boolean): SnakeCasedOneOfMessage.AsObject;
   static toObject(includeInstance: boolean, msg: SnakeCasedOneOfMessage): SnakeCasedOneOfMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

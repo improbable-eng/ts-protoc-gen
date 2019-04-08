@@ -16,6 +16,7 @@ export class UnaryRequest extends jspb.Message {
   setSomeTimestamp(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): UnaryRequest;
   toObject(includeInstance?: boolean): UnaryRequest.AsObject;
   static toObject(includeInstance: boolean, msg: UnaryRequest): UnaryRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -34,6 +35,7 @@ export namespace UnaryRequest {
 
 export class UnaryResponse extends jspb.Message {
   serializeBinary(): Uint8Array;
+  cloneMessage(): UnaryResponse;
   toObject(includeInstance?: boolean): UnaryResponse.AsObject;
   static toObject(includeInstance: boolean, msg: UnaryResponse): UnaryResponse.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -53,6 +55,7 @@ export class StreamRequest extends jspb.Message {
   setSomeString(value: string): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): StreamRequest;
   toObject(includeInstance?: boolean): StreamRequest.AsObject;
   static toObject(includeInstance: boolean, msg: StreamRequest): StreamRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

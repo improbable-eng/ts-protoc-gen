@@ -77,6 +77,7 @@ export class WellKnownMessage extends jspb.Message {
   setMyDoubleValue(value?: google_protobuf_wrappers_pb.DoubleValue): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): WellKnownMessage;
   toObject(includeInstance?: boolean): WellKnownMessage.AsObject;
   static toObject(includeInstance: boolean, msg: WellKnownMessage): WellKnownMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

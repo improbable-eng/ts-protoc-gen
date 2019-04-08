@@ -88,6 +88,7 @@ export class MySimple extends jspb.Message {
   setSomeDoubleValue(value?: google_protobuf_wrappers_pb.DoubleValue): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): MySimple;
   toObject(includeInstance?: boolean): MySimple.AsObject;
   static toObject(includeInstance: boolean, msg: MySimple): MySimple.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

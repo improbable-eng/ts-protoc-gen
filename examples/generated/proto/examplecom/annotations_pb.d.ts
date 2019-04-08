@@ -20,6 +20,7 @@ export class AnnotatedMessage extends jspb.Message {
   setMysfixed64(value: string): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): AnnotatedMessage;
   toObject(includeInstance?: boolean): AnnotatedMessage.AsObject;
   static toObject(includeInstance: boolean, msg: AnnotatedMessage): AnnotatedMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

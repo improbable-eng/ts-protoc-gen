@@ -36,6 +36,7 @@ export class ParentMessageV2 extends jspb.Message {
   addExternalChildren(value?: proto_othercom_external_child_message_pb.ExternalChildMessage, index?: number): proto_othercom_external_child_message_pb.ExternalChildMessage;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): ParentMessageV2;
   toObject(includeInstance?: boolean): ParentMessageV2.AsObject;
   static toObject(includeInstance: boolean, msg: ParentMessageV2): ParentMessageV2.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -62,6 +63,7 @@ export namespace ParentMessageV2 {
     setMyString(value: string): void;
 
     serializeBinary(): Uint8Array;
+    cloneMessage(): InternalChildMessage;
     toObject(includeInstance?: boolean): InternalChildMessage.AsObject;
     static toObject(includeInstance: boolean, msg: InternalChildMessage): InternalChildMessage.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

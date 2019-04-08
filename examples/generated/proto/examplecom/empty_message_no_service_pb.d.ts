@@ -5,6 +5,7 @@ import * as jspb from "google-protobuf";
 
 export class NoService extends jspb.Message {
   serializeBinary(): Uint8Array;
+  cloneMessage(): NoService;
   toObject(includeInstance?: boolean): NoService.AsObject;
   static toObject(includeInstance: boolean, msg: NoService): NoService.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

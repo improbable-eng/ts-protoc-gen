@@ -22,6 +22,7 @@ export class EnumMessage extends jspb.Message {
   addExternalEnums(value: proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap], index?: number): proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap];
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): EnumMessage;
   toObject(includeInstance?: boolean): EnumMessage.AsObject;
   static toObject(includeInstance: boolean, msg: EnumMessage): EnumMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

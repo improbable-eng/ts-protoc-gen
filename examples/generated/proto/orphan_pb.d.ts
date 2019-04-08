@@ -7,6 +7,7 @@ export class OrphanMapMessage extends jspb.Message {
   getPrimitiveIntsMap(): jspb.Map<string, number>;
   clearPrimitiveIntsMap(): void;
   serializeBinary(): Uint8Array;
+  cloneMessage(): OrphanMapMessage;
   toObject(includeInstance?: boolean): OrphanMapMessage.AsObject;
   static toObject(includeInstance: boolean, msg: OrphanMapMessage): OrphanMapMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -33,6 +34,7 @@ export class OrphanMessage extends jspb.Message {
   setMyEnum(value: OrphanEnumMap[keyof OrphanEnumMap]): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): OrphanMessage;
   toObject(includeInstance?: boolean): OrphanMessage.AsObject;
   static toObject(includeInstance: boolean, msg: OrphanMessage): OrphanMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -55,6 +57,7 @@ export class OrphanUnaryRequest extends jspb.Message {
   setSomeInt64(value: number): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): OrphanUnaryRequest;
   toObject(includeInstance?: boolean): OrphanUnaryRequest.AsObject;
   static toObject(includeInstance: boolean, msg: OrphanUnaryRequest): OrphanUnaryRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -75,6 +78,7 @@ export class OrphanStreamRequest extends jspb.Message {
   setSomeString(value: string): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): OrphanStreamRequest;
   toObject(includeInstance?: boolean): OrphanStreamRequest.AsObject;
   static toObject(includeInstance: boolean, msg: OrphanStreamRequest): OrphanStreamRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

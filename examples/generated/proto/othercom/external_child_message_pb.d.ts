@@ -8,6 +8,7 @@ export class ExternalChildMessage extends jspb.Message {
   setMyString(value: string): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): ExternalChildMessage;
   toObject(includeInstance?: boolean): ExternalChildMessage.AsObject;
   static toObject(includeInstance: boolean, msg: ExternalChildMessage): ExternalChildMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

@@ -17,6 +17,7 @@ export class MapMessage extends jspb.Message {
   getPrimitiveIntsMap(): jspb.Map<string, number>;
   clearPrimitiveIntsMap(): void;
   serializeBinary(): Uint8Array;
+  cloneMessage(): MapMessage;
   toObject(includeInstance?: boolean): MapMessage.AsObject;
   static toObject(includeInstance: boolean, msg: MapMessage): MapMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
@@ -40,6 +41,7 @@ export namespace MapMessage {
     setMyString(value: string): void;
 
     serializeBinary(): Uint8Array;
+    cloneMessage(): InternalChildMessage;
     toObject(includeInstance?: boolean): InternalChildMessage.AsObject;
     static toObject(includeInstance: boolean, msg: InternalChildMessage): InternalChildMessage.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

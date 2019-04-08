@@ -43,6 +43,7 @@ export class SimpleValue extends jspb.Message {
   getKindCase(): SimpleValue.KindCase;
   getAnotherCase(): SimpleValue.AnotherCase;
   serializeBinary(): Uint8Array;
+  cloneMessage(): SimpleValue;
   toObject(includeInstance?: boolean): SimpleValue.AsObject;
   static toObject(includeInstance: boolean, msg: SimpleValue): SimpleValue.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

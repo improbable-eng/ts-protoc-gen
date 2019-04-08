@@ -55,6 +55,7 @@ export class PrimitiveMessageV3 extends jspb.Message {
   setMyNumber(value: number): void;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): PrimitiveMessageV3;
   toObject(includeInstance?: boolean): PrimitiveMessageV3.AsObject;
   static toObject(includeInstance: boolean, msg: PrimitiveMessageV3): PrimitiveMessageV3.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};

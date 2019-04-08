@@ -82,6 +82,7 @@ export class RepeatedPrimitiveMessage extends jspb.Message {
   addMyBytes(value: Uint8Array | string, index?: number): Uint8Array | string;
 
   serializeBinary(): Uint8Array;
+  cloneMessage(): RepeatedPrimitiveMessage;
   toObject(includeInstance?: boolean): RepeatedPrimitiveMessage.AsObject;
   static toObject(includeInstance: boolean, msg: RepeatedPrimitiveMessage): RepeatedPrimitiveMessage.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
