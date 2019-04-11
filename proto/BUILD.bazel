@@ -1,4 +1,5 @@
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
+load("@ts_protoc_gen//:defs.bzl", "javascript_proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -17,4 +18,9 @@ proto_library(
 typescript_proto_library(
     name = "generate",
     proto = ":proto",
+)
+
+javascript_proto_library(
+  name = "generate_js",
+  proto = ":proto",
 )

@@ -1,6 +1,7 @@
 package(default_visibility = ["//test/bazel:__subpackages__"])
 
 load("//:defs.bzl", "typescript_proto_library")
+load("//:defs.bzl", "javascript_proto_library")
 
 proto_library(
     name = "delivery_person_proto",
@@ -17,6 +18,11 @@ typescript_proto_library(
     proto = ":delivery_person_proto",
 )
 
+javascript_proto_library(
+    name = "delivery_person_jss_proto",
+    proto = ":delivery_person_proto",
+)
+
 proto_library(
     name = "pizza_proto",
     srcs = [
@@ -27,4 +33,9 @@ proto_library(
 typescript_proto_library(
     name = "pizza_ts_proto",
     proto = ":pizza_proto",
+)
+
+javascript_proto_library(
+  name = "pizza_js_proto",
+  proto = ":pizza_proto",
 )
