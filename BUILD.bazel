@@ -1,3 +1,5 @@
+load("@npm_bazel_typescript//:defs.bzl", "ts_config")
+
 package(default_visibility = ["//visibility:public"])
 
 exports_files([
@@ -12,4 +14,10 @@ filegroup(
         "//proto/examplecom:generate",
         "//proto/othercom:generate",
     ],
+)
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    deps = [],
 )
