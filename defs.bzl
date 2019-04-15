@@ -74,6 +74,19 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
 
     return js_outputs
 
+def get_output_dir(ctx, outputs):
+    # Default to using bin_dir
+    output_dir = ctx.bin_dir.path
+
+    if len(outputs) <= 0:
+        return output_dir
+
+    declared_output = outputs[0]
+    if declared_output.dirname.endswith(ctx.label.package):
+        output_dir = declared_output.dirname[:len(declared_output.dirname) - len(ctx.label.package)]
+    
+    return output_dir
+
 def typescript_proto_library_aspect_(target, ctx):
     """
     A bazel aspect that is applied on every proto_library rule on the transitive set of dependencies
@@ -104,7 +117,7 @@ def typescript_proto_library_aspect_(target, ctx):
 
     descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets]
 
-    protoc_output_dir = ctx.var["BINDIR"]
+    protoc_output_dir = get_output_dir(ctx, outputs)
     protoc_command = "%s" % (ctx.file._protoc.path)
 
     protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.files._ts_protoc_gen[1].path)
