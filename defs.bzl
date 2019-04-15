@@ -39,27 +39,40 @@ def append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modification
         else:
             js_outputs.append(output)
 
-def _convert_js_files_to_amd_modules(ctx, js_outputs):
+def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
     """
-    Converts the output js into an AMD module, similar to how it is done in rules_typecript:
-      https://github.com/bazelbuild/rules_typescript/blob/master/internal/protobufjs/typescript_proto_library_aspectrary.bzl#L47
+    Calls the convert_to_amd tool to convert the generated JS code into AMD modules.
     """
 
-    amd_module_conversions = []
-    for js_file in js_outputs:
+    js_outputs = []
+    for js_file in js_protoc_outputs:
         file_path = "/".join([p for p in [
             ctx.workspace_name,
             ctx.label.package,
         ] if p])
         file_name = js_file.basename[:-len(js_file.extension) - 1]
-        define_code = 'define("%s/%s", function(require, exports, module) {' % (file_path, file_name)
-        cmd = "sed -i '1s;^;%s;' %s" % (define_code, js_file.path)
-        cmd += " && echo '});' >> %s" % (js_file.path)
-        cmd += " && sed -i -E 's/(\.\.\/)+/%s\//' %s" % (ctx.workspace_name, js_file.path)
-        cmd += " && sed -i -E 's/(require\(.*).js/\\1/' %s" % (js_file.path)
-        amd_module_conversions.append(cmd)
+        amd_output = ctx.actions.declare_file(file_name + "_amd." + js_file.extension)
+        js_outputs.append(amd_output)
+        ctx.actions.run(
+            inputs = [js_file],
+            outputs = [amd_output],
+            arguments = [
+                "--workspace_name",
+                ctx.workspace_name,
+                "--input_base_path",
+                file_path,
+                "--output_module_name",
+                file_name,
+                "--input_file_path",
+                js_file.path,
+                "--output_file_path",
+                amd_output.path,
+            ],
+            progress_message = "Creating AMD module for {}".format(ctx.label),
+            executable = ctx.executable._convert_to_amd,
+        )
 
-    return amd_module_conversions
+    return js_outputs
 
 def typescript_proto_library_aspect_(target, ctx):
     """
@@ -68,7 +81,7 @@ def typescript_proto_library_aspect_(target, ctx):
 
     Handles running protoc to produce the generated JS and TS files.
     """
-    js_outputs = []
+    js_protoc_outputs = []
     dts_outputs = []
     proto_inputs = []
     file_modifications = []
@@ -81,9 +94,9 @@ def typescript_proto_library_aspect_(target, ctx):
         file_name = src.basename[:-len(src.extension) - 1]
         normalized_file = proto_path(src)
         proto_inputs.append(normalized_file)
-        append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications)
+        append_to_outputs(ctx, file_name, js_protoc_outputs, dts_outputs, file_modifications)
 
-    outputs = dts_outputs + js_outputs
+    outputs = dts_outputs + js_protoc_outputs
 
     inputs += ctx.files._ts_protoc_gen
     inputs += target.proto.direct_sources
@@ -100,9 +113,7 @@ def typescript_proto_library_aspect_(target, ctx):
     protoc_command += " --descriptor_set_in=%s" % (":".join(descriptor_sets_paths))
     protoc_command += " %s" % (" ".join(proto_inputs))
 
-    amd_module_conversions = _convert_js_files_to_amd_modules(ctx, js_outputs)
-
-    commands = [protoc_command] + file_modifications + amd_module_conversions
+    commands = [protoc_command] + file_modifications
     command = " && ".join(commands)
     ctx.actions.run_shell(
         inputs = inputs,
@@ -112,7 +123,7 @@ def typescript_proto_library_aspect_(target, ctx):
     )
 
     dts_outputs = depset(dts_outputs)
-    js_outputs = depset(js_outputs)
+    js_outputs = depset(_convert_js_files_to_amd_modules(ctx, js_protoc_outputs))
     deps_js = depset([])
     deps_dts = depset([])
 
@@ -144,6 +155,12 @@ typescript_proto_library_aspect = aspect(
             executable = True,
             cfg = "host",
             default = Label("@com_google_protobuf//:protoc"),
+        ),
+        "_convert_to_amd": attr.label(
+            executable = True,
+            cfg = "host",
+            allow_files = True,
+            default = Label("//src/bazel:convert_to_amd"),
         ),
     },
 )
