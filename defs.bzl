@@ -75,15 +75,45 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
     return js_outputs
 
 def get_output_dir(ctx, outputs):
+    '''
+    Finds the proper root bin directory for the protoc tool.
+
+    In the case of a local build, the bin-dir is sufficient. However,
+    since the aspect runs in the context of external dependencies,
+    it needs to account for this. For example, an external workspace
+    with the following structure
+    
+    protos
+    |- api
+    |- |- service.proto
+    |- |- BUILD
+    |- WORKSPACE
+    
+    would have a package @protos//api/service.proto. In this case,
+    the declared_output's directory would be bazel-bin/external/protos/api/
+    and the package label would be api/. Since the protoc tool places
+    its outputs based on the directory structure (which is what defines
+    package labels), we need to specify the proper external root. Using
+    the raw bin_dir would end up placing this output file in bazel-bin/api,
+    which is not what was declared.
+    '''
+
     # Default to using bin_dir
     output_dir = ctx.bin_dir.path
 
     if len(outputs) <= 0:
         return output_dir
 
+
+    # This check just verifies that the end of the declared output matches
+    # the package label. This should be true for all outputs so we just take
+    # the first.
     declared_output = outputs[0]
     if declared_output.dirname.endswith(ctx.label.package):
         output_dir = declared_output.dirname[:len(declared_output.dirname) - len(ctx.label.package)]
+    else:
+        print("""The declared outputs do not match their package labels. If you see errors, 
+                check to make sure your package labels match your directory structure.""")
     
     return output_dir
 
