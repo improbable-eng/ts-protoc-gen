@@ -104,7 +104,6 @@ def get_output_dir(ctx, outputs):
     if len(outputs) <= 0:
         return output_dir
 
-
     # This check just verifies that the end of the declared output matches
     # the package label. This should be true for all outputs so we just take
     # the first.
@@ -113,7 +112,8 @@ def get_output_dir(ctx, outputs):
         output_dir = declared_output.dirname[:len(declared_output.dirname) - len(ctx.label.package)]
     else:
         print("""The declared outputs do not match their package labels. If you see errors, 
-                check to make sure your package labels match your directory structure.""")
+                check to make sure your package labels match your directory structure. The 
+                declared output directory was %s.""" % declared_output.dirname)
     
     return output_dir
 
