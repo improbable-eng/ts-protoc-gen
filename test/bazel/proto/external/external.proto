@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package test.bazel.external.proto;
+
+message Ingredient {
+  string name = 1;
+}

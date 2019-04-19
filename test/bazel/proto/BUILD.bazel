@@ -17,3 +17,8 @@ typescript_proto_library(
     name = "pizza_service_ts_proto",
     proto = ":pizza_service_proto",
 )
+
+typescript_proto_library(
+    name = "external_ts_proto",
+    proto = "@external_protos//:external_proto",
+)

@@ -39,3 +39,9 @@ ts_setup_workspace()
 load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
 
 typescript_proto_dependencies()
+
+# Local external repository to test cross-project dependencies
+local_repository(
+  name = "external_protos",
+  path = "test/bazel/proto/external",
+)
