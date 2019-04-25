@@ -29,11 +29,14 @@ def proto_path(proto):
         path = path[1:]
     return path
 
-def append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications):
+def append_to_outputs(ctx, src, js_outputs, dts_outputs, file_modifications):
     generated_filenames = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
 
+    file_name = src.basename[:-len(src.extension) - 1]
     for f in generated_filenames:
-        output = ctx.actions.declare_file(file_name + f)
+        # The output should be a sibling to the source file because
+        # that is how protoc determines the output directory
+        output = ctx.actions.declare_file(file_name + f, sibling = src)
         if f.endswith(".d.ts"):
             dts_outputs.append(output)
         else:
@@ -82,20 +85,19 @@ def get_output_dir(ctx, outputs):
     since the aspect runs in the context of external dependencies,
     it needs to account for this. For example, an external workspace
     with the following structure
-    
+
     protos
     |- api
     |- |- service.proto
     |- |- BUILD
     |- WORKSPACE
-    
+
     would have a package @protos//api/service.proto. In this case,
     the declared_output's directory would be bazel-bin/external/protos/api/
     and the package label would be api/. Since the protoc tool places
-    its outputs based on the directory structure (which is what defines
-    package labels), we need to specify the proper external root. Using
-    the raw bin_dir would end up placing this output file in bazel-bin/api,
-    which is not what was declared.
+    its outputs based on the directory structure, we need to specify the
+    proper external root. Using the raw bin_dir would end up placing this
+    output file in bazel-bin/api, which is not what was declared.
     """
 
     # Default to using bin_dir
@@ -103,18 +105,18 @@ def get_output_dir(ctx, outputs):
 
     if len(outputs) <= 0:
         return output_dir
-
-    # This check just verifies that the end of the declared output matches
-    # the package label. This should be true for all outputs so we just take
-    # the first.
-    declared_output = outputs[0]
-    if declared_output.dirname.endswith(ctx.label.package):
-        output_dir = declared_output.dirname[:len(declared_output.dirname) - len(ctx.label.package)]
-    else:
-        print("""The declared outputs do not match their package labels. If you see errors, 
-                check to make sure your package labels match your directory structure. The 
-                declared output directory was %s.""" % declared_output.dirname)
     
+    if not output_dir.startswith(ctx.bin_dir.path):
+        fail("Invalid output directory. Output is outside of the bin directory.")
+
+    # Remove the bin dir from the path of the output
+    bin_dir_parts = ctx.bin_dir.path.split("/")
+    parts = outputs[0].dirname.split("/")[len(bin_dir_parts):]
+
+    # Add on the external workspace, in the form of "external/<workspace_name>"
+    if parts[0] == "external":
+        output_dir += "/" + "/".join(parts[:2])
+
     return output_dir
 
 def typescript_proto_library_aspect_(target, ctx):
@@ -134,10 +136,9 @@ def typescript_proto_library_aspect_(target, ctx):
         if src.extension != "proto":
             fail("Input must be a proto file")
 
-        file_name = src.basename[:-len(src.extension) - 1]
         normalized_file = proto_path(src)
         proto_inputs.append(normalized_file)
-        append_to_outputs(ctx, file_name, js_protoc_outputs, dts_outputs, file_modifications)
+        append_to_outputs(ctx, src, js_protoc_outputs, dts_outputs, file_modifications)
 
     outputs = dts_outputs + js_protoc_outputs
 
@@ -174,7 +175,7 @@ def typescript_proto_library_aspect_(target, ctx):
         aspect_data = dep[TypescriptProtoLibraryAspect]
         deps_dts += aspect_data.dts_outputs + aspect_data.deps_dts
         deps_js += aspect_data.js_outputs + aspect_data.deps_js
-
+    
     return [TypescriptProtoLibraryAspect(
         dts_outputs = dts_outputs,
         js_outputs = js_outputs,
