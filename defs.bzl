@@ -203,7 +203,7 @@ typescript_proto_library_aspect = aspect(
             executable = True,
             cfg = "host",
             allow_files = True,
-            default = Label("//src/bazel:convert_to_amd"),
+            default = Label("@ts_protoc_gen//src/bazel:convert_to_amd"),
         ),
     },
 )
