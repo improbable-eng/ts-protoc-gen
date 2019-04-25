@@ -75,7 +75,7 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
     return js_outputs
 
 def get_output_dir(ctx, outputs):
-    '''
+    """
     Finds the proper root bin directory for the protoc tool.
 
     In the case of a local build, the bin-dir is sufficient. However,
@@ -96,7 +96,7 @@ def get_output_dir(ctx, outputs):
     package labels), we need to specify the proper external root. Using
     the raw bin_dir would end up placing this output file in bazel-bin/api,
     which is not what was declared.
-    '''
+    """
 
     # Default to using bin_dir
     output_dir = ctx.bin_dir.path
