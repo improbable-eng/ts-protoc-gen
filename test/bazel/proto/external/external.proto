@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package test.bazel.external.proto;
 
+import "external_dep.proto";
+
 message Ingredient {
   string name = 1;
+  test.bazel.external.proto.dep.Dependency dep = 2;
 }

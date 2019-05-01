@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package test.bazel.external.proto.dep;
+
+message Dependency {
+  string name = 1;
+}

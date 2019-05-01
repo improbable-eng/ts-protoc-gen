@@ -11,6 +11,26 @@ TypescriptProtoLibraryAspect = provider(
     },
 )
 
+def validate_target(target):
+    """
+    Make sure the target is valid. We need to make sure all sources in the proto
+    provided are 
+    1) Proto files.
+    2) From the same package (including workspace)
+    """
+    if len(target.proto.direct_sources) == 0:
+        return target.label
+
+    owner = target.proto.direct_sources[0].owner
+    for src in target.proto.direct_sources:
+        if src.extension != "proto":
+            fail("Input must be a proto file.")
+        
+        if src.owner.package != owner.package:
+            fail("Inputs must all be in the same package.")
+
+    return owner
+
 def proto_path(proto):
     """
     The proto path is not really a file path
@@ -29,20 +49,17 @@ def proto_path(proto):
         path = path[1:]
     return path
 
-def append_to_outputs(ctx, src, js_outputs, dts_outputs, file_modifications):
-    generated_filenames = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
-
+def append_to_outputs(ctx, src, js_outputs, dts_outputs):
+    output_extensions = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
     file_name = src.basename[:-len(src.extension) - 1]
-    for f in generated_filenames:
-        # The output should be a sibling to the source file because
-        # that is how protoc determines the output directory
-        output = ctx.actions.declare_file(file_name + f, sibling = src)
-        if f.endswith(".d.ts"):
+    for ext in output_extensions:
+        output = ctx.actions.declare_file(file_name + ext)
+        if ext.endswith(".d.ts"):
             dts_outputs.append(output)
         else:
             js_outputs.append(output)
 
-def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
+def _convert_js_files_to_amd_modules(ctx, owner, js_protoc_outputs):
     """
     Calls the convert_to_amd tool to convert the generated JS code into AMD modules.
     """
@@ -50,18 +67,20 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
     js_outputs = []
     for js_file in js_protoc_outputs:
         file_path = "/".join([p for p in [
-            ctx.workspace_name,
-            ctx.label.package,
+            owner.workspace_root,
+            owner.package,
         ] if p])
+
         file_name = js_file.basename[:-len(js_file.extension) - 1]
         amd_output = ctx.actions.declare_file(file_name + "_amd." + js_file.extension)
         js_outputs.append(amd_output)
+
         ctx.actions.run(
             inputs = [js_file],
             outputs = [amd_output],
             arguments = [
                 "--workspace_name",
-                ctx.workspace_name,
+                owner.workspace_root,
                 "--input_base_path",
                 file_path,
                 "--output_module_name",
@@ -77,7 +96,7 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
 
     return js_outputs
 
-def get_output_dir(ctx, outputs):
+def get_output_dir(ctx, owner):
     """
     Finds the proper root bin directory for the protoc tool.
 
@@ -101,23 +120,7 @@ def get_output_dir(ctx, outputs):
     """
 
     # Default to using bin_dir
-    output_dir = ctx.bin_dir.path
-
-    if len(outputs) <= 0:
-        return output_dir
-    
-    if not output_dir.startswith(ctx.bin_dir.path):
-        fail("Invalid output directory. Output is outside of the bin directory.")
-
-    # Remove the bin dir from the path of the output
-    bin_dir_parts = ctx.bin_dir.path.split("/")
-    parts = outputs[0].dirname.split("/")[len(bin_dir_parts):]
-
-    # Add on the external workspace, in the form of "external/<workspace_name>"
-    if parts[0] == "external":
-        output_dir += "/" + "/".join(parts[:2])
-
-    return output_dir
+    return ctx.bin_dir.path + "/" + owner.workspace_root
 
 def typescript_proto_library_aspect_(target, ctx):
     """
@@ -131,14 +134,14 @@ def typescript_proto_library_aspect_(target, ctx):
     proto_inputs = []
     file_modifications = []
 
+    owner = validate_target(target)
+
     inputs = depset([ctx.file._protoc])
     for src in target.proto.direct_sources:
-        if src.extension != "proto":
-            fail("Input must be a proto file")
-
         normalized_file = proto_path(src)
         proto_inputs.append(normalized_file)
-        append_to_outputs(ctx, src, js_protoc_outputs, dts_outputs, file_modifications)
+
+        append_to_outputs(ctx, src, js_protoc_outputs, dts_outputs)
 
     outputs = dts_outputs + js_protoc_outputs
 
@@ -148,7 +151,7 @@ def typescript_proto_library_aspect_(target, ctx):
 
     descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets]
 
-    protoc_output_dir = get_output_dir(ctx, outputs)
+    protoc_output_dir = get_output_dir(ctx, owner)
     protoc_command = "%s" % (ctx.file._protoc.path)
 
     protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.files._ts_protoc_gen[1].path)
@@ -167,7 +170,7 @@ def typescript_proto_library_aspect_(target, ctx):
     )
 
     dts_outputs = depset(dts_outputs)
-    js_outputs = depset(_convert_js_files_to_amd_modules(ctx, js_protoc_outputs))
+    js_outputs = depset(_convert_js_files_to_amd_modules(ctx, owner, js_protoc_outputs))
     deps_js = depset([])
     deps_dts = depset([])
 
@@ -240,8 +243,7 @@ typescript_proto_library = rule(
     attrs = {
         "proto": attr.label(
             mandatory = True,
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
             providers = ["proto"],
             aspects = [typescript_proto_library_aspect],
         ),
@@ -252,8 +254,7 @@ typescript_proto_library = rule(
             default = Label("@ts_protoc_gen//bin:protoc-gen-ts"),
         ),
         "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
             executable = True,
             cfg = "host",
             default = Label("@com_google_protobuf//:protoc"),

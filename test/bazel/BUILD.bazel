@@ -70,3 +70,26 @@ ts_web_test_suite(
         ":pizza_service_proto_test",
     ],
 )
+
+ts_library(
+    name = "external_proto_with_deps_test",
+    testonly = 1,
+    srcs = ["external_proto_with_deps_test.spec.ts"],
+    tsconfig = ":tsconfig.json",
+    deps = [
+        "//test/bazel/proto:external_ts_proto",
+        "@npm//@types/jasmine",
+        # Don't put external_dep_ts_proto here, we want to test it is included transitively
+    ],
+)
+
+ts_web_test_suite(
+    name = "external_proto_with_deps_test_suite",
+    browsers = [
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
+    ],
+    deps = [
+        ":google_protobuf_requirejs",
+        ":external_proto_with_deps_test",
+    ],
+)
