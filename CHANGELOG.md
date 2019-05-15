@@ -1,4 +1,14 @@
-## 0.9.1-pre
+## 0.10.0
+
+### Changes
+* [#157](https://github.com/improbable-eng/ts-protoc-gen/pull/157) Generate more accurate types for Proto Enum values. ([@mattvagni](https://github.com/mattvagni))
+* [#159](https://github.com/improbable-eng/ts-protoc-gen/pull/159) Swap ordering of `onStatus` and `onEnd` callbacks. ([@hectim](https://github.com/hectim))
+* [#160](https://github.com/improbable-eng/ts-protoc-gen/pull/160) Update bazel-related library versions. ([@Dig-Doug](https://github.com/Dig-Doug))
+
+
+## Fixes
+* [#165](https://github.com/improbable-eng/ts-protoc-gen/pull/165) Replace uses of the deprecated `new Buffer()` with `Buffer.from()`. ([@ashi009](https://github.com/ashi009))
+* [#161](https://github.com/improbable-eng/ts-protoc-gen/pull/161) Mark `google-protobuf` as a runtime dependency. ([@jonny-improbable](https://github.com/jonny-improbable))
 
 ## 0.9.0
 
