@@ -100,6 +100,26 @@ You can use the `test_ts_proto` as a `dep` in other `ts_library` targets. Howeve
 include `google-protobuf`, `@improbable-eng/grpc-web`, and `browser-headers` at runtime yourself. See
 `//test/bazel:pizza_service_proto_test_suite` for an example.
 
+#### IDE Code Completion
+If you'd like to get code completion working for the generated protos in your IDE, add the following to your `tsconfig.json`:
+
+```
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      # Replace <workspace-name> with the name of your workspace
+      "<workspace-name>/*": [
+        "*", # Enables absolute paths for src files in your project
+        "bazel-bin/*" # Enables referencing generate protos with absolute paths
+      ]
+    }
+  }
+}
+```
+
+> NOTE: This has only been tested in IntelliJ with the bazel plugin
+
 </p></details>
 
 ## Contributing
