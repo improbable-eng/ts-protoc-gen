@@ -29,11 +29,11 @@ def proto_path(proto):
         path = path[1:]
     return path
 
-def append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications):
+def append_to_outputs(ctx, src, file_name, js_outputs, dts_outputs, file_modifications):
     generated_filenames = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
 
     for f in generated_filenames:
-        output = ctx.actions.declare_file(file_name + f)
+        output = ctx.actions.declare_file(file_name + f, sibling=src)
         if f.endswith(".d.ts"):
             dts_outputs.append(output)
         else:
@@ -94,7 +94,7 @@ def typescript_proto_library_aspect_(target, ctx):
         file_name = src.basename[:-len(src.extension) - 1]
         normalized_file = proto_path(src)
         proto_inputs.append(normalized_file)
-        append_to_outputs(ctx, file_name, js_protoc_outputs, dts_outputs, file_modifications)
+        append_to_outputs(ctx, src, file_name, js_protoc_outputs, dts_outputs, file_modifications)
 
     outputs = dts_outputs + js_protoc_outputs
 
@@ -104,7 +104,14 @@ def typescript_proto_library_aspect_(target, ctx):
 
     descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets]
 
-    protoc_output_dir = ctx.var["BINDIR"]
+    parts = ctx.build_file_path.split("/")
+    if len(parts) > 1 and parts[0] == 'external':
+        build_dir = "/" + "/".join(parts[:-1])
+    else:
+        build_dir = ""
+
+    protoc_output_dir = ctx.bin_dir.path + build_dir
+
     protoc_command = "%s" % (ctx.file._protoc.path)
 
     protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.files._ts_protoc_gen[1].path)
