@@ -5,6 +5,8 @@ package test.bazel.proto;
 import "test/bazel/proto/common/pizza.proto";
 import "test/bazel/proto/common/delivery_person.proto";
 
+import "google/protobuf/timestamp.proto";
+
 service PizzaService {
   rpc OrderPizza(OrderPizzaRequest) returns (OrderPizzaResponse) {}
 }
@@ -18,4 +20,6 @@ message OrderPizzaRequest {
 message OrderPizzaResponse {
   // The person that will deliver the pizza.
   DeliveryPerson delivery_person = 1;
+  // Time the delivery should arrive by.
+  google.protobuf.Timestamp promised_time = 2;
 }

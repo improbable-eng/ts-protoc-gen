@@ -47,6 +47,7 @@ ts_library(
     deps = [
         "//test/bazel/proto:pizza_service_ts_proto",
         "//test/bazel/proto/common:pizza_ts_proto",
+        "@npm//@types/google-protobuf",
         "@npm//@types/jasmine",
         # Don't put delivery_person_ts_proto here, we want to test it is included transitively
     ],
@@ -69,4 +70,7 @@ ts_web_test_suite(
         ":google_protobuf_requirejs",
         ":pizza_service_proto_test",
     ],
+    data = [
+        "@npm//google-protobuf",
+    ]
 )

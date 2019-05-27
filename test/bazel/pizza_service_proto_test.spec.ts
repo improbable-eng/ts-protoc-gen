@@ -4,6 +4,7 @@ import {
   OrderPizzaResponse
 } from "ts_protoc_gen/test/bazel/proto/pizza_service_pb";
 import {PizzaService} from "ts_protoc_gen/test/bazel/proto/pizza_service_pb_service";
+import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 
 declare function require(module: string): any;
 
@@ -38,4 +39,24 @@ describe("DeliveryPerson", () => {
 
     expect(person.getPizzasList().length).toBe(1);
   });
+
+  it("Timestamp seems to work", () => {
+    const response = new OrderPizzaResponse();
+
+    const PROTOS = require("ts_protoc_gen/test/bazel/proto/common/delivery_person_pb");
+    const DeliveryPerson = PROTOS.DeliveryPerson;
+    const person = new DeliveryPerson();
+    response.setDeliveryPerson(person);
+
+    const ts = new Timestamp();
+    const now = new Date();
+    const minutes = 30;
+    const deliveryTime = new Date(now.getTime() + minutes * 60000);
+    ts.fromDate(deliveryTime);
+    response.setPromisedTime(ts);
+
+    console.log("promised time = " + response.getPromisedTime());
+    expect(response.getPromisedTime()).toBeDefined();
+  });
+
 });

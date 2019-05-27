@@ -10,6 +10,7 @@ proto_library(
     deps = [
         "//test/bazel/proto/common:delivery_person_proto",
         "//test/bazel/proto/common:pizza_proto",
+        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 
