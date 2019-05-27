@@ -123,7 +123,10 @@ def typescript_proto_library_aspect_(target, ctx):
     )
 
     dts_outputs = depset(dts_outputs)
-    js_outputs = depset(_convert_js_files_to_amd_modules(ctx, js_protoc_outputs))
+    if ctx.attr.module == "amd":
+        js_outputs = depset(_convert_js_files_to_amd_modules(ctx, js_protoc_outputs))
+    else:
+        js_outputs = depset(js_protoc_outputs)
     deps_js = depset([])
     deps_dts = depset([])
 
@@ -143,6 +146,7 @@ typescript_proto_library_aspect = aspect(
     implementation = typescript_proto_library_aspect_,
     attr_aspects = ["deps"],
     attrs = {
+        "module": attr.string(values = ["amd", "commonjs"]),
         "_ts_protoc_gen": attr.label(
             allow_files = True,
             executable = True,
@@ -200,6 +204,11 @@ typescript_proto_library = rule(
             single_file = True,
             providers = ["proto"],
             aspects = [typescript_proto_library_aspect],
+        ),
+        "module": attr.string(
+            default = "amd",
+            values = ["amd", "commonjs"],
+            doc = "Wrap the output js as an amd or leave it as a commonjs module"
         ),
         "_ts_protoc_gen": attr.label(
             allow_files = True,
