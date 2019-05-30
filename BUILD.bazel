@@ -4,7 +4,6 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files([
     "tsconfig.json",
-    "node_modules/google-protobuf/google-protobuf.js",
 ])
 
 filegroup(

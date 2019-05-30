@@ -86,7 +86,7 @@ def typescript_proto_library_aspect_(target, ctx):
     proto_inputs = []
     file_modifications = []
 
-    inputs = depset([ctx.file._protoc])
+    inputs = [ctx.file._protoc]
     for src in target.proto.direct_sources:
         if src.extension != "proto":
             fail("Input must be a proto file")
@@ -100,7 +100,7 @@ def typescript_proto_library_aspect_(target, ctx):
 
     inputs += ctx.files._ts_protoc_gen
     inputs += target.proto.direct_sources
-    inputs += target.proto.transitive_descriptor_sets
+    inputs += target.proto.transitive_descriptor_sets.to_list()
 
     descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets]
 
@@ -116,7 +116,7 @@ def typescript_proto_library_aspect_(target, ctx):
     commands = [protoc_command] + file_modifications
     command = " && ".join(commands)
     ctx.actions.run_shell(
-        inputs = inputs,
+        inputs = depset(inputs),
         outputs = outputs,
         progress_message = "Creating Typescript pb files %s" % ctx.label,
         command = command,
@@ -124,19 +124,21 @@ def typescript_proto_library_aspect_(target, ctx):
 
     dts_outputs = depset(dts_outputs)
     js_outputs = depset(_convert_js_files_to_amd_modules(ctx, js_protoc_outputs))
-    deps_js = depset([])
-    deps_dts = depset([])
+    deps_dts = []
+    deps_js = []
 
     for dep in ctx.rule.attr.deps:
         aspect_data = dep[TypescriptProtoLibraryAspect]
-        deps_dts += aspect_data.dts_outputs + aspect_data.deps_dts
-        deps_js += aspect_data.js_outputs + aspect_data.deps_js
+        deps_dts.append(aspect_data.dts_outputs)
+        deps_dts.append(aspect_data.deps_dts)
+        deps_js.append(aspect_data.js_outputs)
+        deps_js.append(aspect_data.deps_js)
 
     return [TypescriptProtoLibraryAspect(
         dts_outputs = dts_outputs,
         js_outputs = js_outputs,
-        deps_dts = deps_dts,
-        deps_js = deps_js,
+        deps_dts = depset(transitive = deps_dts),
+        deps_js = depset(transitive = deps_js),
     )]
 
 typescript_proto_library_aspect = aspect(
@@ -172,17 +174,18 @@ def _typescript_proto_library_impl(ctx):
     aspect_data = ctx.attr.proto[TypescriptProtoLibraryAspect]
     dts_outputs = aspect_data.dts_outputs
     js_outputs = aspect_data.js_outputs
-    outputs = js_outputs + dts_outputs
+    outputs = depset(transitive = [js_outputs, dts_outputs])
 
+    js_srcs = depset(transitive = [js_outputs, aspect_data.deps_js])
     return struct(
         typescript = struct(
             declarations = dts_outputs,
-            transitive_declarations = dts_outputs + aspect_data.deps_dts,
+            transitive_declarations = depset(transitive = [dts_outputs, aspect_data.deps_dts]),
             type_blacklisted_declarations = depset([]),
-            es5_sources = js_outputs + aspect_data.deps_js,
-            es6_sources = js_outputs + aspect_data.deps_js,
-            transitive_es5_sources = js_outputs + aspect_data.deps_js,
-            transitive_es6_sources = js_outputs + aspect_data.deps_js,
+            es5_sources = js_srcs,
+            es6_sources = js_srcs,
+            transitive_es5_sources = js_srcs,
+            transitive_es6_sources = js_srcs,
         ),
         legacy_info = struct(
             files = outputs,
@@ -256,5 +259,8 @@ def typescript_proto_dependencies():
     yarn_install(
         name = "ts_protoc_gen_deps",
         package_json = "@ts_protoc_gen//:package.json",
+        # Don't use managed directories because these are internal to the library and the
+        # dependencies shouldn't need to be installed by the user.
+        symlink_node_modules = False,
         yarn_lock = "@ts_protoc_gen//:yarn.lock",
     )

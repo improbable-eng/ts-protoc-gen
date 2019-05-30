@@ -1,11 +1,16 @@
-workspace(name = "ts_protoc_gen")
+workspace(
+    name = "ts_protoc_gen",
+)
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "88e5e579fb9edfbd19791b8a3c6bfbe16ae3444dba4b428e5efd36856db7cf16",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/0.27.8/rules_nodejs-0.27.8.tar.gz"],
+    sha256 = "50fa0f31ca1deb1cffde4cfb546bc6d15d6cac39880f6ff3c883d66f98736f4b",
+    strip_prefix = "rules_nodejs-0.30.1",
+    urls = [
+        "https://github.com/bazelbuild/rules_nodejs/archive/0.30.1.tar.gz",
+    ],
 )
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "yarn_install")
