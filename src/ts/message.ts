@@ -1,6 +1,6 @@
 import {
   filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2,
-  withinNamespaceFromExportEntry, normaliseFieldObjectName
+  withinNamespaceFromExportEntry, normaliseFieldObjectName, stripPrefix
 } from "../util";
 import {ExportMap} from "../ExportMap";
 import {
@@ -62,7 +62,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       }
       existing.push(field);
     }
-    const snakeCaseName = field.getName().toLowerCase();
+    const snakeCaseName = stripPrefix(field.getName().toLowerCase(), "_");
     const camelCaseName = snakeToCamel(snakeCaseName);
     const withUppercase = uppercaseFirst(camelCaseName);
     const type = field.getType();
