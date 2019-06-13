@@ -62,7 +62,6 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       }
       existing.push(field);
     }
-
     const snakeCaseName = stripPrefix(field.getName().toLowerCase(), "_");
     const camelCaseName = snakeToCamel(snakeCaseName);
     const withUppercase = uppercaseFirst(camelCaseName);
