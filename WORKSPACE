@@ -6,10 +6,10 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "50fa0f31ca1deb1cffde4cfb546bc6d15d6cac39880f6ff3c883d66f98736f4b",
-    strip_prefix = "rules_nodejs-0.30.1",
+    sha256 = "a95b7f17b0b0e74b02f82ac14da3053d430c1abe99c6727c7abebda3bde3034b",
+    strip_prefix = "rules_nodejs-0.33.1",
     urls = [
-        "https://github.com/bazelbuild/rules_nodejs/archive/0.30.1.tar.gz",
+        "https://github.com/bazelbuild/rules_nodejs/archive/0.33.1.tar.gz",
     ],
 )
 

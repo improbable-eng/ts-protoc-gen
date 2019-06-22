@@ -8,6 +8,6 @@ nodejs_binary(
     data = [
         "//src",
     ],
-    entry_point = "ts_protoc_gen/src/index",
+    entry_point = "//src:index.ts",
     node_modules = "@ts_protoc_gen_deps//:node_modules",
 )

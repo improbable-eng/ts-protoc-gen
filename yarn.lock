@@ -2,10 +2,15 @@
 # yarn lockfile v1
 
 
-"@bazel/karma@~0.30.1":
-  version "0.30.2"
-  resolved "https://registry.yarnpkg.com/@bazel/karma/-/karma-0.30.2.tgz#3aa074d9e76f53c0faa985bb6bcbb82194e68f16"
-  integrity sha512-8Sr0m0aAbm/whOkcate5LPtGghpHjJeSuWJ1XfxPGlQ+rXDUEFjvACbufONwzki4FbLOk5mMIiWWTGy0o/kIqw==
+"@bazel/hide-bazel-files@~0.33.1":
+  version "0.33.1"
+  resolved "https://registry.yarnpkg.com/@bazel/hide-bazel-files/-/hide-bazel-files-0.33.1.tgz#576fc89c7df70ad47a3c3d45de4e4a2d325cb8bc"
+  integrity sha512-PgpmPG+Cn/o5eDOAg3hKdqpSWAdBmfo1kpLCj6L+gdZKduEI9jgCqYKlHLTMlYvOsj4TgoZiHx1wqeGsOUh6dw==
+
+"@bazel/karma@~0.33.1":
+  version "0.33.1"
+  resolved "https://registry.yarnpkg.com/@bazel/karma/-/karma-0.33.1.tgz#cb858faaa01f92c868610690ba680d3a32ec2958"
+  integrity sha512-9LI3FYrEmgMuIK1a6YF3o6BrQ9IvrRCS5kfAVP7NgEqnCQkZf3qOkzXTq8rE3unBdBTHlFOUEVvBM5w+j7o4Fg==
   dependencies:
     jasmine-core "2.8.0"
     karma "^4.0.0"
@@ -19,10 +24,10 @@
     semver "5.6.0"
     tmp "0.0.33"
 
-"@bazel/typescript@~0.30.1":
-  version "0.30.2"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-0.30.2.tgz#962eb122b80d3ef4805cf0520fc0a50d069ecb21"
-  integrity sha512-SIYHbg05Zyh7lrB8msnRjJ9hQSAHMOOWEV8seCKmCOx0noGP1Q00zXc4VRfi3uQCyCLZSFJvI4BXxnnKDwl61g==
+"@bazel/typescript@~0.33.1":
+  version "0.33.1"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-0.33.1.tgz#1d71db658345bd0f306dac0eee92c557fe2266c9"
+  integrity sha512-C9k4SJThkCXEPUYhTvcwCuqLZcrusCDojEBUpnWPpRpN/T2rtxqPi581LfUIGtQszU62TeTin8pv8XRc1pyjbA==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
@@ -1934,6 +1939,11 @@ source-map@^0.6.0, source-map@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
+source-map@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
+  integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
+
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
@@ -2085,6 +2095,15 @@ ts-node@^5.0.1:
     source-map-support "^0.5.3"
     yn "^2.0.0"
 
+tsickle@0.33.1:
+  version "0.33.1"
+  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.33.1.tgz#eee4ebabeda3bcd8afc32cee34c822cbe3e839ec"
+  integrity sha512-SpW2G3PvDGs4a5sMXPlWnCWHWRviWjSlI3U0734e3fU3U39VAE0NPr8M3W1cuL/OU/YXheYipGeEwtIJ5k0NHQ==
+  dependencies:
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    source-map "^0.7.3"
+
 tslib@^1.8.0, tslib@^1.8.1:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
@@ -2133,9 +2152,10 @@ type-is@~1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
-typescript@^2.7.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
+typescript@~3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
+  integrity sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
 
 ultron@~1.1.0:
   version "1.1.1"

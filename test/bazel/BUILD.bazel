@@ -7,7 +7,7 @@ load("@npm_bazel_karma//:defs.bzl", "ts_web_test_suite")
 genrule(
     name = "google_protobuf_requirejs",
     srcs = [
-        "@npm//node_modules/google-protobuf:google-protobuf.js",
+        "@npm//:node_modules/google-protobuf/google-protobuf.js",
     ],
     outs = [
         "google-protobuf.js",
@@ -63,8 +63,8 @@ ts_web_test_suite(
     ],
     # Files are served under /base/<WORKSPACE_NAME>/<path>
     static_files = [
-        "@npm//node_modules/@improbable-eng/grpc-web:dist/grpc-web-client.umd.js",
-        "@npm//node_modules/browser-headers:dist/browser-headers.umd.js",
+        "@npm//:node_modules/@improbable-eng/grpc-web/dist/grpc-web-client.umd.js",
+        "@npm//:node_modules/browser-headers/dist/browser-headers.umd.js",
     ],
     deps = [
         ":google_protobuf_requirejs",
@@ -74,7 +74,7 @@ ts_web_test_suite(
 
 rollup_bundle(
     name = "test_es6_bundling",
-    entry_point = "test/bazel/test_bundling",
+    entry_point = ":test_bundling.ts",
     deps = [
         ":test_bundling_lib",
     ],
