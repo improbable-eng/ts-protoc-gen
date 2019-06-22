@@ -4,18 +4,18 @@ load("@npm_bazel_typescript//:defs.bzl", "ts_library")
 load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
 
 nodejs_binary(
-    name = "convert_to_amd",
+    name = "change_import_style",
     data = [
-        ":convert_to_amd_lib",
+        ":change_import_style_lib",
     ],
-    entry_point = "ts_protoc_gen/src/bazel/convert_to_amd.js",
+    entry_point = "ts_protoc_gen/src/bazel/change_import_style.js",
     node_modules = "@ts_protoc_gen_deps//:node_modules",
 )
 
 ts_library(
-    name = "convert_to_amd_lib",
+    name = "change_import_style_lib",
     srcs = [
-        "convert_to_amd.ts",
+        "change_import_style.ts",
     ],
     node_modules = "@ts_protoc_gen_deps//:node_modules",
 )

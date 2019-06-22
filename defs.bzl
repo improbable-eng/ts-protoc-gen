@@ -4,9 +4,11 @@ load("@build_bazel_rules_nodejs//:defs.bzl", "yarn_install")
 
 TypescriptProtoLibraryAspect = provider(
     fields = {
-        "js_outputs": "The JS output files produced directly from the src protos",
+        "es5_outputs": "The ES5 JS files produced directly from the src protos",
+        "es6_outputs": "The ES6 JS files produced directly from the src protos",
         "dts_outputs": "Ths TS definition files produced directly from the src protos",
-        "deps_js": "The transitive JS dependencies",
+        "deps_es5": "The transitive ES5 JS dependencies",
+        "deps_es6": "The transitive ES6 JS dependencies",
         "deps_dts": "The transitive dependencies' TS definitions",
     },
 )
@@ -29,7 +31,7 @@ def proto_path(proto):
         path = path[1:]
     return path
 
-def append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modifications):
+def append_to_outputs(ctx, file_name, js_outputs, dts_outputs):
     generated_filenames = ["_pb.d.ts", "_pb.js", "_pb_service.js", "_pb_service.d.ts"]
 
     for f in generated_filenames:
@@ -39,7 +41,7 @@ def append_to_outputs(ctx, file_name, js_outputs, dts_outputs, file_modification
         else:
             js_outputs.append(output)
 
-def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
+def _change_js_file_import_style(ctx, js_protoc_outputs, style):
     """
     Calls the convert_to_amd tool to convert the generated JS code into AMD modules.
     """
@@ -51,11 +53,16 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
             ctx.label.package,
         ] if p])
         file_name = js_file.basename[:-len(js_file.extension) - 1]
-        amd_output = ctx.actions.declare_file(file_name + "_amd." + js_file.extension)
-        js_outputs.append(amd_output)
+
+        ext = "amd"
+        if style == "commonjs":
+            ext = "closure"
+
+        output = ctx.actions.declare_file("{}.{}.{}".format(file_name, ext, js_file.extension))
+        js_outputs.append(output)
         ctx.actions.run(
             inputs = [js_file],
-            outputs = [amd_output],
+            outputs = [output],
             arguments = [
                 "--workspace_name",
                 ctx.workspace_name,
@@ -66,10 +73,12 @@ def _convert_js_files_to_amd_modules(ctx, js_protoc_outputs):
                 "--input_file_path",
                 js_file.path,
                 "--output_file_path",
-                amd_output.path,
+                output.path,
+                "--style",
+                style,
             ],
-            progress_message = "Creating AMD module for {}".format(ctx.label),
-            executable = ctx.executable._convert_to_amd,
+            progress_message = "Creating an {} module for {}".format(style, ctx.label),
+            executable = ctx.executable._change_import_style,
         )
 
     return js_outputs
@@ -84,7 +93,6 @@ def typescript_proto_library_aspect_(target, ctx):
     js_protoc_outputs = []
     dts_outputs = []
     proto_inputs = []
-    file_modifications = []
 
     inputs = [ctx.file._protoc]
     for src in target.proto.direct_sources:
@@ -94,15 +102,14 @@ def typescript_proto_library_aspect_(target, ctx):
         file_name = src.basename[:-len(src.extension) - 1]
         normalized_file = proto_path(src)
         proto_inputs.append(normalized_file)
-        append_to_outputs(ctx, file_name, js_protoc_outputs, dts_outputs, file_modifications)
+        append_to_outputs(ctx, file_name, js_protoc_outputs, dts_outputs)
 
     outputs = dts_outputs + js_protoc_outputs
 
-    inputs += ctx.files._ts_protoc_gen
     inputs += target.proto.direct_sources
     inputs += target.proto.transitive_descriptor_sets.to_list()
 
-    descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets]
+    descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets.to_list()]
 
     protoc_output_dir = ctx.var["BINDIR"]
     protoc_command = "%s" % (ctx.file._protoc.path)
@@ -112,33 +119,37 @@ def typescript_proto_library_aspect_(target, ctx):
     protoc_command += " --js_out=import_style=commonjs,binary:%s" % (protoc_output_dir)
     protoc_command += " --descriptor_set_in=%s" % (":".join(descriptor_sets_paths))
     protoc_command += " %s" % (" ".join(proto_inputs))
-
-    commands = [protoc_command] + file_modifications
-    command = " && ".join(commands)
     ctx.actions.run_shell(
         inputs = depset(inputs),
         outputs = outputs,
         progress_message = "Creating Typescript pb files %s" % ctx.label,
-        command = command,
+        command = protoc_command,
+        tools = depset(ctx.files._ts_protoc_gen),
     )
 
     dts_outputs = depset(dts_outputs)
-    js_outputs = depset(_convert_js_files_to_amd_modules(ctx, js_protoc_outputs))
+    es5_outputs = depset(_change_js_file_import_style(ctx, js_protoc_outputs, style = "amd"))
+    es6_outputs = depset(_change_js_file_import_style(ctx, js_protoc_outputs, style = "commonjs"))
     deps_dts = []
-    deps_js = []
+    deps_es5 = []
+    deps_es6 = []
 
     for dep in ctx.rule.attr.deps:
         aspect_data = dep[TypescriptProtoLibraryAspect]
         deps_dts.append(aspect_data.dts_outputs)
         deps_dts.append(aspect_data.deps_dts)
-        deps_js.append(aspect_data.js_outputs)
-        deps_js.append(aspect_data.deps_js)
+        deps_es5.append(aspect_data.es5_outputs)
+        deps_es5.append(aspect_data.deps_es5)
+        deps_es6.append(aspect_data.es6_outputs)
+        deps_es6.append(aspect_data.deps_es6)
 
     return [TypescriptProtoLibraryAspect(
         dts_outputs = dts_outputs,
-        js_outputs = js_outputs,
+        es5_outputs = es5_outputs,
+        es6_outputs = es6_outputs,
         deps_dts = depset(transitive = deps_dts),
-        deps_js = depset(transitive = deps_js),
+        deps_es5 = depset(transitive = deps_es5),
+        deps_es6 = depset(transitive = deps_es6),
     )]
 
 typescript_proto_library_aspect = aspect(
@@ -152,17 +163,16 @@ typescript_proto_library_aspect = aspect(
             default = Label("@ts_protoc_gen//bin:protoc-gen-ts"),
         ),
         "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
             executable = True,
             cfg = "host",
             default = Label("@com_google_protobuf//:protoc"),
         ),
-        "_convert_to_amd": attr.label(
+        "_change_import_style": attr.label(
             executable = True,
             cfg = "host",
             allow_files = True,
-            default = Label("//src/bazel:convert_to_amd"),
+            default = Label("//src/bazel:change_import_style"),
         ),
     },
 )
@@ -173,19 +183,21 @@ def _typescript_proto_library_impl(ctx):
     """
     aspect_data = ctx.attr.proto[TypescriptProtoLibraryAspect]
     dts_outputs = aspect_data.dts_outputs
-    js_outputs = aspect_data.js_outputs
-    outputs = depset(transitive = [js_outputs, dts_outputs])
+    es5_outputs = aspect_data.es5_outputs
+    es6_outputs = aspect_data.es6_outputs
+    outputs = depset(transitive = [es5_outputs, es6_outputs, dts_outputs])
 
-    js_srcs = depset(transitive = [js_outputs, aspect_data.deps_js])
+    es5_srcs = depset(transitive = [es5_outputs, aspect_data.deps_es5])
+    es6_srcs = depset(transitive = [es6_outputs, aspect_data.deps_es6])
     return struct(
         typescript = struct(
             declarations = dts_outputs,
             transitive_declarations = depset(transitive = [dts_outputs, aspect_data.deps_dts]),
             type_blacklisted_declarations = depset([]),
-            es5_sources = js_srcs,
-            es6_sources = js_srcs,
-            transitive_es5_sources = js_srcs,
-            transitive_es6_sources = js_srcs,
+            es5_sources = es5_srcs,
+            es6_sources = es6_srcs,
+            transitive_es5_sources = es5_srcs,
+            transitive_es6_sources = es6_srcs,
         ),
         legacy_info = struct(
             files = outputs,
@@ -199,8 +211,7 @@ typescript_proto_library = rule(
     attrs = {
         "proto": attr.label(
             mandatory = True,
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
             providers = ["proto"],
             aspects = [typescript_proto_library_aspect],
         ),
@@ -211,8 +222,7 @@ typescript_proto_library = rule(
             default = Label("@ts_protoc_gen//bin:protoc-gen-ts"),
         ),
         "_protoc": attr.label(
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
             executable = True,
             cfg = "host",
             default = Label("@com_google_protobuf//:protoc"),
