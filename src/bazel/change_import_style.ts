@@ -72,8 +72,8 @@ function processCommonJs(args: any, initialContents: string): string {
     }
 
     const exportSymbols = symbols.reduce((currentSymbols, symbol) => {
-      return currentSymbols + `exports.${symbol[0]} = ${symbol[1]};\n`
-    }, '');
+      return currentSymbols + `exports.${symbol[0]} = ${symbol[1]};\n`;
+    }, "");
     return contents.replace(/goog.object.extend\(exports, .*;/g, `${exportSymbols}`);
   };
 
