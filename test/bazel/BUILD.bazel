@@ -1,3 +1,4 @@
+load("@build_bazel_rules_nodejs//:defs.bzl", "rollup_bundle")
 load("@npm_bazel_typescript//:defs.bzl", "ts_library")
 load("@npm_bazel_karma//:defs.bzl", "ts_web_test_suite")
 
@@ -68,5 +69,23 @@ ts_web_test_suite(
     deps = [
         ":google_protobuf_requirejs",
         ":pizza_service_proto_test",
+    ],
+)
+
+rollup_bundle(
+    name = "test_es6_bundling",
+    entry_point = "test/bazel/test_bundling",
+    deps = [
+        ":test_bundling_lib",
+    ],
+)
+
+ts_library(
+    name = "test_bundling_lib",
+    srcs = ["test_bundling.ts"],
+    tsconfig = ":test_bundling_tsconfig.json",
+    deps = [
+        "//test/bazel/proto/common:delivery_person_ts_proto",
+        "@npm//google-protobuf",
     ],
 )
