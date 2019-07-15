@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {oneOfName, replaceProtoSuffix} from "../../src/util";
+import {oneOfName, replaceProtoSuffix, stripPrefix} from "../../src/util";
 
 describe("util", () => {
 
@@ -44,6 +44,46 @@ describe("util", () => {
       it(`should map '${senario.in}' to '${senario.out}'`, () => {
           const actual = oneOfName(senario.in);
           assert.equal(actual, senario.out);
+      });
+    });
+  });
+
+  describe("stripPrefix", () => {
+    [
+      {
+        input: "_foo",
+        prefixToStrip: "_",
+        expected: "foo",
+      },
+      {
+        input: "__foo",
+        prefixToStrip: "__",
+        expected: "foo"
+      },
+      {
+        input: "foo",
+        prefixToStrip: "_",
+        expected: "foo"
+      },
+      {
+        input: "a",
+        prefixToStrip: "__",
+        expected: "a"
+      },
+      {
+        input: "foo",
+        prefixToStrip: "",
+        expected: "foo"
+      },
+      {
+        input: "_",
+        prefixToStrip: "_",
+        expected: ""
+      }
+    ].forEach(scenario => {
+      it(`should correctly strip '${scenario.prefixToStrip}' from '${scenario.input}'`, () => {
+        const actual = stripPrefix(scenario.input, scenario.prefixToStrip);
+        assert.equal(actual, scenario.expected);
       });
     });
   });

@@ -10,5 +10,9 @@ ts_library(
         "ts/*.ts",
     ]),
     node_modules = "@ts_protoc_gen_deps//:node_modules",
-    tsconfig = "//:tsconfig.json",
+    tsconfig = "@ts_protoc_gen//:tsconfig.json",
+    deps = [
+        "@ts_protoc_gen_deps//google-protobuf",
+        "@ts_protoc_gen_deps//@types/google-protobuf",
+    ],
 )
