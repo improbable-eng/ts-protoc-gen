@@ -143,7 +143,7 @@ def typescript_proto_library_aspect_(target, ctx):
 
     owner = validate_target(target)
 
-    inputs = depset([ctx.file._protoc])
+    inputs = [ctx.file._protoc]
     for src in target.proto.direct_sources:
         normalized_file = proto_path(src)
         proto_inputs.append(normalized_file)
@@ -174,8 +174,8 @@ def typescript_proto_library_aspect_(target, ctx):
     )
 
     dts_outputs = depset(dts_outputs)
-    es5_outputs = depset(_change_js_file_import_style(ctx, js_protoc_outputs, style = "amd"))
-    es6_outputs = depset(_change_js_file_import_style(ctx, js_protoc_outputs, style = "commonjs"))
+    es5_outputs = depset(_change_js_file_import_style(ctx, owner, js_protoc_outputs, style = "amd"))
+    es6_outputs = depset(_change_js_file_import_style(ctx, owner, js_protoc_outputs, style = "commonjs"))
     deps_dts = []
     deps_es5 = []
     deps_es6 = []
