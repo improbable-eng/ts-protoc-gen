@@ -64,7 +64,7 @@ function processCommonJs(args: any, initialContents: string): string {
   // Rollup can't resolve the commonjs exports when using goog.object.extend so we replace it with:
   // 'exports.MyProto = proto.namespace.MyProto;'
   const replaceGoogExtendWithExports = (contents: string) => {
-    const googSymbolRegex = /goog.exportSymbol\('(.*\.([A-z_]+))',.*;/g;
+    const googSymbolRegex = /goog.exportSymbol\('(.*\.([A-z0-9_]+))',.*;/g;
     let match;
     const symbols = [];
     while (match = googSymbolRegex.exec(initialContents)) {
