@@ -35,7 +35,7 @@ describe("service/grpc-web", () => {
       assert.strictEqual(SimpleService.DoServerStream.responseType, ExternalChildMessage);
     });
 
-    it("should contain the expected  DoClientStream method", () => {
+    it("should contain the expected DoClientStream method", () => {
       assert.strictEqual(SimpleService.DoClientStream.methodName, "DoClientStream");
       assert.strictEqual(SimpleService.DoClientStream.service, SimpleService);
       assert.strictEqual(SimpleService.DoClientStream.requestStream, true);
@@ -44,7 +44,7 @@ describe("service/grpc-web", () => {
       assert.strictEqual(SimpleService.DoClientStream.responseType, Empty);
     });
 
-    it("should contain the expected  DoClientStream method", () => {
+    it("should contain the expected DoBidiStream method", () => {
       assert.strictEqual(SimpleService.DoBidiStream.methodName, "DoBidiStream");
       assert.strictEqual(SimpleService.DoBidiStream.service, SimpleService);
       assert.strictEqual(SimpleService.DoBidiStream.requestStream, true);

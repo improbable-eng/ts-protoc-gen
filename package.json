@@ -46,6 +46,8 @@
     "babel": "^6.5.2",
     "browser-headers": "^0.4.1",
     "chai": "^3.5.0",
+    "grpc": "^1.22.2",
+    "grpc-tools": "^1.8.0",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
     "minimist": "^1.2.0",
