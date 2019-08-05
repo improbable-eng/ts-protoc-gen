@@ -8,7 +8,7 @@ nodejs_binary(
     data = [
         ":change_import_style_lib",
     ],
-    entry_point = "ts_protoc_gen/src/bazel/change_import_style.js",
+    entry_point = ":change_import_style.ts",
     node_modules = "@ts_protoc_gen_deps//:node_modules",
 )
 
