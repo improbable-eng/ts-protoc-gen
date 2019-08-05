@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@bazel/hide-bazel-files": "~0.33.1",
+    "@bazel/jasmine": "~0.33.1",
     "@bazel/karma": "~0.33.1",
     "@bazel/typescript": "~0.33.1",
     "@improbable-eng/grpc-web": "^0.9.1",
