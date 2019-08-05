@@ -66,7 +66,7 @@ $PROTOC \
 $PROTOC \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_GRPC_WEB_DIR \
-  --ts_out=service=true:$EXAMPLES_GENERATED_GRPC_WEB_DIR \
+  --ts_out=service=grpc-web:$EXAMPLES_GENERATED_GRPC_WEB_DIR \
   ./proto/othercom/*.proto \
   ./proto/examplecom/*.proto \
   ./proto/*.proto
