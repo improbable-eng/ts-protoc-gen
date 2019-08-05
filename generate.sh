@@ -4,6 +4,7 @@
 set -e
 
 EXAMPLES_GENERATED_DIR=examples/generated
+EXAMPLES_GENERATED_GRPC_WEB_DIR=examples/generated-grpc-web
 
 # Determine which platform we're running on
 unameOut="$(uname -s)"
@@ -46,10 +47,26 @@ then
 fi
 mkdir -p "$EXAMPLES_GENERATED_DIR"
 
+if [ -d "$EXAMPLES_GENERATED_GRPC_WEB_DIR" ]
+then
+    rm -rf "$EXAMPLES_GENERATED_GRPC_WEB_DIR"
+fi
+mkdir -p "$EXAMPLES_GENERATED_GRPC_WEB_DIR"
+
+# Generate no services
 $PROTOC \
   --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
   --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_DIR \
-  --ts_out=service=true:$EXAMPLES_GENERATED_DIR \
+  --ts_out=$EXAMPLES_GENERATED_DIR \
+  ./proto/othercom/*.proto \
+  ./proto/examplecom/*.proto \
+  ./proto/*.proto
+
+# Generate grpc-web services
+$PROTOC \
+  --plugin=protoc-gen-ts=./bin/protoc-gen-ts \
+  --js_out=import_style=commonjs,binary:$EXAMPLES_GENERATED_GRPC_WEB_DIR \
+  --ts_out=service=true:$EXAMPLES_GENERATED_GRPC_WEB_DIR \
   ./proto/othercom/*.proto \
   ./proto/examplecom/*.proto \
   ./proto/*.proto
