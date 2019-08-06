@@ -19,7 +19,7 @@ fi
 mocha \
     --reporter mocha-spec-json-output-reporter \
     --reporter-options "fileName=./test/mocha-report.json" \
-    --require ts-node/register/type-check \
+    --require ts-node/register \
     --require source-map-support/register \
     ${MOCHA_DEBUG} \
     "${TEST_SUITE}"

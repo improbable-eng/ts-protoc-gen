@@ -537,7 +537,7 @@ describe("service/grpc-web", () => {
       it("should invoke onStatus before onEnd if the server ends the stream", (done) => {
         let onStatusInvoked = false;
 
-        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+        makeClient(new StubTransportBuilder().withMessages([payload]))
           .doBidiStream()
           .on("end", () => {
             assert.ok(onStatusInvoked, "onStatus callback should be invoked before onEnd");
@@ -549,7 +549,7 @@ describe("service/grpc-web", () => {
       it("should invoke onEnd with the same status as onStatus if server ends the stream", (done) => {
         let statusFromOnStatus: Status;
 
-        makeClient(new StubTransportBuilder().withMessages([ payload ]))
+        makeClient(new StubTransportBuilder().withMessages([payload]))
           .doBidiStream()
           .on("end", (endStatus) => {
             assert.deepEqual(endStatus, statusFromOnStatus);

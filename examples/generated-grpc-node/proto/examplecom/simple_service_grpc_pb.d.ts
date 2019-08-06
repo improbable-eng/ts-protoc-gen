@@ -8,17 +8,12 @@ import * as proto_othercom_external_child_message_pb from "../../proto/othercom/
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as grpc from "grpc";
 
-interface MethodDefinition<RequestType, ResponseType> extends grpc.MethodDefinition<RequestType, ResponseType> {
-  requestType: { new(): RequestType };
-  responseType: { new(): ResponseType };
-}
-
 interface ISimpleServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
-  doUnary: MethodDefinition<proto_examplecom_simple_service_pb.UnaryRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  doServerStream: MethodDefinition<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  doClientStream: MethodDefinition<proto_examplecom_simple_service_pb.StreamRequest, google_protobuf_empty_pb.Empty>;
-  doBidiStream: MethodDefinition<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  delete: MethodDefinition<proto_examplecom_simple_service_pb.UnaryRequest, proto_examplecom_simple_service_pb.UnaryResponse>;
+  doUnary: grpc.MethodDefinition<proto_examplecom_simple_service_pb.UnaryRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doServerStream: grpc.MethodDefinition<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doClientStream: grpc.MethodDefinition<proto_examplecom_simple_service_pb.StreamRequest, google_protobuf_empty_pb.Empty>;
+  doBidiStream: grpc.MethodDefinition<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  delete: grpc.MethodDefinition<proto_examplecom_simple_service_pb.UnaryRequest, proto_examplecom_simple_service_pb.UnaryResponse>;
 }
 
 export const SimpleServiceService: ISimpleServiceService;

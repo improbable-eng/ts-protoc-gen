@@ -34,13 +34,6 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
       printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
     });
   printer.printLn(`import * as grpc from "grpc";`);
-  printer.printEmptyLn();
-
-  // Custom MethodDefinition.
-  printer.printLn("interface MethodDefinition<RequestType, ResponseType> extends grpc.MethodDefinition<RequestType, ResponseType> {");
-  printer.printIndentedLn("requestType: { new(): RequestType };");
-  printer.printIndentedLn("responseType: { new(): ResponseType };");
-  printer.printLn("}");
 
   // Services.
   serviceDescriptor.services
@@ -59,7 +52,7 @@ function printService(printer: Printer, service: RPCDescriptor) {
   printer.printLn(`interface I${serviceName} extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {`);
   service.methods
     .forEach(method => {
-      const methodType = `MethodDefinition<${method.requestType}, ${method.responseType}>`;
+      const methodType = `grpc.MethodDefinition<${method.requestType}, ${method.responseType}>`;
       printer.printIndentedLn(`${method.nameAsCamelCase}: ${methodType};`);
     });
   printer.printLn("}");

@@ -6,14 +6,9 @@
 import * as proto_orphan_pb from "../proto/orphan_pb";
 import * as grpc from "grpc";
 
-interface MethodDefinition<RequestType, ResponseType> extends grpc.MethodDefinition<RequestType, ResponseType> {
-  requestType: { new(): RequestType };
-  responseType: { new(): ResponseType };
-}
-
 interface IOrphanServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
-  doUnary: MethodDefinition<proto_orphan_pb.OrphanUnaryRequest, proto_orphan_pb.OrphanMessage>;
-  doStream: MethodDefinition<proto_orphan_pb.OrphanStreamRequest, proto_orphan_pb.OrphanMessage>;
+  doUnary: grpc.MethodDefinition<proto_orphan_pb.OrphanUnaryRequest, proto_orphan_pb.OrphanMessage>;
+  doStream: grpc.MethodDefinition<proto_orphan_pb.OrphanStreamRequest, proto_orphan_pb.OrphanMessage>;
 }
 
 export const OrphanServiceService: IOrphanServiceService;
