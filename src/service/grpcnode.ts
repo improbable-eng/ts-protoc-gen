@@ -67,10 +67,10 @@ function printClient(printer: Printer, service: RPCDescriptor) {
     .forEach(method => {
       if (!method.requestStream && !method.responseStream) {
         printUnaryRequestMethod(printer, method);
-      } else if (method.requestStream) {
-        printClientStreamRequestMethod(printer, method);
-      } else if (method.responseStream) {
+      } else if (!method.requestStream) {
         printServerStreamRequestMethod(printer, method);
+      } else if (!method.responseStream) {
+        printClientStreamRequestMethod(printer, method);
       } else {
         printBidiStreamRequest(printer, method);
       }
@@ -97,6 +97,15 @@ function printUnaryRequestMethod(printer: Printer, method: RPCMethodDescriptor) 
   printer.printIndentedLn(`${name}(${argument}, ${metadata}, ${options}, ${callback}): ${returnType};`);
 }
 
+function printServerStreamRequestMethod(printer: Printer, method: RPCMethodDescriptor) {
+  const name = method.nameAsCamelCase;
+  const argument = `argument: ${method.requestType}`;
+  const returnType = `grpc.ClientReadableStream<${method.responseType}>`;
+
+  printer.printIndentedLn(`${name}(${argument}, ${optionalMetadataOrOptions}): ${returnType};`);
+  printer.printIndentedLn(`${name}(${argument}, ${optionalMetadata}, ${optionalOptions}): ${returnType};`);
+}
+
 function printClientStreamRequestMethod(printer: Printer, method: RPCMethodDescriptor) {
   const name = method.nameAsCamelCase;
   const callback = `callback: grpc.requestCallback<${method.responseType}>`;
@@ -105,15 +114,6 @@ function printClientStreamRequestMethod(printer: Printer, method: RPCMethodDescr
   printer.printIndentedLn(`${name}(${callback}): grpc.ClientWritableStream<${method.requestType}>;`);
   printer.printIndentedLn(`${name}(${metadataOrOptions}, ${callback}): ${returnType};`);
   printer.printIndentedLn(`${name}(${metadata}, ${options}, ${callback}): ${returnType};`);
-}
-
-function printServerStreamRequestMethod(printer: Printer, method: RPCMethodDescriptor) {
-  const name = method.nameAsCamelCase;
-  const argument = `argument: ${method.requestType}`;
-  const returnType = `grpc.ClientReadableStream<${method.responseType}>`;
-
-  printer.printIndentedLn(`${name}(${argument}, ${optionalMetadataOrOptions}): ${returnType};`);
-  printer.printIndentedLn(`${name}(${argument}, ${optionalMetadata}, ${optionalOptions}): ${returnType};`);
 }
 
 function printBidiStreamRequest(printer: Printer, method: RPCMethodDescriptor) {

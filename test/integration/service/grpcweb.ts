@@ -7,7 +7,7 @@ import { createContext, runInContext } from "vm";
 import { frameRequest, StubTransportBuilder } from "../../helpers/fakeGrpcTransport";
 import { ExternalChildMessage } from "../../../examples/generated-grpc-web/proto/othercom/external_child_message_pb";
 import { SimpleService, SimpleServiceClient, Status } from "../../../examples/generated-grpc-web/proto/examplecom/simple_service_pb_service";
-import { StreamRequest, UnaryRequest } from "../../../examples/generated-grpc-web/proto/examplecom/simple_service_pb";
+import { StreamRequest, UnaryRequest, UnaryResponse } from "../../../examples/generated-grpc-web/proto/examplecom/simple_service_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 
 describe("service/grpc-web", () => {
@@ -51,6 +51,15 @@ describe("service/grpc-web", () => {
       assert.strictEqual(SimpleService.DoBidiStream.responseStream, true);
       assert.strictEqual(SimpleService.DoBidiStream.requestType, StreamRequest);
       assert.strictEqual(SimpleService.DoBidiStream.responseType, ExternalChildMessage);
+    });
+
+    it("should contain the expected Delete method", () => {
+      assert.strictEqual(SimpleService.Delete.methodName, "Delete");
+      assert.strictEqual(SimpleService.Delete.service, SimpleService);
+      assert.strictEqual(SimpleService.Delete.requestStream, false);
+      assert.strictEqual(SimpleService.Delete.responseStream, false);
+      assert.strictEqual(SimpleService.Delete.requestType, UnaryRequest);
+      assert.strictEqual(SimpleService.Delete.responseType, UnaryResponse);
     });
   });
 
@@ -131,7 +140,7 @@ describe("service/grpc-web", () => {
     }
 
     it("should generate a service stub", () => {
-      assert.typeOf(SimpleServiceClient, "function", "SimpleServiceClient class shoudl exist");
+      assert.typeOf(SimpleServiceClient, "function", "SimpleServiceClient class should exist");
 
       const client = new SimpleServiceClient("http://localhost:1");
 
