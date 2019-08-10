@@ -21,7 +21,12 @@ const protocPluginPath = resolve(__dirname, "bin", "protoc-gen-ts") + binSuffix;
 
 const rimrafPath = resolve(nodeModulesBin, "rimraf") + binSuffix;
 
-const supportedPlatforms = {
+interface Platform {
+  readonly downloadSuffix: string;
+  readonly name: string;
+}
+
+const supportedPlatforms: { [k: string]: Platform } = {
   darwin: {
     downloadSuffix: "osx-x86_64",
     name: "Mac"
@@ -92,7 +97,7 @@ function requireProtoc() {
     protocUrl);
 }
 
-function run(executablePath, ...args) {
+function run(executablePath: string, ...args: string[]) {
   const result = spawnSync(executablePath, args, { shell: true, stdio: "inherit" });
   if (result.status !== 0) {
     throw new Error(`Exited ${executablePath} with status ${result.status}`);

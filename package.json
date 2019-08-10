@@ -7,7 +7,7 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf lib",
     "build": "run-s clean tsc",
-    "generate": "node generate.js",
+    "generate": "ts-node generate.ts",
     "tsc": "tsc",
     "test": "run-s test:unit test:integration",
     "test:unit": "ts-node ./test/mocha-run-suite.ts \"test/unit/**/*.ts\"",
