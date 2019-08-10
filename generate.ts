@@ -1,6 +1,5 @@
 const { spawnSync } = require("child_process");
 const { existsSync, mkdirSync } = require("fs");
-const glob = require("glob");
 const { resolve } = require("path");
 
 const protocVersion = "3.5.1";
@@ -48,6 +47,9 @@ const platformName = platform ?
 console.log("You appear to be running on", platformName);
 
 requireBuild();
+
+const glob = require("glob");
+
 requireProtoc();
 
 if (existsSync(examplesGeneratedPath)) {
