@@ -38,7 +38,6 @@
     "@bazel/typescript": "~0.33.1",
     "@improbable-eng/grpc-web": "^0.9.1",
     "@types/chai": "^3.5.2",
-    "@types/glob": "^7.1.1",
     "@types/google-protobuf": "^3.2.7",
     "@types/jasmine": "^2.8.9",
     "@types/lodash": "^4.14.106",
