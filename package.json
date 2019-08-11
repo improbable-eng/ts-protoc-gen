@@ -7,11 +7,11 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf lib",
     "build": "run-s clean tsc",
-    "generate": "ts-node generate.ts",
+    "generate": "node generate.js",
     "tsc": "tsc",
     "test": "run-s test:unit test:integration",
-    "test:unit": "ts-node ./test/mocha-run-suite.ts \"test/unit/**/*.ts\"",
-    "test:integration": "ts-node ./test/mocha-run-suite.ts \"test/integration/**/*.ts\"",
+    "test:unit": "node test/mocha-run-suite.js \"test/unit/**/*.ts\"",
+    "test:integration": "node test/mocha-run-suite.js \"test/integration/**/*.ts\"",
     "prepublishOnly": "npm run build"
   },
   "bin": {

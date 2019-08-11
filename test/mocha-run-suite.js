@@ -1,5 +1,5 @@
-import { spawnSync } from "child_process";
-import { resolve } from "path";
+const { spawnSync } = require("child_process");
+const { resolve } = require("path");
 
 const testSuite = process.argv[2];
 if (!testSuite) {
