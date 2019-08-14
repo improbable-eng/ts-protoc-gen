@@ -14,23 +14,13 @@ import fs = require("fs");
 function main() {
   const args = minimist(process.argv.slice(2));
 
-
   const initialContents = fs.readFileSync(args.input_file_path, "utf8");
-  let finalContents;
-  switch (args.style) {
-    case "amd":
-      finalContents = convertToAmd(args, initialContents);
-      break;
 
-    case "commonjs":
-      finalContents = processCommonJs(args, initialContents);
-      break;
+  const umdContents = convertToUmd(args, initialContents);
+  fs.writeFileSync(args.output_umd_path, umdContents, "utf8");
 
-    default:
-      throw new Error(`Unknown style ${args.style}`);
-  }
-
-  fs.writeFileSync(args.output_file_path, finalContents, "utf8");
+  const commonJsContents = processCommonJs(args, initialContents);
+  fs.writeFileSync(args.output_es6_path, commonJsContents, "utf8");
 }
 
 function replaceRecursiveFilePaths(args: any) {
@@ -45,9 +35,21 @@ function removeJsExtensionsFromRequires(contents: string) {
   });
 }
 
-function convertToAmd(args: any, initialContents: string): string {
+function convertToUmd(args: any, initialContents: string): string {
   const wrapInAMDModule = (contents: string) => {
-    return `define("${args.input_base_path}/${args.output_module_name}", function(require, exports, module) {\n${contents}\n});`;
+    return `// GENERATED CODE DO NOT EDIT
+(function (factory) {
+  if (typeof module === "object" && typeof module.exports === "object") {
+    var v = factory(require, exports);
+    if (v !== undefined) module.exports = v;
+  }
+  else if (typeof define === "function" && define.amd) {
+    define("${args.input_base_path}/${args.output_module_name}",  factory);
+  }
+})(function (require, exports) {
+  ${contents}
+});
+`;
   };
 
   const transformations: ((c: string) => string)[] = [
