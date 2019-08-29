@@ -55,7 +55,7 @@ def _build_protoc_command(target, ctx):
     protoc_command += " --plugin=protoc-gen-ts=%s" % (ctx.files._ts_protoc_gen[1].path)
 
     protoc_output_dir = ctx.var["BINDIR"]
-    protoc_command += " --ts_out=service=true:%s" % (protoc_output_dir)
+    protoc_command += " --ts_out=service=grpc-web:%s" % (protoc_output_dir)
     protoc_command += " --js_out=import_style=commonjs,binary:%s" % (protoc_output_dir)
 
     descriptor_sets_paths = [desc.path for desc in target.proto.transitive_descriptor_sets.to_list()]

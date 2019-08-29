@@ -6,6 +6,8 @@ const { resolve } = require("path");
 const protocVersion = "3.5.1";
 
 const examplesGeneratedPath = resolve(__dirname, "examples", "generated");
+const examplesGeneratedGrpcWebPath = resolve(__dirname, "examples", "generated-grpc-web");
+const examplesGeneratedGrpcNodePath = resolve(__dirname, "examples", "generated-grpc-node");
 
 const binSuffix = process.platform === "win32" ? ".cmd" : "";
 const nodeModulesBin = resolve(__dirname, "node_modules", ".bin");
@@ -46,17 +48,39 @@ const glob = require("glob");
 
 requireProtoc();
 
-if (existsSync(examplesGeneratedPath)) {
-  run(rimrafPath, examplesGeneratedPath);
-}
+requireDir(examplesGeneratedPath);
+requireDir(examplesGeneratedGrpcWebPath);
+requireDir(examplesGeneratedGrpcNodePath);
 
-mkdirSync(examplesGeneratedPath);
+// Generate no services
 
 run(protocPath,
   `--proto_path=${__dirname}`,
   `--plugin=protoc-gen-ts=${protocPluginPath}`,
   `--js_out=import_style=commonjs,binary:${examplesGeneratedPath}`,
-  `--ts_out=service=true:${examplesGeneratedPath}`,
+  `--ts_out=${examplesGeneratedPath}`,
+  ...glob.sync(resolve(__dirname, "proto", "**/*.proto"))
+);
+
+// Generate grpc-web services
+
+run(protocPath,
+  `--proto_path=${__dirname}`,
+  `--plugin=protoc-gen-ts=${protocPluginPath}`,
+  `--js_out=import_style=commonjs,binary:${examplesGeneratedGrpcWebPath}`,
+  `--ts_out=service=grpc-web:${examplesGeneratedGrpcWebPath}`,
+  ...glob.sync(resolve(__dirname, "proto", "**/*.proto"))
+);
+
+// Generate grpc-node services
+
+run(protocPath,
+  `--proto_path=${__dirname}`,
+  `--plugin=protoc-gen-ts=${protocPluginPath}`,
+  `--plugin=protoc-gen-grpc=node_modules/.bin/grpc_tools_node_protoc_plugin`,
+  `--js_out=import_style=commonjs,binary:${examplesGeneratedGrpcNodePath}`,
+  `--ts_out=service=grpc-node:${examplesGeneratedGrpcNodePath}`,
+  `--grpc_out=${examplesGeneratedGrpcNodePath}`,
   ...glob.sync(resolve(__dirname, "proto", "**/*.proto"))
 );
 
@@ -91,6 +115,14 @@ function requireProtoc() {
     "--extract",
     "--out", protocRoot,
     protocUrl);
+}
+
+function requireDir(path) {
+  if (existsSync(path)) {
+    run(rimrafPath, path);
+  }
+
+  mkdirSync(path);
 }
 
 function run(executablePath, ...args) {
