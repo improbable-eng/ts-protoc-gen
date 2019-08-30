@@ -1,4 +1,13 @@
-## 0.10.1-pre
+## 0.11.0
+
+### Changes
+* [#185](https://github.com/improbable-eng/ts-protoc-gen/pull/185) Bazel rules add ES6 output ([@Dig-Doug](https://github.com/Dig-Doug))
+* [#193](https://github.com/improbable-eng/ts-protoc-gen/pull/193) Add support for generating grpc-node service types ([@esilkensen](https://github.com/esilkensen))
+* [#194](https://github.com/improbable-eng/ts-protoc-gen/pull/194) Bazel rules output UMD modules ([@Dig-Doug](https://github.com/Dig-Doug))
+
+### Fixes
+* [#183](https://github.com/improbable-eng/ts-protoc-gen/pull/183) Bugfix for field names with leading underscores ([@jonny-improbable](https://github.com/jonny-improbable))
+* [#191](https://github.com/improbable-eng/ts-protoc-gen/pull/191) Bugfix for bazel rules where names with numbers were not being exported ([@Dig-Doug](https://github.com/Dig-Doug)) 
 
 ## 0.10.0
 
@@ -8,7 +17,7 @@
 * [#160](https://github.com/improbable-eng/ts-protoc-gen/pull/160) Update bazel-related library versions. ([@Dig-Doug](https://github.com/Dig-Doug))
 
 
-## Fixes
+### Fixes
 * [#165](https://github.com/improbable-eng/ts-protoc-gen/pull/165) Replace uses of the deprecated `new Buffer()` with `Buffer.from()`. ([@ashi009](https://github.com/ashi009))
 * [#161](https://github.com/improbable-eng/ts-protoc-gen/pull/161) Mark `google-protobuf` as a runtime dependency. ([@jonny-improbable](https://github.com/jonny-improbable))
 
