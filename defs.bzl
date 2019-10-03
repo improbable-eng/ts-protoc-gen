@@ -1,6 +1,6 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@build_bazel_rules_nodejs//:defs.bzl", "yarn_install")
+load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 TypescriptProtoLibraryAspect = provider(
     fields = {
@@ -275,16 +275,15 @@ def typescript_proto_dependencies():
     if "com_google_protobuf" not in native.existing_rules():
         http_archive(
             name = "com_google_protobuf",
-            sha256 = "f976a4cd3f1699b6d20c1e944ca1de6754777918320c719742e1674fcf247b7e",
-            strip_prefix = "protobuf-3.7.1",
-            urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.7.1.zip"],
+            strip_prefix = "protobuf-3.10.0",
+            urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.10.0.zip"],
         )
 
-    yarn_install(
-        name = "ts_protoc_gen_deps",
-        package_json = "@ts_protoc_gen//:package.json",
-        # Don't use managed directories because these are internal to the library and the
-        # dependencies shouldn't need to be installed by the user.
-        symlink_node_modules = False,
-        yarn_lock = "@ts_protoc_gen//:yarn.lock",
-    )
+#    yarn_install(
+#        name = "ts_protoc_gen_deps",
+#        package_json = "@ts_protoc_gen//:package.json",
+#        # Don't use managed directories because these are internal to the library and the
+#        # dependencies shouldn't need to be installed by the user.
+#        symlink_node_modules = False,
+#        yarn_lock = "@ts_protoc_gen//:yarn.lock",
+#    )

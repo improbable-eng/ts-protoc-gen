@@ -1,14 +1,14 @@
-load("@build_bazel_rules_nodejs//:defs.bzl", "jasmine_node_test", "rollup_bundle")
-load("@npm_bazel_typescript//:defs.bzl", "ts_library")
-load("@npm_bazel_karma//:defs.bzl", "ts_web_test_suite")
+load("@build_bazel_rules_nodejs//:index.bzl", "rollup_bundle")
+load("@npm_bazel_jasmine//:index.bzl", "jasmine_node_test")
+load("@npm_bazel_typescript//:index.bzl", "ts_library")
+load("@npm_bazel_karma//:index.bzl", "ts_web_test_suite")
 
 # This test checks that the protos can be resolved in a nodejs environment
 jasmine_node_test(
     name = "commonjs_test",
     data = [
-        "@npm//@bazel/jasmine",
-        "@npm//google-protobuf",
         "@npm//@improbable-eng/grpc-web",
+        "@npm//google-protobuf",
     ],
     deps = [
         ":commonjs_test_lib",
