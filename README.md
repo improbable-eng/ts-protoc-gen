@@ -33,94 +33,10 @@ npm install ts-protoc-gen@next
 
 ### bazel
 
-<details><summary>Instructions for using ts-protoc-gen within a <a href="https://bazel.build">bazel</a> build environment</summary><p>
-
-Prerequisites:
-- Setup [rules_nodejs](https://github.com/bazelbuild/rules_nodejs) in your project
-
-Then, include the following in your `WORKSPACE`:
-
-```python
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-# NOTE: Setup rules_nodejs
-
-http_archive(
-    name = "ts_protoc_gen",
-    # NOTE: Update these values to the latest version
-    sha256 = "355bd8e7a3d4889a3fb222366ac3427229acc968455670378f8ffe1b4bfc5a95",
-    strip_prefix = "ts-protoc-gen-14d69f6203c291f15017a8c0abbb1d4b52b00b64",
-    urls = ["https://github.com/improbable-eng/ts-protoc-gen/archive/14d69f6203c291f15017a8c0abbb1d4b52b00b64.zip"],
-)
-
-load("@ts_protoc_gen//:defs.bzl", "typescript_proto_dependencies")
-
-typescript_proto_dependencies()
-```
-
-Also make sure you have the following in your `package.json`:
-
-```json
-{
-  "dependencies": {
-    "google-protobuf": "^3.6.1",
-    "@improbable-eng/grpc-web": "0.8.0",
-    "browser-headers": "^0.4.1"
-  },
-  "devDependencies": {
-    "@bazel/karma": "0.27.8",
-    "@bazel/typescript": "^0.27.7",
-    "@types/google-protobuf": "^3.2.7",
-    "typescript": "^3.1.1"
-  }
-}
-```
-
-> Run `yarn install` to generate the `yarn.lock` file.
-
-Finally, in your `BUILD.bazel`:
-
-```python
-load("@ts_protoc_gen//:defs.bzl", "typescript_proto_library")
-
-proto_library(
-  name = "test_proto",
-  srcs = [
-    "test.proto",
-  ],
-)
-
-typescript_proto_library(
-  name = "test_ts_proto",
-  proto = ":test_proto",
-)
-```
-
-You can use the `test_ts_proto` as a `dep` in other `ts_library` targets. However, you will need to
-include `google-protobuf`, `@improbable-eng/grpc-web`, and `browser-headers` at runtime yourself. See
-`//test/bazel:pizza_service_proto_test_suite` for an example.
-
-#### IDE Code Completion
-If you'd like to get code completion working for the generated protos in your IDE, add the following to your `tsconfig.json`:
-
-```
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      # Replace <workspace-name> with the name of your workspace
-      "<workspace-name>/*": [
-        "*", # Enables absolute paths for src files in your project
-        "bazel-bin/*" # Enables referencing generate protos with absolute paths
-      ]
-    }
-  }
-}
-```
-
-> NOTE: This has only been tested in IntelliJ with the bazel plugin
-
-</p></details>
+The bazel rules have been moved to a separate project [here](https://github.com/Dig-Doug/rules_typescript_proto).
+There is a
+[migration guide](https://github.com/Dig-Doug/rules_typescript_proto/blob/master/docs/migrating_from_ts_protoc_gen.md)
+for existing users.
 
 ## Contributing
 
