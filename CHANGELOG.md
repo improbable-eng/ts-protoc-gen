@@ -1,4 +1,7 @@
-## 0.11.1-pre
+## 0.12.0
+
+### Changes
+* [#207](https://github.com/improbable-eng/ts-protoc-gen/pull/207) Bazel rules moved to a new repo, see README for migration guide. ([@Dig-Doug](https://github.com/Dig-Doug)).
 
 ## 0.11.0
 
