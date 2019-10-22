@@ -1,2 +1,0 @@
-# See https://github.com/bazelbuild/rules_nodejs/issues/885
-build --worker_sandboxing
