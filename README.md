@@ -156,7 +156,7 @@ The `generated` folder will now contain both `_grpc_pb.js` and `_grpc_pb.d.ts` f
 
 ## Gotchas
 
-By default the google-protobuf library will use the JavaScript number type to store 64bit float and integer values; this can lead to overflow problems as you exceed JavaScript's `Number.MAX_VALUE`. To work around this, you should consider using the `jstype` annotation on any 64bit fields, ie:
+By default the google-protobuf library will use the JavaScript number type to store 64bit float and integer values; this can lead to overflow problems as you exceed JavaScript's `Number.MAX_SAFE_INTEGER`. To work around this, you should consider using the `jstype` annotation on any 64bit fields, ie:
 
 ```proto
 message Example {
