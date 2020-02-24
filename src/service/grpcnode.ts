@@ -41,10 +41,23 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
       printer.printEmptyLn();
       printService(printer, service);
       printer.printEmptyLn();
+      printServer(printer, service);
+      printer.printEmptyLn();
       printClient(printer, service);
     });
 
   return printer.getOutput();
+}
+
+function printServer(printer: Printer, service: RPCDescriptor) {
+  const serverName = `${service.name}Server`;
+  printer.printLn(`interface I${serverName} {`);
+  service.methods
+      .forEach(method => {
+        const methodType = `grpc.handleUnaryCall<${method.requestType}, ${method.responseType}>`;
+        printer.printIndentedLn(`${method.nameAsCamelCase}: ${methodType};`);
+      });
+  printer.printLn("}");
 }
 
 function printService(printer: Printer, service: RPCDescriptor) {

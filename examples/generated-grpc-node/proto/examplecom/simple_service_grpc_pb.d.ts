@@ -18,6 +18,14 @@ interface ISimpleServiceService extends grpc.ServiceDefinition<grpc.UntypedServi
 
 export const SimpleServiceService: ISimpleServiceService;
 
+interface ISimpleServiceServer {
+  doUnary: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.UnaryRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doServerStream: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doClientStream: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.StreamRequest, google_protobuf_empty_pb.Empty>;
+  doBidiStream: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  delete: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.UnaryRequest, proto_examplecom_simple_service_pb.UnaryResponse>;
+}
+
 export class SimpleServiceClient extends grpc.Client {
   constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
   doUnary(argument: proto_examplecom_simple_service_pb.UnaryRequest, callback: grpc.requestCallback<proto_othercom_external_child_message_pb.ExternalChildMessage>): grpc.ClientUnaryCall;
