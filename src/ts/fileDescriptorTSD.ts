@@ -31,8 +31,8 @@ export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, expo
     }
   });
 
-  fileDescriptor.getMessageTypeList().forEach(enumType => {
-    printer.print(printMessage(fileName, exportMap, enumType, 0, fileDescriptor));
+  fileDescriptor.getMessageTypeList().forEach(messageType => {
+    printer.print(printMessage(fileName, exportMap, messageType, 0, fileDescriptor));
   });
 
   fileDescriptor.getExtensionList().forEach(extension => {
