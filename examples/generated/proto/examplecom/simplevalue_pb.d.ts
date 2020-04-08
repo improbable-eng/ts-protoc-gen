@@ -12,35 +12,59 @@ export class SimpleValue extends jspb.Message {
 
   hasNumberValue(): boolean;
   clearNumberValue(): void;
+  /**
+   * Represents a double value.
+   */
   getNumberValue(): number;
   setNumberValue(value: number): void;
 
   hasStringValue(): boolean;
   clearStringValue(): void;
+  /**
+   * Represents a string value.
+   */
   getStringValue(): string;
   setStringValue(value: string): void;
 
   hasBoolValue(): boolean;
   clearBoolValue(): void;
+  /**
+   * Represents a boolean value.
+   */
   getBoolValue(): boolean;
   setBoolValue(value: boolean): void;
 
   hasNumber2Value(): boolean;
   clearNumber2Value(): void;
+  /**
+   * Represents a double value.
+   */
   getNumber2Value(): number;
   setNumber2Value(value: number): void;
 
   hasString2Value(): boolean;
   clearString2Value(): void;
+  /**
+   * Represents a string value.
+   */
   getString2Value(): string;
   setString2Value(value: string): void;
 
   hasBool2Value(): boolean;
   clearBool2Value(): void;
+  /**
+   * Represents a boolean value.
+   */
   getBool2Value(): boolean;
   setBool2Value(value: boolean): void;
 
+  /**
+   * The kind of value.
+   */
   getKindCase(): SimpleValue.KindCase;
+  /**
+   * The kind of value.
+   */
   getAnotherCase(): SimpleValue.AnotherCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): SimpleValue.AsObject;
@@ -56,11 +80,29 @@ export namespace SimpleValue {
   export type AsObject = {
     firstField: string,
     secondField: number,
+    /**
+     * Represents a double value.
+     */
     numberValue: number,
+    /**
+     * Represents a string value.
+     */
     stringValue: string,
+    /**
+     * Represents a boolean value.
+     */
     boolValue: boolean,
+    /**
+     * Represents a double value.
+     */
     number2Value: number,
+    /**
+     * Represents a string value.
+     */
     string2Value: string,
+    /**
+     * Represents a boolean value.
+     */
     bool2Value: boolean,
   }
 

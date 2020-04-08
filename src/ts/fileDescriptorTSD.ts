@@ -6,6 +6,7 @@ import {WellKnownTypesMap} from "../WellKnown";
 import {printMessage} from "./message";
 import {printEnum} from "./enum";
 import {printExtension} from "./extensions";
+import {CommentsMap} from "./CommentsMap";
 
 export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
   const fileName = fileDescriptor.getName();
@@ -21,6 +22,8 @@ export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, expo
   printer.printEmptyLn();
   printer.printLn(`import * as jspb from "google-protobuf";`);
 
+  const commentsMap = new CommentsMap(fileDescriptor);
+
   fileDescriptor.getDependencyList().forEach((dependency: string) => {
     const pseudoNamespace = filePathToPseudoNamespace(dependency);
     if (dependency in WellKnownTypesMap) {
@@ -31,16 +34,16 @@ export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, expo
     }
   });
 
-  fileDescriptor.getMessageTypeList().forEach(enumType => {
-    printer.print(printMessage(fileName, exportMap, enumType, 0, fileDescriptor));
+  fileDescriptor.getMessageTypeList().forEach((messageType, i) => {
+    printer.print(printMessage(fileName, exportMap, messageType, 0, fileDescriptor, commentsMap.getMessageType(i)));
   });
 
   fileDescriptor.getExtensionList().forEach(extension => {
     printer.print(printExtension(fileName, exportMap, extension, 0));
   });
 
-  fileDescriptor.getEnumTypeList().forEach(enumType => {
-    printer.print(printEnum(enumType, 0));
+  fileDescriptor.getEnumTypeList().forEach((enumType, i) => {
+    printer.print(printEnum(enumType, 0, commentsMap.getEnumType(i)));
   });
 
   printer.printEmptyLn();

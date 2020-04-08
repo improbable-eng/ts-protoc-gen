@@ -12,6 +12,8 @@ import {Printer} from "../Printer";
 import {printEnum} from "./enum";
 import {printOneOfDecl} from "./oneof";
 import {printExtension} from "./extensions";
+import {MessageComments} from "./CommentsMap";
+
 import JSType = FieldOptions.JSType;
 
 function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescriptorProto): boolean {
@@ -34,7 +36,7 @@ function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescr
   return false;
 }
 
-export function printMessage(fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto, indentLevel: number, fileDescriptor: FileDescriptorProto) {
+export function printMessage(fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto, indentLevel: number, fileDescriptor: FileDescriptorProto, comments: MessageComments) {
   const messageName = messageDescriptor.getName();
   const messageOptions = messageDescriptor.getOptions();
   if (messageOptions !== undefined && messageOptions.getMapEntry()) {
@@ -48,11 +50,17 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   const printer = new Printer(indentLevel);
   printer.printEmptyLn();
+  comments.printLeadingComments(text => printer.printLn(text));
   printer.printLn(`export class ${messageName} extends jspb.Message {`);
 
   const oneOfGroups: Array<Array<FieldDescriptorProto>> = [];
 
-  messageDescriptor.getFieldList().forEach(field => {
+  messageDescriptor.getFieldList().forEach((field, i) => {
+
+    // add field comments to AsObject type
+    const fieldComments = comments.getField(i);
+    fieldComments.printLeadingComments(text => toObjectType.printIndentedLn(text));
+
     if (field.hasOneofIndex()) {
       const oneOfIndex = field.getOneofIndex();
       let existing = oneOfGroups[oneOfIndex];
@@ -146,6 +154,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${valueType};`);
     }
 
+    fieldComments.printLeadingComments(text => printer.printIndentedLn(text));
     if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {// is repeated
       printClearIfNotPresent();
       if (type === BYTES_TYPE) {
@@ -192,7 +201,9 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   toObjectType.printLn(`}`);
 
-  messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
+  messageDescriptor.getOneofDeclList().forEach((oneOfDecl, i) => {
+    const oneofComments = comments.getOneofDecl(i);
+    oneofComments.printLeadingComments(text => printer.printIndentedLn(text));
     printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case(): ${messageName}.${oneOfName(oneOfDecl.getName())}Case;`);
   });
 
@@ -212,15 +223,15 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   printer.print(toObjectType.getOutput());
 
-  messageDescriptor.getNestedTypeList().forEach(nested => {
-    const msgOutput = printMessage(fileName, exportMap, nested, indentLevel + 1, fileDescriptor);
+  messageDescriptor.getNestedTypeList().forEach((nested, i) => {
+    const msgOutput = printMessage(fileName, exportMap, nested, indentLevel + 1, fileDescriptor, comments.getNestType(i));
     if (msgOutput !== "") {
       // If the message class is a Map entry then it isn't output, so don't print the namespace block
       printer.print(msgOutput);
     }
   });
-  messageDescriptor.getEnumTypeList().forEach(enumType => {
-    printer.print(`${printEnum(enumType, indentLevel + 1)}`);
+  messageDescriptor.getEnumTypeList().forEach((enumType, i) => {
+    printer.print(`${printEnum(enumType, indentLevel + 1, comments.getEnumType(i))}`);
   });
   messageDescriptor.getOneofDeclList().forEach((oneOfDecl, index) => {
     printer.print(`${printOneOfDecl(oneOfDecl, oneOfGroups[index] || [], indentLevel + 1)}`);
