@@ -416,8 +416,8 @@ describe("service/grpc-web", () => {
         makeClient(new StubTransportBuilder().withMessages([new Empty()]))
           .doClientStream()
           .on("end", (_, res) => {
-            assert.isDefined(res)
-            assert.typeOf(res, "object")
+            assert.isDefined(res);
+            assert.typeOf(res, "object");
             done();
           })
           .write(payload)
