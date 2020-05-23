@@ -40,12 +40,12 @@ interface ResponseStream<T> {
   on(type: 'end', handler: (status?: Status) => void): ResponseStream<T>;
   on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;
 }
-interface RequestStream<T> {
-  write(message: T): RequestStream<T>;
+interface RequestStream<ReqT, ResT> {
+  write(message: ReqT): RequestStream<ReqT, ResT>;
   end(): void;
   cancel(): void;
-  on(type: 'end', handler: (status?: Status) => void): RequestStream<T>;
-  on(type: 'status', handler: (status: Status) => void): RequestStream<T>;
+  on(type: 'end', handler: (status?: Status, response?: ResT) => void): RequestStream<ReqT, ResT>;
+  on(type: 'status', handler: (status: Status) => void): RequestStream<ReqT, ResT>;
 }
 interface BidirectionalStream<ReqT, ResT> {
   write(message: ReqT): BidirectionalStream<ReqT, ResT>;

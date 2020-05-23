@@ -144,14 +144,18 @@ SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata)
     metadata: metadata,
     transport: this.options.transport
   });
+  var resp
   client.onEnd(function (status, statusMessage, trailers) {
     listeners.status.forEach(function (handler) {
       handler({ code: status, details: statusMessage, metadata: trailers });
     });
     listeners.end.forEach(function (handler) {
-      handler({ code: status, details: statusMessage, metadata: trailers });
+      handler({ code: status, details: statusMessage, metadata: trailers }, resp);
     });
     listeners = null;
+  });
+  client.onMessage(function (message) {
+    resp = message
   });
   return {
     on: function (type, handler) {

@@ -412,6 +412,18 @@ describe("service/grpc-web", () => {
           .end();
       });
 
+      it("should invoke onEnd with response from the server", (done) => {
+        makeClient(new StubTransportBuilder().withMessages([new Empty()]))
+          .doClientStream()
+          .on("end", (_, res) => {
+            assert.isDefined(res)
+            assert.typeOf(res, "object")
+            done();
+          })
+          .write(payload)
+          .end();
+      });
+
       it("should handle an error returned ahead of any data by the server", (done) => {
         makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some error"))
           .doClientStream()
