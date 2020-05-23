@@ -73,12 +73,12 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printIndentedLn(`on(type: 'end', handler: (status?: Status) => void): ResponseStream<T>;`);
   printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): ResponseStream<T>;`);
   printer.printLn(`}`);
-  printer.printLn(`interface RequestStream<T> {`);
-  printer.printIndentedLn(`write(message: T): RequestStream<T>;`);
+  printer.printLn(`interface RequestStream<ReqT, ResT> {`);
+  printer.printIndentedLn(`write(message: ReqT): RequestStream<ReqT, ResT>;`);
   printer.printIndentedLn(`end(): void;`);
   printer.printIndentedLn(`cancel(): void;`);
-  printer.printIndentedLn(`on(type: 'end', handler: (status?: Status) => void): RequestStream<T>;`);
-  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<T>;`);
+  printer.printIndentedLn(`on(type: 'end', handler: (status?: Status, response?: ResT) => void): RequestStream<ReqT, ResT>;`);
+  printer.printIndentedLn(`on(type: 'status', handler: (status: Status) => void): RequestStream<ReqT, ResT>;`);
   printer.printLn(`}`);
   printer.printLn(`interface BidirectionalStream<ReqT, ResT> {`);
   printer.printIndentedLn(`write(message: ReqT): BidirectionalStream<ReqT, ResT>;`);
@@ -268,14 +268,18 @@ function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
                .printLn(`metadata: metadata,`)
                .printLn(`transport: this.options.transport`)
     .dedent().printLn(`});`)
+             .printLn(`var resp`)
              .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
       .indent().printLn(`listeners.status.forEach(function (handler) {`)
         .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
       .dedent().printLn(`});`)
                .printLn(`listeners.end.forEach(function (handler) {`)
-        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
+        .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers }, resp);`)
       .dedent().printLn(`});`)
                .printLn(`listeners = null;`)
+    .dedent().printLn(`});`)
+             .printLn(`client.onMessage(function (message) {`)
+      .indent().printLn(`resp = message`)
     .dedent().printLn(`});`)
              .printLn(`return {`)
       .indent().printLn(`on: function (type, handler) {`)
@@ -389,7 +393,7 @@ function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMetho
 }
 
 function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.requestType}>;`);
+  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.requestType}, ${method.responseType}>;`);
 }
 
 function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
