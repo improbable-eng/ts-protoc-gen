@@ -44,7 +44,7 @@
     "chai": "^3.5.0",
     "download-cli": "^1.1.1",
     "glob": "^7.1.4",
-    "grpc": "^1.22.2",
+    "grpc": "^1.24.2",
     "grpc-tools": "^1.8.0",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
