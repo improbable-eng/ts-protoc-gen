@@ -25,10 +25,25 @@ withAllStdIn((inputBuff: Buffer) => {
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
-    // Generate separate `.ts` files for services if param is set
     const parameter = codeGenRequest.getParameter();
-    const generateGrpcWebServices = parameter === "service=grpc-web" || parameter === "service=true";
-    const generateGrpcNodeServices = parameter === "service=grpc-node";
+    const parameters: {[key: string]: string[]} = {
+      generate: ["base"],
+    };
+
+    if (parameter === "service=grpc-web" || parameter === "service=true") {
+      parameters.generate.push("grpc-web");
+    } else if (parameter === "service=grpc-node") {
+      parameters.generate.push("grpc-node");
+    } else if (parameter.length > 0) {
+      parameter.split(",").forEach(parameterSection => {
+        const [key, value] = parameterSection.split("=", 2);
+        parameters[key] = value ? value.split("+") : [];
+      });
+    }
+
+    const generateBaseFile = parameters["generate"].indexOf("base") !== -1;
+    const generateGrpcWebServices = parameters["generate"].indexOf("grpc-web") !== -1;
+    const generateGrpcNodeServices = parameters["generate"].indexOf("grpc-node") !== -1;
 
     if (parameter === "service=true") {
       console.warn("protoc-gen-ts warning: The service=true parameter has been deprecated. Use service=grpc-web instead.");
@@ -41,15 +56,20 @@ withAllStdIn((inputBuff: Buffer) => {
 
     codeGenRequest.getFileToGenerateList().forEach(fileName => {
       const outputFileName = replaceProtoSuffix(fileName);
-      const thisFile = new CodeGeneratorResponse.File();
-      thisFile.setName(outputFileName + ".d.ts");
-      thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
-      codeGenResponse.addFile(thisFile);
+
+      if (generateBaseFile) {
+        const thisFile = new CodeGeneratorResponse.File();
+        thisFile.setName(outputFileName + ".d.ts");
+        thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
+        codeGenResponse.addFile(thisFile);
+      }
 
       if (generateGrpcWebServices) {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
           .forEach(file => codeGenResponse.addFile(file));
-      } else if (generateGrpcNodeServices) {
+      }
+
+      if (generateGrpcNodeServices) {
         const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap);
         codeGenResponse.addFile(file);
       }
