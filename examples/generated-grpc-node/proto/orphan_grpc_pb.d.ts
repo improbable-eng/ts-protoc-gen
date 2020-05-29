@@ -4,7 +4,7 @@
 // file: proto/orphan.proto
 
 import * as proto_orphan_pb from "../proto/orphan_pb";
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 
 interface IOrphanServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
   doUnary: grpc.MethodDefinition<proto_orphan_pb.OrphanUnaryRequest, proto_orphan_pb.OrphanMessage>;
