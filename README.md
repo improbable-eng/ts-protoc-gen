@@ -140,7 +140,7 @@ protoc \
     --plugin=protoc-gen-grpc=${PROTOC_GEN_GRPC_PATH} \
     --js_out="import_style=commonjs,binary:${OUT_DIR}" \
     --ts_out="service=grpc-node:${OUT_DIR}" \
-    --grpc_out="${OUT_DIR}" \
+    --grpc_out="grpc_js:${OUT_DIR}" \
     users.proto base.proto
 ```
 
