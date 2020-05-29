@@ -33,7 +33,7 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
     .forEach(importDescriptor => {
       printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
     });
-  printer.printLn(`import * as grpc from "grpc";`);
+  printer.printLn(`import * as grpc from "@grpc/grpc-js";`);
 
   // Services.
   serviceDescriptor.services
