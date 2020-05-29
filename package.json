@@ -25,7 +25,8 @@
     "ts",
     "grpc",
     "service",
-    "proto3"
+    "proto3",
+    "grpc-node"
   ],
   "author": "Improbable",
   "license": "Apache-2.0",
@@ -33,6 +34,7 @@
     "google-protobuf": "^3.6.1"
   },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.0.4",
     "@improbable-eng/grpc-web": "^0.9.1",
     "@types/chai": "^3.5.2",
     "@types/google-protobuf": "^3.2.7",
