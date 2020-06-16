@@ -25,12 +25,12 @@ withAllStdIn((inputBuff: Buffer) => {
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
-    // Generate separate `.ts` files for services if param is set
     const parameter = codeGenRequest.getParameter();
-    const generateGrpcWebServices = parameter === "service=grpc-web" || parameter === "service=true";
-    const generateGrpcNodeServices = parameter === "service=grpc-node";
+    const [serviceParameter, modeParameter] = parameter.split(',');
+    const generateGrpcWebServices = serviceParameter === "service=grpc-web" || serviceParameter === "service=true";
+    const generateGrpcNodeServices = serviceParameter === "service=grpc-node";
 
-    if (parameter === "service=true") {
+    if (serviceParameter === "service=true") {
       console.warn("protoc-gen-ts warning: The service=true parameter has been deprecated. Use service=grpc-web instead.");
     }
 
@@ -50,7 +50,7 @@ withAllStdIn((inputBuff: Buffer) => {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
           .forEach(file => codeGenResponse.addFile(file));
       } else if (generateGrpcNodeServices) {
-        const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap);
+        const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap, modeParameter);
         codeGenResponse.addFile(file);
       }
     });
