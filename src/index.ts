@@ -5,6 +5,7 @@ import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/googl
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
 import {generateGrpcNodeService} from "./service/grpcnode";
+import {parse} from 'querystring';
 
 /**
  * This is the ProtoC compiler plugin.
@@ -26,11 +27,11 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     const parameter = codeGenRequest.getParameter();
-    const [serviceParameter, modeParameter] = parameter.split(',');
-    const generateGrpcWebServices = serviceParameter === "service=grpc-web" || serviceParameter === "service=true";
-    const generateGrpcNodeServices = serviceParameter === "service=grpc-node";
+    const {service, mode} = parse(parameter, ',');
+    const generateGrpcWebServices = service === "grpc-web" || service === "true";
+    const generateGrpcNodeServices = service === "grpc-node";
 
-    if (serviceParameter === "service=true") {
+    if (service === "true") {
       console.warn("protoc-gen-ts warning: The service=true parameter has been deprecated. Use service=grpc-web instead.");
     }
 
@@ -50,7 +51,7 @@ withAllStdIn((inputBuff: Buffer) => {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
           .forEach(file => codeGenResponse.addFile(file));
       } else if (generateGrpcNodeServices) {
-        const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap, modeParameter);
+        const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap, mode);
         codeGenResponse.addFile(file);
       }
     });
