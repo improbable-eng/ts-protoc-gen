@@ -5,7 +5,7 @@ import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/googl
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
 import {generateGrpcNodeService} from "./service/grpcnode";
-import {parse} from 'querystring';
+import {parse} from "querystring";
 
 /**
  * This is the ProtoC compiler plugin.
@@ -27,7 +27,7 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     const parameter = codeGenRequest.getParameter();
-    const {service, mode} = parse(parameter, ',');
+    const {service, mode} = parse(parameter, ",");
     const generateGrpcWebServices = service === "grpc-web" || service === "true";
     const generateGrpcNodeServices = service === "grpc-node";
 
