@@ -109,7 +109,7 @@ var SimpleServiceService = exports.SimpleServiceService = {
     responseDeserialize: deserialize_othercom_ExternalChildMessage,
   },
   // checks that rpc methods that use reserved JS words don't generate invalid code
-  delete: {
+delete: {
     path: '/examplecom.SimpleService/Delete',
     requestStream: false,
     responseStream: false,
