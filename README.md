@@ -150,10 +150,16 @@ The `generated` folder will now contain both `_grpc_pb.js` and `_grpc_pb.d.ts` f
 
 #### Using `@grpc/grpc-js` instead of `grpc`
 
-Simply add a mode parameter to generate files that import `@grpc/grpc-js` instead of `grpc`, for example:
+Add a mode parameter to generate files that import `@grpc/grpc-js` instead of `grpc`, for example:
 
 ```
 --ts_out="service=grpc-node,mode=grpc-js:${OUT_DIR}"
+```
+
+You'll also need to specify the `grpc_js` option within the `--grpc_out` flag, for example:
+
+```
+--grpc_out="grpc_js:${OUT_DIR}"
 ```
 
 ## Examples
