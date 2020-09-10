@@ -146,7 +146,7 @@ export function normaliseFieldObjectName(name: string): string {
 }
 
 export function getServiceParameter(service?: string): ServiceParameter {
-  switch(service) {
+  switch (service) {
     case "true":
       console.warn("protoc-gen-ts warning: The service=true parameter has been deprecated. Use service=grpc-web instead.");
       return ServiceParameter.GrpcWeb;
@@ -157,18 +157,18 @@ export function getServiceParameter(service?: string): ServiceParameter {
     case undefined:
       return ServiceParameter.None;
     default:
-      throw new Error(`Unrecognised service parameter: ${service}`)
+      throw new Error(`Unrecognised service parameter: ${service}`);
   }
 }
 
 export function getModeParameter(mode?: string): ModeParameter {
-  switch(mode) {
+  switch (mode) {
     case "grpc-js":
       return ModeParameter.GrpcJs;
     case undefined:
         return ModeParameter.None;
     default:
-      throw new Error(`Unrecognised mode parameter: ${mode}`)
+      throw new Error(`Unrecognised mode parameter: ${mode}`);
   }
 }
 
@@ -180,5 +180,5 @@ export function getParameterEnums(parameter: string): {
   return {
     service: getServiceParameter(service),
     mode: getModeParameter(mode)
-  }
+  };
 }
