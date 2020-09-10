@@ -1,5 +1,7 @@
+import {parse} from "querystring";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {ExportEnumEntry, ExportMessageEntry} from "./ExportMap";
+import {ServiceParameter, ModeParameter} from "./parameters";
 export function filePathToPseudoNamespace(filePath: string): string {
   return filePath.replace(".proto", "").replace(/\//g, "_").replace(/\./g, "_").replace(/\-/g, "_") + "_pb";
 }
@@ -141,4 +143,42 @@ export function normaliseFieldObjectName(name: string): string {
       return `pb_${name}`;
   }
   return name;
+}
+
+export function getServiceParameter(service?: string): ServiceParameter {
+  switch (service) {
+    case "true":
+      console.warn("protoc-gen-ts warning: The service=true parameter has been deprecated. Use service=grpc-web instead.");
+      return ServiceParameter.GrpcWeb;
+    case "grpc-web":
+      return ServiceParameter.GrpcWeb;
+    case "grpc-node":
+      return ServiceParameter.GrpcNode;
+    case undefined:
+      return ServiceParameter.None;
+    default:
+      throw new Error(`Unrecognised service parameter: ${service}`);
+  }
+}
+
+export function getModeParameter(mode?: string): ModeParameter {
+  switch (mode) {
+    case "grpc-js":
+      return ModeParameter.GrpcJs;
+    case undefined:
+        return ModeParameter.None;
+    default:
+      throw new Error(`Unrecognised mode parameter: ${mode}`);
+  }
+}
+
+export function getParameterEnums(parameter: string): {
+  service: ServiceParameter,
+  mode: ModeParameter
+} {
+  const {service, mode} = parse(parameter, ",");
+  return {
+    service: getServiceParameter(service),
+    mode: getModeParameter(mode)
+  };
 }

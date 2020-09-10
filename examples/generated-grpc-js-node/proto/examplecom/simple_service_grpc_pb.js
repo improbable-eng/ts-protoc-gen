@@ -1,7 +1,7 @@
 // GENERATED CODE -- DO NOT EDIT!
 
 'use strict';
-var grpc = require('grpc');
+var grpc = require('@grpc/grpc-js');
 var proto_examplecom_simple_service_pb = require('../../proto/examplecom/simple_service_pb.js');
 var proto_othercom_external_child_message_pb = require('../../proto/othercom/external_child_message_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
