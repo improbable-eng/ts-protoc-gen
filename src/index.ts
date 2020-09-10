@@ -1,11 +1,11 @@
 import {printFileDescriptorTSD} from "./ts/fileDescriptorTSD";
 import {ExportMap} from "./ExportMap";
-import {replaceProtoSuffix, withAllStdIn} from "./util";
+import {replaceProtoSuffix, withAllStdIn, getParameterEnums} from "./util";
 import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
 import {generateGrpcNodeService} from "./service/grpcnode";
-import {parse} from "querystring";
+import {ServiceParameter} from "./parameters";
 
 /**
  * This is the ProtoC compiler plugin.
@@ -27,13 +27,10 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     const parameter = codeGenRequest.getParameter();
-    const {service, mode} = parse(parameter, ",");
-    const generateGrpcWebServices = service === "grpc-web" || service === "true";
-    const generateGrpcNodeServices = service === "grpc-node";
+    const {service, mode} = getParameterEnums(parameter);
 
-    if (service === "true") {
-      console.warn("protoc-gen-ts warning: The service=true parameter has been deprecated. Use service=grpc-web instead.");
-    }
+    const generateGrpcWebServices = service === ServiceParameter.GrpcWeb;
+    const generateGrpcNodeServices = service === ServiceParameter.GrpcNode;
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       fileNameToDescriptor[protoFileDescriptor.getName()] = protoFileDescriptor;
