@@ -43,6 +43,8 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
       printer.printEmptyLn();
       printService(printer, service);
       printer.printEmptyLn();
+      printServer(printer, service);
+      printer.printEmptyLn();
       printClient(printer, service);
     });
 
@@ -60,6 +62,24 @@ function printService(printer: Printer, service: RPCDescriptor) {
   printer.printLn("}");
   printer.printEmptyLn();
   printer.printLn(`export const ${serviceName}: I${serviceName};`);
+}
+
+function printServer(printer: Printer, service: RPCDescriptor) {
+  const serverName = `${service.name}Server`;
+  printer.printLn(`export interface I${serverName} extends grpc.UntypedServiceImplementation {`);
+  service.methods
+    .forEach(method => {
+      if (!method.requestStream && !method.responseStream) {
+        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerUnaryCall<${method.requestType}, ${method.responseType}>, callback: grpc.sendUnaryData<${method.responseType}>): void;`);
+      } else if (!method.requestStream) {
+        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerWritableStream<${method.requestType}, ${method.responseType}>): void;`);
+      } else if (!method.responseStream) {
+        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerReadableStream<${method.requestType}, ${method.responseType}>, callback: grpc.sendUnaryData<${method.responseType}>): void;`);
+      } else {
+        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerDuplexStream<${method.requestType}, ${method.responseType}>): void;`);
+      }
+    });
+  printer.printLn("}");
 }
 
 function printClient(printer: Printer, service: RPCDescriptor) {
