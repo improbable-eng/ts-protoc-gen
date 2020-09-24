@@ -19,11 +19,11 @@ interface ISimpleServiceService extends grpc.ServiceDefinition<grpc.UntypedServi
 export const SimpleServiceService: ISimpleServiceService;
 
 export interface ISimpleServiceServer extends grpc.UntypedServiceImplementation {
-  doUnary(call: grpc.ServerUnaryCall<proto_examplecom_simple_service_pb.UnaryRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>, callback: grpc.sendUnaryData<proto_othercom_external_child_message_pb.ExternalChildMessage>): void;
-  doServerStream(call: grpc.ServerWritableStream<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>): void;
-  doClientStream(call: grpc.ServerReadableStream<proto_examplecom_simple_service_pb.StreamRequest, google_protobuf_empty_pb.Empty>, callback: grpc.sendUnaryData<google_protobuf_empty_pb.Empty>): void;
-  doBidiStream(call: grpc.ServerDuplexStream<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>): void;
-  delete(call: grpc.ServerUnaryCall<proto_examplecom_simple_service_pb.UnaryRequest, proto_examplecom_simple_service_pb.UnaryResponse>, callback: grpc.sendUnaryData<proto_examplecom_simple_service_pb.UnaryResponse>): void;
+  doUnary: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.UnaryRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doServerStream: grpc.handleServerStreamingCall<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  doClientStream: grpc.handleClientStreamingCall<proto_examplecom_simple_service_pb.StreamRequest, google_protobuf_empty_pb.Empty>;
+  doBidiStream: grpc.handleBidiStreamingCall<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
+  delete: grpc.handleUnaryCall<proto_examplecom_simple_service_pb.UnaryRequest, proto_examplecom_simple_service_pb.UnaryResponse>;
 }
 
 export class SimpleServiceClient extends grpc.Client {

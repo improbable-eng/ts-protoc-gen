@@ -70,13 +70,13 @@ function printServer(printer: Printer, service: RPCDescriptor) {
   service.methods
     .forEach(method => {
       if (!method.requestStream && !method.responseStream) {
-        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerUnaryCall<${method.requestType}, ${method.responseType}>, callback: grpc.sendUnaryData<${method.responseType}>): void;`);
+        printer.printIndentedLn(`${method.nameAsCamelCase}: grpc.handleUnaryCall<${method.requestType}, ${method.responseType}>;`);
       } else if (!method.requestStream) {
-        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerWritableStream<${method.requestType}, ${method.responseType}>): void;`);
+        printer.printIndentedLn(`${method.nameAsCamelCase}: grpc.handleServerStreamingCall<${method.requestType}, ${method.responseType}>;`);
       } else if (!method.responseStream) {
-        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerReadableStream<${method.requestType}, ${method.responseType}>, callback: grpc.sendUnaryData<${method.responseType}>): void;`);
+        printer.printIndentedLn(`${method.nameAsCamelCase}: grpc.handleClientStreamingCall<${method.requestType}, ${method.responseType}>;`);
       } else {
-        printer.printIndentedLn(`${method.nameAsCamelCase}(call: grpc.ServerDuplexStream<${method.requestType}, ${method.responseType}>): void;`);
+        printer.printIndentedLn(`${method.nameAsCamelCase}: grpc.handleBidiStreamingCall<${method.requestType}, ${method.responseType}>;`);
       }
     });
   printer.printLn("}");

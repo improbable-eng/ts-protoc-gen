@@ -14,8 +14,8 @@ interface IOrphanServiceService extends grpc.ServiceDefinition<grpc.UntypedServi
 export const OrphanServiceService: IOrphanServiceService;
 
 export interface IOrphanServiceServer extends grpc.UntypedServiceImplementation {
-  doUnary(call: grpc.ServerUnaryCall<proto_orphan_pb.OrphanUnaryRequest, proto_orphan_pb.OrphanMessage>, callback: grpc.sendUnaryData<proto_orphan_pb.OrphanMessage>): void;
-  doStream(call: grpc.ServerWritableStream<proto_orphan_pb.OrphanStreamRequest, proto_orphan_pb.OrphanMessage>): void;
+  doUnary: grpc.handleUnaryCall<proto_orphan_pb.OrphanUnaryRequest, proto_orphan_pb.OrphanMessage>;
+  doStream: grpc.handleServerStreamingCall<proto_orphan_pb.OrphanStreamRequest, proto_orphan_pb.OrphanMessage>;
 }
 
 export class OrphanServiceClient extends grpc.Client {
