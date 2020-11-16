@@ -33,6 +33,7 @@
     "google-protobuf": "^3.6.1"
   },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.2.0",
     "@improbable-eng/grpc-web": "^0.9.1",
     "@types/chai": "^3.5.2",
     "@types/google-protobuf": "^3.2.7",
