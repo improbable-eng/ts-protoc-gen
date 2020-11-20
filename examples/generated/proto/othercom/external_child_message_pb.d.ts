@@ -5,7 +5,7 @@ import * as jspb from "google-protobuf";
 
 export class ExternalChildMessage extends jspb.Message {
   getMyString(): string;
-  setMyString(value: string): void;
+  setMyString(value: string): ExternalChildMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ExternalChildMessage.AsObject;

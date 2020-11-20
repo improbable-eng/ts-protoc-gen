@@ -5,178 +5,178 @@ import * as jspb from "google-protobuf";
 
 export class ReservedWordsMessage extends jspb.Message {
   getAbstract(): string;
-  setAbstract(value: string): void;
+  setAbstract(value: string): ReservedWordsMessage;
 
   getBoolean(): string;
-  setBoolean(value: string): void;
+  setBoolean(value: string): ReservedWordsMessage;
 
   getBreak(): string;
-  setBreak(value: string): void;
+  setBreak(value: string): ReservedWordsMessage;
 
   getByte(): string;
-  setByte(value: string): void;
+  setByte(value: string): ReservedWordsMessage;
 
   getCase(): string;
-  setCase(value: string): void;
+  setCase(value: string): ReservedWordsMessage;
 
   getCatch(): string;
-  setCatch(value: string): void;
+  setCatch(value: string): ReservedWordsMessage;
 
   getChar(): string;
-  setChar(value: string): void;
+  setChar(value: string): ReservedWordsMessage;
 
   getClass(): string;
-  setClass(value: string): void;
+  setClass(value: string): ReservedWordsMessage;
 
   getConst(): string;
-  setConst(value: string): void;
+  setConst(value: string): ReservedWordsMessage;
 
   getContinue(): string;
-  setContinue(value: string): void;
+  setContinue(value: string): ReservedWordsMessage;
 
   getDebugger(): string;
-  setDebugger(value: string): void;
+  setDebugger(value: string): ReservedWordsMessage;
 
   getDefault(): string;
-  setDefault(value: string): void;
+  setDefault(value: string): ReservedWordsMessage;
 
   getDelete(): string;
-  setDelete(value: string): void;
+  setDelete(value: string): ReservedWordsMessage;
 
   getDo(): string;
-  setDo(value: string): void;
+  setDo(value: string): ReservedWordsMessage;
 
   getDouble(): string;
-  setDouble(value: string): void;
+  setDouble(value: string): ReservedWordsMessage;
 
   getElse(): string;
-  setElse(value: string): void;
+  setElse(value: string): ReservedWordsMessage;
 
   getEnum(): string;
-  setEnum(value: string): void;
+  setEnum(value: string): ReservedWordsMessage;
 
   getExport(): string;
-  setExport(value: string): void;
+  setExport(value: string): ReservedWordsMessage;
 
   getExtends(): string;
-  setExtends(value: string): void;
+  setExtends(value: string): ReservedWordsMessage;
 
   getFalse(): string;
-  setFalse(value: string): void;
+  setFalse(value: string): ReservedWordsMessage;
 
   getFinal(): string;
-  setFinal(value: string): void;
+  setFinal(value: string): ReservedWordsMessage;
 
   getFinally(): string;
-  setFinally(value: string): void;
+  setFinally(value: string): ReservedWordsMessage;
 
   getFloat(): string;
-  setFloat(value: string): void;
+  setFloat(value: string): ReservedWordsMessage;
 
   getFor(): string;
-  setFor(value: string): void;
+  setFor(value: string): ReservedWordsMessage;
 
   getFunction(): string;
-  setFunction(value: string): void;
+  setFunction(value: string): ReservedWordsMessage;
 
   getGoto(): string;
-  setGoto(value: string): void;
+  setGoto(value: string): ReservedWordsMessage;
 
   getIf(): string;
-  setIf(value: string): void;
+  setIf(value: string): ReservedWordsMessage;
 
   getImplements(): string;
-  setImplements(value: string): void;
+  setImplements(value: string): ReservedWordsMessage;
 
   getImport(): string;
-  setImport(value: string): void;
+  setImport(value: string): ReservedWordsMessage;
 
   getIn(): string;
-  setIn(value: string): void;
+  setIn(value: string): ReservedWordsMessage;
 
   getInstanceof(): string;
-  setInstanceof(value: string): void;
+  setInstanceof(value: string): ReservedWordsMessage;
 
   getInt(): string;
-  setInt(value: string): void;
+  setInt(value: string): ReservedWordsMessage;
 
   getInterface(): string;
-  setInterface(value: string): void;
+  setInterface(value: string): ReservedWordsMessage;
 
   getLong(): string;
-  setLong(value: string): void;
+  setLong(value: string): ReservedWordsMessage;
 
   getNative(): string;
-  setNative(value: string): void;
+  setNative(value: string): ReservedWordsMessage;
 
   getNew(): string;
-  setNew(value: string): void;
+  setNew(value: string): ReservedWordsMessage;
 
   getNull(): string;
-  setNull(value: string): void;
+  setNull(value: string): ReservedWordsMessage;
 
   getPackage(): string;
-  setPackage(value: string): void;
+  setPackage(value: string): ReservedWordsMessage;
 
   getPrivate(): string;
-  setPrivate(value: string): void;
+  setPrivate(value: string): ReservedWordsMessage;
 
   getProtected(): string;
-  setProtected(value: string): void;
+  setProtected(value: string): ReservedWordsMessage;
 
   getPublic(): string;
-  setPublic(value: string): void;
+  setPublic(value: string): ReservedWordsMessage;
 
   getReturn(): string;
-  setReturn(value: string): void;
+  setReturn(value: string): ReservedWordsMessage;
 
   getShort(): string;
-  setShort(value: string): void;
+  setShort(value: string): ReservedWordsMessage;
 
   getStatic(): string;
-  setStatic(value: string): void;
+  setStatic(value: string): ReservedWordsMessage;
 
   getSuper(): string;
-  setSuper(value: string): void;
+  setSuper(value: string): ReservedWordsMessage;
 
   getSwitch(): string;
-  setSwitch(value: string): void;
+  setSwitch(value: string): ReservedWordsMessage;
 
   getSynchronized(): string;
-  setSynchronized(value: string): void;
+  setSynchronized(value: string): ReservedWordsMessage;
 
   getThis(): string;
-  setThis(value: string): void;
+  setThis(value: string): ReservedWordsMessage;
 
   getThrow(): string;
-  setThrow(value: string): void;
+  setThrow(value: string): ReservedWordsMessage;
 
   getThrows(): string;
-  setThrows(value: string): void;
+  setThrows(value: string): ReservedWordsMessage;
 
   getTransient(): string;
-  setTransient(value: string): void;
+  setTransient(value: string): ReservedWordsMessage;
 
   getTry(): string;
-  setTry(value: string): void;
+  setTry(value: string): ReservedWordsMessage;
 
   getTypeof(): string;
-  setTypeof(value: string): void;
+  setTypeof(value: string): ReservedWordsMessage;
 
   getVar(): string;
-  setVar(value: string): void;
+  setVar(value: string): ReservedWordsMessage;
 
   getVoid(): string;
-  setVoid(value: string): void;
+  setVoid(value: string): ReservedWordsMessage;
 
   getVolatile(): string;
-  setVolatile(value: string): void;
+  setVolatile(value: string): ReservedWordsMessage;
 
   getWhile(): string;
-  setWhile(value: string): void;
+  setWhile(value: string): ReservedWordsMessage;
 
   getWith(): string;
-  setWith(value: string): void;
+  setWith(value: string): ReservedWordsMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ReservedWordsMessage.AsObject;

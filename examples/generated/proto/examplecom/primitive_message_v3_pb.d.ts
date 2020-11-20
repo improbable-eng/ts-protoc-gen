@@ -5,54 +5,54 @@ import * as jspb from "google-protobuf";
 
 export class PrimitiveMessageV3 extends jspb.Message {
   getMyDouble(): number;
-  setMyDouble(value: number): void;
+  setMyDouble(value: number): PrimitiveMessageV3;
 
   getMyFloat(): number;
-  setMyFloat(value: number): void;
+  setMyFloat(value: number): PrimitiveMessageV3;
 
   getMyInt32(): number;
-  setMyInt32(value: number): void;
+  setMyInt32(value: number): PrimitiveMessageV3;
 
   getMyInt64(): number;
-  setMyInt64(value: number): void;
+  setMyInt64(value: number): PrimitiveMessageV3;
 
   getMyUint32(): number;
-  setMyUint32(value: number): void;
+  setMyUint32(value: number): PrimitiveMessageV3;
 
   getMyUint64(): number;
-  setMyUint64(value: number): void;
+  setMyUint64(value: number): PrimitiveMessageV3;
 
   getMySint32(): number;
-  setMySint32(value: number): void;
+  setMySint32(value: number): PrimitiveMessageV3;
 
   getMySint64(): number;
-  setMySint64(value: number): void;
+  setMySint64(value: number): PrimitiveMessageV3;
 
   getMyFixed32(): number;
-  setMyFixed32(value: number): void;
+  setMyFixed32(value: number): PrimitiveMessageV3;
 
   getMyFixed64(): number;
-  setMyFixed64(value: number): void;
+  setMyFixed64(value: number): PrimitiveMessageV3;
 
   getMySfixed32(): number;
-  setMySfixed32(value: number): void;
+  setMySfixed32(value: number): PrimitiveMessageV3;
 
   getMySfixed64(): number;
-  setMySfixed64(value: number): void;
+  setMySfixed64(value: number): PrimitiveMessageV3;
 
   getMyBool(): boolean;
-  setMyBool(value: boolean): void;
+  setMyBool(value: boolean): PrimitiveMessageV3;
 
   getMyString(): string;
-  setMyString(value: string): void;
+  setMyString(value: string): PrimitiveMessageV3;
 
   getMyBytes(): Uint8Array | string;
   getMyBytes_asU8(): Uint8Array;
   getMyBytes_asB64(): string;
-  setMyBytes(value: Uint8Array | string): void;
+  setMyBytes(value: Uint8Array | string): PrimitiveMessageV3;
 
   getMyNumber(): number;
-  setMyNumber(value: number): void;
+  setMyNumber(value: number): PrimitiveMessageV3;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PrimitiveMessageV3.AsObject;

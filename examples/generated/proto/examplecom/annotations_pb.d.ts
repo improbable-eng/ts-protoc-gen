@@ -5,19 +5,19 @@ import * as jspb from "google-protobuf";
 
 export class AnnotatedMessage extends jspb.Message {
   getMyunit64(): string;
-  setMyunit64(value: string): void;
+  setMyunit64(value: string): AnnotatedMessage;
 
   getMyint64(): string;
-  setMyint64(value: string): void;
+  setMyint64(value: string): AnnotatedMessage;
 
   getMyfixed64(): string;
-  setMyfixed64(value: string): void;
+  setMyfixed64(value: string): AnnotatedMessage;
 
   getMysint64(): string;
-  setMysint64(value: string): void;
+  setMysint64(value: string): AnnotatedMessage;
 
   getMysfixed64(): string;
-  setMysfixed64(value: string): void;
+  setMysfixed64(value: string): AnnotatedMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AnnotatedMessage.AsObject;
