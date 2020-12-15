@@ -1,4 +1,7 @@
-## 0.13.1-pre
+## 0.14.0
+
+### Changes
+* [#247](https://github.com/improbable-eng/ts-protoc-gen/pull/247) Added support for grpc and @grpc/grpc-js server interfaces. ([@badsyntax](https://github.com/badsyntax)).
 
 ## 0.13.0
 
