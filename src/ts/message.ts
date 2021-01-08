@@ -143,7 +143,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
     function printRepeatedAddMethod(valueType: string) {
       const optionalValue = field.getType() === MESSAGE_TYPE;
-      printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${['boolean', 'number', 'string'].includes(valueType)};`);
+      const isPrimitive = valueType === 'boolean' || valueType === 'number' || valueType === 'string'
+      printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${isPrimitive ? messageName : valueType};`);
     }
 
     if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {// is repeated
