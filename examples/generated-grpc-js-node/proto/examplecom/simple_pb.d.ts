@@ -25,7 +25,7 @@ export class MySimple extends jspb.Message {
   clearSomeLabelsList(): MySimple;
   getSomeLabelsList(): Array<string>;
   setSomeLabelsList(value: Array<string>): MySimple;
-  addSomeLabels(value: string, index?: number): string;
+  addSomeLabels(value: string, index?: number): MySimple;
 
   hasSomeCodeGeneratorRequest(): boolean;
   clearSomeCodeGeneratorRequest(): MySimple;
