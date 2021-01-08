@@ -30,7 +30,7 @@
   "author": "Improbable",
   "license": "Apache-2.0",
   "dependencies": {
-    "google-protobuf": "^3.6.1"
+    "google-protobuf": "^3.14.0"
   },
   "devDependencies": {
     "@improbable-eng/grpc-web": "^0.9.1",

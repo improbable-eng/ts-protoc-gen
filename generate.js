@@ -3,7 +3,7 @@ const { spawnSync } = require("child_process");
 const { existsSync, mkdirSync } = require("fs");
 const { resolve } = require("path");
 
-const protocVersion = "3.5.1";
+const protocVersion = "3.14.0";
 
 const examplesGeneratedPath = resolve(__dirname, "examples", "generated");
 const examplesGeneratedGrpcWebPath = resolve(__dirname, "examples", "generated-grpc-web");
