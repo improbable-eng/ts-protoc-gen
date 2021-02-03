@@ -102,7 +102,13 @@ export class SimpleServiceClient {
     callback: (error: ServiceError|null, responseMessage: proto_othercom_external_child_message_pb.ExternalChildMessage|null) => void
   ): UnaryResponse;
   doServerStream(requestMessage: proto_examplecom_simple_service_pb.StreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  doClientStream(metadata?: grpc.Metadata): RequestStream<proto_examplecom_simple_service_pb.StreamRequest>;
+  doClientStream(
+    metadata?: grpc.Metadata,
+    callback?: (error: ServiceError|null, responseMessage: google_protobuf_empty_pb.Empty|null) => void
+  ): RequestStream<proto_examplecom_simple_service_pb.StreamRequest>;
+  doClientStream(
+    callback?: (error: ServiceError|null, responseMessage: google_protobuf_empty_pb.Empty|null) => void
+  ): RequestStream<proto_examplecom_simple_service_pb.StreamRequest>;
   doBidiStream(metadata?: grpc.Metadata): BidirectionalStream<proto_examplecom_simple_service_pb.StreamRequest, proto_othercom_external_child_message_pb.ExternalChildMessage>;
   delete(
     requestMessage: proto_examplecom_simple_service_pb.UnaryRequest,
