@@ -19,8 +19,8 @@ type CallingTypes = {
 
 function getCallingTypes(method: MethodDescriptorProto, exportMap: ExportMap): CallingTypes {
   return {
-    requestType: getFieldType(MESSAGE_TYPE, method.getInputType().slice(1), "", exportMap),
-    responseType: getFieldType(MESSAGE_TYPE, method.getOutputType().slice(1), "", exportMap),
+    requestType: getFieldType(MESSAGE_TYPE, method.getInputType()!.slice(1), "", exportMap),
+    responseType: getFieldType(MESSAGE_TYPE, method.getOutputType()!.slice(1), "", exportMap),
   };
 }
 
@@ -64,7 +64,7 @@ export class RPCDescriptor {
     this.exportMap = exportMap;
   }
   get name(): string {
-    return this.protoService.getName();
+    return this.protoService.getName()!;
   }
 
   get qualifiedName(): string {
@@ -75,14 +75,15 @@ export class RPCDescriptor {
     return this.protoService.getMethodList()
       .map(method => {
         const callingTypes = getCallingTypes(method, this.exportMap);
-        const nameAsCamelCase = method.getName()[0].toLowerCase() + method.getName().substr(1);
+        const methodName = method.getName();
+        const nameAsCamelCase = methodName![0].toLowerCase() + methodName!.substr(1);
         return {
-          nameAsPascalCase: method.getName(),
+          nameAsPascalCase: method.getName()!,
           nameAsCamelCase,
           functionName: normaliseFieldObjectName(nameAsCamelCase),
           serviceName: this.name,
-          requestStream: method.getClientStreaming(),
-          responseStream: method.getServerStreaming(),
+          requestStream: method.getClientStreaming()!,
+          responseStream: method.getServerStreaming()!,
           requestType: callingTypes.requestType,
           responseType: callingTypes.responseType,
         };
@@ -98,15 +99,15 @@ export class GrpcServiceDescriptor {
   constructor(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
     this.fileDescriptor = fileDescriptor;
     this.exportMap = exportMap;
-    this.pathToRoot = getPathToRoot(fileDescriptor.getName());
+    this.pathToRoot = getPathToRoot(fileDescriptor.getName()!);
   }
 
   get filename(): string {
-    return this.fileDescriptor.getName();
+    return this.fileDescriptor.getName()!;
   }
 
   get packageName(): string {
-    return this.fileDescriptor.getPackage();
+    return this.fileDescriptor.getPackage()!;
   }
 
   get imports(): ImportDescriptor[] {

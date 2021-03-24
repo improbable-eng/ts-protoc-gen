@@ -54,7 +54,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   messageDescriptor.getFieldList().forEach(field => {
     if (field.hasOneofIndex()) {
-      const oneOfIndex = field.getOneofIndex();
+      const oneOfIndex = field.getOneofIndex()!;
       let existing = oneOfGroups[oneOfIndex];
       if (existing === undefined) {
         existing = [];
@@ -62,13 +62,13 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       }
       existing.push(field);
     }
-    const snakeCaseName = stripPrefix(field.getName().toLowerCase(), "_");
+    const snakeCaseName = stripPrefix(field.getName()!.toLowerCase(), "_");
     const camelCaseName = snakeToCamel(snakeCaseName);
     const withUppercase = uppercaseFirst(camelCaseName);
-    const type = field.getType();
+    const type = field.getType()!;
 
     let exportType;
-    const fullTypeName = field.getTypeName().slice(1);
+    const fullTypeName = field.getTypeName()!.slice(1);
     if (type === MESSAGE_TYPE) {
       const fieldMessageType = exportMap.getMessage(fullTypeName);
       if (fieldMessageType === undefined) {
@@ -112,8 +112,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       }
       exportType = `${exportType}Map[keyof ${exportType}Map]`;
     } else {
-      if (field.getOptions() && field.getOptions().hasJstype()) {
-        switch (field.getOptions().getJstype()) {
+      if (field.getOptions() && field.getOptions()!.hasJstype()) {
+        switch (field.getOptions()!.getJstype()) {
           case JSType.JS_NUMBER:
             exportType = "number";
             break;
@@ -193,7 +193,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   toObjectType.printLn(`}`);
 
   messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
-    printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case(): ${messageName}.${oneOfName(oneOfDecl.getName())}Case;`);
+    const oneOfDeclName = oneOfDecl.getName()!;
+    printer.printIndentedLn(`get${oneOfName(oneOfDeclName)}Case(): ${messageName}.${oneOfName(oneOfDeclName)}Case;`);
   });
 
   printer.printIndentedLn(`serializeBinary(): Uint8Array;`);

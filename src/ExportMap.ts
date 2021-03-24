@@ -30,12 +30,12 @@ export class ExportMap {
 
   exportNested(scope: string, fileDescriptor: FileDescriptorProto, message: DescriptorProto) {
     const messageEntry: ExportMessageEntry = {
-      pkg: fileDescriptor.getPackage(),
-      fileName: fileDescriptor.getName(),
-      messageOptions: message.getOptions(),
-      mapFieldOptions: message.getOptions() && message.getOptions().getMapEntry() ? {
-        key: [message.getFieldList()[0].getType(), message.getFieldList()[0].getTypeName().slice(1)],
-        value: [message.getFieldList()[1].getType(), message.getFieldList()[1].getTypeName().slice(1)],
+      pkg: fileDescriptor.getPackage()!,
+      fileName: fileDescriptor.getName()!,
+      messageOptions: message.getOptions()!,
+      mapFieldOptions: message.getOptions() && message.getOptions()!.getMapEntry() ? {
+        key: [message.getFieldList()[0].getType()!, message.getFieldList()[0].getTypeName()!.slice(1)],
+        value: [message.getFieldList()[1].getType()!, message.getFieldList()[1].getTypeName()!.slice(1)],
       } : undefined,
     };
 
@@ -51,15 +51,15 @@ export class ExportMap {
     message.getEnumTypeList().forEach(enumType => {
       const identifier = `${packagePrefix}${message.getName()}.${enumType.getName()}`;
       this.enumMap[identifier] = {
-        pkg: fileDescriptor.getPackage(),
-        fileName: fileDescriptor.getName(),
-        enumOptions: enumType.getOptions(),
+        pkg: fileDescriptor.getPackage()!,
+        fileName: fileDescriptor.getName()!,
+        enumOptions: enumType.getOptions()!,
       };
     });
   }
 
   addFileDescriptor(fileDescriptor: FileDescriptorProto) {
-    const scope = fileDescriptor.getPackage();
+    const scope = fileDescriptor.getPackage()!;
     fileDescriptor.getMessageTypeList().forEach(messageType => {
       this.exportNested(scope, fileDescriptor, messageType);
     });
@@ -67,9 +67,9 @@ export class ExportMap {
     fileDescriptor.getEnumTypeList().forEach(enumType => {
       const packagePrefix = scope ? scope + "." : "";
       this.enumMap[packagePrefix + enumType.getName()] = {
-        pkg: fileDescriptor.getPackage(),
-        fileName: fileDescriptor.getName(),
-        enumOptions: enumType.getOptions(),
+        pkg: fileDescriptor.getPackage()!,
+        fileName: fileDescriptor.getName()!,
+        enumOptions: enumType.getOptions()!,
       };
     });
   }

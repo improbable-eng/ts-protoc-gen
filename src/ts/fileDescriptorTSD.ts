@@ -8,8 +8,8 @@ import {printEnum} from "./enum";
 import {printExtension} from "./extensions";
 
 export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
-  const fileName = fileDescriptor.getName();
-  const packageName = fileDescriptor.getPackage();
+  const fileName = fileDescriptor.getName()!;
+  const packageName = fileDescriptor.getPackage()!;
 
   const printer = new Printer(0);
 

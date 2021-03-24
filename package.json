@@ -30,12 +30,12 @@
   "author": "Improbable",
   "license": "Apache-2.0",
   "dependencies": {
-    "google-protobuf": "^3.6.1"
+    "google-protobuf": "^3.15.5"
   },
   "devDependencies": {
     "@improbable-eng/grpc-web": "^0.9.1",
     "@types/chai": "^3.5.2",
-    "@types/google-protobuf": "^3.2.7",
+    "@types/google-protobuf": "^3.7.4",
     "@types/lodash": "^4.14.106",
     "@types/mocha": "^2.2.46",
     "@types/node": "^7.0.52",

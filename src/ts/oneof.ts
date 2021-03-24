@@ -5,10 +5,11 @@ import {oneOfName} from "../util";
 export function printOneOfDecl(oneOfDecl: OneofDescriptorProto, oneOfFields: Array<FieldDescriptorProto>, indentLevel: number) {
   const printer = new Printer(indentLevel);
   printer.printEmptyLn();
-  printer.printLn(`export enum ${oneOfName(oneOfDecl.getName())}Case {`);
-  printer.printIndentedLn(`${oneOfDecl.getName().toUpperCase()}_NOT_SET = 0,`);
+  const oneOfDeclName = oneOfDecl.getName()!;
+  printer.printLn(`export enum ${oneOfName(oneOfDeclName)}Case {`);
+  printer.printIndentedLn(`${oneOfDeclName.toUpperCase()}_NOT_SET = 0,`);
   oneOfFields.forEach(field => {
-    printer.printIndentedLn(`${field.getName().toUpperCase()} = ${field.getNumber()},`);
+    printer.printIndentedLn(`${field.getName()!.toUpperCase()} = ${field.getNumber()},`);
   });
   printer.printLn("}");
 
