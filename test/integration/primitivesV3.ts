@@ -21,6 +21,25 @@ describe("proto3 - primitive", () => {
     assert.strictEqual(msg.getMyBytes() as (Uint8Array|string), "");
   });
 
+  it("should allow getting optional primitive fields", () => {
+    const msg = new PrimitiveMessageV3();
+    assert.strictEqual(msg.getOptDouble() as number, 0);
+    assert.strictEqual(msg.getOptFloat() as number, 0);
+    assert.strictEqual(msg.getOptInt32() as number, 0);
+    assert.strictEqual(msg.getOptInt64() as number, 0);
+    assert.strictEqual(msg.getOptUint32() as number, 0);
+    assert.strictEqual(msg.getOptUint64() as number, 0);
+    assert.strictEqual(msg.getOptSint32() as number, 0);
+    assert.strictEqual(msg.getOptSint64() as number, 0);
+    assert.strictEqual(msg.getOptFixed32() as number, 0);
+    assert.strictEqual(msg.getOptFixed64() as number, 0);
+    assert.strictEqual(msg.getOptSfixed32() as number, 0);
+    assert.strictEqual(msg.getOptSfixed64() as number, 0);
+    assert.strictEqual(msg.getOptBool() as boolean, false);
+    assert.strictEqual(msg.getOptString() as string, "");
+    assert.strictEqual(msg.getOptBytes() as (Uint8Array|string), "");
+  });
+
   it("should allow setting and getting primitive fields", () => {
     const msg = new PrimitiveMessageV3();
     msg.setMyDouble(123);
@@ -53,6 +72,40 @@ describe("proto3 - primitive", () => {
     assert.strictEqual(msg.getMyString() as string, "hello world");
     msg.setMyBytes("AAECAwQFBgcICQ==");
     assert.strictEqual(msg.getMyBytes() as (Uint8Array|string), "AAECAwQFBgcICQ==");
+  });
+
+  it("should allow setting and getting required optional fields", () => {
+    const msg = new PrimitiveMessageV3();
+    msg.setOptDouble(123);
+    assert.strictEqual(msg.getOptDouble() as number, 123);
+    msg.setOptFloat(123);
+    assert.strictEqual(msg.getOptFloat() as number, 123);
+    msg.setOptInt32(123);
+    assert.strictEqual(msg.getOptInt32() as number, 123);
+    msg.setOptInt64(123);
+    assert.strictEqual(msg.getOptInt64() as number, 123);
+    msg.setOptUint32(123);
+    assert.strictEqual(msg.getOptUint32() as number, 123);
+    msg.setOptUint64(123);
+    assert.strictEqual(msg.getOptUint64() as number, 123);
+    msg.setOptSint32(123);
+    assert.strictEqual(msg.getOptSint32() as number, 123);
+    msg.setOptSint64(123);
+    assert.strictEqual(msg.getOptSint64() as number, 123);
+    msg.setOptFixed32(123);
+    assert.strictEqual(msg.getOptFixed32() as number, 123);
+    msg.setOptFixed64(123);
+    assert.strictEqual(msg.getOptFixed64() as number, 123);
+    msg.setOptSfixed32(123);
+    assert.strictEqual(msg.getOptSfixed32() as number, 123);
+    msg.setOptSfixed64(123);
+    assert.strictEqual(msg.getOptSfixed64() as number, 123);
+    msg.setOptBool(true);
+    assert.strictEqual(msg.getOptBool() as boolean, true);
+    msg.setOptString("hello world");
+    assert.strictEqual(msg.getOptString() as string, "hello world");
+    msg.setOptBytes("AAECAwQFBgcICQ==");
+    assert.strictEqual(msg.getOptBytes() as (Uint8Array|string), "AAECAwQFBgcICQ==");
   });
 
   it("should allow setting and getting byte values", () => {
