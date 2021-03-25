@@ -1,7 +1,7 @@
 import {assert} from "chai";
 import {ParentMessageV3} from "../../examples/generated/proto/examplecom/parent_message_v3_pb";
-import {ExternalChildMessage} from "../../examples/generated/proto/othercom/external_child_message_pb";
 import InternalChildMessage = ParentMessageV3.InternalChildMessage;
+import {ExternalChildMessage} from "../../examples/generated/proto/othercom/external_child_message_pb";
 
 describe("proto3 - internal nested messages", () => {
   it("should allow getting internal message fields on an empty message", () => {
@@ -10,9 +10,9 @@ describe("proto3 - internal nested messages", () => {
     assert.deepEqual(parentMsg.getInternalChildrenList() as Array<InternalChildMessage>, []);
   });
 
-  it("should allow setting and getting internal message fields", () => {
+  it("should allow setting and getting required internal message fields", () => {
     const parentMsg = new ParentMessageV3();
-    assert.strictEqual(parentMsg.hasInternalChildMessage(), false);
+    assert.strictEqual(parentMsg.hasInternalChildMessage() as boolean, false);
     const childMsg = new InternalChildMessage();
     childMsg.setMyString("hello world");
     parentMsg.setInternalChildMessage(childMsg);
@@ -23,9 +23,27 @@ describe("proto3 - internal nested messages", () => {
     assert.strictEqual(parentMsg.hasInternalChildMessage(), false);
 
     parentMsg.setInternalChildMessage(childMsg);
-    assert.strictEqual(parentMsg.hasInternalChildMessage(), true);
+    assert.strictEqual(parentMsg.hasInternalChildMessage() as boolean, true);
     parentMsg.clearInternalChildMessage();
-    assert.strictEqual(parentMsg.hasInternalChildMessage(), false);
+    assert.strictEqual(parentMsg.hasInternalChildMessage() as boolean, false);
+  });
+
+  it("should allow setting and getting optional internal message fields", () => {
+    const parentMsg = new ParentMessageV3();
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage() as boolean, false);
+    const childMsg = new InternalChildMessage();
+    childMsg.setMyString("hello world");
+    parentMsg.setOptInternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.getOptInternalChildMessage()!.getMyString() as string, "hello world");
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage() as boolean, true);
+    parentMsg.setOptInternalChildMessage(undefined);
+    assert.strictEqual(parentMsg.getOptInternalChildMessage() as undefined, undefined);
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage() as boolean, false);
+
+    parentMsg.setOptInternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage() as boolean, true);
+    parentMsg.clearOptInternalChildMessage();
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage() as boolean, false);
   });
 
   it("should allow setting and getting repeated internal message fields", () => {
@@ -67,12 +85,38 @@ describe("proto3 - external nested messages", () => {
 
   it("should allow setting and getting external message fields", () => {
     const parentMsg = new ParentMessageV3();
+    assert.strictEqual(parentMsg.hasExternalChildMessage() as boolean, false);
     const childMsg = new ExternalChildMessage();
     childMsg.setMyString("hello world");
     parentMsg.setExternalChildMessage(childMsg);
     assert.strictEqual(parentMsg.getExternalChildMessage()!.getMyString() as string, "hello world");
+    assert.strictEqual(parentMsg.hasExternalChildMessage() as boolean, true);
     parentMsg.setExternalChildMessage(undefined);
     assert.strictEqual(parentMsg.getExternalChildMessage() as undefined, undefined);
+    assert.strictEqual(parentMsg.hasExternalChildMessage() as boolean, false);
+
+    parentMsg.setExternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.hasExternalChildMessage() as boolean, true);
+    parentMsg.clearExternalChildMessage();
+    assert.strictEqual(parentMsg.hasExternalChildMessage() as boolean, false);
+  });
+
+  it("should allow setting and getting optional external message fields", () => {
+    const parentMsg = new ParentMessageV3();
+    assert.strictEqual(parentMsg.hasOptExternalChildMessage() as boolean, false);
+    const childMsg = new ExternalChildMessage();
+    childMsg.setMyString("hello world");
+    parentMsg.setOptExternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.getOptExternalChildMessage()!.getMyString() as string, "hello world");
+    assert.strictEqual(parentMsg.hasOptExternalChildMessage() as boolean, true);
+    parentMsg.setOptExternalChildMessage(undefined);
+    assert.strictEqual(parentMsg.getOptExternalChildMessage() as undefined, undefined);
+    assert.strictEqual(parentMsg.hasOptExternalChildMessage() as boolean, false);
+
+    parentMsg.setOptExternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.hasOptExternalChildMessage() as boolean, true);
+    parentMsg.clearOptExternalChildMessage();
+    assert.strictEqual(parentMsg.hasOptExternalChildMessage() as boolean, false);
   });
 
   it("should allow setting and getting repeated external message fields", () => {
@@ -116,6 +160,7 @@ describe("proto3 - toObject", () => {
     const asObjectSet = parentMsg.toObject();
     assert.strictEqual(asObjectSet.internalChildMessage!.myString as string, "hello world");
   });
+
   it("should indicate potentially undefined primitive fields", () => {
     const msg = new InternalChildMessage();
     const asObjectUnset = msg.toObject();

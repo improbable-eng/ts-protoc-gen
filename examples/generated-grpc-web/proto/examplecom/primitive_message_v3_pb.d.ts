@@ -54,6 +54,88 @@ export class PrimitiveMessageV3 extends jspb.Message {
   getMyNumber(): number;
   setMyNumber(value: number): void;
 
+  hasOptDouble(): boolean;
+  clearOptDouble(): void;
+  getOptDouble(): number;
+  setOptDouble(value: number): void;
+
+  hasOptFloat(): boolean;
+  clearOptFloat(): void;
+  getOptFloat(): number;
+  setOptFloat(value: number): void;
+
+  hasOptInt32(): boolean;
+  clearOptInt32(): void;
+  getOptInt32(): number;
+  setOptInt32(value: number): void;
+
+  hasOptInt64(): boolean;
+  clearOptInt64(): void;
+  getOptInt64(): number;
+  setOptInt64(value: number): void;
+
+  hasOptUint32(): boolean;
+  clearOptUint32(): void;
+  getOptUint32(): number;
+  setOptUint32(value: number): void;
+
+  hasOptUint64(): boolean;
+  clearOptUint64(): void;
+  getOptUint64(): number;
+  setOptUint64(value: number): void;
+
+  hasOptSint32(): boolean;
+  clearOptSint32(): void;
+  getOptSint32(): number;
+  setOptSint32(value: number): void;
+
+  hasOptSint64(): boolean;
+  clearOptSint64(): void;
+  getOptSint64(): number;
+  setOptSint64(value: number): void;
+
+  hasOptFixed32(): boolean;
+  clearOptFixed32(): void;
+  getOptFixed32(): number;
+  setOptFixed32(value: number): void;
+
+  hasOptFixed64(): boolean;
+  clearOptFixed64(): void;
+  getOptFixed64(): number;
+  setOptFixed64(value: number): void;
+
+  hasOptSfixed32(): boolean;
+  clearOptSfixed32(): void;
+  getOptSfixed32(): number;
+  setOptSfixed32(value: number): void;
+
+  hasOptSfixed64(): boolean;
+  clearOptSfixed64(): void;
+  getOptSfixed64(): number;
+  setOptSfixed64(value: number): void;
+
+  hasOptBool(): boolean;
+  clearOptBool(): void;
+  getOptBool(): boolean;
+  setOptBool(value: boolean): void;
+
+  hasOptString(): boolean;
+  clearOptString(): void;
+  getOptString(): string;
+  setOptString(value: string): void;
+
+  hasOptBytes(): boolean;
+  clearOptBytes(): void;
+  getOptBytes(): Uint8Array | string;
+  getOptBytes_asU8(): Uint8Array;
+  getOptBytes_asB64(): string;
+  setOptBytes(value: Uint8Array | string): void;
+
+  hasOptNumber(): boolean;
+  clearOptNumber(): void;
+  getOptNumber(): number;
+  setOptNumber(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PrimitiveMessageV3.AsObject;
   static toObject(includeInstance: boolean, msg: PrimitiveMessageV3): PrimitiveMessageV3.AsObject;
@@ -82,6 +164,22 @@ export namespace PrimitiveMessageV3 {
     myString: string,
     myBytes: Uint8Array | string,
     myNumber: number,
+    optDouble: number,
+    optFloat: number,
+    optInt32: number,
+    optInt64: number,
+    optUint32: number,
+    optUint64: number,
+    optSint32: number,
+    optSint64: number,
+    optFixed32: number,
+    optFixed64: number,
+    optSfixed32: number,
+    optSfixed64: number,
+    optBool: boolean,
+    optString: string,
+    optBytes: Uint8Array | string,
+    optNumber: number,
   }
 }
 

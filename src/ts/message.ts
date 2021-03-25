@@ -60,6 +60,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   printer.printLn(`export class ${messageName} extends jspb.Message {`);
 
   const oneOfGroups: Array<Array<FieldDescriptorProto>> = [];
+  // proto3 optional fields have "synthetic" one_of groups that should not be present in the output
+  const sytheticOneOfGroups: boolean[] = [];
 
   messageDescriptor.getFieldList().forEach(field => {
     if (field.hasOneofIndex()) {
@@ -209,10 +211,13 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   });
 
   toObjectType.printLn(`}`);
-
-  messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
+  messageDescriptor.getOneofDeclList().forEach((oneOfDecl, index) => {
     const oneOfDeclName = oneOfDecl.getName() || throwError("Missing one_of name");
-    printer.printIndentedLn(`get${oneOfName(oneOfDeclName)}Case(): ${messageName}.${oneOfName(oneOfDeclName)}Case;`);
+    if (sytheticOneOfGroups[index]) {
+      // one_of group was synthetic (proto3 optional field)
+    } else {
+      printer.printIndentedLn(`get${oneOfName(oneOfDeclName)}Case(): ${messageName}.${oneOfName(oneOfDeclName)}Case;`);
+    }
   });
 
   printer.printIndentedLn(`serializeBinary(): Uint8Array;`);
@@ -242,7 +247,11 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     printer.print(`${printEnum(enumType, indentLevel + 1)}`);
   });
   messageDescriptor.getOneofDeclList().forEach((oneOfDecl, index) => {
-    printer.print(`${printOneOfDecl(oneOfDecl, oneOfGroups[index] || [], indentLevel + 1)}`);
+    if (sytheticOneOfGroups[index]) {
+      // one_of group was synthetic (proto3 optional field)
+    } else {
+      printer.print(`${printOneOfDecl(oneOfDecl, oneOfGroups[index] || [], indentLevel + 1)}`);
+    }
   });
   messageDescriptor.getExtensionList().forEach(extension => {
     printer.print(printExtension(fileName, exportMap, extension, indentLevel + 1));
