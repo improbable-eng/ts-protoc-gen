@@ -30,12 +30,12 @@
   "author": "Improbable",
   "license": "Apache-2.0",
   "dependencies": {
-    "google-protobuf": "^3.6.1"
+    "google-protobuf": "^3.15.5"
   },
   "devDependencies": {
     "@improbable-eng/grpc-web": "^0.9.1",
     "@types/chai": "^3.5.2",
-    "@types/google-protobuf": "^3.2.7",
+    "@types/google-protobuf": "^3.7.4",
     "@types/lodash": "^4.14.106",
     "@types/mocha": "^2.2.46",
     "@types/node": "^7.0.52",
@@ -44,8 +44,8 @@
     "chai": "^3.5.0",
     "download-cli": "^1.1.1",
     "glob": "^7.1.4",
-    "grpc": "^1.24.2",
-    "grpc-tools": "^1.9.0",
+    "grpc": "^1.24.6",
+    "grpc-tools": "^1.11.1",
     "lodash": "^4.17.5",
     "lodash.isequal": "^4.5.0",
     "mocha": "^5.2.0",

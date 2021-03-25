@@ -2,8 +2,18 @@ import {parse} from "querystring";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {ExportEnumEntry, ExportMessageEntry} from "./ExportMap";
 import {ServiceParameter, ModeParameter} from "./parameters";
+
 export function filePathToPseudoNamespace(filePath: string): string {
   return filePath.replace(".proto", "").replace(/\//g, "_").replace(/\./g, "_").replace(/\-/g, "_") + "_pb";
+}
+
+// This utility function allows short-hand assertions in variable assignments
+export function throwError(message: string, includeUnexpectedBehaviourMessage: boolean = true): never {
+  if (includeUnexpectedBehaviourMessage) {
+    throw new Error(`${message} - This is unhandled behaviour and should be reported as an issue on https://github.com/improbable-eng/ts-protoc-gen/issues`);
+  } else {
+    throw new Error(message);
+  }
 }
 
 export function stripPrefix(str: string, prefix: string) {

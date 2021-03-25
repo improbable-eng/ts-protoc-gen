@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, withinNamespaceFromExportEntry} from "../util";
+import { filePathToPseudoNamespace, throwError, withinNamespaceFromExportEntry } from "../util";
 import {ExportMap} from "../ExportMap";
 import {FieldDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 
@@ -30,11 +30,12 @@ export function getTypeName(fieldTypeNum: number): string {
   return TypeNumToTypeString[fieldTypeNum];
 }
 
-export function getFieldType(type: FieldDescriptorProto.Type, typeName: string, currentFileName: string, exportMap: ExportMap): string {
+export function getFieldType(type: FieldDescriptorProto.Type, typeName: string | null, currentFileName: string, exportMap: ExportMap): string {
   if (type === MESSAGE_TYPE) {
+    if (!typeName) return throwError("Type was Message, but typeName is not set");
     const fromExport = exportMap.getMessage(typeName);
     if (!fromExport) {
-      throw new Error("Could not getFieldType for message: " + typeName);
+      return throwError("Could not getFieldType for message: " + typeName);
     }
     const withinNamespace = withinNamespaceFromExportEntry(typeName, fromExport);
     if (fromExport.fileName === currentFileName) {
@@ -43,9 +44,10 @@ export function getFieldType(type: FieldDescriptorProto.Type, typeName: string, 
       return filePathToPseudoNamespace(fromExport.fileName) + "." + withinNamespace;
     }
   } else if (type === ENUM_TYPE) {
+    if (!typeName) return throwError("Type was Enum, but typeName is not set");
     const fromExport = exportMap.getEnum(typeName);
     if (!fromExport) {
-      throw new Error("Could not getFieldType for enum: " + typeName);
+      return throwError("Could not getFieldType for enum: " + typeName);
     }
     const withinNamespace = withinNamespaceFromExportEntry(typeName, fromExport);
     if (fromExport.fileName === currentFileName) {

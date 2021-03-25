@@ -1,4 +1,4 @@
-import {filePathToPseudoNamespace, replaceProtoSuffix, getPathToRoot} from "../util";
+import { filePathToPseudoNamespace, replaceProtoSuffix, getPathToRoot, throwError } from "../util";
 import {ExportMap} from "../ExportMap";
 import {Printer} from "../Printer";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
@@ -8,7 +8,7 @@ import {printEnum} from "./enum";
 import {printExtension} from "./extensions";
 
 export function printFileDescriptorTSD(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
-  const fileName = fileDescriptor.getName();
+  const fileName = fileDescriptor.getName() || throwError("Missing file descriptor name");
   const packageName = fileDescriptor.getPackage();
 
   const printer = new Printer(0);

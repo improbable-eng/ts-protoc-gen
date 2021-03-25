@@ -1,17 +1,26 @@
 import {
-  filePathToPseudoNamespace, snakeToCamel, uppercaseFirst, oneOfName, isProto2,
-  withinNamespaceFromExportEntry, normaliseFieldObjectName, stripPrefix
+  filePathToPseudoNamespace,
+  isProto2,
+  normaliseFieldObjectName,
+  oneOfName,
+  snakeToCamel,
+  stripPrefix,
+  throwError,
+  uppercaseFirst,
+  withinNamespaceFromExportEntry
 } from "../util";
-import {ExportMap} from "../ExportMap";
+import { ExportMap } from "../ExportMap";
 import {
-  FieldDescriptorProto, FileDescriptorProto, DescriptorProto,
-  FieldOptions
+  DescriptorProto,
+  FieldDescriptorProto,
+  FieldOptions,
+  FileDescriptorProto
 } from "google-protobuf/google/protobuf/descriptor_pb";
-import {MESSAGE_TYPE, BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName} from "./FieldTypes";
-import {Printer} from "../Printer";
-import {printEnum} from "./enum";
-import {printOneOfDecl} from "./oneof";
-import {printExtension} from "./extensions";
+import { BYTES_TYPE, ENUM_TYPE, getFieldType, getTypeName, MESSAGE_TYPE } from "./FieldTypes";
+import { Printer } from "../Printer";
+import { printEnum } from "./enum";
+import { printOneOfDecl } from "./oneof";
+import { printExtension } from "./extensions";
 import JSType = FieldOptions.JSType;
 
 function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescriptorProto): boolean {
@@ -55,21 +64,27 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   messageDescriptor.getFieldList().forEach(field => {
     if (field.hasOneofIndex()) {
       const oneOfIndex = field.getOneofIndex();
-      let existing = oneOfGroups[oneOfIndex];
-      if (existing === undefined) {
-        existing = [];
-        oneOfGroups[oneOfIndex] = existing;
+      if (oneOfIndex === undefined) {
+        throwError("Missing one_of index");
+      } else {
+        let existing = oneOfGroups[oneOfIndex];
+        if (existing === undefined) {
+          existing = [];
+          oneOfGroups[oneOfIndex] = existing;
+        }
+        existing.push(field);
       }
-      existing.push(field);
     }
-    const snakeCaseName = stripPrefix(field.getName().toLowerCase(), "_");
+    const fieldName = field.getName() || throwError("Missing field name");
+    const snakeCaseName = stripPrefix(fieldName.toLowerCase(), "_");
     const camelCaseName = snakeToCamel(snakeCaseName);
     const withUppercase = uppercaseFirst(camelCaseName);
-    const type = field.getType();
+    const type = field.getType() || throwError("Missing field type");
 
     let exportType;
-    const fullTypeName = field.getTypeName().slice(1);
     if (type === MESSAGE_TYPE) {
+      const fieldTypeName = field.getTypeName() || throwError(`Missing field type name for message field: ${fieldName}`);
+      const fullTypeName = fieldTypeName.slice(1);
       const fieldMessageType = exportMap.getMessage(fullTypeName);
       if (fieldMessageType === undefined) {
         throw new Error("No message export for: " + fullTypeName);
@@ -100,6 +115,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         exportType = filePathToPseudoNamespace(fieldMessageType.fileName) + "." + withinNamespace;
       }
     } else if (type === ENUM_TYPE) {
+      const fieldTypeName = field.getTypeName() || throwError(`Missing field type name for message field: ${fieldName}`);
+      const fullTypeName = fieldTypeName.slice(1);
       const fieldEnumType = exportMap.getEnum(fullTypeName);
       if (fieldEnumType === undefined) {
         throw new Error("No enum export for: " + fullTypeName);
@@ -112,8 +129,9 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       }
       exportType = `${exportType}Map[keyof ${exportType}Map]`;
     } else {
-      if (field.getOptions() && field.getOptions().hasJstype()) {
-        switch (field.getOptions().getJstype()) {
+      const fieldOptions = field.getOptions();
+      if (fieldOptions && fieldOptions.hasJstype()) {
+        switch (fieldOptions.getJstype()) {
           case JSType.JS_NUMBER:
             exportType = "number";
             break;
@@ -193,7 +211,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   toObjectType.printLn(`}`);
 
   messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
-    printer.printIndentedLn(`get${oneOfName(oneOfDecl.getName())}Case(): ${messageName}.${oneOfName(oneOfDecl.getName())}Case;`);
+    const oneOfDeclName = oneOfDecl.getName() || throwError("Missing one_of name");
+    printer.printIndentedLn(`get${oneOfName(oneOfDeclName)}Case(): ${messageName}.${oneOfName(oneOfDeclName)}Case;`);
   });
 
   printer.printIndentedLn(`serializeBinary(): Uint8Array;`);
