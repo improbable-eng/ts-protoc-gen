@@ -3,7 +3,13 @@ import {FileDescriptorProto, MethodDescriptorProto, ServiceDescriptorProto} from
 import {ExportMap} from "../ExportMap";
 import {WellKnownTypesMap} from "../WellKnown";
 import {getFieldType, MESSAGE_TYPE} from "../ts/FieldTypes";
-import {filePathToPseudoNamespace, replaceProtoSuffix, getPathToRoot, normaliseFieldObjectName} from "../util";
+import {
+  filePathToPseudoNamespace,
+  replaceProtoSuffix,
+  getPathToRoot,
+  normaliseFieldObjectName,
+  throwError
+} from "../util";
 
 export function createFile(output: string, filename: string): CodeGeneratorResponse.File {
   const file = new CodeGeneratorResponse.File();
@@ -18,9 +24,11 @@ type CallingTypes = {
 };
 
 function getCallingTypes(method: MethodDescriptorProto, exportMap: ExportMap): CallingTypes {
+  const inputType = method.getInputType() || throwError("Missing input type");
+  const outputType = method.getOutputType() || throwError("Missing output type");
   return {
-    requestType: getFieldType(MESSAGE_TYPE, method.getInputType()!.slice(1), "", exportMap),
-    responseType: getFieldType(MESSAGE_TYPE, method.getOutputType()!.slice(1), "", exportMap),
+    requestType: getFieldType(MESSAGE_TYPE, inputType.slice(1), "", exportMap),
+    responseType: getFieldType(MESSAGE_TYPE, outputType.slice(1), "", exportMap),
   };
 }
 
@@ -64,7 +72,7 @@ export class RPCDescriptor {
     this.exportMap = exportMap;
   }
   get name(): string {
-    return this.protoService.getName()!;
+    return this.protoService.getName() || throwError("Missing service name");
   }
 
   get qualifiedName(): string {
@@ -75,15 +83,19 @@ export class RPCDescriptor {
     return this.protoService.getMethodList()
       .map(method => {
         const callingTypes = getCallingTypes(method, this.exportMap);
-        const methodName = method.getName();
-        const nameAsCamelCase = methodName![0].toLowerCase() + methodName!.substr(1);
+        const methodName = method.getName() || throwError("Missing method name");
+        const nameAsCamelCase = methodName[0].toLowerCase() + methodName.substr(1);
+        const clientStreaming = method.getClientStreaming();
+        if (clientStreaming === undefined) throwError("Missing client streaming");
+        const serverStreaming = method.getServerStreaming();
+        if (serverStreaming === undefined) throwError("Missing server streaming");
         return {
-          nameAsPascalCase: method.getName()!,
+          nameAsPascalCase: methodName,
           nameAsCamelCase,
           functionName: normaliseFieldObjectName(nameAsCamelCase),
           serviceName: this.name,
-          requestStream: method.getClientStreaming()!,
-          responseStream: method.getServerStreaming()!,
+          requestStream: clientStreaming || false,
+          responseStream: serverStreaming || false,
           requestType: callingTypes.requestType,
           responseType: callingTypes.responseType,
         };
@@ -99,15 +111,16 @@ export class GrpcServiceDescriptor {
   constructor(fileDescriptor: FileDescriptorProto, exportMap: ExportMap) {
     this.fileDescriptor = fileDescriptor;
     this.exportMap = exportMap;
-    this.pathToRoot = getPathToRoot(fileDescriptor.getName()!);
+    const fileDescriptorName = fileDescriptor.getName() || throwError("Missing file descriptor name for service");
+    this.pathToRoot = getPathToRoot(fileDescriptorName);
   }
 
   get filename(): string {
-    return this.fileDescriptor.getName()!;
+    return this.fileDescriptor.getName() || throwError("Missing file descriptor name for service");
   }
 
   get packageName(): string {
-    return this.fileDescriptor.getPackage()!;
+    return this.fileDescriptor.getPackage() || "";
   }
 
   get imports(): ImportDescriptor[] {

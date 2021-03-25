@@ -1,6 +1,6 @@
 import {printFileDescriptorTSD} from "./ts/fileDescriptorTSD";
 import {ExportMap} from "./ExportMap";
-import {replaceProtoSuffix, withAllStdIn, getParameterEnums} from "./util";
+import { replaceProtoSuffix, withAllStdIn, getParameterEnums, throwError } from "./util";
 import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
@@ -26,14 +26,15 @@ withAllStdIn((inputBuff: Buffer) => {
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
-    const parameter = codeGenRequest.getParameter()!;
-    const {service, mode} = getParameterEnums(parameter);
+    const parameter = codeGenRequest.getParameter();
+    const {service, mode} = getParameterEnums(parameter || "");
 
     const generateGrpcWebServices = service === ServiceParameter.GrpcWeb;
     const generateGrpcNodeServices = service === ServiceParameter.GrpcNode;
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
-      fileNameToDescriptor[protoFileDescriptor.getName()!] = protoFileDescriptor;
+      const fileDescriptorName = protoFileDescriptor.getName() || throwError("Missing file descriptor name");
+      fileNameToDescriptor[fileDescriptorName] = protoFileDescriptor;
       exportMap.addFileDescriptor(protoFileDescriptor);
     });
 
