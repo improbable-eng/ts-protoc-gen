@@ -23,6 +23,7 @@ withAllStdIn((inputBuff: Buffer) => {
 
     const codeGenRequest = CodeGeneratorRequest.deserializeBinary(typedInputBuff);
     const codeGenResponse = new CodeGeneratorResponse();
+    (codeGenResponse as any).setSupportedFeatures((CodeGeneratorResponse as any).Feature.FEATURE_PROTO3_OPTIONAL);
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 

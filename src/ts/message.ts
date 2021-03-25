@@ -69,12 +69,16 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
       if (oneOfIndex === undefined) {
         throwError("Missing one_of index");
       } else {
-        let existing = oneOfGroups[oneOfIndex];
-        if (existing === undefined) {
-          existing = [];
-          oneOfGroups[oneOfIndex] = existing;
+        if ((field as any).getProto3Optional()) {
+          sytheticOneOfGroups[oneOfIndex] = true;
+        } else {
+          let existing = oneOfGroups[oneOfIndex];
+          if (existing === undefined) {
+            existing = [];
+            oneOfGroups[oneOfIndex] = existing;
+          }
+          existing.push(field);
         }
-        existing.push(field);
       }
     }
     const fieldName = field.getName() || throwError("Missing field name");
