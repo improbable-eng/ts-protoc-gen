@@ -53,6 +53,26 @@ describe("repeated primitives", () => {
     assert.deepEqual(msg.getMyStringList() as Array<string>, ["one", "two"]);
     msg.setMyBytesList(["AAECAwQFBgcICQ=="]);
     assert.deepEqual(msg.getMyBytesList() as Array<Uint8Array|string>, ["AAECAwQFBgcICQ=="]);
+
+    assert.deepEqual(msg.toObject(), {
+      "myBoolList": [true, false],
+      "myBytesList": [
+        "AAECAwQFBgcICQ=="
+      ],
+      "myDoubleList": [123, 456],
+      "myFixed32List": [123, 456],
+      "myFixed64List": [123, 456],
+      "myFloatList": [123, 456],
+      "myInt32List": [123, 456],
+      "myInt64List": [123, 456],
+      "mySfixed32List": [123, 456],
+      "mySfixed64List": [123, 456],
+      "mySint32List": [123, 456],
+      "mySint64List": [123, 456],
+      "myStringList": ["one", "two"],
+      "myUint32List": [123, 456],
+      "myUint64List": [123, 456],
+    });
   });
 
   it("should allow setting and getting byte values", () => {
