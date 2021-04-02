@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package examplecom;
+
+message GetterNameConflictMessage {
+    string extension = 1;
+    bytes js_pb_message_id = 2;
+}
