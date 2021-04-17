@@ -23,6 +23,7 @@ withAllStdIn((inputBuff: Buffer) => {
 
     const codeGenRequest = CodeGeneratorRequest.deserializeBinary(typedInputBuff);
     const codeGenResponse = new CodeGeneratorResponse();
+    codeGenResponse.setSupportedFeatures(CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL);
     const exportMap = new ExportMap();
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
@@ -54,7 +55,7 @@ withAllStdIn((inputBuff: Buffer) => {
       }
     });
 
-    process.stdout.write(Buffer.from(codeGenResponse.serializeBinary()));
+    process.stdout.write(Buffer.from(codeGenResponse.serializeBinary().buffer));
   } catch (err) {
     console.error("protoc-gen-ts error: " + err.stack + "\n");
     process.exit(1);

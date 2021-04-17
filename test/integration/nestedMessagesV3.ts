@@ -10,7 +10,7 @@ describe("proto3 - internal nested messages", () => {
     assert.deepEqual(parentMsg.getInternalChildrenList() as Array<InternalChildMessage>, []);
   });
 
-  it("should allow setting and getting internal message fields", () => {
+  it("should allow setting and getting normal internal message fields", () => {
     const parentMsg = new ParentMessageV3();
     assert.strictEqual(parentMsg.hasInternalChildMessage(), false);
     const childMsg = new InternalChildMessage();
@@ -26,6 +26,24 @@ describe("proto3 - internal nested messages", () => {
     assert.strictEqual(parentMsg.hasInternalChildMessage(), true);
     parentMsg.clearInternalChildMessage();
     assert.strictEqual(parentMsg.hasInternalChildMessage(), false);
+  });
+
+  it("should allow setting and getting optional internal message fields", () => {
+    const parentMsg = new ParentMessageV3();
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage(), false);
+    const childMsg = new InternalChildMessage();
+    childMsg.setMyString("hello world");
+    parentMsg.setOptInternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.getOptInternalChildMessage()!.getMyString() as string, "hello world");
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage(), true);
+    parentMsg.setOptInternalChildMessage(undefined);
+    assert.strictEqual(parentMsg.getOptInternalChildMessage() as undefined, undefined);
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage(), false);
+
+    parentMsg.setOptInternalChildMessage(childMsg);
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage(), true);
+    parentMsg.clearOptInternalChildMessage();
+    assert.strictEqual(parentMsg.hasOptInternalChildMessage(), false);
   });
 
   it("should allow setting and getting repeated internal message fields", () => {

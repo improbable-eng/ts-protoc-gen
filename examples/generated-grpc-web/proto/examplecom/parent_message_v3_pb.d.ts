@@ -10,6 +10,11 @@ export class ParentMessageV3 extends jspb.Message {
   getInternalChildMessage(): ParentMessageV3.InternalChildMessage | undefined;
   setInternalChildMessage(value?: ParentMessageV3.InternalChildMessage): void;
 
+  hasOptInternalChildMessage(): boolean;
+  clearOptInternalChildMessage(): void;
+  getOptInternalChildMessage(): ParentMessageV3.InternalChildMessage | undefined;
+  setOptInternalChildMessage(value?: ParentMessageV3.InternalChildMessage): void;
+
   clearInternalChildrenList(): void;
   getInternalChildrenList(): Array<ParentMessageV3.InternalChildMessage>;
   setInternalChildrenList(value: Array<ParentMessageV3.InternalChildMessage>): void;
@@ -19,6 +24,11 @@ export class ParentMessageV3 extends jspb.Message {
   clearExternalChildMessage(): void;
   getExternalChildMessage(): proto_othercom_external_child_message_pb.ExternalChildMessage | undefined;
   setExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): void;
+
+  hasOptExternalChildMessage(): boolean;
+  clearOptExternalChildMessage(): void;
+  getOptExternalChildMessage(): proto_othercom_external_child_message_pb.ExternalChildMessage | undefined;
+  setOptExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): void;
 
   clearExternalChildrenList(): void;
   getExternalChildrenList(): Array<proto_othercom_external_child_message_pb.ExternalChildMessage>;
@@ -38,8 +48,10 @@ export class ParentMessageV3 extends jspb.Message {
 export namespace ParentMessageV3 {
   export type AsObject = {
     internalChildMessage?: ParentMessageV3.InternalChildMessage.AsObject,
+    optInternalChildMessage?: ParentMessageV3.InternalChildMessage.AsObject,
     internalChildrenList: Array<ParentMessageV3.InternalChildMessage.AsObject>,
     externalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage.AsObject,
+    optExternalChildMessage?: proto_othercom_external_child_message_pb.ExternalChildMessage.AsObject,
     externalChildrenList: Array<proto_othercom_external_child_message_pb.ExternalChildMessage.AsObject>,
   }
 

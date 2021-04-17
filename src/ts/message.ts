@@ -40,6 +40,10 @@ function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescr
     return true;
   }
 
+  if (field.getProto3Optional()) {
+    return true;
+  }
+
   return false;
 }
 
@@ -60,12 +64,15 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
   printer.printLn(`export class ${messageName} extends jspb.Message {`);
 
   const oneOfGroups: Array<Array<FieldDescriptorProto>> = [];
+  const syntheticOneOfGroups: boolean[] = [];
 
   messageDescriptor.getFieldList().forEach(field => {
     if (field.hasOneofIndex()) {
       const oneOfIndex = field.getOneofIndex();
       if (oneOfIndex === undefined) {
         throwError("Missing one_of index");
+      } else if (field.getProto3Optional()) {
+        syntheticOneOfGroups[oneOfIndex] = true;
       } else {
         let existing = oneOfGroups[oneOfIndex];
         if (existing === undefined) {
@@ -210,9 +217,12 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
   toObjectType.printLn(`}`);
 
-  messageDescriptor.getOneofDeclList().forEach(oneOfDecl => {
+  messageDescriptor.getOneofDeclList().forEach((oneOfDecl, index) => {
     const oneOfDeclName = oneOfDecl.getName() || throwError("Missing one_of name");
-    printer.printIndentedLn(`get${oneOfName(oneOfDeclName)}Case(): ${messageName}.${oneOfName(oneOfDeclName)}Case;`);
+    // Only print oneofs that are not synthetic (ie not proto3 optional field).
+    if (!syntheticOneOfGroups[index]) {
+      printer.printIndentedLn(`get${oneOfName(oneOfDeclName)}Case(): ${messageName}.${oneOfName(oneOfDeclName)}Case;`);
+    }
   });
 
   printer.printIndentedLn(`serializeBinary(): Uint8Array;`);
@@ -242,7 +252,10 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     printer.print(`${printEnum(enumType, indentLevel + 1)}`);
   });
   messageDescriptor.getOneofDeclList().forEach((oneOfDecl, index) => {
-    printer.print(`${printOneOfDecl(oneOfDecl, oneOfGroups[index] || [], indentLevel + 1)}`);
+    // Only print oneofs that are not synthetic (ie not proto3 optional field).
+    if (!syntheticOneOfGroups[index]) {
+      printer.print(`${printOneOfDecl(oneOfDecl, oneOfGroups[index] || [], indentLevel + 1)}`);
+    }
   });
   messageDescriptor.getExtensionList().forEach(extension => {
     printer.print(printExtension(fileName, exportMap, extension, indentLevel + 1));
