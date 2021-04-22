@@ -10,8 +10,11 @@ message ParentMessageV3 {
     }
 
     InternalChildMessage internal_child_message = 1;
-    repeated InternalChildMessage internal_children = 2;
+    optional InternalChildMessage opt_internal_child_message = 2;
+    repeated InternalChildMessage internal_children = 3;
 
-    othercom.ExternalChildMessage external_child_message = 3;
-    repeated othercom.ExternalChildMessage external_children = 4;
+
+    othercom.ExternalChildMessage external_child_message = 4;
+    optional othercom.ExternalChildMessage opt_external_child_message = 5;
+    repeated othercom.ExternalChildMessage external_children = 6;
 }

@@ -84,7 +84,23 @@ proto.examplecom.PrimitiveMessageV3.toObject = function(includeInstance, msg) {
     myBool: jspb.Message.getBooleanFieldWithDefault(msg, 13, false),
     myString: jspb.Message.getFieldWithDefault(msg, 14, ""),
     myBytes: msg.getMyBytes_asB64(),
-    myNumber: jspb.Message.getFieldWithDefault(msg, 16, 0)
+    myNumber: jspb.Message.getFieldWithDefault(msg, 16, 0),
+    optDouble: jspb.Message.getFloatingPointFieldWithDefault(msg, 17, 0.0),
+    optFloat: jspb.Message.getFloatingPointFieldWithDefault(msg, 18, 0.0),
+    optInt32: jspb.Message.getFieldWithDefault(msg, 19, 0),
+    optInt64: jspb.Message.getFieldWithDefault(msg, 20, 0),
+    optUint32: jspb.Message.getFieldWithDefault(msg, 21, 0),
+    optUint64: jspb.Message.getFieldWithDefault(msg, 22, 0),
+    optSint32: jspb.Message.getFieldWithDefault(msg, 23, 0),
+    optSint64: jspb.Message.getFieldWithDefault(msg, 24, 0),
+    optFixed32: jspb.Message.getFieldWithDefault(msg, 25, 0),
+    optFixed64: jspb.Message.getFieldWithDefault(msg, 26, 0),
+    optSfixed32: jspb.Message.getFieldWithDefault(msg, 27, 0),
+    optSfixed64: jspb.Message.getFieldWithDefault(msg, 28, 0),
+    optBool: jspb.Message.getBooleanFieldWithDefault(msg, 29, false),
+    optString: jspb.Message.getFieldWithDefault(msg, 30, ""),
+    optBytes: msg.getOptBytes_asB64(),
+    optNumber: jspb.Message.getFieldWithDefault(msg, 32, 0)
   };
 
   if (includeInstance) {
@@ -184,6 +200,70 @@ proto.examplecom.PrimitiveMessageV3.deserializeBinaryFromReader = function(msg, 
     case 16:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setMyNumber(value);
+      break;
+    case 17:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setOptDouble(value);
+      break;
+    case 18:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setOptFloat(value);
+      break;
+    case 19:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setOptInt32(value);
+      break;
+    case 20:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setOptInt64(value);
+      break;
+    case 21:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOptUint32(value);
+      break;
+    case 22:
+      var value = /** @type {number} */ (reader.readUint64());
+      msg.setOptUint64(value);
+      break;
+    case 23:
+      var value = /** @type {number} */ (reader.readSint32());
+      msg.setOptSint32(value);
+      break;
+    case 24:
+      var value = /** @type {number} */ (reader.readSint64());
+      msg.setOptSint64(value);
+      break;
+    case 25:
+      var value = /** @type {number} */ (reader.readFixed32());
+      msg.setOptFixed32(value);
+      break;
+    case 26:
+      var value = /** @type {number} */ (reader.readFixed64());
+      msg.setOptFixed64(value);
+      break;
+    case 27:
+      var value = /** @type {number} */ (reader.readSfixed32());
+      msg.setOptSfixed32(value);
+      break;
+    case 28:
+      var value = /** @type {number} */ (reader.readSfixed64());
+      msg.setOptSfixed64(value);
+      break;
+    case 29:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setOptBool(value);
+      break;
+    case 30:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setOptString(value);
+      break;
+    case 31:
+      var value = /** @type {!Uint8Array} */ (reader.readBytes());
+      msg.setOptBytes(value);
+      break;
+    case 32:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setOptNumber(value);
       break;
     default:
       reader.skipField();
@@ -323,6 +403,118 @@ proto.examplecom.PrimitiveMessageV3.serializeBinaryToWriter = function(message, 
   if (f !== 0) {
     writer.writeInt32(
       16,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 17));
+  if (f != null) {
+    writer.writeDouble(
+      17,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 18));
+  if (f != null) {
+    writer.writeFloat(
+      18,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 19));
+  if (f != null) {
+    writer.writeInt32(
+      19,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 20));
+  if (f != null) {
+    writer.writeInt64(
+      20,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 21));
+  if (f != null) {
+    writer.writeUint32(
+      21,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 22));
+  if (f != null) {
+    writer.writeUint64(
+      22,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 23));
+  if (f != null) {
+    writer.writeSint32(
+      23,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 24));
+  if (f != null) {
+    writer.writeSint64(
+      24,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 25));
+  if (f != null) {
+    writer.writeFixed32(
+      25,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 26));
+  if (f != null) {
+    writer.writeFixed64(
+      26,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 27));
+  if (f != null) {
+    writer.writeSfixed32(
+      27,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 28));
+  if (f != null) {
+    writer.writeSfixed64(
+      28,
+      f
+    );
+  }
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 29));
+  if (f != null) {
+    writer.writeBool(
+      29,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 30));
+  if (f != null) {
+    writer.writeString(
+      30,
+      f
+    );
+  }
+  f = /** @type {!(string|Uint8Array)} */ (jspb.Message.getField(message, 31));
+  if (f != null) {
+    writer.writeBytes(
+      31,
+      f
+    );
+  }
+  f = /** @type {number} */ (jspb.Message.getField(message, 32));
+  if (f != null) {
+    writer.writeInt32(
+      32,
       f
     );
   }
@@ -638,6 +830,606 @@ proto.examplecom.PrimitiveMessageV3.prototype.getMyNumber = function() {
  */
 proto.examplecom.PrimitiveMessageV3.prototype.setMyNumber = function(value) {
   return jspb.Message.setProto3IntField(this, 16, value);
+};
+
+
+/**
+ * optional double opt_double = 17;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptDouble = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 17, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptDouble = function(value) {
+  return jspb.Message.setField(this, 17, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptDouble = function() {
+  return jspb.Message.setField(this, 17, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptDouble = function() {
+  return jspb.Message.getField(this, 17) != null;
+};
+
+
+/**
+ * optional float opt_float = 18;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptFloat = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 18, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptFloat = function(value) {
+  return jspb.Message.setField(this, 18, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptFloat = function() {
+  return jspb.Message.setField(this, 18, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptFloat = function() {
+  return jspb.Message.getField(this, 18) != null;
+};
+
+
+/**
+ * optional int32 opt_int32 = 19;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptInt32 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 19, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptInt32 = function(value) {
+  return jspb.Message.setField(this, 19, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptInt32 = function() {
+  return jspb.Message.setField(this, 19, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptInt32 = function() {
+  return jspb.Message.getField(this, 19) != null;
+};
+
+
+/**
+ * optional int64 opt_int64 = 20;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptInt64 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 20, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptInt64 = function(value) {
+  return jspb.Message.setField(this, 20, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptInt64 = function() {
+  return jspb.Message.setField(this, 20, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptInt64 = function() {
+  return jspb.Message.getField(this, 20) != null;
+};
+
+
+/**
+ * optional uint32 opt_uint32 = 21;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptUint32 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 21, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptUint32 = function(value) {
+  return jspb.Message.setField(this, 21, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptUint32 = function() {
+  return jspb.Message.setField(this, 21, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptUint32 = function() {
+  return jspb.Message.getField(this, 21) != null;
+};
+
+
+/**
+ * optional uint64 opt_uint64 = 22;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptUint64 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 22, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptUint64 = function(value) {
+  return jspb.Message.setField(this, 22, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptUint64 = function() {
+  return jspb.Message.setField(this, 22, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptUint64 = function() {
+  return jspb.Message.getField(this, 22) != null;
+};
+
+
+/**
+ * optional sint32 opt_sint32 = 23;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptSint32 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 23, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptSint32 = function(value) {
+  return jspb.Message.setField(this, 23, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptSint32 = function() {
+  return jspb.Message.setField(this, 23, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptSint32 = function() {
+  return jspb.Message.getField(this, 23) != null;
+};
+
+
+/**
+ * optional sint64 opt_sint64 = 24;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptSint64 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 24, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptSint64 = function(value) {
+  return jspb.Message.setField(this, 24, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptSint64 = function() {
+  return jspb.Message.setField(this, 24, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptSint64 = function() {
+  return jspb.Message.getField(this, 24) != null;
+};
+
+
+/**
+ * optional fixed32 opt_fixed32 = 25;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptFixed32 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 25, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptFixed32 = function(value) {
+  return jspb.Message.setField(this, 25, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptFixed32 = function() {
+  return jspb.Message.setField(this, 25, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptFixed32 = function() {
+  return jspb.Message.getField(this, 25) != null;
+};
+
+
+/**
+ * optional fixed64 opt_fixed64 = 26;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptFixed64 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 26, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptFixed64 = function(value) {
+  return jspb.Message.setField(this, 26, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptFixed64 = function() {
+  return jspb.Message.setField(this, 26, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptFixed64 = function() {
+  return jspb.Message.getField(this, 26) != null;
+};
+
+
+/**
+ * optional sfixed32 opt_sfixed32 = 27;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptSfixed32 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 27, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptSfixed32 = function(value) {
+  return jspb.Message.setField(this, 27, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptSfixed32 = function() {
+  return jspb.Message.setField(this, 27, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptSfixed32 = function() {
+  return jspb.Message.getField(this, 27) != null;
+};
+
+
+/**
+ * optional sfixed64 opt_sfixed64 = 28;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptSfixed64 = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 28, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptSfixed64 = function(value) {
+  return jspb.Message.setField(this, 28, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptSfixed64 = function() {
+  return jspb.Message.setField(this, 28, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptSfixed64 = function() {
+  return jspb.Message.getField(this, 28) != null;
+};
+
+
+/**
+ * optional bool opt_bool = 29;
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptBool = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 29, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptBool = function(value) {
+  return jspb.Message.setField(this, 29, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptBool = function() {
+  return jspb.Message.setField(this, 29, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptBool = function() {
+  return jspb.Message.getField(this, 29) != null;
+};
+
+
+/**
+ * optional string opt_string = 30;
+ * @return {string}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptString = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 30, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptString = function(value) {
+  return jspb.Message.setField(this, 30, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptString = function() {
+  return jspb.Message.setField(this, 30, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptString = function() {
+  return jspb.Message.getField(this, 30) != null;
+};
+
+
+/**
+ * optional bytes opt_bytes = 31;
+ * @return {!(string|Uint8Array)}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptBytes = function() {
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 31, ""));
+};
+
+
+/**
+ * optional bytes opt_bytes = 31;
+ * This is a type-conversion wrapper around `getOptBytes()`
+ * @return {string}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptBytes_asB64 = function() {
+  return /** @type {string} */ (jspb.Message.bytesAsB64(
+      this.getOptBytes()));
+};
+
+
+/**
+ * optional bytes opt_bytes = 31;
+ * Note that Uint8Array is not supported on all browsers.
+ * @see http://caniuse.com/Uint8Array
+ * This is a type-conversion wrapper around `getOptBytes()`
+ * @return {!Uint8Array}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptBytes_asU8 = function() {
+  return /** @type {!Uint8Array} */ (jspb.Message.bytesAsU8(
+      this.getOptBytes()));
+};
+
+
+/**
+ * @param {!(string|Uint8Array)} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptBytes = function(value) {
+  return jspb.Message.setField(this, 31, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptBytes = function() {
+  return jspb.Message.setField(this, 31, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptBytes = function() {
+  return jspb.Message.getField(this, 31) != null;
+};
+
+
+/**
+ * optional int32 opt_NUMBER = 32;
+ * @return {number}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.getOptNumber = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 32, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.setOptNumber = function(value) {
+  return jspb.Message.setField(this, 32, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.PrimitiveMessageV3} returns this
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.clearOptNumber = function() {
+  return jspb.Message.setField(this, 32, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.PrimitiveMessageV3.prototype.hasOptNumber = function() {
+  return jspb.Message.getField(this, 32) != null;
 };
 
 

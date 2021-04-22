@@ -67,7 +67,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.examplecom.ParentMessageV3.repeatedFields_ = [2,4];
+proto.examplecom.ParentMessageV3.repeatedFields_ = [3,6];
 
 
 
@@ -101,9 +101,11 @@ proto.examplecom.ParentMessageV3.prototype.toObject = function(opt_includeInstan
 proto.examplecom.ParentMessageV3.toObject = function(includeInstance, msg) {
   var f, obj = {
     internalChildMessage: (f = msg.getInternalChildMessage()) && proto.examplecom.ParentMessageV3.InternalChildMessage.toObject(includeInstance, f),
+    optInternalChildMessage: (f = msg.getOptInternalChildMessage()) && proto.examplecom.ParentMessageV3.InternalChildMessage.toObject(includeInstance, f),
     internalChildrenList: jspb.Message.toObjectList(msg.getInternalChildrenList(),
     proto.examplecom.ParentMessageV3.InternalChildMessage.toObject, includeInstance),
     externalChildMessage: (f = msg.getExternalChildMessage()) && proto_othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
+    optExternalChildMessage: (f = msg.getOptExternalChildMessage()) && proto_othercom_external_child_message_pb.ExternalChildMessage.toObject(includeInstance, f),
     externalChildrenList: jspb.Message.toObjectList(msg.getExternalChildrenList(),
     proto_othercom_external_child_message_pb.ExternalChildMessage.toObject, includeInstance)
   };
@@ -150,14 +152,24 @@ proto.examplecom.ParentMessageV3.deserializeBinaryFromReader = function(msg, rea
     case 2:
       var value = new proto.examplecom.ParentMessageV3.InternalChildMessage;
       reader.readMessage(value,proto.examplecom.ParentMessageV3.InternalChildMessage.deserializeBinaryFromReader);
-      msg.addInternalChildren(value);
+      msg.setOptInternalChildMessage(value);
       break;
     case 3:
+      var value = new proto.examplecom.ParentMessageV3.InternalChildMessage;
+      reader.readMessage(value,proto.examplecom.ParentMessageV3.InternalChildMessage.deserializeBinaryFromReader);
+      msg.addInternalChildren(value);
+      break;
+    case 4:
       var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
       reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.setExternalChildMessage(value);
       break;
-    case 4:
+    case 5:
+      var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
+      reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
+      msg.setOptExternalChildMessage(value);
+      break;
+    case 6:
       var value = new proto_othercom_external_child_message_pb.ExternalChildMessage;
       reader.readMessage(value,proto_othercom_external_child_message_pb.ExternalChildMessage.deserializeBinaryFromReader);
       msg.addExternalChildren(value);
@@ -199,10 +211,18 @@ proto.examplecom.ParentMessageV3.serializeBinaryToWriter = function(message, wri
       proto.examplecom.ParentMessageV3.InternalChildMessage.serializeBinaryToWriter
     );
   }
+  f = message.getOptInternalChildMessage();
+  if (f != null) {
+    writer.writeMessage(
+      2,
+      f,
+      proto.examplecom.ParentMessageV3.InternalChildMessage.serializeBinaryToWriter
+    );
+  }
   f = message.getInternalChildrenList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      2,
+      3,
       f,
       proto.examplecom.ParentMessageV3.InternalChildMessage.serializeBinaryToWriter
     );
@@ -210,7 +230,15 @@ proto.examplecom.ParentMessageV3.serializeBinaryToWriter = function(message, wri
   f = message.getExternalChildMessage();
   if (f != null) {
     writer.writeMessage(
-      3,
+      4,
+      f,
+      proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
+    );
+  }
+  f = message.getOptExternalChildMessage();
+  if (f != null) {
+    writer.writeMessage(
+      5,
       f,
       proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
@@ -218,7 +246,7 @@ proto.examplecom.ParentMessageV3.serializeBinaryToWriter = function(message, wri
   f = message.getExternalChildrenList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      4,
+      6,
       f,
       proto_othercom_external_child_message_pb.ExternalChildMessage.serializeBinaryToWriter
     );
@@ -394,12 +422,49 @@ proto.examplecom.ParentMessageV3.prototype.hasInternalChildMessage = function() 
 
 
 /**
- * repeated InternalChildMessage internal_children = 2;
+ * optional InternalChildMessage opt_internal_child_message = 2;
+ * @return {?proto.examplecom.ParentMessageV3.InternalChildMessage}
+ */
+proto.examplecom.ParentMessageV3.prototype.getOptInternalChildMessage = function() {
+  return /** @type{?proto.examplecom.ParentMessageV3.InternalChildMessage} */ (
+    jspb.Message.getWrapperField(this, proto.examplecom.ParentMessageV3.InternalChildMessage, 2));
+};
+
+
+/**
+ * @param {?proto.examplecom.ParentMessageV3.InternalChildMessage|undefined} value
+ * @return {!proto.examplecom.ParentMessageV3} returns this
+*/
+proto.examplecom.ParentMessageV3.prototype.setOptInternalChildMessage = function(value) {
+  return jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.examplecom.ParentMessageV3} returns this
+ */
+proto.examplecom.ParentMessageV3.prototype.clearOptInternalChildMessage = function() {
+  return this.setOptInternalChildMessage(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.ParentMessageV3.prototype.hasOptInternalChildMessage = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * repeated InternalChildMessage internal_children = 3;
  * @return {!Array<!proto.examplecom.ParentMessageV3.InternalChildMessage>}
  */
 proto.examplecom.ParentMessageV3.prototype.getInternalChildrenList = function() {
   return /** @type{!Array<!proto.examplecom.ParentMessageV3.InternalChildMessage>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.examplecom.ParentMessageV3.InternalChildMessage, 2));
+    jspb.Message.getRepeatedWrapperField(this, proto.examplecom.ParentMessageV3.InternalChildMessage, 3));
 };
 
 
@@ -408,7 +473,7 @@ proto.examplecom.ParentMessageV3.prototype.getInternalChildrenList = function() 
  * @return {!proto.examplecom.ParentMessageV3} returns this
 */
 proto.examplecom.ParentMessageV3.prototype.setInternalChildrenList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 2, value);
+  return jspb.Message.setRepeatedWrapperField(this, 3, value);
 };
 
 
@@ -418,7 +483,7 @@ proto.examplecom.ParentMessageV3.prototype.setInternalChildrenList = function(va
  * @return {!proto.examplecom.ParentMessageV3.InternalChildMessage}
  */
 proto.examplecom.ParentMessageV3.prototype.addInternalChildren = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.examplecom.ParentMessageV3.InternalChildMessage, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.examplecom.ParentMessageV3.InternalChildMessage, opt_index);
 };
 
 
@@ -432,12 +497,12 @@ proto.examplecom.ParentMessageV3.prototype.clearInternalChildrenList = function(
 
 
 /**
- * optional othercom.ExternalChildMessage external_child_message = 3;
+ * optional othercom.ExternalChildMessage external_child_message = 4;
  * @return {?proto.othercom.ExternalChildMessage}
  */
 proto.examplecom.ParentMessageV3.prototype.getExternalChildMessage = function() {
   return /** @type{?proto.othercom.ExternalChildMessage} */ (
-    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 3));
+    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 4));
 };
 
 
@@ -446,7 +511,7 @@ proto.examplecom.ParentMessageV3.prototype.getExternalChildMessage = function() 
  * @return {!proto.examplecom.ParentMessageV3} returns this
 */
 proto.examplecom.ParentMessageV3.prototype.setExternalChildMessage = function(value) {
-  return jspb.Message.setWrapperField(this, 3, value);
+  return jspb.Message.setWrapperField(this, 4, value);
 };
 
 
@@ -464,17 +529,54 @@ proto.examplecom.ParentMessageV3.prototype.clearExternalChildMessage = function(
  * @return {boolean}
  */
 proto.examplecom.ParentMessageV3.prototype.hasExternalChildMessage = function() {
-  return jspb.Message.getField(this, 3) != null;
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
 /**
- * repeated othercom.ExternalChildMessage external_children = 4;
+ * optional othercom.ExternalChildMessage opt_external_child_message = 5;
+ * @return {?proto.othercom.ExternalChildMessage}
+ */
+proto.examplecom.ParentMessageV3.prototype.getOptExternalChildMessage = function() {
+  return /** @type{?proto.othercom.ExternalChildMessage} */ (
+    jspb.Message.getWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 5));
+};
+
+
+/**
+ * @param {?proto.othercom.ExternalChildMessage|undefined} value
+ * @return {!proto.examplecom.ParentMessageV3} returns this
+*/
+proto.examplecom.ParentMessageV3.prototype.setOptExternalChildMessage = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.examplecom.ParentMessageV3} returns this
+ */
+proto.examplecom.ParentMessageV3.prototype.clearOptExternalChildMessage = function() {
+  return this.setOptExternalChildMessage(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.ParentMessageV3.prototype.hasOptExternalChildMessage = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * repeated othercom.ExternalChildMessage external_children = 6;
  * @return {!Array<!proto.othercom.ExternalChildMessage>}
  */
 proto.examplecom.ParentMessageV3.prototype.getExternalChildrenList = function() {
   return /** @type{!Array<!proto.othercom.ExternalChildMessage>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 4));
+    jspb.Message.getRepeatedWrapperField(this, proto_othercom_external_child_message_pb.ExternalChildMessage, 6));
 };
 
 
@@ -483,7 +585,7 @@ proto.examplecom.ParentMessageV3.prototype.getExternalChildrenList = function() 
  * @return {!proto.examplecom.ParentMessageV3} returns this
 */
 proto.examplecom.ParentMessageV3.prototype.setExternalChildrenList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+  return jspb.Message.setRepeatedWrapperField(this, 6, value);
 };
 
 
@@ -493,7 +595,7 @@ proto.examplecom.ParentMessageV3.prototype.setExternalChildrenList = function(va
  * @return {!proto.othercom.ExternalChildMessage}
  */
 proto.examplecom.ParentMessageV3.prototype.addExternalChildren = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.othercom.ExternalChildMessage, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.othercom.ExternalChildMessage, opt_index);
 };
 
 
