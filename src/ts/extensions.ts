@@ -9,9 +9,9 @@ export function printExtension(fileName: string, exportMap: ExportMap, extension
   printer.printEmptyLn();
   const extensionName = extension.getName() || throwError("Missing extension name");
   const extensionType = extension.getType() || throwError("Missing extension type");
-  const extensionTypeName = extension.getTypeName() || throwError("Missing extension type name");
+  const extensionTypeName = extension.getTypeName() || null;
   const camelExtensionName = snakeToCamel(extensionName);
-  const fieldType = getFieldType(extensionType, extensionTypeName.slice(1), fileName, exportMap);
+  const fieldType = getFieldType(extensionType, extensionTypeName ? extensionTypeName.slice(1) : null, fileName, exportMap);
   printer.printLn(`export const ${camelExtensionName}: jspb.ExtensionFieldInfo<${fieldType}>;`);
   return printer.output;
 }
