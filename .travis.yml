@@ -27,9 +27,6 @@ deploy:
   tag: "$NPM_TAG"
   on:
     branch: master
-cache:
-  directories:
-  - node_modules
 install:
 - npm install
 script:
