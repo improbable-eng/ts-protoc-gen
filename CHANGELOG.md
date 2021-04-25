@@ -1,4 +1,7 @@
-## 0.14.1-pre
+## 0.15.0
+
+### Changes
+* [#275](https://github.com/improbable-eng/ts-protoc-gen/pull/275) Add support for proto3 optional presence. ([@awbraunstein](https://github.com/awbraunstein)).
 
 ## 0.14.0
 
