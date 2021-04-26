@@ -47,6 +47,12 @@ function hasFieldPresence(field: FieldDescriptorProto, fileDescriptor: FileDescr
   return false;
 }
 
+function jsGetterName(name: string): string {
+  // Avoid conflicts with base-class names.
+  // https://github.com/protocolbuffers/protobuf/blob/97cb3a862f132c6ab98e240be11990b89f7d5467/src/google/protobuf/compiler/js/js_generator.cc#L528-L531
+  return name === "Extension" || name === "JsPbMessageId" ? name + "$" : name;
+}
+
 export function printMessage(fileName: string, exportMap: ExportMap, messageDescriptor: DescriptorProto, indentLevel: number, fileDescriptor: FileDescriptorProto) {
   const messageName = messageDescriptor.getName();
   const messageOptions = messageDescriptor.getOptions();
@@ -157,12 +163,12 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     function printClearIfNotPresent() {
       if (!hasClearMethod) {
         hasClearMethod = true;
-        printer.printIndentedLn(`clear${withUppercase}${field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED ? "List" : ""}(): void;`);
+        printer.printIndentedLn(`clear${jsGetterName(withUppercase)}${field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED ? "List" : ""}(): void;`);
       }
     }
 
     if (hasFieldPresence(field, fileDescriptor)) {
-      printer.printIndentedLn(`has${withUppercase}(): boolean;`);
+      printer.printIndentedLn(`has${jsGetterName(withUppercase)}(): boolean;`);
       printClearIfNotPresent();
     }
 
@@ -189,10 +195,10 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     } else {
       if (type === BYTES_TYPE) {
         toObjectType.printIndentedLn(`${camelCaseName}: Uint8Array | string,`);
-        printer.printIndentedLn(`get${withUppercase}(): Uint8Array | string;`);
+        printer.printIndentedLn(`get${jsGetterName(withUppercase)}(): Uint8Array | string;`);
         printer.printIndentedLn(`get${withUppercase}_asU8(): Uint8Array;`);
         printer.printIndentedLn(`get${withUppercase}_asB64(): string;`);
-        printer.printIndentedLn(`set${withUppercase}(value: Uint8Array | string): void;`);
+        printer.printIndentedLn(`set${jsGetterName(withUppercase)}(value: Uint8Array | string): void;`);
       } else {
         let fieldObjectType = exportType;
         let canBeUndefined = false;
@@ -208,8 +214,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         }
         const fieldObjectName = normaliseFieldObjectName(camelCaseName);
         toObjectType.printIndentedLn(`${fieldObjectName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
-        printer.printIndentedLn(`get${withUppercase}(): ${exportType}${canBeUndefined ? " | undefined" : ""};`);
-        printer.printIndentedLn(`set${withUppercase}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): void;`);
+        printer.printIndentedLn(`get${jsGetterName(withUppercase)}(): ${exportType}${canBeUndefined ? " | undefined" : ""};`);
+        printer.printIndentedLn(`set${jsGetterName(withUppercase)}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): void;`);
       }
     }
     printer.printEmptyLn();
