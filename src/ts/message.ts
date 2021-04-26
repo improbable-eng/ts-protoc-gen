@@ -168,7 +168,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     }
 
     if (hasFieldPresence(field, fileDescriptor)) {
-      printer.printIndentedLn(`has${withUppercase}(): boolean;`);
+      printer.printIndentedLn(`has${jsGetterName(withUppercase)}(): boolean;`);
       printClearIfNotPresent();
     }
 

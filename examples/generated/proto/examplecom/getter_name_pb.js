@@ -69,7 +69,7 @@ proto.examplecom.GetterNameConflictMessage.prototype.toObject = function(opt_inc
  */
 proto.examplecom.GetterNameConflictMessage.toObject = function(includeInstance, msg) {
   var f, obj = {
-    extension: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    extension: (f = jspb.Message.getField(msg, 1)) == null ? undefined : f,
     jsPbMessageId: msg.getJsPbMessageId_asB64()
   };
 
@@ -144,15 +144,15 @@ proto.examplecom.GetterNameConflictMessage.prototype.serializeBinary = function(
  */
 proto.examplecom.GetterNameConflictMessage.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getExtension$();
-  if (f.length > 0) {
+  f = /** @type {string} */ (jspb.Message.getField(message, 1));
+  if (f != null) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getJsPbMessageId_asU8();
-  if (f.length > 0) {
+  f = /** @type {!(string|Uint8Array)} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
     writer.writeBytes(
       2,
       f
@@ -175,7 +175,25 @@ proto.examplecom.GetterNameConflictMessage.prototype.getExtension$ = function() 
  * @return {!proto.examplecom.GetterNameConflictMessage} returns this
  */
 proto.examplecom.GetterNameConflictMessage.prototype.setExtension$ = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.GetterNameConflictMessage} returns this
+ */
+proto.examplecom.GetterNameConflictMessage.prototype.clearExtension$ = function() {
+  return jspb.Message.setField(this, 1, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.GetterNameConflictMessage.prototype.hasExtension$ = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
@@ -217,7 +235,25 @@ proto.examplecom.GetterNameConflictMessage.prototype.getJsPbMessageId_asU8 = fun
  * @return {!proto.examplecom.GetterNameConflictMessage} returns this
  */
 proto.examplecom.GetterNameConflictMessage.prototype.setJsPbMessageId$ = function(value) {
-  return jspb.Message.setProto3BytesField(this, 2, value);
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.examplecom.GetterNameConflictMessage} returns this
+ */
+proto.examplecom.GetterNameConflictMessage.prototype.clearJsPbMessageId$ = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.examplecom.GetterNameConflictMessage.prototype.hasJsPbMessageId$ = function() {
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
