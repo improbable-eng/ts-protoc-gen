@@ -5,12 +5,12 @@ import * as jspb from "google-protobuf";
 
 export class GetterNameConflictMessage extends jspb.Message {
   hasExtension$(): boolean;
-  clearExtension(): void;
+  clearExtension$(): void;
   getExtension$(): string | undefined;
   setExtension$(value: string): void;
 
   hasJsPbMessageId$(): boolean;
-  clearJsPbMessageId(): void;
+  clearJsPbMessageId$(): void;
   getJsPbMessageId$(): Uint8Array | string;
   getJsPbMessageId_asU8(): Uint8Array;
   getJsPbMessageId_asB64(): string;

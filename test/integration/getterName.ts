@@ -11,11 +11,15 @@ describe("getterName", () => {
         message.setExtension$("abc");
         assert.equal(message.getExtension$(), "abc");
         assert.equal(message.hasExtension$(), true);
+        message.clearExtension$();
+        assert.equal(message.hasExtension$(), false);
 
         assert.equal(message.getJsPbMessageId$(), "");
         message.setJsPbMessageId$("def");
         assert.equal(message.getJsPbMessageId$(), "def");
         assert.equal(message.hasJsPbMessageId$(), true);
+        message.clearJsPbMessageId$();
+        assert.equal(message.hasJsPbMessageId$(), false);
     });
   });
 });

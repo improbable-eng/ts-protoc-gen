@@ -163,7 +163,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     function printClearIfNotPresent() {
       if (!hasClearMethod) {
         hasClearMethod = true;
-        printer.printIndentedLn(`clear${withUppercase}${field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED ? "List" : ""}(): void;`);
+        printer.printIndentedLn(`clear${jsGetterName(withUppercase)}${field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED ? "List" : ""}(): void;`);
       }
     }
 
