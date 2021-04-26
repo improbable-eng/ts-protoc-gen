@@ -10,10 +10,12 @@ describe("getterName", () => {
         assert.equal(message.getExtension$(), "");
         message.setExtension$("abc");
         assert.equal(message.getExtension$(), "abc");
+        assert.equal(message.hasExtension$(), true);
 
         assert.equal(message.getJsPbMessageId$(), "");
         message.setJsPbMessageId$("def");
         assert.equal(message.getJsPbMessageId$(), "def");
+        assert.equal(message.hasJsPbMessageId$(), true);
     });
   });
 });

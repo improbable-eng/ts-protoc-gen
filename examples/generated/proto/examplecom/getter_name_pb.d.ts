@@ -4,9 +4,13 @@
 import * as jspb from "google-protobuf";
 
 export class GetterNameConflictMessage extends jspb.Message {
-  getExtension$(): string;
+  hasExtension$(): boolean;
+  clearExtension(): void;
+  getExtension$(): string | undefined;
   setExtension$(value: string): void;
 
+  hasJsPbMessageId$(): boolean;
+  clearJsPbMessageId(): void;
   getJsPbMessageId$(): Uint8Array | string;
   getJsPbMessageId_asU8(): Uint8Array;
   getJsPbMessageId_asB64(): string;
@@ -24,7 +28,7 @@ export class GetterNameConflictMessage extends jspb.Message {
 
 export namespace GetterNameConflictMessage {
   export type AsObject = {
-    extension: string,
+    extension?: string,
     jsPbMessageId: Uint8Array | string,
   }
 }

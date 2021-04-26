@@ -1,8 +1,8 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package examplecom;
 
 message GetterNameConflictMessage {
-    string extension = 1;
-    bytes js_pb_message_id = 2;
+    optional string extension = 1;
+    optional bytes js_pb_message_id = 2;
 }
