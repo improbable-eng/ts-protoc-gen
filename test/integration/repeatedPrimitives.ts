@@ -75,4 +75,39 @@ describe("repeated primitives", () => {
     const myBytesListB: Array<Uint8Array|string> = msg.getMyBytesList();
     assert.deepEqual(myBytesListB, [asStringOne, asStringTwo]);
   });
+
+  it("should allow chaining setters", () => {
+    const msg = new RepeatedPrimitiveMessage();
+    msg
+      .setMyDoubleList([123, 456])
+      .setMyFloatList([123, 456])
+      .setMyInt32List([123, 456])
+      .setMyInt64List([123, 456])
+      .setMyUint32List([123, 456])
+      .setMyUint64List([123, 456])
+      .setMySint32List([123, 456])
+      .setMySint64List([123, 456])
+      .setMyFixed32List([123, 456])
+      .setMyFixed64List([123, 456])
+      .setMySfixed32List([123, 456])
+      .setMySfixed64List([123, 456])
+      .setMyBoolList([true, false])
+      .setMyStringList(["one", "two"])
+      .setMyBytesList(["AAECAwQFBgcICQ=="]);
+    assert.deepEqual(msg.getMyDoubleList() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyFloatList() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyInt32List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyInt64List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyUint32List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyUint64List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMySint32List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMySint64List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyFixed32List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyFixed64List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMySfixed32List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMySfixed64List() as Array<number>, [123, 456]);
+    assert.deepEqual(msg.getMyBoolList() as Array<boolean>, [true, false]);
+    assert.deepEqual(msg.getMyStringList() as Array<string>, ["one", "two"]);
+    assert.deepEqual(msg.getMyBytesList() as Array<Uint8Array|string>, ["AAECAwQFBgcICQ=="]);
+  })
 });
