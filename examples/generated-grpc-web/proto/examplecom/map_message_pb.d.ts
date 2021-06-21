@@ -37,7 +37,7 @@ export namespace MapMessage {
 
   export class InternalChildMessage extends jspb.Message {
     getMyString(): string;
-    setMyString(value: string): void;
+    setMyString(value: string): InternalChildMessage;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): InternalChildMessage.AsObject;

@@ -184,12 +184,12 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         printer.printIndentedLn(`get${withUppercase}List(): Array<Uint8Array | string>;`);
         printer.printIndentedLn(`get${withUppercase}List_asU8(): Array<Uint8Array>;`);
         printer.printIndentedLn(`get${withUppercase}List_asB64(): Array<string>;`);
-        printer.printIndentedLn(`set${withUppercase}List(value: Array<Uint8Array | string>): void;`);
+        printer.printIndentedLn(`set${withUppercase}List(value: Array<Uint8Array | string>): ${messageName};`);
         printRepeatedAddMethod("Uint8Array | string");
       } else {
         toObjectType.printIndentedLn(`${camelCaseName}List: Array<${exportType}${type === MESSAGE_TYPE ? ".AsObject" : ""}>,`);
         printer.printIndentedLn(`get${withUppercase}List(): Array<${exportType}>;`);
-        printer.printIndentedLn(`set${withUppercase}List(value: Array<${exportType}>): void;`);
+        printer.printIndentedLn(`set${withUppercase}List(value: Array<${exportType}>): ${messageName};`);
         printRepeatedAddMethod(exportType);
       }
     } else {
@@ -198,7 +198,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         printer.printIndentedLn(`get${jsGetterName(withUppercase)}(): Uint8Array | string;`);
         printer.printIndentedLn(`get${withUppercase}_asU8(): Uint8Array;`);
         printer.printIndentedLn(`get${withUppercase}_asB64(): string;`);
-        printer.printIndentedLn(`set${jsGetterName(withUppercase)}(value: Uint8Array | string): void;`);
+        printer.printIndentedLn(`set${jsGetterName(withUppercase)}(value: Uint8Array | string): ${messageName};`);
       } else {
         let fieldObjectType = exportType;
         let canBeUndefined = false;
@@ -215,7 +215,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
         const fieldObjectName = normaliseFieldObjectName(camelCaseName);
         toObjectType.printIndentedLn(`${fieldObjectName}${canBeUndefined ? "?" : ""}: ${fieldObjectType},`);
         printer.printIndentedLn(`get${jsGetterName(withUppercase)}(): ${exportType}${canBeUndefined ? " | undefined" : ""};`);
-        printer.printIndentedLn(`set${jsGetterName(withUppercase)}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): void;`);
+        printer.printIndentedLn(`set${jsGetterName(withUppercase)}(value${type === MESSAGE_TYPE ? "?" : ""}: ${exportType}): ${messageName};`);
       }
     }
     printer.printEmptyLn();

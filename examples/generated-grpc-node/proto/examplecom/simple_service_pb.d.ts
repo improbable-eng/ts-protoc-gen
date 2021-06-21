@@ -8,12 +8,12 @@ import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/t
 
 export class UnaryRequest extends jspb.Message {
   getSomeInt64(): number;
-  setSomeInt64(value: number): void;
+  setSomeInt64(value: number): UnaryRequest;
 
   hasSomeTimestamp(): boolean;
   clearSomeTimestamp(): void;
   getSomeTimestamp(): google_protobuf_timestamp_pb.Timestamp | undefined;
-  setSomeTimestamp(value?: google_protobuf_timestamp_pb.Timestamp): void;
+  setSomeTimestamp(value?: google_protobuf_timestamp_pb.Timestamp): UnaryRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UnaryRequest.AsObject;
@@ -50,7 +50,7 @@ export namespace UnaryResponse {
 
 export class StreamRequest extends jspb.Message {
   getSomeString(): string;
-  setSomeString(value: string): void;
+  setSomeString(value: string): StreamRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): StreamRequest.AsObject;

@@ -8,22 +8,22 @@ export class OneOfMessage extends jspb.Message {
   hasInternalChildMessage(): boolean;
   clearInternalChildMessage(): void;
   getInternalChildMessage(): OneOfMessage.InternalChildMessage | undefined;
-  setInternalChildMessage(value?: OneOfMessage.InternalChildMessage): void;
+  setInternalChildMessage(value?: OneOfMessage.InternalChildMessage): OneOfMessage;
 
   hasExternalChildMessage(): boolean;
   clearExternalChildMessage(): void;
   getExternalChildMessage(): proto_othercom_external_child_message_pb.ExternalChildMessage | undefined;
-  setExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): void;
+  setExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): OneOfMessage;
 
   hasMyString(): boolean;
   clearMyString(): void;
   getMyString(): string;
-  setMyString(value: string): void;
+  setMyString(value: string): OneOfMessage;
 
   hasMyInt64(): boolean;
   clearMyInt64(): void;
   getMyInt64(): number;
-  setMyInt64(value: number): void;
+  setMyInt64(value: number): OneOfMessage;
 
   getGroupCase(): OneOfMessage.GroupCase;
   serializeBinary(): Uint8Array;
@@ -46,7 +46,7 @@ export namespace OneOfMessage {
 
   export class InternalChildMessage extends jspb.Message {
     getMyString(): string;
-    setMyString(value: string): void;
+    setMyString(value: string): InternalChildMessage;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): InternalChildMessage.AsObject;
@@ -77,12 +77,12 @@ export class CamelCasedOneOfMessage extends jspb.Message {
   hasAnint(): boolean;
   clearAnint(): void;
   getAnint(): number;
-  setAnint(value: number): void;
+  setAnint(value: number): CamelCasedOneOfMessage;
 
   hasThestring(): boolean;
   clearThestring(): void;
   getThestring(): string;
-  setThestring(value: string): void;
+  setThestring(value: string): CamelCasedOneOfMessage;
 
   getCamelcasedmessageCase(): CamelCasedOneOfMessage.CamelcasedmessageCase;
   serializeBinary(): Uint8Array;
@@ -112,12 +112,12 @@ export class SnakeCasedOneOfMessage extends jspb.Message {
   hasAnint(): boolean;
   clearAnint(): void;
   getAnint(): number;
-  setAnint(value: number): void;
+  setAnint(value: number): SnakeCasedOneOfMessage;
 
   hasThestring(): boolean;
   clearThestring(): void;
   getThestring(): string;
-  setThestring(value: string): void;
+  setThestring(value: string): SnakeCasedOneOfMessage;
 
   getSnakeCasedMessageCase(): SnakeCasedOneOfMessage.SnakeCasedMessageCase;
   serializeBinary(): Uint8Array;

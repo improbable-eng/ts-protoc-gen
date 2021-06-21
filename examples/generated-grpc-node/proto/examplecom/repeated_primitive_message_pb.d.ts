@@ -6,79 +6,79 @@ import * as jspb from "google-protobuf";
 export class RepeatedPrimitiveMessage extends jspb.Message {
   clearMyDoubleList(): void;
   getMyDoubleList(): Array<number>;
-  setMyDoubleList(value: Array<number>): void;
+  setMyDoubleList(value: Array<number>): RepeatedPrimitiveMessage;
   addMyDouble(value: number, index?: number): number;
 
   clearMyFloatList(): void;
   getMyFloatList(): Array<number>;
-  setMyFloatList(value: Array<number>): void;
+  setMyFloatList(value: Array<number>): RepeatedPrimitiveMessage;
   addMyFloat(value: number, index?: number): number;
 
   clearMyInt32List(): void;
   getMyInt32List(): Array<number>;
-  setMyInt32List(value: Array<number>): void;
+  setMyInt32List(value: Array<number>): RepeatedPrimitiveMessage;
   addMyInt32(value: number, index?: number): number;
 
   clearMyInt64List(): void;
   getMyInt64List(): Array<number>;
-  setMyInt64List(value: Array<number>): void;
+  setMyInt64List(value: Array<number>): RepeatedPrimitiveMessage;
   addMyInt64(value: number, index?: number): number;
 
   clearMyUint32List(): void;
   getMyUint32List(): Array<number>;
-  setMyUint32List(value: Array<number>): void;
+  setMyUint32List(value: Array<number>): RepeatedPrimitiveMessage;
   addMyUint32(value: number, index?: number): number;
 
   clearMyUint64List(): void;
   getMyUint64List(): Array<number>;
-  setMyUint64List(value: Array<number>): void;
+  setMyUint64List(value: Array<number>): RepeatedPrimitiveMessage;
   addMyUint64(value: number, index?: number): number;
 
   clearMySint32List(): void;
   getMySint32List(): Array<number>;
-  setMySint32List(value: Array<number>): void;
+  setMySint32List(value: Array<number>): RepeatedPrimitiveMessage;
   addMySint32(value: number, index?: number): number;
 
   clearMySint64List(): void;
   getMySint64List(): Array<number>;
-  setMySint64List(value: Array<number>): void;
+  setMySint64List(value: Array<number>): RepeatedPrimitiveMessage;
   addMySint64(value: number, index?: number): number;
 
   clearMyFixed32List(): void;
   getMyFixed32List(): Array<number>;
-  setMyFixed32List(value: Array<number>): void;
+  setMyFixed32List(value: Array<number>): RepeatedPrimitiveMessage;
   addMyFixed32(value: number, index?: number): number;
 
   clearMyFixed64List(): void;
   getMyFixed64List(): Array<number>;
-  setMyFixed64List(value: Array<number>): void;
+  setMyFixed64List(value: Array<number>): RepeatedPrimitiveMessage;
   addMyFixed64(value: number, index?: number): number;
 
   clearMySfixed32List(): void;
   getMySfixed32List(): Array<number>;
-  setMySfixed32List(value: Array<number>): void;
+  setMySfixed32List(value: Array<number>): RepeatedPrimitiveMessage;
   addMySfixed32(value: number, index?: number): number;
 
   clearMySfixed64List(): void;
   getMySfixed64List(): Array<number>;
-  setMySfixed64List(value: Array<number>): void;
+  setMySfixed64List(value: Array<number>): RepeatedPrimitiveMessage;
   addMySfixed64(value: number, index?: number): number;
 
   clearMyBoolList(): void;
   getMyBoolList(): Array<boolean>;
-  setMyBoolList(value: Array<boolean>): void;
+  setMyBoolList(value: Array<boolean>): RepeatedPrimitiveMessage;
   addMyBool(value: boolean, index?: number): boolean;
 
   clearMyStringList(): void;
   getMyStringList(): Array<string>;
-  setMyStringList(value: Array<string>): void;
+  setMyStringList(value: Array<string>): RepeatedPrimitiveMessage;
   addMyString(value: string, index?: number): string;
 
   clearMyBytesList(): void;
   getMyBytesList(): Array<Uint8Array | string>;
   getMyBytesList_asU8(): Array<Uint8Array>;
   getMyBytesList_asB64(): Array<string>;
-  setMyBytesList(value: Array<Uint8Array | string>): void;
+  setMyBytesList(value: Array<Uint8Array | string>): RepeatedPrimitiveMessage;
   addMyBytes(value: Uint8Array | string, index?: number): Uint8Array | string;
 
   serializeBinary(): Uint8Array;

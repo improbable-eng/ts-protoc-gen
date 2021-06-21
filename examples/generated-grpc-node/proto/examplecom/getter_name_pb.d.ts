@@ -7,14 +7,14 @@ export class GetterNameConflictMessage extends jspb.Message {
   hasExtension$(): boolean;
   clearExtension$(): void;
   getExtension$(): string | undefined;
-  setExtension$(value: string): void;
+  setExtension$(value: string): GetterNameConflictMessage;
 
   hasJsPbMessageId$(): boolean;
   clearJsPbMessageId$(): void;
   getJsPbMessageId$(): Uint8Array | string;
   getJsPbMessageId_asU8(): Uint8Array;
   getJsPbMessageId_asB64(): string;
-  setJsPbMessageId$(value: Uint8Array | string): void;
+  setJsPbMessageId$(value: Uint8Array | string): GetterNameConflictMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetterNameConflictMessage.AsObject;

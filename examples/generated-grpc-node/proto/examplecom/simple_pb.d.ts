@@ -17,75 +17,75 @@ import * as google_protobuf_wrappers_pb from "google-protobuf/google/protobuf/wr
 
 export class MySimple extends jspb.Message {
   getMyString(): string;
-  setMyString(value: string): void;
+  setMyString(value: string): MySimple;
 
   getMyBool(): boolean;
-  setMyBool(value: boolean): void;
+  setMyBool(value: boolean): MySimple;
 
   clearSomeLabelsList(): void;
   getSomeLabelsList(): Array<string>;
-  setSomeLabelsList(value: Array<string>): void;
+  setSomeLabelsList(value: Array<string>): MySimple;
   addSomeLabels(value: string, index?: number): string;
 
   hasSomeCodeGeneratorRequest(): boolean;
   clearSomeCodeGeneratorRequest(): void;
   getSomeCodeGeneratorRequest(): google_protobuf_compiler_plugin_pb.CodeGeneratorRequest | undefined;
-  setSomeCodeGeneratorRequest(value?: google_protobuf_compiler_plugin_pb.CodeGeneratorRequest): void;
+  setSomeCodeGeneratorRequest(value?: google_protobuf_compiler_plugin_pb.CodeGeneratorRequest): MySimple;
 
   hasSomeAny(): boolean;
   clearSomeAny(): void;
   getSomeAny(): google_protobuf_any_pb.Any | undefined;
-  setSomeAny(value?: google_protobuf_any_pb.Any): void;
+  setSomeAny(value?: google_protobuf_any_pb.Any): MySimple;
 
   hasSomeMethod(): boolean;
   clearSomeMethod(): void;
   getSomeMethod(): google_protobuf_api_pb.Method | undefined;
-  setSomeMethod(value?: google_protobuf_api_pb.Method): void;
+  setSomeMethod(value?: google_protobuf_api_pb.Method): MySimple;
 
   hasSomeGeneratedCodeInfo(): boolean;
   clearSomeGeneratedCodeInfo(): void;
   getSomeGeneratedCodeInfo(): google_protobuf_descriptor_pb.GeneratedCodeInfo | undefined;
-  setSomeGeneratedCodeInfo(value?: google_protobuf_descriptor_pb.GeneratedCodeInfo): void;
+  setSomeGeneratedCodeInfo(value?: google_protobuf_descriptor_pb.GeneratedCodeInfo): MySimple;
 
   hasSomeDuration(): boolean;
   clearSomeDuration(): void;
   getSomeDuration(): google_protobuf_duration_pb.Duration | undefined;
-  setSomeDuration(value?: google_protobuf_duration_pb.Duration): void;
+  setSomeDuration(value?: google_protobuf_duration_pb.Duration): MySimple;
 
   hasSomeEmpty(): boolean;
   clearSomeEmpty(): void;
   getSomeEmpty(): google_protobuf_empty_pb.Empty | undefined;
-  setSomeEmpty(value?: google_protobuf_empty_pb.Empty): void;
+  setSomeEmpty(value?: google_protobuf_empty_pb.Empty): MySimple;
 
   hasSomeFieldMask(): boolean;
   clearSomeFieldMask(): void;
   getSomeFieldMask(): google_protobuf_field_mask_pb.FieldMask | undefined;
-  setSomeFieldMask(value?: google_protobuf_field_mask_pb.FieldMask): void;
+  setSomeFieldMask(value?: google_protobuf_field_mask_pb.FieldMask): MySimple;
 
   hasSomeSourceContext(): boolean;
   clearSomeSourceContext(): void;
   getSomeSourceContext(): google_protobuf_source_context_pb.SourceContext | undefined;
-  setSomeSourceContext(value?: google_protobuf_source_context_pb.SourceContext): void;
+  setSomeSourceContext(value?: google_protobuf_source_context_pb.SourceContext): MySimple;
 
   hasSomeStruct(): boolean;
   clearSomeStruct(): void;
   getSomeStruct(): google_protobuf_struct_pb.Struct | undefined;
-  setSomeStruct(value?: google_protobuf_struct_pb.Struct): void;
+  setSomeStruct(value?: google_protobuf_struct_pb.Struct): MySimple;
 
   hasSomeTimestamp(): boolean;
   clearSomeTimestamp(): void;
   getSomeTimestamp(): google_protobuf_timestamp_pb.Timestamp | undefined;
-  setSomeTimestamp(value?: google_protobuf_timestamp_pb.Timestamp): void;
+  setSomeTimestamp(value?: google_protobuf_timestamp_pb.Timestamp): MySimple;
 
   hasSomeType(): boolean;
   clearSomeType(): void;
   getSomeType(): google_protobuf_type_pb.Type | undefined;
-  setSomeType(value?: google_protobuf_type_pb.Type): void;
+  setSomeType(value?: google_protobuf_type_pb.Type): MySimple;
 
   hasSomeDoubleValue(): boolean;
   clearSomeDoubleValue(): void;
   getSomeDoubleValue(): google_protobuf_wrappers_pb.DoubleValue | undefined;
-  setSomeDoubleValue(value?: google_protobuf_wrappers_pb.DoubleValue): void;
+  setSomeDoubleValue(value?: google_protobuf_wrappers_pb.DoubleValue): MySimple;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MySimple.AsObject;

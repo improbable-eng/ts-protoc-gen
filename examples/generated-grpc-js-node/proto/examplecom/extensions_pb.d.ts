@@ -7,7 +7,7 @@ export class ExtensionMessage extends jspb.Message {
   hasMyExtensionString(): boolean;
   clearMyExtensionString(): void;
   getMyExtensionString(): string | undefined;
-  setMyExtensionString(value: string): void;
+  setMyExtensionString(value: string): ExtensionMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ExtensionMessage.AsObject;
@@ -29,7 +29,7 @@ export class MyBase extends jspb.Message {
   hasMyBaseString(): boolean;
   clearMyBaseString(): void;
   getMyBaseString(): string | undefined;
-  setMyBaseString(value: string): void;
+  setMyBaseString(value: string): MyBase;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MyBase.AsObject;

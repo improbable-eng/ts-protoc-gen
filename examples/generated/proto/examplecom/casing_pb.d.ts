@@ -5,19 +5,19 @@ import * as jspb from "google-protobuf";
 
 export class CasingMessage extends jspb.Message {
   getTitlecase(): string;
-  setTitlecase(value: string): void;
+  setTitlecase(value: string): CasingMessage;
 
   getCamelcase(): string;
-  setCamelcase(value: string): void;
+  setCamelcase(value: string): CasingMessage;
 
   getSnakeCase(): string;
-  setSnakeCase(value: string): void;
+  setSnakeCase(value: string): CasingMessage;
 
   getLeadingunderscorecamelcase(): string;
-  setLeadingunderscorecamelcase(value: string): void;
+  setLeadingunderscorecamelcase(value: string): CasingMessage;
 
   getLeadingunderscoretitlecase(): string;
-  setLeadingunderscoretitlecase(value: string): void;
+  setLeadingunderscoretitlecase(value: string): CasingMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CasingMessage.AsObject;

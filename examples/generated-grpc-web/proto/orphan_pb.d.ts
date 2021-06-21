@@ -24,13 +24,13 @@ export namespace OrphanMapMessage {
 
 export class OrphanMessage extends jspb.Message {
   getMyString(): string;
-  setMyString(value: string): void;
+  setMyString(value: string): OrphanMessage;
 
   getMyBool(): boolean;
-  setMyBool(value: boolean): void;
+  setMyBool(value: boolean): OrphanMessage;
 
   getMyEnum(): OrphanEnumMap[keyof OrphanEnumMap];
-  setMyEnum(value: OrphanEnumMap[keyof OrphanEnumMap]): void;
+  setMyEnum(value: OrphanEnumMap[keyof OrphanEnumMap]): OrphanMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OrphanMessage.AsObject;
@@ -52,7 +52,7 @@ export namespace OrphanMessage {
 
 export class OrphanUnaryRequest extends jspb.Message {
   getSomeInt64(): number;
-  setSomeInt64(value: number): void;
+  setSomeInt64(value: number): OrphanUnaryRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OrphanUnaryRequest.AsObject;
@@ -72,7 +72,7 @@ export namespace OrphanUnaryRequest {
 
 export class OrphanStreamRequest extends jspb.Message {
   getSomeString(): string;
-  setSomeString(value: string): void;
+  setSomeString(value: string): OrphanStreamRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OrphanStreamRequest.AsObject;
