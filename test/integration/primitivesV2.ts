@@ -222,6 +222,45 @@ describe("proto2 - primitive", () => {
     assert.strictEqual(msg.getMyBytes() as (Uint8Array|string), "AAECAwQFBgcICQ==");
   });
 
+  it("should allow chaining clear", () => {
+    const msg = new PrimitiveMessageV2();
+    msg
+      .setMyDouble(123)
+      .setMyFloat(123)
+      .setMyInt32(123)
+      .setMyInt64(123)
+      .setMyUint32(123)
+      .setMyUint64(123)
+      .setMySint32(123)
+      .setMySint64(123)
+      .setMyFixed32(123)
+      .setMyFixed64(123)
+      .setMySfixed32(123)
+      .setMySfixed64(123)
+      .setMyBool(true)
+      .setMyString("hello world")
+      .setMyBytes("AAECAwQFBgcICQ==");
+
+    msg
+      .clearMyDouble()
+      .clearMyFloat()
+      .clearMyInt32()
+      .clearMyInt64()
+      .clearMyUint32()
+      .clearMyUint64()
+      .clearMySint32()
+      .clearMySint64()
+      .clearMyFixed32()
+      .clearMyFixed64()
+      .clearMySfixed32()
+      .clearMySfixed64()
+      .clearMyBool()
+      .clearMyString()
+      .clearMyBytes();
+
+    assert.deepEqual(msg.toObject(), new PrimitiveMessageV2().toObject());
+  });
+
   describe("toObject", () => {
     it("should indicate potentially undefined primitive fields", () => {
       const msg = new PrimitiveMessageV2();

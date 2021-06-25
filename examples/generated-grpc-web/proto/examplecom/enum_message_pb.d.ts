@@ -8,18 +8,18 @@ export class EnumMessage extends jspb.Message {
   getInternalEnum(): EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap];
   setInternalEnum(value: EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap]): EnumMessage;
 
-  clearInternalEnumsList(): void;
+  clearInternalEnumsList(): EnumMessage;
   getInternalEnumsList(): Array<EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap]>;
   setInternalEnumsList(value: Array<EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap]>): EnumMessage;
-  addInternalEnums(value: EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap], index?: number): EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap];
+  addInternalEnums(value: EnumMessage.InternalEnumMap[keyof EnumMessage.InternalEnumMap], index?: number): EnumMessage;
 
   getExternalEnum(): proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap];
   setExternalEnum(value: proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap]): EnumMessage;
 
-  clearExternalEnumsList(): void;
+  clearExternalEnumsList(): EnumMessage;
   getExternalEnumsList(): Array<proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap]>;
   setExternalEnumsList(value: Array<proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap]>): EnumMessage;
-  addExternalEnums(value: proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap], index?: number): proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap];
+  addExternalEnums(value: proto_othercom_external_enum_pb.ExternalEnumMap[keyof proto_othercom_external_enum_pb.ExternalEnumMap], index?: number): EnumMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): EnumMessage.AsObject;

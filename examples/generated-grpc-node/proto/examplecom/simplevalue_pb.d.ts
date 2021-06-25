@@ -11,32 +11,32 @@ export class SimpleValue extends jspb.Message {
   setSecondField(value: number): SimpleValue;
 
   hasNumberValue(): boolean;
-  clearNumberValue(): void;
+  clearNumberValue(): SimpleValue;
   getNumberValue(): number;
   setNumberValue(value: number): SimpleValue;
 
   hasStringValue(): boolean;
-  clearStringValue(): void;
+  clearStringValue(): SimpleValue;
   getStringValue(): string;
   setStringValue(value: string): SimpleValue;
 
   hasBoolValue(): boolean;
-  clearBoolValue(): void;
+  clearBoolValue(): SimpleValue;
   getBoolValue(): boolean;
   setBoolValue(value: boolean): SimpleValue;
 
   hasNumber2Value(): boolean;
-  clearNumber2Value(): void;
+  clearNumber2Value(): SimpleValue;
   getNumber2Value(): number;
   setNumber2Value(value: number): SimpleValue;
 
   hasString2Value(): boolean;
-  clearString2Value(): void;
+  clearString2Value(): SimpleValue;
   getString2Value(): string;
   setString2Value(value: string): SimpleValue;
 
   hasBool2Value(): boolean;
-  clearBool2Value(): void;
+  clearBool2Value(): SimpleValue;
   getBool2Value(): boolean;
   setBool2Value(value: boolean): SimpleValue;
 

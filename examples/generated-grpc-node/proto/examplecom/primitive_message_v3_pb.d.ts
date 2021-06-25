@@ -55,84 +55,84 @@ export class PrimitiveMessageV3 extends jspb.Message {
   setMyNumber(value: number): PrimitiveMessageV3;
 
   hasOptDouble(): boolean;
-  clearOptDouble(): void;
+  clearOptDouble(): PrimitiveMessageV3;
   getOptDouble(): number;
   setOptDouble(value: number): PrimitiveMessageV3;
 
   hasOptFloat(): boolean;
-  clearOptFloat(): void;
+  clearOptFloat(): PrimitiveMessageV3;
   getOptFloat(): number;
   setOptFloat(value: number): PrimitiveMessageV3;
 
   hasOptInt32(): boolean;
-  clearOptInt32(): void;
+  clearOptInt32(): PrimitiveMessageV3;
   getOptInt32(): number;
   setOptInt32(value: number): PrimitiveMessageV3;
 
   hasOptInt64(): boolean;
-  clearOptInt64(): void;
+  clearOptInt64(): PrimitiveMessageV3;
   getOptInt64(): number;
   setOptInt64(value: number): PrimitiveMessageV3;
 
   hasOptUint32(): boolean;
-  clearOptUint32(): void;
+  clearOptUint32(): PrimitiveMessageV3;
   getOptUint32(): number;
   setOptUint32(value: number): PrimitiveMessageV3;
 
   hasOptUint64(): boolean;
-  clearOptUint64(): void;
+  clearOptUint64(): PrimitiveMessageV3;
   getOptUint64(): number;
   setOptUint64(value: number): PrimitiveMessageV3;
 
   hasOptSint32(): boolean;
-  clearOptSint32(): void;
+  clearOptSint32(): PrimitiveMessageV3;
   getOptSint32(): number;
   setOptSint32(value: number): PrimitiveMessageV3;
 
   hasOptSint64(): boolean;
-  clearOptSint64(): void;
+  clearOptSint64(): PrimitiveMessageV3;
   getOptSint64(): number;
   setOptSint64(value: number): PrimitiveMessageV3;
 
   hasOptFixed32(): boolean;
-  clearOptFixed32(): void;
+  clearOptFixed32(): PrimitiveMessageV3;
   getOptFixed32(): number;
   setOptFixed32(value: number): PrimitiveMessageV3;
 
   hasOptFixed64(): boolean;
-  clearOptFixed64(): void;
+  clearOptFixed64(): PrimitiveMessageV3;
   getOptFixed64(): number;
   setOptFixed64(value: number): PrimitiveMessageV3;
 
   hasOptSfixed32(): boolean;
-  clearOptSfixed32(): void;
+  clearOptSfixed32(): PrimitiveMessageV3;
   getOptSfixed32(): number;
   setOptSfixed32(value: number): PrimitiveMessageV3;
 
   hasOptSfixed64(): boolean;
-  clearOptSfixed64(): void;
+  clearOptSfixed64(): PrimitiveMessageV3;
   getOptSfixed64(): number;
   setOptSfixed64(value: number): PrimitiveMessageV3;
 
   hasOptBool(): boolean;
-  clearOptBool(): void;
+  clearOptBool(): PrimitiveMessageV3;
   getOptBool(): boolean;
   setOptBool(value: boolean): PrimitiveMessageV3;
 
   hasOptString(): boolean;
-  clearOptString(): void;
+  clearOptString(): PrimitiveMessageV3;
   getOptString(): string;
   setOptString(value: string): PrimitiveMessageV3;
 
   hasOptBytes(): boolean;
-  clearOptBytes(): void;
+  clearOptBytes(): PrimitiveMessageV3;
   getOptBytes(): Uint8Array | string;
   getOptBytes_asU8(): Uint8Array;
   getOptBytes_asB64(): string;
   setOptBytes(value: Uint8Array | string): PrimitiveMessageV3;
 
   hasOptNumber(): boolean;
-  clearOptNumber(): void;
+  clearOptNumber(): PrimitiveMessageV3;
   getOptNumber(): number;
   setOptNumber(value: number): PrimitiveMessageV3;
 

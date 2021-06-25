@@ -6,31 +6,31 @@ import * as proto_othercom_external_child_message_pb from "../../proto/othercom/
 
 export class ParentMessageV2 extends jspb.Message {
   hasInternalChildMessage(): boolean;
-  clearInternalChildMessage(): void;
+  clearInternalChildMessage(): ParentMessageV2;
   getInternalChildMessage(): ParentMessageV2.InternalChildMessage;
   setInternalChildMessage(value?: ParentMessageV2.InternalChildMessage): ParentMessageV2;
 
   hasOptInternalChildMessage(): boolean;
-  clearOptInternalChildMessage(): void;
+  clearOptInternalChildMessage(): ParentMessageV2;
   getOptInternalChildMessage(): ParentMessageV2.InternalChildMessage | undefined;
   setOptInternalChildMessage(value?: ParentMessageV2.InternalChildMessage): ParentMessageV2;
 
-  clearInternalChildrenList(): void;
+  clearInternalChildrenList(): ParentMessageV2;
   getInternalChildrenList(): Array<ParentMessageV2.InternalChildMessage>;
   setInternalChildrenList(value: Array<ParentMessageV2.InternalChildMessage>): ParentMessageV2;
   addInternalChildren(value?: ParentMessageV2.InternalChildMessage, index?: number): ParentMessageV2.InternalChildMessage;
 
   hasExternalChildMessage(): boolean;
-  clearExternalChildMessage(): void;
+  clearExternalChildMessage(): ParentMessageV2;
   getExternalChildMessage(): proto_othercom_external_child_message_pb.ExternalChildMessage;
   setExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): ParentMessageV2;
 
   hasOptExternalChildMessage(): boolean;
-  clearOptExternalChildMessage(): void;
+  clearOptExternalChildMessage(): ParentMessageV2;
   getOptExternalChildMessage(): proto_othercom_external_child_message_pb.ExternalChildMessage | undefined;
   setOptExternalChildMessage(value?: proto_othercom_external_child_message_pb.ExternalChildMessage): ParentMessageV2;
 
-  clearExternalChildrenList(): void;
+  clearExternalChildrenList(): ParentMessageV2;
   getExternalChildrenList(): Array<proto_othercom_external_child_message_pb.ExternalChildMessage>;
   setExternalChildrenList(value: Array<proto_othercom_external_child_message_pb.ExternalChildMessage>): ParentMessageV2;
   addExternalChildren(value?: proto_othercom_external_child_message_pb.ExternalChildMessage, index?: number): proto_othercom_external_child_message_pb.ExternalChildMessage;
@@ -57,7 +57,7 @@ export namespace ParentMessageV2 {
 
   export class InternalChildMessage extends jspb.Message {
     hasMyString(): boolean;
-    clearMyString(): void;
+    clearMyString(): InternalChildMessage;
     getMyString(): string | undefined;
     setMyString(value: string): InternalChildMessage;
 

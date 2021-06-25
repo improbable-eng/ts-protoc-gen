@@ -5,7 +5,7 @@ import * as jspb from "google-protobuf";
 
 export class OrphanMapMessage extends jspb.Message {
   getPrimitiveIntsMap(): jspb.Map<string, number>;
-  clearPrimitiveIntsMap(): void;
+  clearPrimitiveIntsMap(): OrphanMapMessage;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OrphanMapMessage.AsObject;
   static toObject(includeInstance: boolean, msg: OrphanMapMessage): OrphanMapMessage.AsObject;

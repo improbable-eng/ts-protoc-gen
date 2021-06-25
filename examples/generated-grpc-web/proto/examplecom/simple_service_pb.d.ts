@@ -11,7 +11,7 @@ export class UnaryRequest extends jspb.Message {
   setSomeInt64(value: number): UnaryRequest;
 
   hasSomeTimestamp(): boolean;
-  clearSomeTimestamp(): void;
+  clearSomeTimestamp(): UnaryRequest;
   getSomeTimestamp(): google_protobuf_timestamp_pb.Timestamp | undefined;
   setSomeTimestamp(value?: google_protobuf_timestamp_pb.Timestamp): UnaryRequest;
 

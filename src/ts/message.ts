@@ -117,7 +117,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
           valueTypeName = `${valueTypeName}[keyof ${valueTypeName}]`;
         }
         printer.printIndentedLn(`get${withUppercase}Map(): jspb.Map<${keyTypeName}, ${valueTypeName}>;`);
-        printer.printIndentedLn(`clear${withUppercase}Map(): void;`);
+        printer.printIndentedLn(`clear${withUppercase}Map(): ${messageName};`);
         toObjectType.printIndentedLn(`${camelCaseName}Map: Array<[${keyTypeName}${keyType === MESSAGE_TYPE ? ".AsObject" : ""}, ${valueTypeName}${valueType === MESSAGE_TYPE ? ".AsObject" : ""}]>,`);
         return;
       }
@@ -163,7 +163,7 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
     function printClearIfNotPresent() {
       if (!hasClearMethod) {
         hasClearMethod = true;
-        printer.printIndentedLn(`clear${jsGetterName(withUppercase)}${field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED ? "List" : ""}(): void;`);
+        printer.printIndentedLn(`clear${jsGetterName(withUppercase)}${field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED ? "List" : ""}(): ${messageName};`);
       }
     }
 
@@ -174,7 +174,8 @@ export function printMessage(fileName: string, exportMap: ExportMap, messageDesc
 
     function printRepeatedAddMethod(valueType: string) {
       const optionalValue = field.getType() === MESSAGE_TYPE;
-      printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${valueType};`);
+      const returnType = optionalValue ? valueType : messageName;
+      printer.printIndentedLn(`add${withUppercase}(value${optionalValue ? "?" : ""}: ${valueType}, index?: number): ${returnType};`);
     }
 
     if (field.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {// is repeated

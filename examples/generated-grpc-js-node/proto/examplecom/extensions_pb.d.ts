@@ -5,7 +5,7 @@ import * as jspb from "google-protobuf";
 
 export class ExtensionMessage extends jspb.Message {
   hasMyExtensionString(): boolean;
-  clearMyExtensionString(): void;
+  clearMyExtensionString(): ExtensionMessage;
   getMyExtensionString(): string | undefined;
   setMyExtensionString(value: string): ExtensionMessage;
 
@@ -27,7 +27,7 @@ export namespace ExtensionMessage {
 
 export class MyBase extends jspb.Message {
   hasMyBaseString(): boolean;
-  clearMyBaseString(): void;
+  clearMyBaseString(): MyBase;
   getMyBaseString(): string | undefined;
   setMyBaseString(value: string): MyBase;
 

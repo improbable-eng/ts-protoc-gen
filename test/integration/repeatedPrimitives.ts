@@ -109,5 +109,40 @@ describe("repeated primitives", () => {
     assert.deepEqual(msg.getMyBoolList() as Array<boolean>, [true, false]);
     assert.deepEqual(msg.getMyStringList() as Array<string>, ["one", "two"]);
     assert.deepEqual(msg.getMyBytesList() as Array<Uint8Array|string>, ["AAECAwQFBgcICQ=="]);
-  })
+  });
+
+  it("should allow chaining adders", () => {
+    const msg = new RepeatedPrimitiveMessage();
+    msg
+      .addMyDouble(123)
+      .addMyFloat(123)
+      .addMyInt32(123)
+      .addMyInt64(123)
+      .addMyUint32(123)
+      .addMyUint64(123)
+      .addMySint32(123)
+      .addMySint64(123)
+      .addMyFixed32(123)
+      .addMyFixed64(123)
+      .addMySfixed32(123)
+      .addMySfixed64(123)
+      .addMyBool(true)
+      .addMyString("one")
+      .addMyBytes("AAECAwQFBgcICQ==");
+    assert.deepEqual(msg.getMyDoubleList() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyFloatList() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyInt32List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyInt64List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyUint32List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyUint64List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMySint32List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMySint64List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyFixed32List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyFixed64List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMySfixed32List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMySfixed64List() as Array<number>, [123]);
+    assert.deepEqual(msg.getMyBoolList() as Array<boolean>, [true]);
+    assert.deepEqual(msg.getMyStringList() as Array<string>, ["one"]);
+    assert.deepEqual(msg.getMyBytesList() as Array<Uint8Array|string>, ["AAECAwQFBgcICQ=="]);
+  });
 });
