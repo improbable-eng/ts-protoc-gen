@@ -7,15 +7,15 @@ import * as proto_othercom_external_child_message_pb from "../../proto/othercom/
 
 export class MapMessage extends jspb.Message {
   getInternalEnumsMap(): jspb.Map<number, MapMessage.InternalEnumMap[keyof MapMessage.InternalEnumMap]>;
-  clearInternalEnumsMap(): void;
+  clearInternalEnumsMap(): MapMessage;
   getInternalChildrenMap(): jspb.Map<string, MapMessage.InternalChildMessage>;
-  clearInternalChildrenMap(): void;
+  clearInternalChildrenMap(): MapMessage;
   getExternalEnumsMap(): jspb.Map<number, proto_othercom_external_enum_pb.ExternalEnum[keyof proto_othercom_external_enum_pb.ExternalEnum]>;
-  clearExternalEnumsMap(): void;
+  clearExternalEnumsMap(): MapMessage;
   getExternalChildrenMap(): jspb.Map<string, proto_othercom_external_child_message_pb.ExternalChildMessage>;
-  clearExternalChildrenMap(): void;
+  clearExternalChildrenMap(): MapMessage;
   getPrimitiveIntsMap(): jspb.Map<string, number>;
-  clearPrimitiveIntsMap(): void;
+  clearPrimitiveIntsMap(): MapMessage;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): MapMessage.AsObject;
   static toObject(includeInstance: boolean, msg: MapMessage): MapMessage.AsObject;
@@ -37,7 +37,7 @@ export namespace MapMessage {
 
   export class InternalChildMessage extends jspb.Message {
     getMyString(): string;
-    setMyString(value: string): void;
+    setMyString(value: string): InternalChildMessage;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): InternalChildMessage.AsObject;

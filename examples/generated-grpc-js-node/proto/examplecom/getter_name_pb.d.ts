@@ -5,16 +5,16 @@ import * as jspb from "google-protobuf";
 
 export class GetterNameConflictMessage extends jspb.Message {
   hasExtension$(): boolean;
-  clearExtension$(): void;
+  clearExtension$(): GetterNameConflictMessage;
   getExtension$(): string | undefined;
-  setExtension$(value: string): void;
+  setExtension$(value: string): GetterNameConflictMessage;
 
   hasJsPbMessageId$(): boolean;
-  clearJsPbMessageId$(): void;
+  clearJsPbMessageId$(): GetterNameConflictMessage;
   getJsPbMessageId$(): Uint8Array | string;
   getJsPbMessageId_asU8(): Uint8Array;
   getJsPbMessageId_asB64(): string;
-  setJsPbMessageId$(value: Uint8Array | string): void;
+  setJsPbMessageId$(value: Uint8Array | string): GetterNameConflictMessage;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetterNameConflictMessage.AsObject;
