@@ -1,7 +1,7 @@
 import {parse} from "querystring";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {ExportEnumEntry, ExportMessageEntry} from "./ExportMap";
-import {ServiceParameter, ModeParameter} from "./parameters";
+import {ServiceParameter, ModeParameter, GrpcOnlyParameter} from "./parameters";
 
 export function filePathToPseudoNamespace(filePath: string): string {
   return filePath.replace(".proto", "").replace(/\//g, "_").replace(/\./g, "_").replace(/\-/g, "_") + "_pb";
@@ -182,13 +182,26 @@ export function getModeParameter(mode?: string): ModeParameter {
   }
 }
 
+export function getGrpcOnlyParameter(grpcOnly?: string): GrpcOnlyParameter {
+  switch (grpcOnly) {
+    case "true":
+      return GrpcOnlyParameter.Yes;
+    case undefined:
+        return GrpcOnlyParameter.None;
+    default:
+      throw new Error(`Unrecognised grpcOnly parameter: ${grpcOnly}`);
+  }
+}
+
 export function getParameterEnums(parameter: string): {
   service: ServiceParameter,
-  mode: ModeParameter
+  mode: ModeParameter,
+  grpcOnly: GrpcOnlyParameter
 } {
-  const {service, mode} = parse(parameter, ",");
+  const {service, mode, grpcOnly} = parse(parameter, ",");
   return {
     service: getServiceParameter(service),
-    mode: getModeParameter(mode)
+    mode: getModeParameter(mode),
+    grpcOnly: getGrpcOnlyParameter(grpcOnly)
   };
 }

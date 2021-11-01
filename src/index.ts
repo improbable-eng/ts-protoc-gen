@@ -5,7 +5,7 @@ import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/googl
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
 import {generateGrpcNodeService} from "./service/grpcnode";
-import {ServiceParameter} from "./parameters";
+import {ServiceParameter, GrpcOnlyParameter} from "./parameters";
 
 /**
  * This is the ProtoC compiler plugin.
@@ -28,8 +28,9 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     const parameter = codeGenRequest.getParameter();
-    const {service, mode} = getParameterEnums(parameter || "");
+    const {service, mode, grpcOnly} = getParameterEnums(parameter || "");
 
+    const generateProtoMessages = grpcOnly === GrpcOnlyParameter.None;
     const generateGrpcWebServices = service === ServiceParameter.GrpcWeb;
     const generateGrpcNodeServices = service === ServiceParameter.GrpcNode;
 
@@ -41,10 +42,12 @@ withAllStdIn((inputBuff: Buffer) => {
 
     codeGenRequest.getFileToGenerateList().forEach(fileName => {
       const outputFileName = replaceProtoSuffix(fileName);
-      const thisFile = new CodeGeneratorResponse.File();
-      thisFile.setName(outputFileName + ".d.ts");
-      thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
-      codeGenResponse.addFile(thisFile);
+      if (generateProtoMessages) {
+        const thisFile = new CodeGeneratorResponse.File();
+        thisFile.setName(outputFileName + ".d.ts");
+        thisFile.setContent(printFileDescriptorTSD(fileNameToDescriptor[fileName], exportMap));
+        codeGenResponse.addFile(thisFile);
+      }
 
       if (generateGrpcWebServices) {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)

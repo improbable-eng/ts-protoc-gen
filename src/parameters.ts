@@ -8,3 +8,9 @@ export enum ModeParameter {
   None,
   GrpcJs
 }
+
+
+export enum GrpcOnlyParameter {
+  None,
+  Yes
+}
