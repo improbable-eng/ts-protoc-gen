@@ -9,6 +9,7 @@ const examplesGeneratedPath = resolve(__dirname, "examples", "generated");
 const examplesGeneratedGrpcWebPath = resolve(__dirname, "examples", "generated-grpc-web");
 const examplesGeneratedGrpcNodePath = resolve(__dirname, "examples", "generated-grpc-node");
 const examplesGeneratedGrpcJsNodePath = resolve(__dirname, "examples", "generated-grpc-js-node");
+const examplesGeneratedGrpcNativePath = resolve(__dirname, "examples", "generated-grpc-native");
 
 const binSuffix = process.platform === "win32" ? ".cmd" : "";
 const nodeModulesBin = resolve(__dirname, "node_modules", ".bin");
@@ -51,6 +52,7 @@ requireProtoc();
 
 requireDir(examplesGeneratedPath);
 requireDir(examplesGeneratedGrpcWebPath);
+requireDir(examplesGeneratedGrpcNativePath);
 requireDir(examplesGeneratedGrpcNodePath);
 requireDir(examplesGeneratedGrpcJsNodePath);
 
@@ -71,6 +73,16 @@ run(protocPath,
   `--plugin=protoc-gen-ts=${protocPluginPath}`,
   `--js_out=import_style=commonjs,binary:${examplesGeneratedGrpcWebPath}`,
   `--ts_out=service=grpc-web:${examplesGeneratedGrpcWebPath}`,
+  ...glob.sync(resolve(__dirname, "proto", "**/*.proto"))
+);
+
+// Generate grpc-native services
+
+run(protocPath,
+  `--proto_path=${__dirname}`,
+  `--plugin=protoc-gen-ts=${protocPluginPath}`,
+  `--js_out=import_style=commonjs,binary:${examplesGeneratedGrpcNativePath}`,
+  `--ts_out=service=grpc-native:${examplesGeneratedGrpcNativePath}`,
   ...glob.sync(resolve(__dirname, "proto", "**/*.proto"))
 );
 

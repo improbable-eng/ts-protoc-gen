@@ -5,6 +5,7 @@ import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/googl
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
 import {generateGrpcNodeService} from "./service/grpcnode";
+import {generateGrpcNativeService} from "./service/grpcnative";
 import {ServiceParameter} from "./parameters";
 
 /**
@@ -32,6 +33,7 @@ withAllStdIn((inputBuff: Buffer) => {
 
     const generateGrpcWebServices = service === ServiceParameter.GrpcWeb;
     const generateGrpcNodeServices = service === ServiceParameter.GrpcNode;
+    const generateGrpcNativeServices = service === ServiceParameter.GrpcNative;
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       const fileDescriptorName = protoFileDescriptor.getName() || throwError("Missing file descriptor name");
@@ -52,6 +54,9 @@ withAllStdIn((inputBuff: Buffer) => {
       } else if (generateGrpcNodeServices) {
         const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap, mode);
         codeGenResponse.addFile(file);
+      } else if (generateGrpcNativeServices) {
+        generateGrpcNativeService(outputFileName, fileNameToDescriptor[fileName], exportMap)
+          .forEach(file => codeGenResponse.addFile(file));
       }
     });
 
