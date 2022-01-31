@@ -36,7 +36,7 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
   printer.printLn(`import {ReactNativeTransport} from "@improbable-eng/grpc-web-react-native-transport";`);
   printer.printEmptyLn();
   printer.printLn(`// @ts-ignore`);
-  printer.printLn(`grpc.setDefaultTransport(ReactNativeTransport());`)
+  printer.printLn(`grpc.setDefaultTransport(ReactNativeTransport(false));`);
   printer.printEmptyLn();
 
   // Services.
@@ -127,9 +127,9 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   printer.printLn(`var grpc = require("@improbable-eng/grpc-web").grpc;`);
 
   // Where the native magic happens
-  printer.printLn(`var ReactNativeTransport = require("@improbable-eng/grpc-web-react-native-transport")`);
+  printer.printLn(`var ReactNativeTransport = require("@improbable-eng/grpc-web-react-native-transport").ReactNativeTransport`);
   printer.printEmptyLn();
-  printer.printLn(`grpc.setDefaultTransport(ReactNativeTransport());`)
+  printer.printLn(`grpc.setDefaultTransport(ReactNativeTransport(false));`);
   printer.printEmptyLn();
 
   // Services.
