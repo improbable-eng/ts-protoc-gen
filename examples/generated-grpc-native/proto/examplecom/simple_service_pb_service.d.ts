@@ -8,7 +8,7 @@ import {grpc} from "@improbable-eng/grpc-web";
 import {ReactNativeTransport} from "@improbable-eng/grpc-web-react-native-transport";
 
 // @ts-ignore
-grpc.setDefaultTransport(ReactNativeTransport());
+grpc.setDefaultTransport(ReactNativeTransport(false));
 
 type SimpleServiceDoUnary = {
   readonly methodName: string;

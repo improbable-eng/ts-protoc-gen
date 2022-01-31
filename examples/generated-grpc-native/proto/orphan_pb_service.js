@@ -3,9 +3,9 @@
 
 var proto_orphan_pb = require("../proto/orphan_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
-var ReactNativeTransport = require("@improbable-eng/grpc-web-react-native-transport")
+var ReactNativeTransport = require("@improbable-eng/grpc-web-react-native-transport").ReactNativeTransport
 
-grpc.setDefaultTransport(ReactNativeTransport());
+grpc.setDefaultTransport(ReactNativeTransport(false));
 
 var OrphanService = (function () {
   function OrphanService() {}

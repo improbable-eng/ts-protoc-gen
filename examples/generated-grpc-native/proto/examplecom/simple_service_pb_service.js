@@ -5,9 +5,9 @@ var proto_examplecom_simple_service_pb = require("../../proto/examplecom/simple_
 var proto_othercom_external_child_message_pb = require("../../proto/othercom/external_child_message_pb");
 var google_protobuf_empty_pb = require("google-protobuf/google/protobuf/empty_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
-var ReactNativeTransport = require("@improbable-eng/grpc-web-react-native-transport")
+var ReactNativeTransport = require("@improbable-eng/grpc-web-react-native-transport").ReactNativeTransport
 
-grpc.setDefaultTransport(ReactNativeTransport());
+grpc.setDefaultTransport(ReactNativeTransport(false));
 
 var SimpleService = (function () {
   function SimpleService() {}
