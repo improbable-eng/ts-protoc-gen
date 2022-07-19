@@ -23,7 +23,7 @@ function frameTrailers(trailers: grpc.Metadata): Uint8Array {
   trailers.forEach((key: string, values: string[]) => {
     asString += `${key}: ${values.join(", ")}\r\n`;
   });
-  const bytes = new Buffer(asString);
+  const bytes = Buffer.from(asString);
   const frame = new ArrayBuffer(bytes.byteLength + 5);
   const dataview = new DataView(frame, 0, 5);
   dataview.setUint32(1, bytes.length, false /* big endian */);

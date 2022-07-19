@@ -5,7 +5,7 @@ import {CodeGeneratorRequest, CodeGeneratorResponse} from "google-protobuf/googl
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {generateGrpcWebService} from "./service/grpcweb";
 import {generateGrpcNodeService} from "./service/grpcnode";
-import {ServiceParameter} from "./parameters";
+import {ServiceParameter, ImportStyleParameter} from "./parameters";
 
 /**
  * This is the ProtoC compiler plugin.
@@ -28,10 +28,11 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     const parameter = codeGenRequest.getParameter();
-    const {service, mode} = getParameterEnums(parameter || "");
+    const {service, mode, importStyle} = getParameterEnums(parameter || "");
 
     const generateGrpcWebServices = service === ServiceParameter.GrpcWeb;
     const generateGrpcNodeServices = service === ServiceParameter.GrpcNode;
+    const useImportStyleES6 = importStyle === ImportStyleParameter.ES6;
 
     codeGenRequest.getProtoFileList().forEach(protoFileDescriptor => {
       const fileDescriptorName = protoFileDescriptor.getName() || throwError("Missing file descriptor name");
@@ -47,7 +48,7 @@ withAllStdIn((inputBuff: Buffer) => {
       codeGenResponse.addFile(thisFile);
 
       if (generateGrpcWebServices) {
-        generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
+       generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap, useImportStyleES6)
           .forEach(file => codeGenResponse.addFile(file));
       } else if (generateGrpcNodeServices) {
         const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap, mode);

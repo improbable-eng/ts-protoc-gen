@@ -5,10 +5,10 @@ import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb
 import {CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {createFile, RPCMethodDescriptor, RPCDescriptor, GrpcServiceDescriptor} from "./common";
 
-export function generateGrpcWebService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap): CodeGeneratorResponse.File[] {
+export function generateGrpcWebService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap, useImportStyleES6: boolean): CodeGeneratorResponse.File[] {
   return [
     createFile(generateTypeScriptDefinition(descriptor, exportMap), `${filename}_service.d.ts`),
-    createFile(generateJavaScript(descriptor, exportMap), `${filename}_service.js`),
+    createFile(generateJavaScript(descriptor, exportMap, useImportStyleES6), `${filename}_service.js`),
   ];
 }
 
@@ -100,7 +100,7 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
   return printer.getOutput();
 }
 
-function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: ExportMap): string {
+function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: ExportMap, useImportStyleES6: boolean): string {
   const serviceDescriptor = new GrpcServiceDescriptor(fileDescriptor, exportMap);
   const printer = new Printer(0);
 
@@ -116,9 +116,17 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   // Import Statements
   serviceDescriptor.imports
     .forEach(importDescriptor => {
-      printer.printLn(`var ${importDescriptor.namespace} = require("${importDescriptor.path}");`);
+      if (useImportStyleES6) {
+        printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
+      } else {
+        printer.printLn(`var ${importDescriptor.namespace} = require("${importDescriptor.path}");`);
+      }
     });
-  printer.printLn(`var grpc = require("@improbable-eng/grpc-web").grpc;`);
+    if (useImportStyleES6) {
+      printer.printLn(`import {grpc} from "@improbable-eng/grpc-web";`);
+    } else {
+        printer.printLn(`var grpc = require("@improbable-eng/grpc-web").grpc;`);
+    }
   printer.printEmptyLn();
 
   // Services.
@@ -143,11 +151,15 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
           printer.printLn(`};`);
           printer.printEmptyLn();
         });
-      printer.printLn(`exports.${service.name} = ${service.name};`);
+      if (useImportStyleES6) {
+        printer.printLn(`export {${service.name}};`);
+      } else {
+        printer.printLn(`exports.${service.name} = ${service.name};`);
+      }
       printer.printEmptyLn();
 
       // Add a client stub that talks with the @improbable-eng/grpc-web library
-      printServiceStub(printer, service);
+      printServiceStub(printer, service, useImportStyleES6);
 
       printer.printEmptyLn();
     });
@@ -155,7 +167,7 @@ function generateJavaScript(fileDescriptor: FileDescriptorProto, exportMap: Expo
   return printer.getOutput();
 }
 
-function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
+function printServiceStub(methodPrinter: Printer, service: RPCDescriptor, useImportStyleES6: boolean) {
   const printer = new CodePrinter(0, methodPrinter);
 
   printer
@@ -177,7 +189,11 @@ function printServiceStub(methodPrinter: Printer, service: RPCDescriptor) {
     }
     printer.printEmptyLn();
   });
-  printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
+  if (useImportStyleES6) {
+    printer.printLn(`export {${service.name}Client};`);
+  } else {
+    printer.printLn(`exports.${service.name}Client = ${service.name}Client;`);
+  }
 }
 
 function printUnaryStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
