@@ -134,7 +134,10 @@ SimpleServiceClient.prototype.doServerStream = function doServerStream(requestMe
   };
 };
 
-SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata) {
+SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata, callback) {
+  if (arguments.length === 1 && arguments[0] instanceof Function) {
+    callback = arguments[0];
+  }
   var listeners = {
     end: [],
     status: []
@@ -144,6 +147,10 @@ SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata)
     metadata: metadata,
     transport: this.options.transport
   });
+  var response = null;
+  client.onMessage(function (message) {
+    response = message;
+  });
   client.onEnd(function (status, statusMessage, trailers) {
     listeners.status.forEach(function (handler) {
       handler({ code: status, details: statusMessage, metadata: trailers });
@@ -151,6 +158,16 @@ SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata)
     listeners.end.forEach(function (handler) {
       handler({ code: status, details: statusMessage, metadata: trailers });
     });
+    if (callback) {
+      if (status !== grpc.Code.OK) {
+        var err = new Error(statusMessage);
+        err.metadata = trailers;
+        err.code = status;
+        callback(err, null);
+      } else {
+        callback(null, response);
+      }
+    }
     listeners = null;
   });
   return {

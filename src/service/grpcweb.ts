@@ -258,8 +258,11 @@ function printServerStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
 
 function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDescriptor) {
   printer
-           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata) {`)
-    .indent().printLn(`var listeners = {`)
+           .printLn(`${method.serviceName}Client.prototype.${method.nameAsCamelCase} = function ${method.functionName}(metadata, callback) {`)
+    .indent().printLn(`if (arguments.length === 1 && arguments[0] instanceof Function) {`)
+      .indent().printLn(`callback = arguments[0];`)
+    .dedent().printLn("}")
+             .printLn(`var listeners = {`)
       .indent().printLn(`end: [],`)
                .printLn(`status: []`)
     .dedent().printLn(`};`)
@@ -268,6 +271,10 @@ function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
                .printLn(`metadata: metadata,`)
                .printLn(`transport: this.options.transport`)
     .dedent().printLn(`});`)
+             .printLn(`var response = null;`)
+             .printLn(`client.onMessage(function (message) {`)
+      .indent().printLn(`response = message;`)
+    .dedent().printLn(`});`)
              .printLn(`client.onEnd(function (status, statusMessage, trailers) {`)
       .indent().printLn(`listeners.status.forEach(function (handler) {`)
         .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
@@ -275,6 +282,16 @@ function printClientStreamStubMethod(printer: CodePrinter, method: RPCMethodDesc
                .printLn(`listeners.end.forEach(function (handler) {`)
         .indent().printLn(`handler({ code: status, details: statusMessage, metadata: trailers });`)
       .dedent().printLn(`});`)
+               .printLn(`if (callback) {`)
+        .indent().printLn(`if (status !== grpc.Code.OK) {`)
+          .indent().printLn(`var err = new Error(statusMessage);`)
+                   .printLn(`err.metadata = trailers;`)
+                   .printLn(`err.code = status;`)
+                   .printLn(`callback(err, null);`)
+        .dedent().printLn(`} else {`)
+          .indent().printLn(`callback(null, response);`)
+        .dedent().printLn(`}`)
+      .dedent().printLn(`}`)
                .printLn(`listeners = null;`)
     .dedent().printLn(`});`)
              .printLn(`return {`)
@@ -389,7 +406,14 @@ function printServerStreamStubMethodTypes(printer: CodePrinter, method: RPCMetho
 }
 
 function printClientStreamStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
-  printer.printLn(`${method.nameAsCamelCase}(metadata?: grpc.Metadata): RequestStream<${method.requestType}>;`);
+  printer
+             .printLn(`${method.nameAsCamelCase}(`)
+      .indent().printLn(`metadata?: grpc.Metadata,`)
+               .printLn(`callback?: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
+    .dedent().printLn(`): RequestStream<${method.requestType}>;`)
+             .printLn(`${method.nameAsCamelCase}(`)
+      .indent().printLn(`callback?: (error: ServiceError|null, responseMessage: ${method.responseType}|null) => void`)
+    .dedent().printLn(`): RequestStream<${method.requestType}>;`);
 }
 
 function printBidirectionalStubMethodTypes(printer: CodePrinter, method: RPCMethodDescriptor) {
