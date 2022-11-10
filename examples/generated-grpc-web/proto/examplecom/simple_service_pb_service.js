@@ -162,8 +162,8 @@ SimpleServiceClient.prototype.doClientStream = function doClientStream(metadata,
       if (status !== grpc.Code.OK) {
         var err = new Error(statusMessage);
         err.metadata = trailers;
-        callback(err, null);
         err.code = status;
+        callback(err, null);
       } else {
         callback(null, response);
       }
