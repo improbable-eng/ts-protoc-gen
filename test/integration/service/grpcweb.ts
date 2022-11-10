@@ -6,7 +6,12 @@ import { createContext, runInContext } from "vm";
 
 import { frameRequest, StubTransportBuilder } from "../../helpers/fakeGrpcTransport";
 import { ExternalChildMessage } from "../../../examples/generated-grpc-web/proto/othercom/external_child_message_pb";
-import { SimpleService, SimpleServiceClient, Status } from "../../../examples/generated-grpc-web/proto/examplecom/simple_service_pb_service";
+import {
+  ServiceError,
+  SimpleService,
+  SimpleServiceClient,
+  Status
+} from "../../../examples/generated-grpc-web/proto/examplecom/simple_service_pb_service";
 import { StreamRequest, UnaryRequest, UnaryResponse } from "../../../examples/generated-grpc-web/proto/examplecom/simple_service_pb";
 import { Empty } from "google-protobuf/google/protobuf/empty_pb";
 
@@ -452,6 +457,85 @@ describe("service/grpc-web", () => {
           .on("end", () => {
             assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
             done();
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should allow the caller to supply Metadata and a callback", (done) => {
+        let sentHeaders: grpc.Metadata;
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withMessages([new Empty()]).withHeadersListener(headers => sentHeaders = headers))
+          .doClientStream(new grpc.Metadata({ "foo": "bar" }), (error: ServiceError | null, responseMessage: Empty | null) => {
+            assert.isTrue(onEndInvoked, "onEnd should be invoked before the callback");
+            assert.deepEqual(sentHeaders.get("foo"), ["bar"]);
+            assert.isNull(error);
+            assert.instanceOf(responseMessage, Empty);
+            done();
+          })
+          .on("end", () => {
+            onEndInvoked = true;
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should allow the caller to supply only a callback", (done) => {
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withMessages([new Empty()]))
+          .doClientStream((error: ServiceError | null, responseMessage: Empty | null) => {
+            assert.isTrue(onEndInvoked, "onEnd should be invoked before the callback");
+            assert.isNull(error);
+            assert.instanceOf(responseMessage, Empty);
+            done();
+          })
+          .on("end", () => {
+            onEndInvoked = true;
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should supply a pre-messages error to a callback", (done) => {
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withPreMessagesError(grpc.Code.Internal, "some pre-messages error"))
+          .doClientStream((error: ServiceError | null, responseMessage: Empty | null) => {
+            console.log("callback invoked", error, responseMessage);
+            assert.isTrue(onEndInvoked, "onEnd should be invoked before the callback");
+            assert.isTrue(error !== null && typeof error === "object", "should yield an error");
+            assert.equal(error!.message, "some pre-messages error", "should expose the grpc error message (.message)");
+            assert.equal(error!.code, 13, "should expose the grpc status code (.code)");
+            assert.isNull(responseMessage);
+            done();
+          })
+          .on("end", (status) => {
+            assert.isDefined(status, "onEnd should be invoked with a status");
+            assert.equal(status!.code, 13, "expected grpc status code returned");
+            onEndInvoked = true;
+          })
+          .write(payload)
+          .end();
+      });
+
+      it("should supply a pre-trailers error to a callback", (done) => {
+        let onEndInvoked = false;
+
+        makeClient(new StubTransportBuilder().withPreTrailersError(grpc.Code.Internal, "some pre-trailers error"))
+          .doClientStream((error: ServiceError | null, responseMessage: Empty | null) => {
+            assert.isTrue(onEndInvoked, "onEnd should be invoked before the callback");
+            assert.isTrue(error !== null && typeof error === "object", "should yield an error");
+            assert.equal(error!.message, "some pre-trailers error", "should expose the grpc error message (.message)");
+            assert.equal(error!.code, 13, "should expose the grpc status code (.code)");
+            assert.isNull(responseMessage);
+            done();
+          })
+          .on("end", (status) => {
+            assert.isDefined(status, "onEnd should be invoked with a status");
+            assert.equal(status!.code, 13, "expected grpc status code returned");
+            onEndInvoked = true;
           })
           .write(payload)
           .end();
