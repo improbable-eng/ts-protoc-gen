@@ -74,6 +74,16 @@ describe("proto2 - internal nested messages", () => {
 
     assert.deepEqual(parentMsg.getInternalChildrenList() as Array<InternalChildMessage>, [childMsgOne, childMsgTwo]);
   });
+
+  it("should allow chaining adders of repeated internal message fields", () => {
+    const parentMsg = new ParentMessageV2();
+    parentMsg.addInternalChildren().setMyString("one");
+    parentMsg.addInternalChildren().setMyString("two");
+
+    assert.strictEqual(parentMsg.getInternalChildrenList().length, 2);
+    assert.strictEqual(parentMsg.getInternalChildrenList()[0].getMyString(), "one");
+    assert.strictEqual(parentMsg.getInternalChildrenList()[1].getMyString(), "two");
+  });
 });
 
 describe("proto2 - external nested messages", () => {
@@ -146,6 +156,16 @@ describe("proto2 - external nested messages", () => {
     assert.strictEqual(childMsgTwo, addedTwo);
 
     assert.deepEqual(parentMsg.getExternalChildrenList() as Array<ExternalChildMessage>, [childMsgOne, childMsgTwo]);
+  });
+
+  it("should allow chaining adders of repeated external message fields", () => {
+    const parentMsg = new ParentMessageV2();
+    parentMsg.addExternalChildren().setMyString("one");
+    parentMsg.addExternalChildren().setMyString("two");
+
+    assert.strictEqual(parentMsg.getExternalChildrenList().length, 2);
+    assert.strictEqual(parentMsg.getExternalChildrenList()[0].getMyString(), "one");
+    assert.strictEqual(parentMsg.getExternalChildrenList()[1].getMyString(), "two");
   });
 });
 

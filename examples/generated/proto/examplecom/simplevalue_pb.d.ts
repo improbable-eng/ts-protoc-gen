@@ -5,40 +5,40 @@ import * as jspb from "google-protobuf";
 
 export class SimpleValue extends jspb.Message {
   getFirstField(): string;
-  setFirstField(value: string): void;
+  setFirstField(value: string): SimpleValue;
 
   getSecondField(): number;
-  setSecondField(value: number): void;
+  setSecondField(value: number): SimpleValue;
 
   hasNumberValue(): boolean;
-  clearNumberValue(): void;
+  clearNumberValue(): SimpleValue;
   getNumberValue(): number;
-  setNumberValue(value: number): void;
+  setNumberValue(value: number): SimpleValue;
 
   hasStringValue(): boolean;
-  clearStringValue(): void;
+  clearStringValue(): SimpleValue;
   getStringValue(): string;
-  setStringValue(value: string): void;
+  setStringValue(value: string): SimpleValue;
 
   hasBoolValue(): boolean;
-  clearBoolValue(): void;
+  clearBoolValue(): SimpleValue;
   getBoolValue(): boolean;
-  setBoolValue(value: boolean): void;
+  setBoolValue(value: boolean): SimpleValue;
 
   hasNumber2Value(): boolean;
-  clearNumber2Value(): void;
+  clearNumber2Value(): SimpleValue;
   getNumber2Value(): number;
-  setNumber2Value(value: number): void;
+  setNumber2Value(value: number): SimpleValue;
 
   hasString2Value(): boolean;
-  clearString2Value(): void;
+  clearString2Value(): SimpleValue;
   getString2Value(): string;
-  setString2Value(value: string): void;
+  setString2Value(value: string): SimpleValue;
 
   hasBool2Value(): boolean;
-  clearBool2Value(): void;
+  clearBool2Value(): SimpleValue;
   getBool2Value(): boolean;
-  setBool2Value(value: boolean): void;
+  setBool2Value(value: boolean): SimpleValue;
 
   getKindCase(): SimpleValue.KindCase;
   getAnotherCase(): SimpleValue.AnotherCase;

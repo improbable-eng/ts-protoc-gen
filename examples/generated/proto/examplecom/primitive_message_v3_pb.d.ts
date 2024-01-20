@@ -5,136 +5,136 @@ import * as jspb from "google-protobuf";
 
 export class PrimitiveMessageV3 extends jspb.Message {
   getMyDouble(): number;
-  setMyDouble(value: number): void;
+  setMyDouble(value: number): PrimitiveMessageV3;
 
   getMyFloat(): number;
-  setMyFloat(value: number): void;
+  setMyFloat(value: number): PrimitiveMessageV3;
 
   getMyInt32(): number;
-  setMyInt32(value: number): void;
+  setMyInt32(value: number): PrimitiveMessageV3;
 
   getMyInt64(): number;
-  setMyInt64(value: number): void;
+  setMyInt64(value: number): PrimitiveMessageV3;
 
   getMyUint32(): number;
-  setMyUint32(value: number): void;
+  setMyUint32(value: number): PrimitiveMessageV3;
 
   getMyUint64(): number;
-  setMyUint64(value: number): void;
+  setMyUint64(value: number): PrimitiveMessageV3;
 
   getMySint32(): number;
-  setMySint32(value: number): void;
+  setMySint32(value: number): PrimitiveMessageV3;
 
   getMySint64(): number;
-  setMySint64(value: number): void;
+  setMySint64(value: number): PrimitiveMessageV3;
 
   getMyFixed32(): number;
-  setMyFixed32(value: number): void;
+  setMyFixed32(value: number): PrimitiveMessageV3;
 
   getMyFixed64(): number;
-  setMyFixed64(value: number): void;
+  setMyFixed64(value: number): PrimitiveMessageV3;
 
   getMySfixed32(): number;
-  setMySfixed32(value: number): void;
+  setMySfixed32(value: number): PrimitiveMessageV3;
 
   getMySfixed64(): number;
-  setMySfixed64(value: number): void;
+  setMySfixed64(value: number): PrimitiveMessageV3;
 
   getMyBool(): boolean;
-  setMyBool(value: boolean): void;
+  setMyBool(value: boolean): PrimitiveMessageV3;
 
   getMyString(): string;
-  setMyString(value: string): void;
+  setMyString(value: string): PrimitiveMessageV3;
 
   getMyBytes(): Uint8Array | string;
   getMyBytes_asU8(): Uint8Array;
   getMyBytes_asB64(): string;
-  setMyBytes(value: Uint8Array | string): void;
+  setMyBytes(value: Uint8Array | string): PrimitiveMessageV3;
 
   getMyNumber(): number;
-  setMyNumber(value: number): void;
+  setMyNumber(value: number): PrimitiveMessageV3;
 
   hasOptDouble(): boolean;
-  clearOptDouble(): void;
+  clearOptDouble(): PrimitiveMessageV3;
   getOptDouble(): number;
-  setOptDouble(value: number): void;
+  setOptDouble(value: number): PrimitiveMessageV3;
 
   hasOptFloat(): boolean;
-  clearOptFloat(): void;
+  clearOptFloat(): PrimitiveMessageV3;
   getOptFloat(): number;
-  setOptFloat(value: number): void;
+  setOptFloat(value: number): PrimitiveMessageV3;
 
   hasOptInt32(): boolean;
-  clearOptInt32(): void;
+  clearOptInt32(): PrimitiveMessageV3;
   getOptInt32(): number;
-  setOptInt32(value: number): void;
+  setOptInt32(value: number): PrimitiveMessageV3;
 
   hasOptInt64(): boolean;
-  clearOptInt64(): void;
+  clearOptInt64(): PrimitiveMessageV3;
   getOptInt64(): number;
-  setOptInt64(value: number): void;
+  setOptInt64(value: number): PrimitiveMessageV3;
 
   hasOptUint32(): boolean;
-  clearOptUint32(): void;
+  clearOptUint32(): PrimitiveMessageV3;
   getOptUint32(): number;
-  setOptUint32(value: number): void;
+  setOptUint32(value: number): PrimitiveMessageV3;
 
   hasOptUint64(): boolean;
-  clearOptUint64(): void;
+  clearOptUint64(): PrimitiveMessageV3;
   getOptUint64(): number;
-  setOptUint64(value: number): void;
+  setOptUint64(value: number): PrimitiveMessageV3;
 
   hasOptSint32(): boolean;
-  clearOptSint32(): void;
+  clearOptSint32(): PrimitiveMessageV3;
   getOptSint32(): number;
-  setOptSint32(value: number): void;
+  setOptSint32(value: number): PrimitiveMessageV3;
 
   hasOptSint64(): boolean;
-  clearOptSint64(): void;
+  clearOptSint64(): PrimitiveMessageV3;
   getOptSint64(): number;
-  setOptSint64(value: number): void;
+  setOptSint64(value: number): PrimitiveMessageV3;
 
   hasOptFixed32(): boolean;
-  clearOptFixed32(): void;
+  clearOptFixed32(): PrimitiveMessageV3;
   getOptFixed32(): number;
-  setOptFixed32(value: number): void;
+  setOptFixed32(value: number): PrimitiveMessageV3;
 
   hasOptFixed64(): boolean;
-  clearOptFixed64(): void;
+  clearOptFixed64(): PrimitiveMessageV3;
   getOptFixed64(): number;
-  setOptFixed64(value: number): void;
+  setOptFixed64(value: number): PrimitiveMessageV3;
 
   hasOptSfixed32(): boolean;
-  clearOptSfixed32(): void;
+  clearOptSfixed32(): PrimitiveMessageV3;
   getOptSfixed32(): number;
-  setOptSfixed32(value: number): void;
+  setOptSfixed32(value: number): PrimitiveMessageV3;
 
   hasOptSfixed64(): boolean;
-  clearOptSfixed64(): void;
+  clearOptSfixed64(): PrimitiveMessageV3;
   getOptSfixed64(): number;
-  setOptSfixed64(value: number): void;
+  setOptSfixed64(value: number): PrimitiveMessageV3;
 
   hasOptBool(): boolean;
-  clearOptBool(): void;
+  clearOptBool(): PrimitiveMessageV3;
   getOptBool(): boolean;
-  setOptBool(value: boolean): void;
+  setOptBool(value: boolean): PrimitiveMessageV3;
 
   hasOptString(): boolean;
-  clearOptString(): void;
+  clearOptString(): PrimitiveMessageV3;
   getOptString(): string;
-  setOptString(value: string): void;
+  setOptString(value: string): PrimitiveMessageV3;
 
   hasOptBytes(): boolean;
-  clearOptBytes(): void;
+  clearOptBytes(): PrimitiveMessageV3;
   getOptBytes(): Uint8Array | string;
   getOptBytes_asU8(): Uint8Array;
   getOptBytes_asB64(): string;
-  setOptBytes(value: Uint8Array | string): void;
+  setOptBytes(value: Uint8Array | string): PrimitiveMessageV3;
 
   hasOptNumber(): boolean;
-  clearOptNumber(): void;
+  clearOptNumber(): PrimitiveMessageV3;
   getOptNumber(): number;
-  setOptNumber(value: number): void;
+  setOptNumber(value: number): PrimitiveMessageV3;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PrimitiveMessageV3.AsObject;

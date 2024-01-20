@@ -50,3 +50,12 @@ describe("enum casing", () => {
     assert.ok(true, ".d.ts file should export the enum definition in ALL_CAPS");
   });
 });
+
+describe("enum set chaining", () => {
+  it("should support chaining set calls on enum fields", () => {
+    const parentMsg = new EnumMessage();
+    parentMsg.setInternalEnum(InternalEnum.FIRST).setInternalEnumsList([InternalEnum.SECOND]);
+    assert.strictEqual(parentMsg.getInternalEnum(), InternalEnum.FIRST);
+    assert.deepEqual(parentMsg.getInternalEnumsList(), [InternalEnum.SECOND]);
+  });
+});
