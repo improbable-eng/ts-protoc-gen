@@ -1,4 +1,3 @@
-[![Master Build](https://travis-ci.org/improbable-eng/ts-protoc-gen.svg?branch=master)](https://travis-ci.org/improbable-eng/ts-protoc-gen)
 [![NPM](https://img.shields.io/npm/v/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
 [![NPM](https://img.shields.io/npm/dm/ts-protoc-gen.svg)](https://www.npmjs.com/package/ts-protoc-gen)
 [![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
@@ -11,7 +10,7 @@ This repository contains a [protoc](https://github.com/google/protobuf) plugin t
 (`.d.ts` files) that match the JavaScript output of `protoc --js_out=import_style=commonjs,binary`. This plugin can
 also output service definitions as both `.js` and `.d.ts` files in the structure required by [grpc-web](https://github.com/improbable-eng/grpc-web), and as `.d.ts` files in the structure required by [grpc-node](https://github.com/grpc/grpc-node).
 
-This plugin is tested and written using TypeScript 2.7.
+This plugin is tested and written using TypeScript 5.3.
 
 ## Installation
 

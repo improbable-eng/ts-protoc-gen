@@ -1,0 +1,50 @@
+---
+name: NPM Install, Build, and Cache
+description: NPM Install Dependencies, NPM Run Build, and Cache Dependencies & Artifacts
+
+outputs:
+  npm-deps-cache-hit:
+    description: "Whether or not the npm dependencies are cached"
+    value: ${{ steps.cache-npm-deps.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up nodejs
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: ".nvmrc"
+        cache: npm
+
+    # Set NX_REJECT_UNKNOWN_LOCAL_CACHE=0 to allow NX to use the local cache even if the cache was built by a different machine
+    # https://nx.dev/recipes/troubleshooting/unknown-local-cache
+    - name: Allow NX to use unknown local cache
+      shell: bash
+      run: echo "NX_REJECT_UNKNOWN_LOCAL_CACHE=0" >> $GITHUB_ENV
+
+    - name: Cache NPM dependencies
+      uses: actions/cache@v3
+      id: cache-npm-deps
+      with:
+        path: |
+          node_modules
+          ~/.cache
+        key: ${{ runner.os }}-npm-v3-${{ hashFiles('package-lock.json') }}
+
+    - name: Install dependencies
+      if: steps.cache-npm-deps.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci
+
+    - name: Build
+      shell: bash
+      run: npm run build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          packages/**/build/*
+          e2e-tests/build/*
+        if-no-files-found: error

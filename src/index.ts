@@ -28,7 +28,7 @@ withAllStdIn((inputBuff: Buffer) => {
     const fileNameToDescriptor: {[key: string]: FileDescriptorProto} = {};
 
     const parameter = codeGenRequest.getParameter();
-    const {service, mode} = getParameterEnums(parameter || "");
+    const {service} = getParameterEnums(parameter || "");
 
     const generateGrpcWebServices = service === ServiceParameter.GrpcWeb;
     const generateGrpcNodeServices = service === ServiceParameter.GrpcNode;
@@ -50,7 +50,7 @@ withAllStdIn((inputBuff: Buffer) => {
         generateGrpcWebService(outputFileName, fileNameToDescriptor[fileName], exportMap)
           .forEach(file => codeGenResponse.addFile(file));
       } else if (generateGrpcNodeServices) {
-        const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap, mode);
+        const file = generateGrpcNodeService(outputFileName, fileNameToDescriptor[fileName], exportMap);
         codeGenResponse.addFile(file);
       }
     });

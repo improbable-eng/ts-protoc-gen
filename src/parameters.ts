@@ -3,8 +3,3 @@ export enum ServiceParameter {
   GrpcWeb,
   GrpcNode
 }
-
-export enum ModeParameter {
-  None,
-  GrpcJs
-}

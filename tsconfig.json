@@ -16,7 +16,7 @@
     "outDir": "lib",
     "noEmitOnError": true,
     "types": [
-      "mocha",
+      "jest",
       "node",
       "google-protobuf"
     ]
