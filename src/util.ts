@@ -1,7 +1,7 @@
 import {parse} from "querystring";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {ExportEnumEntry, ExportMessageEntry} from "./ExportMap";
-import {ServiceParameter, ModeParameter} from "./parameters";
+import {ServiceParameter, ModeParameter, ImportStyleParameter} from "./parameters";
 
 export function filePathToPseudoNamespace(filePath: string): string {
   return filePath.replace(".proto", "").replace(/\//g, "_").replace(/\./g, "_").replace(/\-/g, "_") + "_pb";
@@ -182,13 +182,27 @@ export function getModeParameter(mode?: string): ModeParameter {
   }
 }
 
+export function getImportStyleParameter(importStyle?: string): ImportStyleParameter {
+  switch (importStyle) {
+    case "es6":
+      return ImportStyleParameter.ES6;
+    case undefined:
+        return ImportStyleParameter.None;
+    default:
+      throw new Error(`Unrecognised import_style parameter: ${importStyle}`);
+  }
+}
+
+
 export function getParameterEnums(parameter: string): {
   service: ServiceParameter,
-  mode: ModeParameter
+  mode: ModeParameter,
+  importStyle: ImportStyleParameter,
 } {
-  const {service, mode} = parse(parameter, ",");
+  const {service, mode, import_style} = parse(parameter, ",");
   return {
     service: getServiceParameter(service),
-    mode: getModeParameter(mode)
+    mode: getModeParameter(mode),
+    importStyle: getImportStyleParameter(import_style)
   };
 }

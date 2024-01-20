@@ -8,3 +8,8 @@ export enum ModeParameter {
   None,
   GrpcJs
 }
+
+export enum ImportStyleParameter {
+    None,
+    ES6
+}
