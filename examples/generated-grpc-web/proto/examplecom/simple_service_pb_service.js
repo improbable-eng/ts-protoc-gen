@@ -240,6 +240,7 @@ SimpleServiceClient.prototype.doBidiStream = function doBidiStream(metadata) {
 SimpleServiceClient.prototype.delete = function pb_delete(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
+    metadata = undefined;
   }
   var client = grpc.unary(SimpleService.Delete, {
     request: requestMessage,

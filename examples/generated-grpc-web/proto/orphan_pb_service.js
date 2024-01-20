@@ -38,6 +38,7 @@ function OrphanServiceClient(serviceHost, options) {
 OrphanServiceClient.prototype.doUnary = function doUnary(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
+    metadata = undefined;
   }
   var client = grpc.unary(OrphanService.DoUnary, {
     request: requestMessage,
