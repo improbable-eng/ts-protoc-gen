@@ -1,8 +1,8 @@
-import {Printer} from "../Printer";
-import {ExportMap} from "../ExportMap";
-import {FieldDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
+import { Printer } from "../Printer";
+import { ExportMap } from "../ExportMap";
+import { FieldDescriptorProto } from "google-protobuf/google/protobuf/descriptor_pb";
 import { snakeToCamel, throwError } from "../util";
-import {getFieldType} from "./FieldTypes";
+import { getFieldType } from "./FieldTypes";
 
 export function printExtension(fileName: string, exportMap: ExportMap, extension: FieldDescriptorProto, indentLevel: number): string {
   const printer = new Printer(indentLevel + 1);
@@ -12,6 +12,10 @@ export function printExtension(fileName: string, exportMap: ExportMap, extension
   const extensionTypeName = extension.getTypeName() || null;
   const camelExtensionName = snakeToCamel(extensionName);
   const fieldType = getFieldType(extensionType, extensionTypeName ? extensionTypeName.slice(1) : null, fileName, exportMap);
-  printer.printLn(`export const ${camelExtensionName}: jspb.ExtensionFieldInfo<${fieldType}>;`);
+  if (extension.getLabel() === FieldDescriptorProto.Label.LABEL_REPEATED) {
+    printer.printLn(`export const ${camelExtensionName}List: jspb.ExtensionFieldInfo<Array<${fieldType}>>;`);
+  } else {
+    printer.printLn(`export const ${camelExtensionName}: jspb.ExtensionFieldInfo<${fieldType}>;`);
+  }
   return printer.output;
 }
