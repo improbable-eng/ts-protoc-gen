@@ -164,6 +164,8 @@ export function getServiceParameter(service?: string): ServiceParameter {
       return ServiceParameter.GrpcWeb;
     case "grpc-node":
       return ServiceParameter.GrpcNode;
+    case "grpc-native":
+      return ServiceParameter.GrpcNative;
     case undefined:
       return ServiceParameter.None;
     default:
