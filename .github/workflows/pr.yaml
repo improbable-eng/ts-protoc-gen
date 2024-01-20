@@ -1,0 +1,73 @@
+name: PR
+
+on:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  checks: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: "NPM Install, Build, and Cache"
+        id: npm-install-build-and-cache
+        uses: ./.github/actions/npm-install-build-and-cache
+
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: "Retrieve Dependencies and Build Artifacts"
+        id: retrieve-deps-and-build
+        uses: ./.github/actions/retrieve-deps-and-build
+
+      - name: Test
+        run: npm run test-all
+
+  lint:
+    name: Lint
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: "Retrieve Dependencies and Build Artifacts"
+        id: retrieve-deps-and-build
+        uses: ./.github/actions/retrieve-deps-and-build
+
+      - name: Lint
+        run: npm run lint-all
+
+  summary:
+    name: Summary
+    needs: [build, test, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "Build: ${{ needs.build.result }}"
+          echo "Test: ${{ needs.test.result }}"
+          echo "Lint: ${{ needs.lint.result }}"

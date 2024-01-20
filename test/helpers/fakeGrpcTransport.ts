@@ -1,6 +1,5 @@
 import { Message } from "google-protobuf";
 import { grpc } from "@improbable-eng/grpc-web";
-import * as _ from "lodash";
 
 function frameResponse(request: Message): Uint8Array {
   const bytes = request.serializeBinary();
@@ -203,7 +202,7 @@ export class StubTransportBuilder {
       };
     };
 
-    return _.extend(transportConstructor, triggers) as any; // tslint:disable-line
+    return Object.assign(transportConstructor, triggers) as any;
   }
 }
 

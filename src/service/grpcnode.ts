@@ -3,14 +3,13 @@ import {Printer} from "../Printer";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {CodeGeneratorResponse} from "google-protobuf/google/protobuf/compiler/plugin_pb";
 import {createFile, RPCDescriptor, GrpcServiceDescriptor, RPCMethodDescriptor} from "./common";
-import { ModeParameter } from "../parameters";
 
-export function generateGrpcNodeService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap, modeParameter: ModeParameter): CodeGeneratorResponse.File {
+export function generateGrpcNodeService(filename: string, descriptor: FileDescriptorProto, exportMap: ExportMap): CodeGeneratorResponse.File {
   const definitionFilename = filename.replace(/_pb$/, "_grpc_pb.d.ts");
-  return createFile(generateTypeScriptDefinition(descriptor, exportMap, modeParameter), definitionFilename);
+  return createFile(generateTypeScriptDefinition(descriptor, exportMap), definitionFilename);
 }
 
-function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, exportMap: ExportMap, modeParameter: ModeParameter): string {
+function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, exportMap: ExportMap): string {
   const serviceDescriptor = new GrpcServiceDescriptor(fileDescriptor, exportMap);
   const printer = new Printer(0);
 
@@ -34,7 +33,7 @@ function generateTypeScriptDefinition(fileDescriptor: FileDescriptorProto, expor
     .forEach(importDescriptor => {
       printer.printLn(`import * as ${importDescriptor.namespace} from "${importDescriptor.path}";`);
     });
-  const importPackage = modeParameter === ModeParameter.GrpcJs ? "@grpc/grpc-js" : "grpc";
+  const importPackage = "@grpc/grpc-js";
   printer.printLn(`import * as grpc from "${importPackage}";`);
 
   // Services.

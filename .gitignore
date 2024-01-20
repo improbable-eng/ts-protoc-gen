@@ -8,3 +8,4 @@ lib/
 bazel-*
 protoc/
 .ijwb/
+coverage/

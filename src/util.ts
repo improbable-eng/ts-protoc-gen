@@ -1,7 +1,7 @@
 import {parse} from "querystring";
 import {FileDescriptorProto} from "google-protobuf/google/protobuf/descriptor_pb";
 import {ExportEnumEntry, ExportMessageEntry} from "./ExportMap";
-import {ServiceParameter, ModeParameter} from "./parameters";
+import {ServiceParameter} from "./parameters";
 
 export function filePathToPseudoNamespace(filePath: string): string {
   return filePath.replace(".proto", "").replace(/\//g, "_").replace(/\./g, "_").replace(/\-/g, "_") + "_pb";
@@ -171,24 +171,17 @@ export function getServiceParameter(service?: string): ServiceParameter {
   }
 }
 
-export function getModeParameter(mode?: string): ModeParameter {
-  switch (mode) {
-    case "grpc-js":
-      return ModeParameter.GrpcJs;
-    case undefined:
-        return ModeParameter.None;
-    default:
-      throw new Error(`Unrecognised mode parameter: ${mode}`);
-  }
-}
-
 export function getParameterEnums(parameter: string): {
   service: ServiceParameter,
-  mode: ModeParameter
 } {
   const {service, mode} = parse(parameter, ",");
+  if (Array.isArray(service)) {
+    throw new Error(`Multiple service parameters provided: ${service}`);
+  }
+  if (Array.isArray(mode)) {
+    throw new Error(`Multiple mode parameters provided: ${mode}`);
+  }
   return {
     service: getServiceParameter(service),
-    mode: getModeParameter(mode)
   };
 }
