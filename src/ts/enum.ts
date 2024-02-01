@@ -14,5 +14,6 @@ export function printEnum(enumDescriptor: EnumDescriptorProto, indentLevel: numb
   printer.printLn(`}`);
   printer.printEmptyLn();
   printer.printLn(`export const ${enumDescriptor.getName()}: ${enumInterfaceName};`);
+  printer.printLn(`export type ${enumDescriptor.getName()} = ${enumInterfaceName}[keyof ${enumInterfaceName}];`);
   return printer.getOutput();
 }
